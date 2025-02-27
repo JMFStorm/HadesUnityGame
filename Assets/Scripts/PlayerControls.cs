@@ -5,7 +5,7 @@ public class PlayerControls : MonoBehaviour
 {
     public LayerMask GroundLayer;
     public float MoveSpeed = 5f;
-    public float JumpForce = 20f;
+    public float JumpForce = 17f;
 
     private Rigidbody2D _rigidBody;
     private Transform _groundCheck;
