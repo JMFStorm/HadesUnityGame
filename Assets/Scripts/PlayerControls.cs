@@ -1,11 +1,21 @@
 using System.Collections;
 using UnityEngine;
 
+public enum PlayerSounds
+{
+    Attack = 0,
+    Dash,
+    Jump,
+}
+
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerControls : MonoBehaviour
 {
+    public AudioClip[] _audioClips;
+    public Transform GroundCheck;
+
     public LayerMask GroundCollisionLayer;
     public LayerMask PlatformLayer;
 
@@ -14,15 +24,21 @@ public class PlayerControls : MonoBehaviour
     public float DashSpeed = 15f;
     public float DashingTime = 0.2f;
     public float DashRechargeTime = 1.5f;
+    public float AttackSpeed = 0.3f;
 
     public bool DebugLogging = false;
 
     public int MaxDashes = 2;
 
+    private AudioSource _audioSource;
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
-    private Transform _groundCheck;
     private BoxCollider2D _boxCollider;
+    private BoxCollider2D _attackSwordBoxCollider;
+    
+    private Transform _attackSwordTransform;
+
+    private SpriteRenderer _attackSwordSprite;
 
     private Collider2D _platformFallthrough;
 
@@ -36,6 +52,8 @@ public class PlayerControls : MonoBehaviour
     private bool _isGrounded = false;
     private bool _isDashing = false;
     private bool _isCrouching = false;
+    private bool _isAttacking = false;
+    private bool _attackCharged = true;
 
     private float _facingDirX = 0f;
     private float _dashDirX = 0f;
@@ -64,11 +82,31 @@ public class PlayerControls : MonoBehaviour
             Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(PlayerControls)}");
         }
 
-        _groundCheck = transform.Find("GroundCheck");
-
-        if (_groundCheck == null)
+        if (!TryGetComponent(out _audioSource))
         {
-            Debug.LogError($"GroundCheck not found as a child of {nameof(PlayerControls)} script");
+            Debug.LogError($"{nameof(AudioSource)} not found on {nameof(PlayerControls)}");
+        }
+
+        if (GroundCheck == null)
+        {
+            Debug.LogError($"GroundCheck has not been set in {nameof(PlayerControls)}");
+        }
+
+        _attackSwordTransform = transform.Find("Attack Sword");
+
+        if (_attackSwordTransform == null)
+        {
+            Debug.LogError($"Attack Sword not found as a child of {nameof(PlayerControls)} script");
+        }
+        
+        if (!_attackSwordTransform.TryGetComponent(out _attackSwordSprite))
+        {
+            Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(PlayerControls)} attack sword child");
+        }
+
+        if (!_attackSwordTransform.TryGetComponent(out _attackSwordBoxCollider))
+        {
+            Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(PlayerControls)} attack sword child");
         }
     }
 
@@ -78,6 +116,9 @@ public class PlayerControls : MonoBehaviour
 
         _originalSize = _boxCollider.size;
         _originalOffset = _boxCollider.offset;
+
+        _attackSwordSprite.enabled = false;
+        _attackSwordBoxCollider.enabled = false;
     }
 
     void Update()
@@ -114,12 +155,12 @@ public class PlayerControls : MonoBehaviour
         }
 
         Color color = _isGrounded ? Color.green : Color.red;
-        DebugUtil.DrawRectangle(_groundCheck.position, _groundCheckSize, color);
+        DebugUtil.DrawRectangle(GroundCheck.position, _groundCheckSize, color);
     }
 
     void FixedUpdate()
     {
-        _isGrounded = Physics2D.OverlapBox(_groundCheck.position, _groundCheckSize, 0, GroundCollisionLayer);
+        _isGrounded = Physics2D.OverlapBox(GroundCheck.position, _groundCheckSize, 0, GroundCollisionLayer);
     }
 
     private void OnDrawGizmosSelected()
@@ -133,7 +174,7 @@ public class PlayerControls : MonoBehaviour
             Gizmos.color = Color.red;
         }
 
-        Gizmos.DrawWireCube(_groundCheck.position, _groundCheckSize);
+        Gizmos.DrawWireCube(GroundCheck.position, _groundCheckSize);
     }
 
     void PlayerMovement()
@@ -176,6 +217,8 @@ public class PlayerControls : MonoBehaviour
         {
             DebugLog("Jump");
 
+            PlaySound(PlayerSounds.Jump);
+
             _rigidBody.linearVelocity = new Vector2(_rigidBody.linearVelocity.x, JumpForce);
         }
         else if (Input.GetButtonDown("Dash") && !_isDashing)
@@ -193,6 +236,56 @@ public class PlayerControls : MonoBehaviour
         {
             _isCrouching = true;
         }
+
+        if (Input.GetButtonDown("Attack") && !_isAttacking && _attackCharged)
+        {
+            DebugLog("Attack");
+
+            StartCoroutine(PlayerAttack(0f < _facingDirX));
+        }
+    }
+
+    private IEnumerator PlayerAttack(bool rightSideAttack)
+    {
+        const float attackPreSwingTime = 0.05f;
+
+        PlaySound(PlayerSounds.Attack);
+
+        _attackCharged = false;
+        _isAttacking = true;
+
+        yield return new WaitForSeconds(attackPreSwingTime);
+
+        _attackSwordSprite.flipX = !rightSideAttack;
+
+        var attackSwordXOffset = rightSideAttack ? 1f : -1f;
+        _attackSwordTransform.position = new Vector3(_rigidBody.position.x + attackSwordXOffset, _rigidBody.position.y, _attackSwordTransform.position.z);
+
+        DebugLog(attackSwordXOffset.ToString());
+
+        const float attackVisibleTime = 0.125f;
+        float elapsedTime1 = 0f;
+
+        _attackSwordSprite.enabled = true;
+        _attackSwordBoxCollider.enabled = true;
+
+        while (elapsedTime1 < attackVisibleTime)
+        {
+            elapsedTime1 += Time.deltaTime;
+            yield return null;
+        }
+
+        _attackSwordBoxCollider.enabled = false;
+        _attackSwordSprite.enabled = false;
+        _isAttacking = false;
+
+        var attackWaitTime = Mathf.Max(AttackSpeed - (attackPreSwingTime + attackVisibleTime), 0f);
+
+        DebugLog($"attackWaitTime: {attackWaitTime}");
+
+        yield return new WaitForSeconds(attackWaitTime);
+
+        _attackCharged = true;
     }
 
     private IEnumerator DisablePlatformCollisionForTime(Collider2D platformCollider, float time)
@@ -211,6 +304,8 @@ public class PlayerControls : MonoBehaviour
     void StartDash()
     {
         DebugLog("Dash start");
+
+        PlaySound(PlayerSounds.Dash);
 
         _rigidBody.constraints = _dashingRigidbodyConstraints;
 
@@ -256,6 +351,21 @@ public class PlayerControls : MonoBehaviour
         else
         {
             _dashRegenTimer = 0f;
+        }
+    }
+
+    void PlaySound(PlayerSounds soundIndex)
+    {
+        var index = (int)soundIndex;
+
+        if (_audioSource != null && index < _audioClips.Length && _audioClips[index] != null)
+        {
+            _audioSource.clip = _audioClips[index];
+            _audioSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning($"Error playing Player sound index {index}. {nameof(AudioSource)}, {nameof(AudioClip)}, or the specified sound is not assigned.");
         }
     }
 
