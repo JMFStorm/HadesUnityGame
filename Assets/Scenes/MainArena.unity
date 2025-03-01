@@ -1973,11 +1973,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6485912083461071658, guid: 2ee788cb0fec50340b232cf3d2072e06, type: 3}
   m_PrefabInstance: {fileID: 880562506}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &895744266 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8886047964763647662, guid: 5733a604297294142a58f667cdab2a01, type: 3}
-  m_PrefabInstance: {fileID: 3130563829705519829}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &906230210
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3729,38 +3724,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 118842731618917201, guid: 5733a604297294142a58f667cdab2a01, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 118842731618917201, guid: 5733a604297294142a58f667cdab2a01, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1504642369529134822, guid: 5733a604297294142a58f667cdab2a01, type: 3}
       propertyPath: m_Name
       value: PlayableCharacter
       objectReference: {fileID: 0}
-    - target: {fileID: 2218871938792346492, guid: 5733a604297294142a58f667cdab2a01, type: 3}
-      propertyPath: GroundCheck
-      value: 
-      objectReference: {fileID: 895744266}
-    - target: {fileID: 2218871938792346492, guid: 5733a604297294142a58f667cdab2a01, type: 3}
-      propertyPath: _audioClips.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2218871938792346492, guid: 5733a604297294142a58f667cdab2a01, type: 3}
-      propertyPath: '_audioClips.Array.data[0]'
-      value: 
-      objectReference: {fileID: 8300000, guid: 616410fd98b84db489742c3389b6a283, type: 3}
-    - target: {fileID: 2218871938792346492, guid: 5733a604297294142a58f667cdab2a01, type: 3}
-      propertyPath: '_audioClips.Array.data[1]'
-      value: 
-      objectReference: {fileID: 8300000, guid: b38ddca8ae3207b43991bcc1879a2585, type: 3}
-    - target: {fileID: 2218871938792346492, guid: 5733a604297294142a58f667cdab2a01, type: 3}
-      propertyPath: '_audioClips.Array.data[2]'
-      value: 
-      objectReference: {fileID: 8300000, guid: c7bee8536862cd74594cd4232d27826e, type: 3}
     - target: {fileID: 8747672932157108684, guid: 5733a604297294142a58f667cdab2a01, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
