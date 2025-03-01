@@ -3728,25 +3728,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayableCharacter
       objectReference: {fileID: 0}
-    - target: {fileID: 2218871938792346492, guid: 5733a604297294142a58f667cdab2a01, type: 3}
-      propertyPath: JumpForce
-      value: 17
-      objectReference: {fileID: 0}
-    - target: {fileID: 2218871938792346492, guid: 5733a604297294142a58f667cdab2a01, type: 3}
-      propertyPath: DashingTime
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2218871938792346492, guid: 5733a604297294142a58f667cdab2a01, type: 3}
-      propertyPath: GroundLayer.m_Bits
-      value: 320
-      objectReference: {fileID: 0}
     - target: {fileID: 8747672932157108684, guid: 5733a604297294142a58f667cdab2a01, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.13000011
+      value: -13.73
       objectReference: {fileID: 0}
     - target: {fileID: 8747672932157108684, guid: 5733a604297294142a58f667cdab2a01, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.87
+      value: 6.91
       objectReference: {fileID: 0}
     - target: {fileID: 8747672932157108684, guid: 5733a604297294142a58f667cdab2a01, type: 3}
       propertyPath: m_LocalPosition.z

@@ -176,11 +176,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e85b37325828bcf4198f2f0349bef8d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GroundLayer:
+  GroundCollisionLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 320
+  PlatformLayer:
+    serializedVersion: 2
+    m_Bits: 256
   MoveSpeed: 5
-  JumpForce: 20
+  JumpForce: 17
+  DashSpeed: 15
+  DashingTime: 0.2
+  DashRechargeTime: 1.5
+  DebugLogging: 1
+  MaxDashes: 2
 --- !u!1 &8362622242005079885
 GameObject:
   m_ObjectHideFlags: 0

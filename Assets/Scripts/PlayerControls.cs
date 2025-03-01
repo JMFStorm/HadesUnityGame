@@ -1,14 +1,13 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(BoxCollider2D))]
 public class PlayerControls : MonoBehaviour
 {
-    private Rigidbody2D _rigidBody;
-    private SpriteRenderer _spriteRenderer;
-    private Transform _groundCheck;
-
-    public LayerMask GroundLayer;
+    public LayerMask GroundCollisionLayer;
+    public LayerMask PlatformLayer;
 
     public float MoveSpeed = 5f;
     public float JumpForce = 17f;
@@ -16,19 +15,34 @@ public class PlayerControls : MonoBehaviour
     public float DashingTime = 0.2f;
     public float DashRechargeTime = 1.5f;
 
+    public bool DebugLogging = false;
+
     public int MaxDashes = 2;
 
+    private Rigidbody2D _rigidBody;
+    private SpriteRenderer _spriteRenderer;
+    private Transform _groundCheck;
+    private BoxCollider2D _boxCollider;
+
+    private Collider2D _platformFallthrough;
+
     private Vector2 _groundCheckSize = new(0.7f, 0.25f);
+    
+    private Vector2 _originalSize;
+    private Vector2 _originalOffset;
 
     private int _currentDashes = 0;
 
     private bool _isGrounded = false;
     private bool _isDashing = false;
+    private bool _isCrouching = false;
 
-    private float _dashDirX = 0f;
     private float _facingDirX = 0f;
+    private float _dashDirX = 0f;
     private float _dashTimer = 0f;
     private float _dashRegenTimer = 0f;
+
+    private readonly float _platformFallthroughRaycastDistance = 1.0f;
 
     private readonly RigidbodyConstraints2D _defaultRigidbodyConstraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
     private readonly RigidbodyConstraints2D _dashingRigidbodyConstraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
@@ -45,6 +59,11 @@ public class PlayerControls : MonoBehaviour
             Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(PlayerControls)}");
         }
 
+        if (!TryGetComponent(out _boxCollider))
+        {
+            Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(PlayerControls)}");
+        }
+
         _groundCheck = transform.Find("GroundCheck");
 
         if (_groundCheck == null)
@@ -56,13 +75,43 @@ public class PlayerControls : MonoBehaviour
     private void Start()
     {
         _currentDashes = MaxDashes;
+
+        _originalSize = _boxCollider.size;
+        _originalOffset = _boxCollider.offset;
     }
 
     void Update()
     {
         PlayerMovement();
 
+        if (_isDashing)
+        {
+            _dashTimer += Time.deltaTime;
+
+            if (DashingTime <= _dashTimer)
+            {
+                StopDash();
+            }
+            else
+            {
+                Dash();
+            }
+        }
+
         DashRegen();
+
+        if (_isCrouching)
+        {
+            _boxCollider.size = new Vector2(_originalSize.x, _originalSize.y * 0.5f);
+            _boxCollider.offset = new Vector2(_originalOffset.x, _originalOffset.y - 0.25f);
+
+            Debug.DrawRay(transform.position, Vector2.down * _platformFallthroughRaycastDistance, Color.red);
+        }
+        else
+        {
+            _boxCollider.size = _originalSize;
+            _boxCollider.offset = _originalOffset;
+        }
 
         Color color = _isGrounded ? Color.green : Color.red;
         DebugUtil.DrawRectangle(_groundCheck.position, _groundCheckSize, color);
@@ -70,7 +119,7 @@ public class PlayerControls : MonoBehaviour
 
     void FixedUpdate()
     {
-        _isGrounded = Physics2D.OverlapBox(_groundCheck.position, _groundCheckSize, 0, GroundLayer);
+        _isGrounded = Physics2D.OverlapBox(_groundCheck.position, _groundCheckSize, 0, GroundCollisionLayer);
     }
 
     private void OnDrawGizmosSelected()
@@ -98,9 +147,34 @@ public class PlayerControls : MonoBehaviour
             _facingDirX = Mathf.Ceil(moveInput);
         }
 
-        if (Input.GetButtonDown("Jump") && _isGrounded && !_isDashing)
+        _isCrouching = false;
+
+        if (Input.GetButton("Crouch") && Input.GetButtonDown("Jump") && _isGrounded && !_isDashing)
         {
-            Debug.Log("Jump");
+            DebugLog("Jump down");
+
+            _isCrouching = true;
+
+            RaycastHit2D hit = Physics2D.Raycast(
+                transform.position,
+                Vector2.down,
+                _platformFallthroughRaycastDistance,
+                PlatformLayer
+            );
+
+            if (hit.collider != null)
+            {
+                DebugLog("Fallthrough collider hit");
+
+                _platformFallthrough = hit.collider;
+
+                const float fallthroughCollisionDisableTime = 0.5f;
+                StartCoroutine(DisablePlatformCollisionForTime(_platformFallthrough, fallthroughCollisionDisableTime));
+            }
+        }
+        else if (Input.GetButtonDown("Jump") && _isGrounded && !_isDashing)
+        {
+            DebugLog("Jump");
 
             _rigidBody.linearVelocity = new Vector2(_rigidBody.linearVelocity.x, JumpForce);
         }
@@ -112,28 +186,31 @@ public class PlayerControls : MonoBehaviour
             }
             else
             {
-                Debug.Log("No dash available");
+                DebugLog("No dash available");
             }
         }
-
-        if (_isDashing)
+        else if (Input.GetButton("Crouch") && _isGrounded && !_isDashing)
         {
-            _dashTimer += Time.deltaTime;
-
-            if (DashingTime <= _dashTimer)
-            {
-                StopDash();
-            }
-            else
-            {
-                Dash();
-            }
+            _isCrouching = true;
         }
+    }
+
+    private IEnumerator DisablePlatformCollisionForTime(Collider2D platformCollider, float time)
+    {
+        DebugLog($"DisableCollisionForTime start {platformCollider.name}");
+
+        Physics2D.IgnoreCollision(_boxCollider, platformCollider, true);
+
+        yield return new WaitForSeconds(time);
+
+        Physics2D.IgnoreCollision(_boxCollider, platformCollider, false);
+
+        DebugLog($"DisableCollisionForTime end {platformCollider.name}");
     }
 
     void StartDash()
     {
-        Debug.Log("Dash start");
+        DebugLog("Dash start");
 
         _rigidBody.constraints = _dashingRigidbodyConstraints;
 
@@ -147,14 +224,12 @@ public class PlayerControls : MonoBehaviour
 
     void Dash()
     {
-        Debug.Log("Dashing");
-
         _rigidBody.linearVelocity = new Vector2(_dashDirX * DashSpeed, 0f);
     }
 
     void StopDash()
     {
-        Debug.Log("Dash stop");
+        DebugLog("Dash stop");
 
         _rigidBody.constraints = _defaultRigidbodyConstraints;
 
@@ -172,7 +247,7 @@ public class PlayerControls : MonoBehaviour
 
             if (DashRechargeTime <= _dashRegenTimer)
             {
-                Debug.Log("Dash recharged");
+                DebugLog("Dash recharged");
 
                 _currentDashes++;
                 _dashRegenTimer = 0f;
@@ -181,6 +256,14 @@ public class PlayerControls : MonoBehaviour
         else
         {
             _dashRegenTimer = 0f;
+        }
+    }
+
+    void DebugLog(string message)
+    {
+        if (DebugLogging)
+        {
+            Debug.Log($"{nameof(PlayerControls)}: {message}");
         }
     }
 }
