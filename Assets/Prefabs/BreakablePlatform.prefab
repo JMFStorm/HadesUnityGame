@@ -80,11 +80,11 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 4633936099105491308, guid: 87529e9cc0674ac45a2d31567113f3ef, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 3.5, y: 0.26}
+  m_DrawMode: 2
+  m_Size: {x: 2, y: 0.25}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -129,12 +129,12 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 3.5, y: 0.26}
-    newSize: {x: 3.5, y: 0.26}
+    newSize: {x: 2, y: 0.25}
     adaptiveTilingThreshold: 0.5
-    drawMode: 0
+    drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 3.5, y: 0.26}
+  m_Size: {x: 2, y: 0.25}
   m_EdgeRadius: 0
 --- !u!251 &4643056311006177614
 PlatformEffector2D:
@@ -169,5 +169,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BrokenColor: {r: 1, g: 0, b: 0, a: 1}
   DefaultColor: {r: 1, g: 1, b: 0, a: 1}
-  DestroyTime: 0.4
+  DestroyTime: 0.5
   RespawnTime: 3
