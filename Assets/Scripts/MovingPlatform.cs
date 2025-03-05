@@ -1,30 +1,44 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class MovingPlatforms : MonoBehaviour
 {
-	[Tooltip("Element 0 is starting point")]
-	public Transform[] PlatformPoints;
-
 	public float PlatformSpeed = 4.0f;
 	public bool LoopAround = true;
 
-	private Transform _targetPoint;
+	private readonly List<Vector3> _platformPoints = new();
+	private Vector3 _targetPoint;
 
     private bool stepsIncrease = true;
     private int _currentPointIndex = 0;
-    private int _platformPointsCount = 0;
+
+    private void Awake()
+    {
+        TryAddPoint("point0");
+        TryAddPoint("point1");
+        TryAddPoint("point2");
+        TryAddPoint("point3");
+
+        if (_platformPoints.Count < 2)
+        {
+            Debug.LogError($"MovingPlatforms with only {_platformPoints.Count} travel points is a mistake.");
+        }
+
+        _targetPoint = _platformPoints[_currentPointIndex];
+    }
+
+    void TryAddPoint(string name)
+    {
+        var point = transform.Find(name);
+
+        if (point != null)
+        {
+            _platformPoints.Add(point.transform.position);
+        }
+    }
 
     void Start()
     {
-        _platformPointsCount = PlatformPoints.Count();
-
-        if (_platformPointsCount < 2)
-		{
-			Debug.LogError($"MovingPlatforms with only {_platformPointsCount} travel points is a mistake.");
-		}
-
-        _targetPoint = PlatformPoints[_currentPointIndex];
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -59,19 +73,19 @@ public class MovingPlatforms : MonoBehaviour
 
     void PlatformMovement()
     {
-        gameObject.transform.position = Vector3.MoveTowards(transform.position, _targetPoint.position, PlatformSpeed * Time.deltaTime);
+        gameObject.transform.position = Vector3.MoveTowards(transform.position, _targetPoint, PlatformSpeed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, _targetPoint.position) < 0.01f)
+        if (Vector3.Distance(transform.position, _targetPoint) < 0.01f)
         {
             if (LoopAround)
             {
-                _currentPointIndex = (_currentPointIndex + 1) % PlatformPoints.Length;
+                _currentPointIndex = (_currentPointIndex + 1) % _platformPoints.Count;
             }
             else
             {
                 if (stepsIncrease)
                 {
-                    if (_currentPointIndex == _platformPointsCount - 1)
+                    if (_currentPointIndex == _platformPoints.Count - 1)
                     {
                         stepsIncrease = false;
                         _currentPointIndex -= 1;
@@ -95,7 +109,7 @@ public class MovingPlatforms : MonoBehaviour
                 }
             }
 
-            _targetPoint = PlatformPoints[_currentPointIndex];
+            _targetPoint = _platformPoints[_currentPointIndex];
         }
     }
 }

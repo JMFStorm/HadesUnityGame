@@ -66,7 +66,7 @@ public class GameState : MonoBehaviour
 
         if (levelEnter != null)
         {
-            _player.transform.position = levelEnter;
+            _player.transform.position = levelEnter - new Vector3(0, 0.5f, 0);
         }
         else
         {
