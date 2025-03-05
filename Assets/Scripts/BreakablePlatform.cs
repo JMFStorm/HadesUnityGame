@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer))]
 public class BreakablePlatform : MonoBehaviour
 {
     public Color BrokenColor = Color.red; 
@@ -15,7 +14,16 @@ public class BreakablePlatform : MonoBehaviour
 
     private void Awake()
     {
-        _platformRenderer = GetComponent<SpriteRenderer>();
+        Transform spriteTransform = transform.Find("Sprite");
+
+        if (spriteTransform != null)
+        {
+            _platformRenderer = spriteTransform.GetComponent<SpriteRenderer>();
+        }
+        else
+        {
+            Debug.LogError($"Child object 'Sprite' not found on {nameof(SpriteRenderer)}.");
+        }
     }
 
     void Start()
