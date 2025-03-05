@@ -55,7 +55,7 @@ public class GameState : MonoBehaviour
 
         if (_currentLevel != null)
         {
-            _currentLevel.DestroySelf();
+            Destroy(_currentLevel.gameObject);
             _currentLevel = null;
         }
 

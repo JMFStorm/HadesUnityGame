@@ -22,7 +22,7 @@ public class PlayerCharacter : MonoBehaviour
     public float MoveSpeed = 5f;
     public float JumpForce = 17f;
     public float DashSpeed = 15f;
-    public float DashingTime = 0.2f;
+    public float DashingTime = 0.175f;
     public float DashRechargeTime = 1.5f;
     public float AttackSpeed = 0.3f;
 
