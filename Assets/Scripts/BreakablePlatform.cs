@@ -8,27 +8,39 @@ public class BreakablePlatform : MonoBehaviour
     public float DestroyTime = 0.5f;
     public float RespawnTime = 3f;
 
-    private SpriteRenderer _platformRenderer;
+    private SpriteRenderer _spriteLeft;
+    private SpriteRenderer _spriteRight;
 
     private Vector3 _collisionPosition;
 
     private void Awake()
     {
-        Transform spriteTransform = transform.Find("Sprite");
+        var left = transform.Find("SpriteLeft");
 
-        if (spriteTransform != null)
+        if (left != null)
         {
-            _platformRenderer = spriteTransform.GetComponent<SpriteRenderer>();
+            _spriteLeft = left.GetComponent<SpriteRenderer>();
         }
         else
         {
-            Debug.LogError($"Child object 'Sprite' not found on {nameof(SpriteRenderer)}.");
+            Debug.LogError($"Child object 'SpriteLeft' not found on {nameof(SpriteRenderer)}.");
+        }
+
+        var right = transform.Find("SpriteRight");
+
+        if (right != null)
+        {
+            _spriteRight = right.GetComponent<SpriteRenderer>();
+        }
+        else
+        {
+            Debug.LogError($"Child object 'SpriteRight' not found on {nameof(SpriteRenderer)}.");
         }
     }
 
     void Start()
     {
-        _platformRenderer.material.color = DefaultColor;
+        SetColor(DefaultColor);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -41,7 +53,7 @@ public class BreakablePlatform : MonoBehaviour
             {
                 Debug.Log("DestroyPlatform");
 
-                _platformRenderer.material.color = BrokenColor;
+                SetColor(BrokenColor);
 
                 Invoke(nameof(DestroyPlatform), DestroyTime);
             }
@@ -57,7 +69,13 @@ public class BreakablePlatform : MonoBehaviour
     private void RespawnPlatform()
     {
         transform.gameObject.SetActive(true);
-        _platformRenderer.material.color = DefaultColor;
+        SetColor(DefaultColor);
+    }
+
+    private void SetColor(Color color)
+    {
+        _spriteLeft.material.color = color;
+        _spriteRight.material.color = color;
     }
 }
 

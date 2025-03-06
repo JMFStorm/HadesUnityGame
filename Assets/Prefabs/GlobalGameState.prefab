@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TunnelLevels:
-  - {fileID: 319463835677160509, guid: 268cf3041ba741749a4fc112cf3e2bdf, type: 3}
   - {fileID: 3750608127319819093, guid: 6c3509ac74bf0654d9e1260a5cca8179, type: 3}
+  - {fileID: 319463835677160509, guid: 268cf3041ba741749a4fc112cf3e2bdf, type: 3}
   - {fileID: 6378060692577099839, guid: b1d7f133afe56ff4092b4c349c69a02c, type: 3}
   PlayerPrefab: {fileID: 2218871938792346492, guid: 5733a604297294142a58f667cdab2a01, type: 3}
   MainCameraPrefab: {fileID: 3018883555529649252, guid: f02c88d847cab044da2a038dfd0c60b1, type: 3}
@@ -78,7 +78,7 @@ Transform:
   m_GameObject: {fileID: 1730913884919540377}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -17.823587, y: 1.7658099, z: 0.02997615}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
