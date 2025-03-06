@@ -2,13 +2,18 @@ using UnityEngine;
 
 public class TunnelLevel : Level
 {
-    void Start()
-    {
-        
+    protected override void Awake()
+    { 
+        base.Awake();
     }
 
-    void Update()
+    protected override void Start()
     {
-        
+        base.Start();
+    }
+
+    protected override void Update()
+    {
+        base.Update();
     }
 }

@@ -62,6 +62,10 @@ public class GameState : MonoBehaviour
         _currentLevel = Instantiate(TunnelLevels[index], Vector3.zero, Quaternion.identity);
         _currentLevelIndex = index;
 
+        var (bl, tr) = _currentLevel.GetLevelBoundaries();
+
+        // _mainCamera.SetCameraBoundaries(bl, tr);
+
         var levelEnter = _currentLevel.GetLevelEntrance();
 
         if (levelEnter != null)
