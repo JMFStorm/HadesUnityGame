@@ -1,16 +1,21 @@
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class Level : MonoBehaviour
 {
-    private Tilemap _tilemap;
-
-    private Vector3 _tilemapBotLeft;
-    private Vector3 _tilemapTopRight;
+    private Vector3 _levelBotLeft;
+    private Vector3 _levelTopRight;
 
     protected virtual void Awake()
     {
-        // TODO: Get level boundaries
+        var bgBoundaries = transform.Find("BGBoundaries");
+
+        if (bgBoundaries != null)
+        {
+            var colliderArea = bgBoundaries.GetComponent<BoxCollider2D>();
+
+            _levelBotLeft = (Vector2)transform.position + colliderArea.offset - (colliderArea.size / 2);
+            _levelTopRight = (Vector2)transform.position + colliderArea.offset + (colliderArea.size / 2);
+        }
     }
 
     protected virtual void Start()
@@ -19,14 +24,14 @@ public class Level : MonoBehaviour
 
     protected virtual void Update()
     {
-        DebugUtil.DrawCircle(_tilemapBotLeft, 0.1f, new Color(0, 0, 1.0f));
-        DebugUtil.DrawCircle(_tilemapTopRight, 0.1f, new Color(0, 0, 1.0f));
+        DebugUtil.DrawCircle(_levelBotLeft, 0.1f, new Color(0, 0, 1.0f));
+        DebugUtil.DrawCircle(_levelTopRight, 0.1f, new Color(0, 0, 1.0f));
     }
 
     public (Vector3 botLeft, Vector3 topRight) GetLevelBoundaries()
     {
-        Debug.Log($"Tilemap Bounds - Bottom Left: {_tilemapBotLeft}, Top Right: {_tilemapTopRight}");
-        return (_tilemapBotLeft, _tilemapTopRight);
+        Debug.Log($"Tilemap Bounds - Bottom Left: {_levelBotLeft}, Top Right: {_levelTopRight}");
+        return (_levelBotLeft, _levelTopRight);
     }
 
     public Vector3 GetLevelEntrance()
