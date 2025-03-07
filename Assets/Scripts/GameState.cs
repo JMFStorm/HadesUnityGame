@@ -27,6 +27,9 @@ public class GameState : MonoBehaviour
     private readonly float _bgZOffset = 50.0f;
     private readonly float _playerZOffset = -10.0f;
 
+    private readonly float _globalLightInitial = 0.2f;
+    private readonly float _globalLightMax = 1.2f;
+
     private void Awake()
     {
         if (Instance == null)
@@ -62,7 +65,7 @@ public class GameState : MonoBehaviour
 
         LoadLevel(_currentLevelIndex);
 
-        GlobalLight.intensity = 0.4f;
+        GlobalLight.intensity = _globalLightInitial;
     }
 
     private void Update()
@@ -125,6 +128,13 @@ public class GameState : MonoBehaviour
         int nextIndex = (_currentLevelIndex + 1) % TunnelLevels.Length;
         
         LoadLevel(nextIndex);
+
+        GlobalLight.intensity += 0.2f;
+
+        if (_globalLightMax < GlobalLight.intensity)
+        {
+            GlobalLight.intensity = _globalLightMax;
+        }
     }
 
     void ApplyBackground(Vector2 bottomLeft, Vector2 topRight, int index)
