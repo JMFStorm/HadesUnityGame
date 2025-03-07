@@ -23,8 +23,9 @@ public class GameState : MonoBehaviour
 
     private int _currentLevelIndex = 0;
 
-    private readonly Vector3 _cameraOffset = new(0, 0, -50.0f);
-    private readonly Vector3 _bgOffset = new(0, 0, 50.0f);
+    private readonly float _cameraZOffset = -50.0f;
+    private readonly float _bgZOffset = 50.0f;
+    private readonly float _playerZOffset = -10.0f;
 
     private void Awake()
     {
@@ -109,8 +110,8 @@ public class GameState : MonoBehaviour
         if (levelEnter != null)
         {
             var newPlayerStart = levelEnter - new Vector3(0, 0.5f, 0);
-            _player.transform.position = newPlayerStart;
-            _mainCamera.transform.position = newPlayerStart + _cameraOffset;
+            _player.transform.position = new Vector3(newPlayerStart.x, newPlayerStart.y, _playerZOffset);
+            _mainCamera.transform.position = new Vector3(newPlayerStart.x, newPlayerStart.y, _cameraZOffset);
             _prevCameraPosition = _mainCamera.transform.position;
         }
         else
@@ -151,6 +152,6 @@ public class GameState : MonoBehaviour
 
         // Position the background at the center of the boundary
         Vector3 center = (bottomLeft + topRight) / 2f;
-        _backgroundRenderer.transform.position = center + _bgOffset;
+        _backgroundRenderer.transform.position = new Vector3(center.x, center.y, _bgZOffset);
     }
 }

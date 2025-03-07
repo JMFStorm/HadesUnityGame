@@ -9,7 +9,6 @@ public enum PlayerSounds
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerCharacter : MonoBehaviour
 {
@@ -18,6 +17,10 @@ public class PlayerCharacter : MonoBehaviour
 
     public LayerMask GroundCollisionLayer;
     public LayerMask PlatformLayer;
+
+    public Sprite AttackSprite;
+    public Sprite IdleSprite;
+    public Sprite AirSprite;
 
     public float MoveSpeed = 5f;
     public float JumpForce = 17f;
@@ -35,15 +38,10 @@ public class PlayerCharacter : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private BoxCollider2D _boxCollider;
     private BoxCollider2D _attackSwordBoxCollider;
-    
     private Transform _attackSwordTransform;
-
-    private SpriteRenderer _attackSwordSprite;
-
     private Collider2D _platformFallthrough;
 
-    private Vector2 _groundCheckSize = new(0.7f, 0.25f);
-    
+    private Vector2 _groundCheckSize = new(0.5f, 0.25f);
     private Vector2 _originalSize;
     private Vector2 _originalOffset;
 
@@ -73,7 +71,14 @@ public class PlayerCharacter : MonoBehaviour
             Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(PlayerCharacter)}");
         }
 
-        if (!TryGetComponent(out _spriteRenderer))
+        var spriteRenderer = transform.Find("SpriteRenderer");
+
+        if (spriteRenderer == null)
+        {
+            Debug.LogError($"SpriteRenderer child not found on {nameof(PlayerCharacter)} game object");
+        }
+
+        if (!spriteRenderer.TryGetComponent(out _spriteRenderer))
         {
             Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(PlayerCharacter)}");
         }
@@ -93,18 +98,13 @@ public class PlayerCharacter : MonoBehaviour
             Debug.LogError($"GroundCheck has not been set in {nameof(PlayerCharacter)}");
         }
 
-        _attackSwordTransform = transform.Find("Attack Sword");
+        _attackSwordTransform = transform.Find("AttackSword");
 
         if (_attackSwordTransform == null)
         {
-            Debug.LogError($"Attack Sword not found as a child of {nameof(PlayerCharacter)} script");
+            Debug.LogError($"AttackSword not found as a child of {nameof(PlayerCharacter)} script");
         }
         
-        if (!_attackSwordTransform.TryGetComponent(out _attackSwordSprite))
-        {
-            Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(PlayerCharacter)} attack sword child");
-        }
-
         if (!_attackSwordTransform.TryGetComponent(out _attackSwordBoxCollider))
         {
             Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(PlayerCharacter)} attack sword child");
@@ -118,7 +118,6 @@ public class PlayerCharacter : MonoBehaviour
         _originalSize = _boxCollider.size;
         _originalOffset = _boxCollider.offset;
 
-        _attackSwordSprite.enabled = false;
         _attackSwordBoxCollider.enabled = false;
     }
 
@@ -157,6 +156,10 @@ public class PlayerCharacter : MonoBehaviour
 
         Color color = _isGrounded ? Color.green : Color.red;
         DebugUtil.DrawRectangle(GroundCheck.position, _groundCheckSize, color);
+
+        _spriteRenderer.flipX = _facingDirX < 0.0f;
+        _spriteRenderer.sprite = _isAttacking ? AttackSprite : (!_isGrounded ? AirSprite : IdleSprite);
+
     }
 
     void FixedUpdate()
@@ -213,8 +216,6 @@ public class PlayerCharacter : MonoBehaviour
 
         if (Input.GetButton("Crouch") && Input.GetButtonDown("Jump") && _isGrounded && !_isDashing)
         {
-            DebugLog("Jump down");
-
             _isCrouching = true;
 
             RaycastHit2D hit = Physics2D.Raycast(
@@ -226,8 +227,6 @@ public class PlayerCharacter : MonoBehaviour
 
             if (hit.collider != null)
             {
-                DebugLog("Fallthrough collider hit");
-
                 _platformFallthrough = hit.collider;
 
                 const float fallthroughCollisionDisableTime = 0.5f;
@@ -236,8 +235,6 @@ public class PlayerCharacter : MonoBehaviour
         }
         else if (Input.GetButtonDown("Jump") && _isGrounded && !_isDashing)
         {
-            DebugLog("Jump");
-
             PlaySound(PlayerSounds.Jump);
 
             _rigidBody.linearVelocity = new Vector2(_rigidBody.linearVelocity.x, JumpForce);
@@ -260,8 +257,6 @@ public class PlayerCharacter : MonoBehaviour
 
         if (Input.GetButtonDown("Attack") && !_isAttacking && _attackCharged)
         {
-            DebugLog("Attack");
-
             StartCoroutine(PlayerAttack(0f < _facingDirX));
         }
 
@@ -284,17 +279,12 @@ public class PlayerCharacter : MonoBehaviour
 
         yield return new WaitForSeconds(attackPreSwingTime);
 
-        _attackSwordSprite.flipX = !rightSideAttack;
-
         var attackSwordXOffset = rightSideAttack ? 1f : -1f;
         _attackSwordTransform.position = new Vector3(_rigidBody.position.x + attackSwordXOffset, _rigidBody.position.y, _attackSwordTransform.position.z);
-
-        DebugLog(attackSwordXOffset.ToString());
 
         const float attackVisibleTime = 0.125f;
         float elapsedTime1 = 0f;
 
-        _attackSwordSprite.enabled = true;
         _attackSwordBoxCollider.enabled = true;
 
         while (elapsedTime1 < attackVisibleTime)
@@ -304,12 +294,9 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         _attackSwordBoxCollider.enabled = false;
-        _attackSwordSprite.enabled = false;
         _isAttacking = false;
 
         var attackWaitTime = Mathf.Max(AttackSpeed - (attackPreSwingTime + attackVisibleTime), 0f);
-
-        DebugLog($"attackWaitTime: {attackWaitTime}");
 
         yield return new WaitForSeconds(attackWaitTime);
 
@@ -325,14 +312,10 @@ public class PlayerCharacter : MonoBehaviour
         yield return new WaitForSeconds(time);
 
         Physics2D.IgnoreCollision(_boxCollider, platformCollider, false);
-
-        DebugLog($"DisableCollisionForTime end {platformCollider.name}");
     }
 
     void StartDash()
     {
-        DebugLog("Dash start");
-
         PlaySound(PlayerSounds.Dash);
 
         _rigidBody.constraints = _dashingRigidbodyConstraints;
@@ -352,8 +335,6 @@ public class PlayerCharacter : MonoBehaviour
 
     void StopDash()
     {
-        DebugLog("Dash stop");
-
         _rigidBody.constraints = _defaultRigidbodyConstraints;
 
         _isDashing = false;
