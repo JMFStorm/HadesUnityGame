@@ -19,8 +19,12 @@ public class GameState : MonoBehaviour
     private Level _currentLevel;
     private PlayerCharacter _player;
     private MainCamera _mainCamera;
+    private Vector3 _prevCameraPosition;
 
     private int _currentLevelIndex = 0;
+
+    private readonly Vector3 _cameraOffset = new(0, 0, -50.0f);
+    private readonly Vector3 _bgOffset = new(0, 0, 50.0f);
 
     private void Awake()
     {
@@ -34,9 +38,16 @@ public class GameState : MonoBehaviour
             return;
         }
 
-        if (_backgroundRenderer == null)
+        var bgRenderer = transform.Find("BackgroundRenderer");
+
+        if (bgRenderer == null)
         {
-            _backgroundRenderer = GetComponent<SpriteRenderer>();
+            Debug.LogError($"Did not find BackgroundRenderer in {nameof(GameState)}script.");
+        }
+
+        if (!bgRenderer.TryGetComponent(out _backgroundRenderer))
+        {
+            Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(GameState)}");
         }
 
         _player = Instantiate(PlayerPrefab, Vector3.zero, Quaternion.identity);
@@ -45,6 +56,7 @@ public class GameState : MonoBehaviour
 
     private void Start()
     {
+        _prevCameraPosition = _mainCamera.transform.position;
         _mainCamera.SetFollowTarget(_player.transform);
 
         LoadLevel(_currentLevelIndex);
@@ -54,6 +66,17 @@ public class GameState : MonoBehaviour
 
     private void Update()
     {
+        BGParallaxEffect();
+
+        _prevCameraPosition = _mainCamera.transform.position;
+    }
+
+    private void BGParallaxEffect()
+    {
+        const float parallaxFactor = 0.25f;
+        Vector3 deltaMovement = _mainCamera.transform.position - _prevCameraPosition;
+
+        _backgroundRenderer.transform.position += deltaMovement * parallaxFactor;
     }
 
     public void LoadLevel(int index)
@@ -85,7 +108,10 @@ public class GameState : MonoBehaviour
 
         if (levelEnter != null)
         {
-            _player.transform.position = levelEnter - new Vector3(0, 0.5f, 0);
+            var newPlayerStart = levelEnter - new Vector3(0, 0.5f, 0);
+            _player.transform.position = newPlayerStart;
+            _mainCamera.transform.position = newPlayerStart + _cameraOffset;
+            _prevCameraPosition = _mainCamera.transform.position;
         }
         else
         {
@@ -118,13 +144,13 @@ public class GameState : MonoBehaviour
             Vector2 spriteSize = _backgroundRenderer.sprite.bounds.size;
 
             // Use the larger scale factor to ensure full coverage
-            float scaleFactor = Mathf.Max(width / spriteSize.x, height / spriteSize.y);
+            float scaleFactor = Mathf.Max(width / spriteSize.x, height / spriteSize.y) * 1.5f;
 
             _backgroundRenderer.transform.localScale = new Vector3(scaleFactor, scaleFactor, 1);
         }
 
         // Position the background at the center of the boundary
-        Vector2 center = (bottomLeft + topRight) / 2f;
-        _backgroundRenderer.transform.position = center;
+        Vector3 center = (bottomLeft + topRight) / 2f;
+        _backgroundRenderer.transform.position = center + _bgOffset;
     }
 }
