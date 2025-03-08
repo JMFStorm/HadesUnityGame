@@ -49,8 +49,6 @@ public class MovingPlatforms : MonoBehaviour
 
             if (collisionNormal.y < 0f)
             {
-                Debug.Log("Platform set parent");
-
                 collision.transform.SetParent(transform);
             }
         }
@@ -61,8 +59,6 @@ public class MovingPlatforms : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             collision.transform.SetParent(null);
-
-            Debug.Log("Platform remove parent");
         }
     }
 

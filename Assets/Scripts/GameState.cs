@@ -168,7 +168,7 @@ public class GameState : MonoBehaviour
         }
     }
 
-    void ApplyBackground(Vector2 bottomLeft, Vector2 topRight, Sprite background)
+    public void ApplyBackground(Vector2 bottomLeft, Vector2 topRight, Sprite background)
     {
         _backgroundRenderer.sprite = background;
 

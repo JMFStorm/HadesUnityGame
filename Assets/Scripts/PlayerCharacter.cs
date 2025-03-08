@@ -40,6 +40,7 @@ public class PlayerCharacter : MonoBehaviour
     private BoxCollider2D _attackSwordBoxCollider;
     private Transform _attackSwordTransform;
     private Collider2D _platformFallthrough;
+    private Material _material;
 
     private Vector2 _groundCheckSize = new(0.5f, 0.25f);
     private Vector2 _originalSize;
@@ -109,6 +110,8 @@ public class PlayerCharacter : MonoBehaviour
         {
             Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(PlayerCharacter)} attack sword child");
         }
+
+        _material = _spriteRenderer.material;
     }
 
     private void Start()
@@ -119,6 +122,8 @@ public class PlayerCharacter : MonoBehaviour
         _originalOffset = _boxCollider.offset;
 
         _attackSwordBoxCollider.enabled = false;
+
+        _material.SetColor("_NewColor", new(1, 1, 1));
     }
 
     void Update()
