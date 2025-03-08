@@ -1,4 +1,4 @@
-Shader "Custom/PlayerCharacter"
+Shader "Custom/EnemyCharacter"
 {
     Properties
     {
@@ -6,8 +6,6 @@ Shader "Custom/PlayerCharacter"
         _MaskTex("Mask", 2D) = "white" {}
         _NormalMap("Normal Map", 2D) = "bump" {}
         _ZWrite("ZWrite", Float) = 0
-
-        _NewColor ("Replacement Color 1", Color) = (1,0,1,1) // Fänne: Default Replacement Color
 
         // Legacy properties. They're here so that materials using this shader can gracefully fallback to the legacy sprite shader.
         [HideInInspector] _Color("Tint", Color) = (1,1,1,1)
@@ -75,7 +73,6 @@ Shader "Custom/PlayerCharacter"
             // NOTE: Do not ifdef the properties here as SRP batcher can not handle different layouts.
             CBUFFER_START(UnityPerMaterial)
                 half4 _Color;
-                half4 _NewColor;
             CBUFFER_END
 
             #if USE_SHAPE_LIGHT_TYPE_0
@@ -116,21 +113,46 @@ Shader "Custom/PlayerCharacter"
 
             #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/CombinedShapeLightShared.hlsl"
 
-            half4 CombinedShapeLightFragment(Varyings i) : SV_Target
+            half Luminance(half3 color) // Fänne: Additional function
+            {
+                return dot(color, half3(0.299, 0.587, 0.114));
+            }
+
+            half4 CombinedShapeLightFragment(Varyings i) : SV_Target // Fänne: modified fragment shader
             {
                 half4 main = i.color * SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
 
-                // Fänne: replace color function
+                // Check if the pixel is pure red (or close to pure red)
+                if (main.g == 0.0 && main.b == 0.0 && main.r > 0.0)
                 {
-                    half brightness = main.b;
+                    // Sample the mask texture
+                    const half4 mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
 
-                    // Check if Blue is the dominant color (red and green is 0)
-                    if (main.r < main.b && main.g < main.b && main.g < 0.01 && main.r < 0.01)
-                    {
-                        main.rgb = _NewColor.rgb * brightness;
-                    }
+                    // Initialize surface and input data for lighting calculations
+                    SurfaceData2D surfaceData;
+                    InputData2D inputData;
+                    InitializeSurfaceData(main.rgb, main.a, mask, surfaceData);
+                    InitializeInputData(i.uv, i.lightingUV, inputData);
+
+                    // Calculate the final lit color using CombinedShapeLightShared
+                    half4 litColor = CombinedShapeLightShared(surfaceData, inputData);
+
+                    // Extract the light intensity (e.g., use the luminance of the lit color)
+                    half lightIntensity = Luminance(litColor.rgb);
+
+                    // Set the maximum brightness of the red channel to 0.3 in darkness
+                    half maxRedInDarkness = 0.2;
+
+                    // Scale the red value based on light intensity
+                    // In darkness (lightIntensity = 0), redValue = maxRedInDarkness
+                    // As light intensity increases, redValue can exceed maxRedInDarkness
+                    half redValue = maxRedInDarkness + (main.r * lightIntensity);
+
+                    // Return the final color with adjusted red channel
+                    return half4(redValue, 0.0, 0.0, main.a);
                 }
 
+                // For non-red pixels, proceed with normal lighting calculations
                 const half4 mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
                 SurfaceData2D surfaceData;
                 InputData2D inputData;
