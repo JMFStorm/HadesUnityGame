@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: dcd38f08a9eed454691e8d7b062c2935
+guid: 9df091f10c0e3e045aa888d8f616eab1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7403729388880977218
-    second: caves_background_placeholder_01_0
+      213: -8076811860113590602
+    second: Kuva -20250307-120457-41888470_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 50
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: caves_background_placeholder_01_0
+      name: Kuva -20250307-120457-41888470_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 736
-        height: 368
+        width: 2000
+        height: 2000
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: eb221a2f85ba04990800000000000000
-      internalID: -7403729388880977218
+      spriteID: 6b67440f76669ef80800000000000000
+      internalID: -8076811860113590602
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      caves_background_placeholder_01_0: -7403729388880977218
+      Kuva -20250307-120457-41888470_0: -8076811860113590602
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

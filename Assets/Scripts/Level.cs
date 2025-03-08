@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Level : MonoBehaviour
 {
+    public Sprite[] LevelBackgrounds;
     private Vector3 _levelBotLeft;
     private Vector3 _levelTopRight;
 
@@ -48,5 +49,10 @@ public class Level : MonoBehaviour
         }
 
         return new();
+    }
+
+    public Sprite[] GetLevelBackgrounds()
+    {
+        return LevelBackgrounds;
     }
 }

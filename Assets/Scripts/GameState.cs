@@ -1,19 +1,19 @@
-using System.Drawing;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.UIElements;
 
 public class GameState : MonoBehaviour
 {
     public static GameState Instance { get; private set; }
 
     public TunnelLevel[] TunnelLevels;
-    public Sprite[] Backgrounds;
+    public ArenaLevel[] ArenaLevels;
+
+    private List<Level> GameLevels = new();
+
     public PlayerCharacter PlayerPrefab;
     public MainCamera MainCameraPrefab;
     public Light2D GlobalLight;
-
-    private int _currentBackgroundIndex = 0;
 
     private SpriteRenderer _backgroundRenderer;
     private Level _currentLevel;
@@ -60,10 +60,12 @@ public class GameState : MonoBehaviour
 
     private void Start()
     {
+        CreateGameLevelLayout();
+
         _prevCameraPosition = _mainCamera.transform.position;
         _mainCamera.SetFollowTarget(_player.transform);
 
-        LoadLevel(_currentLevelIndex);
+        LoadNextLevel();
 
         GlobalLight.intensity = _globalLightInitial;
     }
@@ -75,6 +77,23 @@ public class GameState : MonoBehaviour
         _prevCameraPosition = _mainCamera.transform.position;
     }
 
+    private void CreateGameLevelLayout()
+    {
+        var result = new List<Level>();
+
+        result.AddRange(ArenaLevels);
+        result.AddRange(TunnelLevels);
+
+        GameLevels = result;
+
+        Debug.Log("Level layout created:");
+
+        foreach (var level in GameLevels)
+        {
+            Debug.Log(level.name);
+        }
+    }
+
     private void BGParallaxEffect()
     {
         const float parallaxFactor = 0.25f;
@@ -83,9 +102,9 @@ public class GameState : MonoBehaviour
         _backgroundRenderer.transform.position += deltaMovement * parallaxFactor;
     }
 
-    public void LoadLevel(int index)
+    public void LoadLevelIndex(int index)
     {
-        if (index < 0 || TunnelLevels.Length <= index)
+        if (index < 0 || GameLevels.Count <= index)
         {
             Debug.LogError("Invalid level index!");
             return;
@@ -97,14 +116,22 @@ public class GameState : MonoBehaviour
             _currentLevel = null;
         }
 
-        _currentLevel = Instantiate(TunnelLevels[index], Vector3.zero, Quaternion.identity);
-        _currentLevelIndex = index;
+        _currentLevel = Instantiate(GameLevels[index], Vector3.zero, Quaternion.identity);
 
         var (bl, tr) = _currentLevel.GetLevelBoundaries();
+        var levelBgs = _currentLevel.GetLevelBackgrounds();
 
-        _currentBackgroundIndex = Random.Range(0, 101) % TunnelLevels.Length; 
+        if (levelBgs.Length == 0)
+        {
+            Debug.LogError($"Level {_currentLevel.name} does not have backgrounds!");
+        }
 
-        ApplyBackground(bl, tr, _currentBackgroundIndex);
+        var usedBgIndex = Random.Range(1, 100) % levelBgs.Length;
+        var usedSprite = levelBgs[usedBgIndex];
+
+        Debug.Log($"Used background sprite: {usedSprite}");
+
+        ApplyBackground(bl, tr, usedSprite);
 
         _mainCamera.SetCameraBoundaries(bl, tr);
 
@@ -119,15 +146,15 @@ public class GameState : MonoBehaviour
         }
         else
         {
-            Debug.LogError("levelEnter not found!");
+            Debug.LogError("LevelEnter not found!");
         }
     }
 
     public void LoadNextLevel()
     {
-        int nextIndex = (_currentLevelIndex + 1) % TunnelLevels.Length;
-        
-        LoadLevel(nextIndex);
+        LoadLevelIndex(_currentLevelIndex);
+
+        _currentLevelIndex = (_currentLevelIndex + 1) % GameLevels.Count;
 
         GlobalLight.intensity += 0.2f;
 
@@ -135,17 +162,15 @@ public class GameState : MonoBehaviour
         {
             GlobalLight.intensity = _globalLightMax;
         }
+        else
+        {
+            Debug.Log($"GlobalLight.intensity added = {GlobalLight.intensity}");
+        }
     }
 
-    void ApplyBackground(Vector2 bottomLeft, Vector2 topRight, int index)
+    void ApplyBackground(Vector2 bottomLeft, Vector2 topRight, Sprite background)
     {
-        if (Backgrounds.Length == 0 || _backgroundRenderer == null)
-        {
-            Debug.LogError("No backgrounds assigned or missing SpriteRenderer!");
-            return;
-        }
-
-        _backgroundRenderer.sprite = Backgrounds[index];
+        _backgroundRenderer.sprite = background;
 
         float width = topRight.x - bottomLeft.x;
         float height = topRight.y - bottomLeft.y;
@@ -154,9 +179,10 @@ public class GameState : MonoBehaviour
         {
             Vector2 spriteSize = _backgroundRenderer.sprite.bounds.size;
 
-            // Use the larger scale factor to ensure full coverage
-            float scaleFactor = Mathf.Max(width / spriteSize.x, height / spriteSize.y) * 1.5f;
+            const float additionalScaleFactor = 1.1f;
 
+            // Use the larger scale factor to ensure full coverage
+            float scaleFactor = Mathf.Max(width / spriteSize.x, height / spriteSize.y) * additionalScaleFactor;
             _backgroundRenderer.transform.localScale = new Vector3(scaleFactor, scaleFactor, 1);
         }
 
