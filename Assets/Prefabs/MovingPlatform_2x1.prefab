@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7a16a4021777064b943399556660727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlatformSpeed: 4
+  PlatformSpeed: 3
   LoopAround: 1
 --- !u!61 &6224614894837422150
 BoxCollider2D:
@@ -230,7 +230,7 @@ Transform:
   m_GameObject: {fileID: 5075438369281622501}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

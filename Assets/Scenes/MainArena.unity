@@ -172,29 +172,13 @@ PrefabInstance:
       value: GlobalGameState
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: GlobalLightMax
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: GlobalLightInitial
-      value: 0.6
+      value: 0.8
       objectReference: {fileID: 0}
-    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: ArenaLevels.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: TunnelLevels.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: 'ArenaLevels.Array.data[0]'
-      value: 
-      objectReference: {fileID: 259644864067411462, guid: 111643304bee7ed4186e14b5da44e463, type: 3}
-    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: 'ArenaLevels.Array.data[1]'
-      value: 
-      objectReference: {fileID: 2521853842390809282, guid: de733a4d4c1242e45ab02973095ddafa, type: 3}
-    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: 'TunnelLevels.Array.data[3]'
-      value: 
-      objectReference: {fileID: 6378060692577099839, guid: b1d7f133afe56ff4092b4c349c69a02c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
