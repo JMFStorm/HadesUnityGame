@@ -123,7 +123,7 @@ public class PlayerCharacter : MonoBehaviour
 
         _attackSwordBoxCollider.enabled = false;
 
-        _material.SetColor("_NewColor", new(0.6f, 0.1f, 0.1f));
+        _material.SetColor("_NewColor", new(0.21f, 0.25f, 0.3f));
     }
 
     void Update()
