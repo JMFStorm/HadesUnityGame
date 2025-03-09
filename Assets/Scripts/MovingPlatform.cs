@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MovingPlatforms : MonoBehaviour
 {
-	public float PlatformSpeed = 4.0f;
+	public float PlatformSpeed = 3.0f;
 	public bool LoopAround = true;
 
 	private readonly List<Vector3> _platformPoints = new();

@@ -93,6 +93,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4ee9653b74866ce4a8f30b2ff39e2958, type: 3}
   - {fileID: 21300000, guid: 4d89e8784a2a8f140b6a40707007cc83, type: 3}
   - {fileID: 21300000, guid: 9df091f10c0e3e045aa888d8f616eab1, type: 3}
+  ParallaxBackground: 1
+  ParallaxBackgroundSizeMultiplier: 1.1
+  ParallaxEffectFactor: 0.25
 --- !u!1 &8972961314984241133
 GameObject:
   m_ObjectHideFlags: 0

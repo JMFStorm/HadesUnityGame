@@ -496,6 +496,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4d89e8784a2a8f140b6a40707007cc83, type: 3}
   - {fileID: 21300000, guid: 6ce06dcaa35f4ab4f9ccf986334c452c, type: 3}
   - {fileID: 21300000, guid: 130f4d63c103aec4cb4cd5375cb0614f, type: 3}
+  ParallaxBackground: 1
+  ParallaxBackgroundSizeMultiplier: 1.1
+  ParallaxEffectFactor: 0.25
 --- !u!1001 &452203137935069647
 PrefabInstance:
   m_ObjectHideFlags: 0

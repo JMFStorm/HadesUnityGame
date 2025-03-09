@@ -3,6 +3,11 @@ using UnityEngine;
 public class Level : MonoBehaviour
 {
     public Sprite[] LevelBackgrounds;
+
+    public bool ParallaxBackground = false;
+    public float ParallaxBackgroundSizeMultiplier = 1.1f;
+    public float ParallaxEffectFactor = 0.25f;
+
     private Vector3 _levelBotLeft;
     private Vector3 _levelTopRight;
 

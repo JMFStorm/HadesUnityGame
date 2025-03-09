@@ -27,8 +27,8 @@ public class GameState : MonoBehaviour
     private readonly float _bgZOffset = 50.0f;
     private readonly float _playerZOffset = -10.0f;
 
-    private readonly float _globalLightInitial = 0.2f;
-    private readonly float _globalLightMax = 1.2f;
+    public float GlobalLightInitial = 0.2f;
+    public float GlobalLightMax = 1.2f;
 
     private void Awake()
     {
@@ -67,12 +67,15 @@ public class GameState : MonoBehaviour
 
         LoadNextLevel();
 
-        GlobalLight.intensity = _globalLightInitial;
+        GlobalLight.intensity = GlobalLightInitial;
     }
 
     private void Update()
     {
-        BGParallaxEffect();
+        if (_currentLevel.ParallaxBackground)
+        {
+            BGParallaxEffect();
+        }
 
         _prevCameraPosition = _mainCamera.transform.position;
     }
@@ -96,7 +99,7 @@ public class GameState : MonoBehaviour
 
     private void BGParallaxEffect()
     {
-        const float parallaxFactor = 0.25f;
+        float parallaxFactor = _currentLevel.ParallaxEffectFactor;
         Vector3 deltaMovement = _mainCamera.transform.position - _prevCameraPosition;
 
         _backgroundRenderer.transform.position += deltaMovement * parallaxFactor;
@@ -158,9 +161,9 @@ public class GameState : MonoBehaviour
 
         GlobalLight.intensity += 0.2f;
 
-        if (_globalLightMax < GlobalLight.intensity)
+        if (GlobalLightMax < GlobalLight.intensity)
         {
-            GlobalLight.intensity = _globalLightMax;
+            GlobalLight.intensity = GlobalLightMax;
         }
         else
         {
@@ -179,7 +182,7 @@ public class GameState : MonoBehaviour
         {
             Vector2 spriteSize = _backgroundRenderer.sprite.bounds.size;
 
-            const float additionalScaleFactor = 1.1f;
+            float additionalScaleFactor = _currentLevel.ParallaxBackground ? _currentLevel.ParallaxBackgroundSizeMultiplier : 1.0f;
 
             // Use the larger scale factor to ensure full coverage
             float scaleFactor = Mathf.Max(width / spriteSize.x, height / spriteSize.y) * additionalScaleFactor;

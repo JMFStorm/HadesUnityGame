@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Kuva -20250307-120534-65fec94c_0
+      name: bg_arena_cells_01_wide
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 215
         width: 2000
-        height: 2000
+        height: 1785
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: a146b4d864bbc4e30800000000000000
-      internalID: 4489168840274175002
+      spriteID: 2e0e137ff64d6f04799e0e4e9254c1a4
+      internalID: 1761394023
       vertices: []
       indices: 
       edges: []
@@ -136,6 +136,7 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       Kuva -20250307-120534-65fec94c_0: 4489168840274175002
+      bg_arena_cells_01_wide: 1761394023
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
