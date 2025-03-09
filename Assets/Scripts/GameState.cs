@@ -151,6 +151,8 @@ public class GameState : MonoBehaviour
         {
             Debug.LogError("LevelEnter not found!");
         }
+
+        _player.ResetPlayerInnerState();
     }
 
     public void LoadNextLevel()

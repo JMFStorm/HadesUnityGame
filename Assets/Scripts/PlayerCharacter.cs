@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public enum PlayerSounds
@@ -41,6 +42,7 @@ public class PlayerCharacter : MonoBehaviour
     private Transform _attackSwordTransform;
     private Collider2D _platformFallthrough;
     private Material _material;
+    private TextMeshPro _floatingText;
 
     private Vector2 _groundCheckSize = new(0.5f, 0.25f);
     private Vector2 _originalSize;
@@ -112,18 +114,28 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         _material = _spriteRenderer.material;
+
+        var floatingText = transform.Find("FloatingText");
+
+        if (floatingText == null)
+        {
+            Debug.LogError($"FloatingText not found as a child of {nameof(PlayerCharacter)} script");
+        }
+
+        if (!floatingText.TryGetComponent(out _floatingText))
+        {
+            Debug.LogError($"{nameof(TextMeshPro)} not found on {nameof(PlayerCharacter)} FloatingText child");
+        }
     }
 
     private void Start()
     {
-        _currentDashes = MaxDashes;
-
         _originalSize = _boxCollider.size;
         _originalOffset = _boxCollider.offset;
 
-        _attackSwordBoxCollider.enabled = false;
-
         _material.SetColor("_NewColor", new(0.21f, 0.25f, 0.3f));
+
+        ResetPlayerInnerState();
     }
 
     void Update()
@@ -193,6 +205,8 @@ public class PlayerCharacter : MonoBehaviour
             Debug.Log("Player entered doorway zone");
 
             _isAtDoorwayExit = true;
+
+            ShowText("Enter", Color.white);
         }
     }
 
@@ -203,7 +217,30 @@ public class PlayerCharacter : MonoBehaviour
             _isAtDoorwayExit = false;
 
             Debug.Log("Player exited doorway zone");
+
+            HideText();
         }
+    }
+
+    public void ResetPlayerInnerState()
+    {
+        _isAtDoorwayExit = false;
+        _isGrounded = false;
+        _isDashing = false;
+        _isCrouching = false;
+        _isAttacking = false;
+        _attackCharged = true;
+
+        _facingDirX = 0f;
+        _dashDirX = 0f;
+        _dashTimer = 0f;
+        _dashRegenTimer = 0f;
+
+        _attackSwordBoxCollider.enabled = false;
+
+        _currentDashes = MaxDashes;
+
+        HideText();
     }
 
     void PlayerMovement()
@@ -389,5 +426,16 @@ public class PlayerCharacter : MonoBehaviour
         {
             Debug.Log($"{nameof(PlayerCharacter)}: {message}");
         }
+    }
+
+    void HideText()
+    {
+        _floatingText.text = "";
+    }
+
+    void ShowText(string text, Color color)
+    {
+        _floatingText.text = text;
+        _floatingText.color = color;
     }
 }
