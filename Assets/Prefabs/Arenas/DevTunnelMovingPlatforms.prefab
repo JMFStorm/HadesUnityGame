@@ -403,12 +403,12 @@ GameObject:
   - component: {fileID: 4120253560189032029}
   - component: {fileID: 749214998293348727}
   m_Layer: 0
-  m_Name: bg_statues_placeholder_01
+  m_Name: bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4120253560189032029
 Transform:
   m_ObjectHideFlags: 0

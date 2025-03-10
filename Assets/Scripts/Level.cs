@@ -26,6 +26,14 @@ public class Level : MonoBehaviour
 
     protected virtual void Start()
     {
+        var bgobject = transform.Find("bg");
+
+        if (bgobject != null)
+        {
+            bgobject.gameObject.SetActive(false);
+
+            Debug.Log("Level background set inactive.");
+        }
     }
 
     protected virtual void Update()
