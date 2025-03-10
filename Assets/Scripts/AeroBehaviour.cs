@@ -91,10 +91,7 @@ public class AeroBehaviour : MonoBehaviour
         var isBackingUp = _currentDistanceToTarget < _targetDistance;
         float usedSpeed = speed * (isBackingUp ? 0.5f : 1.0f);
 
-        Debug.Log($"isBackingUp {isBackingUp}");
-
         transform.position = Vector2.MoveTowards(transform.position, _targetToFly, usedSpeed * Time.deltaTime);
-
         _spriteRenderer.flipX = 0.0f < direction.x;
 
         DebugUtil.DrawCircle(_targetToFly, 0.15f, Color.magenta);
@@ -118,18 +115,17 @@ public class AeroBehaviour : MonoBehaviour
 
     private void ShootAtPlayer()
     {
-        Debug.Log("SHoot at player");
-
         GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
 
         // Calculate the direction towards the player
         Vector2 direction = (_attackTarget.position - transform.position).normalized;
-        Projectile projectileScript = projectile.GetComponent<Projectile>();
-
-        if (projectileScript != null)
+        
+        if (!projectile.TryGetComponent<Projectile>(out var projectileScript))
         {
-            projectileScript.Launch(direction); // Launch the projectile towards the player
+            Debug.LogError($"Did not find {nameof(Projectile)} in {nameof(Projectile)}");
         }
+
+        projectileScript.Launch(direction); // Launch the projectile towards the player
     }
 
     private void OnDrawGizmos()
