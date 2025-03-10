@@ -27,9 +27,6 @@ public class GameState : MonoBehaviour
     private readonly float _bgZOffset = 50.0f;
     private readonly float _playerZOffset = -10.0f;
 
-    public float GlobalLightInitial = 0.2f;
-    public float GlobalLightMax = 1.2f;
-
     private void Awake()
     {
         if (Instance == null)
@@ -67,7 +64,7 @@ public class GameState : MonoBehaviour
 
         LoadNextLevel();
 
-        GlobalLight.intensity = GlobalLightInitial;
+        GlobalLight.intensity = _currentLevel.GlobalLightLevel;
     }
 
     private void Update()
@@ -84,8 +81,8 @@ public class GameState : MonoBehaviour
     {
         var result = new List<Level>();
 
-        result.AddRange(ArenaLevels);
         result.AddRange(TunnelLevels);
+        result.AddRange(ArenaLevels);
 
         GameLevels = result;
 
@@ -161,16 +158,9 @@ public class GameState : MonoBehaviour
 
         _currentLevelIndex = (_currentLevelIndex + 1) % GameLevels.Count;
 
-        GlobalLight.intensity += 0.2f;
+        GlobalLight.intensity = _currentLevel.GlobalLightLevel;
 
-        if (GlobalLightMax < GlobalLight.intensity)
-        {
-            GlobalLight.intensity = GlobalLightMax;
-        }
-        else
-        {
-            Debug.Log($"GlobalLight.intensity added = {GlobalLight.intensity}");
-        }
+        Debug.Log($"GlobalLight.intensity set = {GlobalLight.intensity}");
     }
 
     public void ApplyBackground(Vector2 bottomLeft, Vector2 topRight, Sprite background)

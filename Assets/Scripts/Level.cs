@@ -7,6 +7,7 @@ public class Level : MonoBehaviour
     public bool ParallaxBackground = false;
     public float ParallaxBackgroundSizeMultiplier = 1.1f;
     public float ParallaxEffectFactor = 0.25f;
+    public float GlobalLightLevel = 0.6f;
 
     private Vector3 _levelBotLeft;
     private Vector3 _levelTopRight;
