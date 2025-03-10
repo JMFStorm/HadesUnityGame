@@ -133,6 +133,7 @@ MonoBehaviour:
   ParallaxBackground: 1
   ParallaxBackgroundSizeMultiplier: 1.1
   ParallaxEffectFactor: 0.25
+  GlobalLightLevel: 0.6
 --- !u!1 &7672637331557194527
 GameObject:
   m_ObjectHideFlags: 0
@@ -1404,6 +1405,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1118835950742489674}
     m_Modifications:
+    - target: {fileID: 609466786013992992, guid: 394fbf4856568e54eb51c3edf24f84bf, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 609466786013992992, guid: 394fbf4856568e54eb51c3edf24f84bf, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 497758451
+      objectReference: {fileID: 0}
     - target: {fileID: 1238595907261319127, guid: 394fbf4856568e54eb51c3edf24f84bf, type: 3}
       propertyPath: m_Name
       value: ArenaTilemap

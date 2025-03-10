@@ -51,6 +51,8 @@ public class GameState : MonoBehaviour
             Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(GameState)}");
         }
 
+        _backgroundRenderer.sortingLayerName = "Background";
+
         _player = Instantiate(PlayerPrefab, Vector3.zero, Quaternion.identity);
         _mainCamera = Instantiate(MainCameraPrefab, new(0, 0, -10f), Quaternion.identity);
     }
