@@ -1,11 +1,15 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class Projectile : MonoBehaviour
 {
     public float speed = 5f; // Speed of the projectile
     public float lifetime = 3f; // Lifetime of the projectile in seconds
+
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer component
+
     private Color targetColor; // The target color to fade to
     private float fadeDuration = 0.04f; // Duration for fading effect
     private bool isFading = false; // Flag to track if fading is active
@@ -25,6 +29,12 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        GameObject otherObject = collision.gameObject; // Get the colliding GameObject
+        int layerID = otherObject.layer; // Get the layer index (ID)
+        string layerName = LayerMask.LayerToName(layerID); // Convert ID to name
+
+        Debug.Log($"Collided with: {otherObject.name}, Layer: {layerName} (ID: {layerID})");
+
         // Check if the projectile collides with the player
         if (collision.gameObject.CompareTag("Player"))
         {

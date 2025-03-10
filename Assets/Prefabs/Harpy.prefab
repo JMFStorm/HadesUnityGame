@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4781977844695474614}
   - component: {fileID: 3995747684836407568}
   - component: {fileID: 8318433739842636422}
-  - component: {fileID: 4703282360489104356}
-  - component: {fileID: 318590416008661871}
-  m_Layer: 8
+  - component: {fileID: 1887247781124116668}
+  - component: {fileID: 4172504946652307102}
+  m_Layer: 11
   m_Name: Harpy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4364403561124163838}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 9.04, y: 5.49, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -77,15 +77,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1880951291
-  m_SortingLayer: 3
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6107fe11fb12a764eb67895d57eff2b5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 15, y: 8.4375}
+  m_Size: {x: 9.6, y: 5.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -154,7 +154,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &4703282360489104356
+--- !u!114 &1887247781124116668
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,15 +166,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ea75002fc3105942b61ef90cb723ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chaseRadius: 10
-  attackRadius: 5
+  chaseRadius: 5
+  attackRadius: 4
   speed: 3
   attackOffset: 2
   projectilePrefab: {fileID: 6511049569049512373, guid: 228912b296a387c44b211139c74a8888, type: 3}
   shootingCooldown: 3
-  waveAmplitude: 0.5
-  waveFrequency: 2
---- !u!61 &318590416008661871
+  waveAmplitude: 0.25
+  waveFrequency: 1
+--- !u!61 &4172504946652307102
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -208,15 +208,15 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.1, y: 0.1}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 15, y: 8.4375}
-    newSize: {x: 15, y: 8.4375}
+    oldSize: {x: 9.6, y: 5.4}
+    newSize: {x: 9.6, y: 5.4}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.3, y: 1.8}
+  m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
