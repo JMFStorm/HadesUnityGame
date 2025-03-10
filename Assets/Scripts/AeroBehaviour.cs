@@ -23,10 +23,11 @@ public class AeroBehaviour : MonoBehaviour
     private bool isChasing = false; // State to track if the enemy is chasing
     private float lastShotTime; // Time of the last shot
 
-    private Vector2 _targetToFly = new();
+    private Vector2 _flyTarget = new();
     private float _waveOffset = 0.0f;
     private float _currentDistanceToTarget = 0;
     private float _targetDistance = 0;
+    private float _usedSpeed = 0;
 
     private void Start()
     {
@@ -51,7 +52,7 @@ public class AeroBehaviour : MonoBehaviour
 
     private void Update()
     {
-        _targetToFly = new();
+        _flyTarget = transform.position;
 
         _currentDistanceToTarget = Vector2.Distance(transform.position, _attackTarget.position);
 
@@ -60,15 +61,32 @@ public class AeroBehaviour : MonoBehaviour
             isChasing = true;
         }
 
-        _waveOffset = Mathf.Sin(Time.time * waveFrequency) * waveAmplitude * 0.01f;
-
-        _targetToFly += new Vector2(0, 0 + _waveOffset);
+        _usedSpeed = speed;
 
         if (isChasing)
         {
             TryFlyToTarget();
             TryAttackPlayer();
         }
+
+        FlapWings();
+
+        // NOTE: Movement is as last thing
+        transform.position = Vector2.MoveTowards(transform.position, _flyTarget, _usedSpeed * Time.deltaTime);
+
+        DebugUtil.DrawCircle(_flyTarget, 0.15f, Color.magenta);
+    }
+
+    void FlapWings()
+    {
+        _waveOffset = Mathf.Sin(Time.time * waveFrequency) * waveAmplitude * 0.01f;
+
+        if (isChasing)
+        {
+            _waveOffset *= 50.0f; // NOTE: isChasing = more multiplication needed, but WHY???
+        }
+
+        _flyTarget += new Vector2(0, _waveOffset);
     }
 
     void TryFlyToTarget()
@@ -86,15 +104,12 @@ public class AeroBehaviour : MonoBehaviour
             + new Vector2(direction.x < 0f ? KeepXDistanceFromTarget : -KeepXDistanceFromTarget, 0)
             + new Vector2(0, KeepYDistanceFromTarget);
 
-        _targetToFly = flyTargetPlain;
-
         var isBackingUp = _currentDistanceToTarget < _targetDistance;
-        float usedSpeed = speed * (isBackingUp ? 0.5f : 1.0f);
-
-        transform.position = Vector2.MoveTowards(transform.position, _targetToFly, usedSpeed * Time.deltaTime);
+        _usedSpeed *= (isBackingUp ? 0.5f : 1.0f);
+        
         _spriteRenderer.flipX = 0.0f < direction.x;
 
-        DebugUtil.DrawCircle(_targetToFly, 0.15f, Color.magenta);
+        _flyTarget = flyTargetPlain;
     }
 
     private void TryAttackPlayer()

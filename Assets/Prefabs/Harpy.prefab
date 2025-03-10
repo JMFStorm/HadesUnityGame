@@ -170,10 +170,12 @@ MonoBehaviour:
   attackRadius: 4
   speed: 3
   attackOffset: 2
+  KeepXDistanceFromTarget: 2
+  KeepYDistanceFromTarget: 1
   projectilePrefab: {fileID: 6511049569049512373, guid: 228912b296a387c44b211139c74a8888, type: 3}
   shootingCooldown: 3
-  waveAmplitude: 0.25
-  waveFrequency: 1
+  waveAmplitude: 0.5
+  waveFrequency: 1.5
 --- !u!61 &4172504946652307102
 BoxCollider2D:
   m_ObjectHideFlags: 0

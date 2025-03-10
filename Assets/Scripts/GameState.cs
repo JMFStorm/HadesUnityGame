@@ -87,8 +87,8 @@ public class GameState : MonoBehaviour
     {
         var result = new List<Level>();
 
-        result.AddRange(ArenaLevels);
         result.AddRange(TunnelLevels);
+        result.AddRange(ArenaLevels);
 
         GameLevels = result;
 
