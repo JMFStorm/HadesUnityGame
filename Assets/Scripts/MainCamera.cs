@@ -11,8 +11,24 @@ public class MainCamera : MonoBehaviour
     private Vector2 _botLeftBoundary = new(float.MinValue, float.MinValue);
     private Vector2 _topRightBoundary = new(float.MaxValue, float.MaxValue);
 
+    private ParticleSystem _dustParticleSystem;
+    private SpriteRenderer _fogFXSpriteRenderer;
+
     private void Awake()
     {
+        var dustFx = transform.Find("DustFX");
+
+        if (!dustFx.TryGetComponent(out _dustParticleSystem))
+        {
+            Debug.LogError($"Did not find component DustFX {nameof(ParticleSystem)} on {nameof(MainCamera)}");
+        }
+
+        var fogFx = transform.Find("FogFX");
+
+        if (!fogFx.TryGetComponent(out _fogFXSpriteRenderer))
+        {
+            Debug.LogError($"Did not find component FogFX {nameof(SpriteRenderer)} on {nameof(MainCamera)}");
+        }
     }
 
     void LateUpdate()
@@ -147,5 +163,17 @@ public class MainCamera : MonoBehaviour
             Vector2 lineEnd = new(cameraTopX, transform.position.y + (Camera.main.orthographicSize / 2));
             Debug.DrawLine(lineStart, lineEnd, Color.magenta);
         }
+    }
+
+    public void SetDustFXStrength(float normalizedValue)
+    {
+        var main = _dustParticleSystem.main;
+        main.startColor = new Color(main.startColor.color.r, main.startColor.color.g, main.startColor.color.b, normalizedValue);
+    }
+
+    public void SetFogFXLevel(bool heavyFog)
+    {
+        var usedColor = heavyFog ? new Color(0.6f, 0.6f, 0.6f, 20f / 256f) : new Color(0.6f, 0.6f, 0.6f, 8f / 256f);
+        _fogFXSpriteRenderer.material.SetColor("_FogColor", usedColor);
     }
 }

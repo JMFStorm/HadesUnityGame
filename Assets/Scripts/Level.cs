@@ -5,6 +5,8 @@ public class Level : MonoBehaviour
     public Sprite[] LevelBackgrounds;
 
     public bool ParallaxBackground = false;
+    public bool HeavyFog = false;
+
     public float ParallaxBackgroundSizeMultiplier = 1.1f;
     public float ParallaxEffectFactor = 0.25f;
     public float GlobalLightLevel = 0.6f;

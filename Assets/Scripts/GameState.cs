@@ -22,7 +22,6 @@ public class GameState : MonoBehaviour
     private Vector3 _prevCameraPosition;
 
     private int _currentLevelIndex = 0;
-
     private readonly float _cameraZOffset = -50.0f;
 
     private void Awake()
@@ -139,7 +138,12 @@ public class GameState : MonoBehaviour
 
         ApplyBackground(bl, tr, usedSprite);
 
+        GlobalLight.intensity = _currentLevel.GlobalLightLevel;
+        Debug.Log($"GlobalLight.intensity set = {GlobalLight.intensity}");
+
         _mainCamera.SetCameraBoundaries(bl, tr);
+        _mainCamera.SetDustFXStrength(GlobalLight.intensity * 0.6f);
+        _mainCamera.SetFogFXLevel(_currentLevel.HeavyFog);
 
         var levelEnter = _currentLevel.GetLevelEntrance();
 
@@ -163,10 +167,6 @@ public class GameState : MonoBehaviour
         LoadLevelIndex(_currentLevelIndex);
 
         _currentLevelIndex = (_currentLevelIndex + 1) % GameLevels.Count;
-
-        GlobalLight.intensity = _currentLevel.GlobalLightLevel;
-
-        Debug.Log($"GlobalLight.intensity set = {GlobalLight.intensity}");
     }
 
     public void ApplyBackground(Vector2 bottomLeft, Vector2 topRight, Sprite background)

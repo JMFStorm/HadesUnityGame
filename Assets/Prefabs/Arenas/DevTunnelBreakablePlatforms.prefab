@@ -53,9 +53,10 @@ MonoBehaviour:
   LevelBackgrounds:
   - {fileID: 21300000, guid: 4ee9653b74866ce4a8f30b2ff39e2958, type: 3}
   ParallaxBackground: 1
+  HeavyFog: 1
   ParallaxBackgroundSizeMultiplier: 1.1
   ParallaxEffectFactor: 0.25
-  GlobalLightLevel: 0.6
+  GlobalLightLevel: 0.3
 --- !u!1 &5191033819232841366
 GameObject:
   m_ObjectHideFlags: 0
