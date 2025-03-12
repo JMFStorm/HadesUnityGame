@@ -457,8 +457,6 @@ public class PlayerCharacter : MonoBehaviour
         _dashDirX = _facingDirX;
         _currentDashes--;
         _gameUI.SetStamina(_currentDashes);
-
-        _spriteRenderer.color = Color.magenta;
     }
 
     void Dash()
@@ -472,8 +470,6 @@ public class PlayerCharacter : MonoBehaviour
 
         _isDashing = false;
         _rigidBody.linearVelocity = Vector2.zero;
-
-        _spriteRenderer.color = Color.white;
     }
 
     void DashRegen()
