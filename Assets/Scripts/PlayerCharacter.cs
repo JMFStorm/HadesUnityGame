@@ -22,6 +22,7 @@ public class PlayerCharacter : MonoBehaviour
     public Sprite AttackSprite;
     public Sprite IdleSprite;
     public Sprite AirSprite;
+    public Sprite DashSprite;
 
     public float MoveSpeed = 5f;
     public float JumpForce = 17f;
@@ -39,8 +40,6 @@ public class PlayerCharacter : MonoBehaviour
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
     private BoxCollider2D _boxCollider;
-    private BoxCollider2D _attackSwordBoxCollider;
-    private Transform _attackSwordTransform;
     private Collider2D _platformFallthrough;
     private Material _material;
     private TextMeshPro _floatingText;
@@ -108,18 +107,6 @@ public class PlayerCharacter : MonoBehaviour
         if (GroundCheck == null)
         {
             Debug.LogError($"GroundCheck has not been set in {nameof(PlayerCharacter)}");
-        }
-
-        _attackSwordTransform = transform.Find("AttackSword");
-
-        if (_attackSwordTransform == null)
-        {
-            Debug.LogError($"AttackSword not found as a child of {nameof(PlayerCharacter)} script");
-        }
-        
-        if (!_attackSwordTransform.TryGetComponent(out _attackSwordBoxCollider))
-        {
-            Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(PlayerCharacter)} attack sword child");
         }
 
         _material = _spriteRenderer.material;
@@ -196,7 +183,30 @@ public class PlayerCharacter : MonoBehaviour
         DebugUtil.DrawRectangle(GroundCheck.position, _groundCheckSize, color);
 
         _spriteRenderer.flipX = _facingDirX < 0.0f;
-        _spriteRenderer.sprite = _isAttacking ? AttackSprite : (!_isGrounded ? AirSprite : IdleSprite);
+
+        // ------------
+        // Get sprite
+
+        Sprite usedSprite;
+
+        if (_isAttacking)
+        {
+            usedSprite = AttackSprite;
+        }
+        else if (_isDashing)
+        {
+            usedSprite = DashSprite;
+        }
+        else if (!_isGrounded)
+        {
+            usedSprite = AirSprite;
+        }
+        else
+        {
+            usedSprite = IdleSprite;
+        }
+
+        _spriteRenderer.sprite = usedSprite;
 
     }
 
@@ -312,8 +322,6 @@ public class PlayerCharacter : MonoBehaviour
         _dashTimer = 0f;
         _dashRegenTimer = 0f;
 
-        _attackSwordBoxCollider.enabled = false;
-
         _currentDashes = MaxDashes;
         _gameUI.SetStamina(_currentDashes);
 
@@ -379,7 +387,7 @@ public class PlayerCharacter : MonoBehaviour
             _isCrouching = true;
         }
 
-        if (Input.GetButtonDown("Attack") && !_isAttacking && _attackCharged)
+        if (Input.GetButtonDown("Attack") && !_isAttacking && _attackCharged && !_isDashing)
         {
             StartCoroutine(PlayerAttack(0f < _facingDirX));
         }
@@ -404,12 +412,12 @@ public class PlayerCharacter : MonoBehaviour
         yield return new WaitForSeconds(attackPreSwingTime);
 
         var attackSwordXOffset = rightSideAttack ? 1f : -1f;
-        _attackSwordTransform.position = new Vector3(_rigidBody.position.x + attackSwordXOffset, _rigidBody.position.y, _attackSwordTransform.position.z);
+        // _attackSwordTransform.position = new Vector3(_rigidBody.position.x + attackSwordXOffset, _rigidBody.position.y, _attackSwordTransform.position.z);
 
         const float attackVisibleTime = 0.125f;
         float elapsedTime1 = 0f;
 
-        _attackSwordBoxCollider.enabled = true;
+        // _attackSwordBoxCollider.enabled = true;
 
         while (elapsedTime1 < attackVisibleTime)
         {
@@ -417,7 +425,7 @@ public class PlayerCharacter : MonoBehaviour
             yield return null;
         }
 
-        _attackSwordBoxCollider.enabled = false;
+        // _attackSwordBoxCollider.enabled = false;
         _isAttacking = false;
 
         var attackWaitTime = Mathf.Max(AttackSpeed - (attackPreSwingTime + attackVisibleTime), 0f);

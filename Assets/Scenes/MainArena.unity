@@ -250,46 +250,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GlobalGameState
       objectReference: {fileID: 0}
-    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: 'TunnelLevels.Array.data[0]'
-      value: 
-      objectReference: {fileID: 6378060692577099839, guid: b1d7f133afe56ff4092b4c349c69a02c, type: 3}
-    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: 'TunnelLevels.Array.data[1]'
-      value: 
-      objectReference: {fileID: 3750608127319819093, guid: 6c3509ac74bf0654d9e1260a5cca8179, type: 3}
-    - target: {fileID: 4863655271805905191, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: m_ApplyToSortingLayers.Array.size
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4863655271805905191, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: 'm_ApplyToSortingLayers.Array.data[0]'
-      value: 1715819709
-      objectReference: {fileID: 0}
-    - target: {fileID: 4863655271805905191, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: 'm_ApplyToSortingLayers.Array.data[1]'
-      value: -1087822623
-      objectReference: {fileID: 0}
-    - target: {fileID: 4863655271805905191, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: 'm_ApplyToSortingLayers.Array.data[3]'
-      value: 497758451
-      objectReference: {fileID: 0}
-    - target: {fileID: 4863655271805905191, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: 'm_ApplyToSortingLayers.Array.data[4]'
-      value: 1212269259
-      objectReference: {fileID: 0}
-    - target: {fileID: 4863655271805905191, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: 'm_ApplyToSortingLayers.Array.data[5]'
-      value: 1880951291
-      objectReference: {fileID: 0}
-    - target: {fileID: 4863655271805905191, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: 'm_ApplyToSortingLayers.Array.data[6]'
-      value: 1218168167
-      objectReference: {fileID: 0}
-    - target: {fileID: 4863655271805905191, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: 'm_ApplyToSortingLayers.Array.data[7]'
-      value: -476699989
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

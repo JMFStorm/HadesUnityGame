@@ -203,7 +203,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.525, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8747672932157108684}
@@ -252,7 +252,7 @@ SpriteRenderer:
   m_SortingLayerID: 1218168167
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: -5430445717976494012, guid: 37fd2eaab9dd5f248917a160ad1ce361, type: 3}
+  m_Sprite: {fileID: -1688018877542749080, guid: eda43e70cba570d4b8b65156b478b5ee, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -298,7 +298,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8886047964763647662}
-  - {fileID: 8563117716071799661}
   - {fileID: 8781634372297718073}
   - {fileID: 4094936917383510987}
   m_Father: {fileID: 0}
@@ -364,7 +363,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.02}
+  m_Offset: {x: 0, y: -0.013035566}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -374,7 +373,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 1}
+  m_Size: {x: 0.5, y: 0.98607117}
   m_EdgeRadius: 0
 --- !u!114 &2218871938792346492
 MonoBehaviour:
@@ -399,15 +398,17 @@ MonoBehaviour:
   PlatformLayer:
     serializedVersion: 2
     m_Bits: 256
-  AttackSprite: {fileID: 3751949197976749190, guid: e22de85d28e9bca4a882d00394c7c383, type: 3}
-  IdleSprite: {fileID: -5430445717976494012, guid: 37fd2eaab9dd5f248917a160ad1ce361, type: 3}
-  AirSprite: {fileID: -6549590630242153124, guid: 37fd2eaab9dd5f248917a160ad1ce361, type: 3}
+  AttackSprite: {fileID: -2654942643417293837, guid: eda43e70cba570d4b8b65156b478b5ee, type: 3}
+  IdleSprite: {fileID: -1688018877542749080, guid: eda43e70cba570d4b8b65156b478b5ee, type: 3}
+  AirSprite: {fileID: -1749533885166823637, guid: eda43e70cba570d4b8b65156b478b5ee, type: 3}
+  DashSprite: {fileID: 5893309289020279244, guid: eda43e70cba570d4b8b65156b478b5ee, type: 3}
   MoveSpeed: 5
-  JumpForce: 17
+  JumpForce: 17.5
   DashSpeed: 15
   DashingTime: 0.175
   DashRechargeTime: 1.5
-  AttackSpeed: 0.3
+  AttackSpeed: 0.4
+  DamageInvulnerabilityTime: 3
   DebugLogging: 1
   MaxDashes: 2
 --- !u!82 &118842731618917201
@@ -559,84 +560,6 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!1 &2503021155724146371
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8563117716071799661}
-  - component: {fileID: 1147504638323419328}
-  m_Layer: 0
-  m_Name: AttackSword
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8563117716071799661
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2503021155724146371}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.2, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8747672932157108684}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &1147504638323419328
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2503021155724146371}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.5033333, y: 0.605}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1.5033333, y: 0.605}
-  m_EdgeRadius: 0
 --- !u!1 &8362622242005079885
 GameObject:
   m_ObjectHideFlags: 0

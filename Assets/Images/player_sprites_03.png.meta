@@ -1,13 +1,19 @@
 fileFormatVersion: 2
-guid: 37fd2eaab9dd5f248917a160ad1ce361
+guid: eda43e70cba570d4b8b65156b478b5ee
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5430445717976494012
-    second: player_sprites_04_0
+      213: -2654942643417293837
+    second: Spritesheet_updated_11.3_0
   - first:
-      213: -6549590630242153124
-    second: player_sprites_04_1
+      213: 5893309289020279244
+    second: Spritesheet_updated_11.3_1
+  - first:
+      213: -1688018877542749080
+    second: Spritesheet_updated_11.3_2
+  - first:
+      213: -1749533885166823637
+    second: Spritesheet_updated_11.3_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -54,7 +60,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 200
+  spritePixelsToUnits: 250
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -103,35 +109,35 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: player_sprites_02_0
+      name: player_attack_still_01
       rect:
         serializedVersion: 2
-        x: 127
-        y: 137
-        width: 248
-        height: 253
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 19
+        y: 14
+        width: 493
+        height: 435
+      alignment: 9
+      pivot: {x: 0.15, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 44058f7246e23a4b0800000000000000
-      internalID: -5430445717976494012
+      spriteID: 3fb53187bbfb72bd0800000000000000
+      internalID: -2654942643417293837
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_sprites_02_1
+      name: player_dash_still_01
       rect:
         serializedVersion: 2
-        x: 664
-        y: 82
-        width: 190
-        height: 351
+        x: 517
+        y: 66
+        width: 500
+        height: 278
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,8 +146,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c5d8034e50e2b15a0800000000000000
-      internalID: -6549590630242153124
+      spriteID: cc94093039d39c150800000000000000
+      internalID: 5893309289020279244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_idle_still_01
+      rect:
+        serializedVersion: 2
+        x: 1103
+        y: 4
+        width: 336
+        height: 366
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86c29ed36c3f298e0800000000000000
+      internalID: -1688018877542749080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_air_still_01
+      rect:
+        serializedVersion: 2
+        x: 1648
+        y: 39
+        width: 247
+        height: 474
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b275f1c633868b7e0800000000000000
+      internalID: -1749533885166823637
       vertices: []
       indices: 
       edges: []
@@ -150,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 907092e6ea8cc2c4e8f874b0721ebf49
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -160,8 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      player_sprites_02_0: -5430445717976494012
-      player_sprites_02_1: -6549590630242153124
+      player_air_still_01: -1749533885166823637
+      player_attack_still_01: -2654942643417293837
+      player_dash_still_01: 5893309289020279244
+      player_idle_still_01: -1688018877542749080
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -63,5 +63,11 @@ TagManager:
   - name: Foreground
     uniqueID: 3818267307
     locked: 0
+  - name: ForegroundFX
+    uniqueID: 4263807655
+    locked: 0
+  - name: ScreenFX
+    uniqueID: 2724373379
+    locked: 0
   m_RenderingLayers:
   - Default
