@@ -19,15 +19,21 @@ public class AeroBehaviour : MonoBehaviour
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
     private Transform _attackTarget; // Reference to the player's transform
+    private BoxCollider2D _boxCollider;
 
+    private bool _targetSideIsLeft = false;
+    private bool _groundCollided = false;
     private bool isChasing = false; // State to track if the enemy is chasing
     private float lastShotTime; // Time of the last shot
 
     private Vector2 _flyTarget = new();
+
     private float _waveOffset = 0.0f;
     private float _currentDistanceToTarget = 0;
     private float _targetDistance = 0;
     private float _usedSpeed = 0;
+
+    private int _groundLayerMask;
 
     private void Start()
     {
@@ -47,10 +53,19 @@ public class AeroBehaviour : MonoBehaviour
             Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(AeroBehaviour)}");
         }
 
+        if (!TryGetComponent(out _boxCollider))
+        {
+            Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(AeroBehaviour)}");
+        }
+
+        _groundLayerMask = LayerMask.GetMask("Ground");
+
         _targetDistance = Mathf.Sqrt(Mathf.Pow(KeepXDistanceFromTarget, 2) + Mathf.Pow(KeepXDistanceFromTarget, 2));
+
+        _groundCollided = false;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         _flyTarget = transform.position;
 
@@ -65,20 +80,74 @@ public class AeroBehaviour : MonoBehaviour
 
         if (isChasing)
         {
-            TryFlyToTarget();
-            TryAttackPlayer();
+            var targetDir = transform.position - _attackTarget.position;
+
+            Vector3 rayDirectionX = new Vector3(-targetDir.x, 0, 0).normalized;
+            Vector3 rayDirectionY = new Vector3(0, -targetDir.y, 0).normalized;
+
+            var rayStartX = _boxCollider.transform.position + (Vector3)_boxCollider.offset;
+            var rayStartY = _boxCollider.transform.position + (Vector3)_boxCollider.offset;
+
+            bool hitX = Physics2D.Raycast(rayStartX, rayDirectionX, _boxCollider.size.x, _groundLayerMask);
+            bool hitY = Physics2D.Raycast(rayStartY, rayDirectionY, _boxCollider.size.y, _groundLayerMask);
+
+            if (hitX && !hitY)
+            {
+                _spriteRenderer.color = Color.red;
+                _flyTarget = new Vector2(transform.position.x, _attackTarget.position.y);
+            }
+            else if (hitY && !hitX)
+            {
+                _spriteRenderer.color = Color.green;
+                _flyTarget = new Vector2(_attackTarget.position.x, transform.position.y);
+            }
+            else
+            {
+                _spriteRenderer.color = Color.white;
+                TryFlyToTarget();
+                TryAttackPlayer();
+            }
         }
 
         FlapWings();
 
-        // NOTE: Movement is as last thing
-        transform.position = Vector2.MoveTowards(transform.position, _flyTarget, _usedSpeed * Time.deltaTime);
+        // Movement is the last thing
+        transform.position = Vector2.MoveTowards(transform.position, _flyTarget, _usedSpeed * Time.fixedDeltaTime);
+        DebugUtil.DrawCircle(_flyTarget, 0.40f, Color.red);
+        Debug.DrawLine(transform.position, _flyTarget, Color.red);
+    }
 
-        DebugUtil.DrawCircle(_flyTarget, 0.15f, Color.magenta);
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == _groundLayerMask)
+        {
+            _groundCollided = true;
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == _groundLayerMask)
+        {
+            _groundCollided = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == _groundLayerMask)
+        {
+            _groundCollided = false;
+        }
     }
 
     void FlapWings()
     {
+        if (_groundCollided)
+        {
+            return;
+        }
+
         _waveOffset = Mathf.Sin(Time.time * waveFrequency) * waveAmplitude * 0.01f;
 
         if (isChasing)
@@ -91,17 +160,26 @@ public class AeroBehaviour : MonoBehaviour
 
     void TryFlyToTarget()
     {
-        if (_attackTarget == null)
+        if (_attackTarget == null || _groundCollided)
         {
             return;
         }
 
         var directionVector = (Vector2)_attackTarget.position - (Vector2)transform.position;
 
+        if (directionVector.x < -0.5f)
+        {
+            _targetSideIsLeft = true;
+        }
+        else if (0.5f < directionVector.x)
+        {
+            _targetSideIsLeft = false;
+        }
+
         Vector2 direction = directionVector.normalized;
 
         Vector2 flyTargetPlain = (Vector2)_attackTarget.position
-            + new Vector2(direction.x < 0f ? KeepXDistanceFromTarget : -KeepXDistanceFromTarget, 0)
+            + new Vector2(_targetSideIsLeft ? -KeepXDistanceFromTarget : KeepXDistanceFromTarget, 0)
             + new Vector2(0, KeepYDistanceFromTarget);
 
         var isBackingUp = _currentDistanceToTarget < _targetDistance;

@@ -11,9 +11,10 @@ public class Projectile : MonoBehaviour
     private SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer component
 
     private Color targetColor; // The target color to fade to
-    private float fadeDuration = 0.04f; // Duration for fading effect
     private bool isFading = false; // Flag to track if fading is active
     private float fadeStartTime; // Time when fading started
+
+    private readonly float fadeDuration = 0.04f; // Duration for fading effect
 
     private void Awake()
     {
