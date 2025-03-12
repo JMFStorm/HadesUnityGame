@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TunnelLevels:
-  - {fileID: 3750608127319819093, guid: 6c3509ac74bf0654d9e1260a5cca8179, type: 3}
   - {fileID: 6378060692577099839, guid: b1d7f133afe56ff4092b4c349c69a02c, type: 3}
+  - {fileID: 3750608127319819093, guid: 6c3509ac74bf0654d9e1260a5cca8179, type: 3}
   - {fileID: 319463835677160509, guid: 268cf3041ba741749a4fc112cf3e2bdf, type: 3}
   ArenaLevels:
   - {fileID: 4057782042372861463, guid: e2eba6883fb7b0048b5276d2f1933f8a, type: 3}
@@ -56,8 +56,6 @@ MonoBehaviour:
   PlayerPrefab: {fileID: 2218871938792346492, guid: 5733a604297294142a58f667cdab2a01, type: 3}
   MainCameraPrefab: {fileID: 3018883555529649252, guid: f02c88d847cab044da2a038dfd0c60b1, type: 3}
   GlobalLight: {fileID: 4863655271805905191}
-  GlobalLightInitial: 0.8
-  GlobalLightMax: 0.8
 --- !u!1 &1730913884919540377
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,7 +108,7 @@ MonoBehaviour:
   m_Intensity: 0.4
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: bd544566e12429bf00000000f330ab1dcbc24148fb091d7067c59b48ab2296e3a78a24fe83a362a2
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0

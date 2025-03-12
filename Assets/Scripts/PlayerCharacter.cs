@@ -29,6 +29,7 @@ public class PlayerCharacter : MonoBehaviour
     public float DashingTime = 0.175f;
     public float DashRechargeTime = 1.5f;
     public float AttackSpeed = 0.3f;
+    public float DamageInvulnerabilityTime = 3.0f;
 
     public bool DebugLogging = false;
 
@@ -49,18 +50,25 @@ public class PlayerCharacter : MonoBehaviour
     private Vector2 _originalOffset;
 
     private int _currentDashes = 0;
+    private int _currentHealth = 3;
 
+    private bool _controlsAreActive = true;
     private bool _isAtDoorwayExit = false;
     private bool _isGrounded = false;
     private bool _isDashing = false;
     private bool _isCrouching = false;
     private bool _isAttacking = false;
     private bool _attackCharged = true;
+    private bool _hasDamageInvulnerability = false;
 
     private float _facingDirX = 0f;
     private float _dashDirX = 0f;
     private float _dashTimer = 0f;
     private float _dashRegenTimer = 0f;
+
+    private int _damageZoneLayer;
+
+    private readonly int _defaultPlayerHealth = 3;
 
     private readonly float _platformFallthroughRaycastDistance = 1.0f;
 
@@ -126,6 +134,8 @@ public class PlayerCharacter : MonoBehaviour
         {
             Debug.LogError($"{nameof(TextMeshPro)} not found on {nameof(PlayerCharacter)} FloatingText child");
         }
+
+        _damageZoneLayer = LayerMask.NameToLayer("DamageZone");
     }
 
     private void Start()
@@ -136,11 +146,13 @@ public class PlayerCharacter : MonoBehaviour
         _material.SetColor("_NewColor", new(0.21f, 0.25f, 0.3f));
 
         ResetPlayerInnerState();
+
+        _currentHealth = _defaultPlayerHealth;
     }
 
     void Update()
     {
-        PlayerMovement();
+        PlayerMovementControls();
 
         if (_isDashing)
         {
@@ -198,29 +210,81 @@ public class PlayerCharacter : MonoBehaviour
         Gizmos.DrawWireCube(GroundCheck.position, _groundCheckSize);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Doorway"))
         {
-            Debug.Log("Player entered doorway zone");
-
             _isAtDoorwayExit = true;
-
             ShowText("Enter", Color.white);
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone"))
+        {
+            Vector2 collisionDirection = (transform.position - other.transform.position).normalized;
+            RecieveDamage(collisionDirection);
+        }
+    }
+
+    void RecieveDamage(Vector2 damageDir)
+    {
+        if (_hasDamageInvulnerability)
+        {
+            return;
+        }
+
+        _currentHealth -= 1;
+
+        Debug.Log($"Player took damage, health remaining: {_currentHealth}");
+
+        if (_currentHealth <= 0)
+        {
+            Debug.Log($"Player DIED");
+        }
+
+        StartCoroutine(ActivateDamageTakenTime(DamageInvulnerabilityTime));
+        ApplyDamageKnockback(damageDir);
+    }
+
+    private void ApplyDamageKnockback(Vector2 knockbackDir)
+    {
+        var knockbackDirForce = new Vector2(knockbackDir.normalized.x, 6.5f);
+        _rigidBody.linearVelocity = knockbackDirForce;
+    }
+
+    void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Doorway"))
         {
             _isAtDoorwayExit = false;
-
-            Debug.Log("Player exited doorway zone");
-
             HideText();
         }
     }
+
+    private IEnumerator ActivateDamageTakenTime(float duration)
+    {
+        _controlsAreActive = false;
+        _hasDamageInvulnerability = true;
+
+        _spriteRenderer.color = Color.red;
+
+        const float controlsInactive = 0.5f;
+        yield return new WaitForSeconds(controlsInactive);
+
+        _spriteRenderer.color = Color.gray;
+
+        _controlsAreActive = true;
+
+        float invulnerabilityTime = Mathf.Max(0, duration - controlsInactive);
+
+        yield return new WaitForSeconds(invulnerabilityTime);
+        _hasDamageInvulnerability = false;
+
+        _spriteRenderer.color = Color.white;
+    }
+
 
     public void ResetPlayerInnerState()
     {
@@ -230,6 +294,7 @@ public class PlayerCharacter : MonoBehaviour
         _isCrouching = false;
         _isAttacking = false;
         _attackCharged = true;
+        _controlsAreActive = true;
 
         _facingDirX = 0f;
         _dashDirX = 0f;
@@ -243,8 +308,13 @@ public class PlayerCharacter : MonoBehaviour
         HideText();
     }
 
-    void PlayerMovement()
+    void PlayerMovementControls()
     {
+        if (!_controlsAreActive)
+        {
+            return;
+        }
+
         float moveInput = Input.GetAxisRaw("Horizontal");
 
         _rigidBody.linearVelocity = new Vector2(moveInput * MoveSpeed, _rigidBody.linearVelocity.y);

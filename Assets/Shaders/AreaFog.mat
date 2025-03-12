@@ -67,12 +67,12 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
-    - _FogSize: 50
-    - _FogSpeed: 0.005
+    - _FogSize: 2.5
+    - _FogSpeed: 1
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _FogColor: {r: 1, g: 1, b: 1, a: 0.019607844}
+    - _FogColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 0.03137255}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
