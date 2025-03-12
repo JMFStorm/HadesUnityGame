@@ -44,6 +44,7 @@ public class PlayerCharacter : MonoBehaviour
     private Collider2D _platformFallthrough;
     private Material _material;
     private TextMeshPro _floatingText;
+    private GameUI _gameUI;
 
     private Vector2 _groundCheckSize = new(0.5f, 0.25f);
     private Vector2 _originalSize;
@@ -136,6 +137,13 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         _damageZoneLayer = LayerMask.NameToLayer("DamageZone");
+
+        _gameUI = FindFirstObjectByType<GameUI>();
+
+        if (_gameUI == null)
+        {
+            Debug.LogError($"{nameof(GameUI)} not found on {nameof(PlayerCharacter)}");
+        }
     }
 
     private void Start()
@@ -148,6 +156,7 @@ public class PlayerCharacter : MonoBehaviour
         ResetPlayerInnerState();
 
         _currentHealth = _defaultPlayerHealth;
+        _gameUI.SetHealth(_currentHealth);
     }
 
     void Update()
@@ -237,11 +246,13 @@ public class PlayerCharacter : MonoBehaviour
 
         _currentHealth -= 1;
 
+        _gameUI.SetHealth(_currentHealth);
+
         Debug.Log($"Player took damage, health remaining: {_currentHealth}");
 
         if (_currentHealth <= 0)
         {
-            Debug.Log($"Player DIED");
+            Debug.Log($"Player DIED {_currentHealth}");
         }
 
         StartCoroutine(ActivateDamageTakenTime(DamageInvulnerabilityTime));
@@ -270,7 +281,7 @@ public class PlayerCharacter : MonoBehaviour
 
         _spriteRenderer.color = Color.red;
 
-        const float controlsInactive = 0.5f;
+        const float controlsInactive = 0.35f;
         yield return new WaitForSeconds(controlsInactive);
 
         _spriteRenderer.color = Color.gray;
@@ -304,6 +315,7 @@ public class PlayerCharacter : MonoBehaviour
         _attackSwordBoxCollider.enabled = false;
 
         _currentDashes = MaxDashes;
+        _gameUI.SetStamina(_currentDashes);
 
         HideText();
     }
@@ -436,6 +448,7 @@ public class PlayerCharacter : MonoBehaviour
         _dashTimer = 0f;
         _dashDirX = _facingDirX;
         _currentDashes--;
+        _gameUI.SetStamina(_currentDashes);
 
         _spriteRenderer.color = Color.magenta;
     }
@@ -463,10 +476,9 @@ public class PlayerCharacter : MonoBehaviour
 
             if (DashRechargeTime <= _dashRegenTimer)
             {
-                DebugLog("Dash recharged");
-
                 _currentDashes++;
                 _dashRegenTimer = 0f;
+                _gameUI.SetStamina(_currentDashes);
             }
         }
         else
