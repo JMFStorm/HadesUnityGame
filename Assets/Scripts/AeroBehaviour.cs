@@ -23,7 +23,7 @@ public class AeroBehaviour : MonoBehaviour
 
     private bool _targetSideIsLeft = false;
     private bool _groundCollided = false;
-    private bool isChasing = false; // State to track if the enemy is chasing
+    private bool isChasing = false;
     private float lastShotTime; // Time of the last shot
 
     private Vector2 _flyTarget = new();
