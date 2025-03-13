@@ -6,10 +6,7 @@ public class GameState : MonoBehaviour
 {
     public static GameState Instance { get; private set; }
 
-    public TunnelLevel[] TunnelLevels;
-    public ArenaLevel[] ArenaLevels;
-
-    private List<Level> GameLevels = new();
+    public List<Level> GameLevels = new();
 
     public PlayerCharacter PlayerPrefab;
     public MainCamera MainCameraPrefab;
@@ -56,7 +53,7 @@ public class GameState : MonoBehaviour
 
     private void Start()
     {
-        CreateGameLevelLayout();
+        GameLevels = CreateGameLevelLayout();
 
         _prevCameraPosition = _mainCamera.transform.position;
         _mainCamera.SetFollowTarget(_player.transform);
@@ -76,21 +73,9 @@ public class GameState : MonoBehaviour
         _prevCameraPosition = _mainCamera.transform.position;
     }
 
-    private void CreateGameLevelLayout()
+    private List<Level> CreateGameLevelLayout()
     {
-        var result = new List<Level>();
-
-        result.AddRange(ArenaLevels);
-        result.AddRange(TunnelLevels);
-
-        GameLevels = result;
-
-        Debug.Log("Level layout created:");
-
-        foreach (var level in GameLevels)
-        {
-            Debug.Log(level.name);
-        }
+        return GameLevels;
     }
 
     private void BGParallaxEffect()

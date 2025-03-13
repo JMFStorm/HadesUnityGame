@@ -20,6 +20,16 @@ public class GameUI : MonoBehaviour
         UpdateUI();
     }
 
+    public void ShowUI()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void HideUI()
+    {
+        gameObject.SetActive(false);
+    }
+
     public void SetHealth(int healthAmount)
     {
         _currentHealth = healthAmount;

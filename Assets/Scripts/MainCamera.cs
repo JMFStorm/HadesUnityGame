@@ -188,7 +188,7 @@ public class MainCamera : MonoBehaviour
 
     public void SetFogFXLevel(bool heavyFog)
     {
-        var usedColor = heavyFog ? new Color(0.6f, 0.6f, 0.6f, 20f / 256f) : new Color(0.6f, 0.6f, 0.6f, 8f / 256f);
+        var usedColor = heavyFog ? new Color(0.6f, 0.6f, 0.6f, 22f / 256f) : new Color(0.6f, 0.6f, 0.6f, 12f / 256f);
         _fogFXSpriteRenderer.material.SetColor("_FogColor", usedColor);
     }
 }

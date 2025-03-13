@@ -72,7 +72,7 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _FogColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 0.03137255}
+    - _FogColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 0.047058824}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
