@@ -52,6 +52,15 @@ public class Projectile : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") && other.gameObject.CompareTag("PlayerSword"))
+        {
+            gameObject.SetActive(false);
+            Destroy(gameObject);
+        }
+    }
+
     private void Update()
     {
         // If fading is active, update the color

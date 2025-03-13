@@ -170,18 +170,21 @@ MonoBehaviour:
   AudioClips:
   - {fileID: 8300000, guid: 0fce7e4723ab6ff43aa729ce14021fd5, type: 3}
   - {fileID: 8300000, guid: a17edfb68596fee4ba25dd6a15a04d30, type: 3}
-  chaseRadius: 5
-  attackRadius: 4
+  - {fileID: 8300000, guid: 109ed0628f3107f4d85bed16f8048dc8, type: 3}
+  - {fileID: 8300000, guid: 9449cc0118ad27948aaa526ee47cdcc3, type: 3}
+  chaseRadius: 6
+  attackRadius: 5
   speed: 3
   attackOffset: 2
   KeepXDistanceFromTarget: 2
   KeepYDistanceFromTarget: 1
   DamageInvulnerabilityTime: 0.25
+  ProjectileLoadTime: 0.75
   EnemyHealth: 3
   projectilePrefab: {fileID: 6511049569049512373, guid: 228912b296a387c44b211139c74a8888, type: 3}
   shootingCooldown: 3
-  waveAmplitude: 0.5
-  waveFrequency: 1.5
+  waveAmplitude: 1
+  waveFrequency: 2
 --- !u!61 &4172504946652307102
 BoxCollider2D:
   m_ObjectHideFlags: 0

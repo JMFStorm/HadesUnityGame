@@ -4,7 +4,9 @@ using UnityEngine;
 public enum AeroSounds
 {
     Hit = 0,
-    Death
+    Death,
+    Preattack,
+    ProjectileLaunch,
 }
 
 public class AeroBehaviour : MonoBehaviour
@@ -18,6 +20,7 @@ public class AeroBehaviour : MonoBehaviour
     public float KeepXDistanceFromTarget = 2f;
     public float KeepYDistanceFromTarget = 1f;
     public float DamageInvulnerabilityTime = 0.25f;
+    public float ProjectileLoadTime = 0.75f;
 
     public int EnemyHealth = 3;
 
@@ -34,11 +37,12 @@ public class AeroBehaviour : MonoBehaviour
     private BoxCollider2D _boxCollider;
     private AudioSource _audioSource;
 
+    private bool _isAttacking = false;
     private bool _targetSideIsLeft = false;
     private bool isChasing = false;
     private bool _hasDamageInvulnerability = false;
     private bool _isDead = false;
-    private float lastShotTime; // Time of the last shot
+    private float _lastShotTime; // Time of the last shot
 
     private Vector2 _flyTarget = new();
 
@@ -80,7 +84,7 @@ public class AeroBehaviour : MonoBehaviour
     private void Start()
     {
         _attackTarget = GameObject.FindGameObjectWithTag("Player").transform;
-        lastShotTime = Time.time; // Initialize last shot time
+        _lastShotTime = Time.time; // Initialize last shot time
 
         _currentHealth = EnemyHealth;
     }
@@ -158,17 +162,14 @@ public class AeroBehaviour : MonoBehaviour
 
             if (hitX && !hitY)
             {
-                _spriteRenderer.color = Color.red;
                 _flyTarget = new Vector2(transform.position.x, _attackTarget.position.y);
             }
             else if (hitY && !hitX)
             {
-                _spriteRenderer.color = Color.green;
                 _flyTarget = new Vector2(_attackTarget.position.x, transform.position.y);
             }
             else
             {
-                _spriteRenderer.color = Color.white;
                 TryFlyToTarget();
                 TryAttackPlayer();
             }
@@ -195,8 +196,6 @@ public class AeroBehaviour : MonoBehaviour
 
         if (_currentHealth <= 0)
         {
-            Debug.Log($"AERO DIED {_currentHealth}");
-
             _isDead = true;
             StartCoroutine(ActivateDeathAndDestroy());
         }
@@ -280,32 +279,47 @@ public class AeroBehaviour : MonoBehaviour
 
     private void TryAttackPlayer()
     {
-        if (attackRadius < _currentDistanceToTarget)
+        if (attackRadius < _currentDistanceToTarget || _isAttacking)
         {
             return;
         }
 
-        var canShoot = lastShotTime + shootingCooldown <= Time.time;
+        var canShoot = _lastShotTime + shootingCooldown <= Time.time;
 
         if (canShoot)
         {
-            ShootAtPlayer();
-            lastShotTime = Time.time; // Reset the shot time
+            StartCoroutine(ActivateShootAtPlayer());
         }
     }
 
-    private void ShootAtPlayer()
+    private IEnumerator ActivateShootAtPlayer()
     {
-        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        PlaySound(AeroSounds.Preattack);
 
+        _isAttacking = true;
+        _spriteRenderer.color = Color.yellow;
+
+        yield return new WaitForSeconds(ProjectileLoadTime);
+
+        if (_isDead)
+        {
+            yield break;
+        }
+
+        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
         Vector2 direction = (_attackTarget.position - transform.position).normalized;
-        
+
         if (!projectile.TryGetComponent<Projectile>(out var projectileScript))
         {
             Debug.LogError($"Did not find {nameof(Projectile)} in {nameof(Projectile)}");
         }
 
+        PlaySound(AeroSounds.ProjectileLaunch);
         projectileScript.Launch(direction);
+
+        _lastShotTime = Time.time; // Reset the shot time
+        _isAttacking = false;
+        _spriteRenderer.color = Color.white;
     }
 
     void PlaySound(AeroSounds soundIndex)
