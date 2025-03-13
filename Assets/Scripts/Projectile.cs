@@ -1,4 +1,5 @@
 using UnityEngine;
+using static Codice.Client.Common.EventTracking.TrackFeatureUseEvent.Features.DesktopGUI.Filters;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
@@ -30,28 +31,24 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        GameObject otherObject = collision.gameObject; // Get the colliding GameObject
-        int layerID = otherObject.layer; // Get the layer index (ID)
-        string layerName = LayerMask.LayerToName(layerID); // Convert ID to name
+        if (collision.gameObject.layer == LayerMask.NameToLayer("FlyingEnemy"))
+        {
+            // NOTE: Ignore "self"
+            return;
+        }
 
-        Debug.Log($"Collided with: {otherObject.name}, Layer: {layerName} (ID: {layerID})");
-
-        // Check if the projectile collides with the player
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Projectile hit the player!"); // Log the collision
-            ChangeColor(Color.red); // Change color to black
-            ScaleProjectile(4f); // Scale the projectile by a factor of four
-            isFading = true; // Start fading
+            ChangeColor(Color.red);
+            ScaleProjectile(4f);
+            isFading = true;
             fadeStartTime = Time.time; // Record the time fading started
         }
         else
         {
-            // Handle other collisions here (like hitting walls, etc.)
-            Debug.Log("Projectile hit something else!");
-            ChangeColor(Color.black); // Change color to black
-            isFading = true; // Start fading
-            fadeStartTime = Time.time; // Record the time fading started
+            ChangeColor(Color.black);
+            isFading = true;
+            fadeStartTime = Time.time;
         }
     }
 

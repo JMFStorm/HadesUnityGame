@@ -1,13 +1,25 @@
+using System.Collections;
 using UnityEngine;
+
+public enum AeroSounds
+{
+    Hit = 0,
+    Death
+}
 
 public class AeroBehaviour : MonoBehaviour
 {
+    public AudioClip[] AudioClips;
+
     public float chaseRadius = 5f; // Radius within which the enemy will chase the player
     public float attackRadius = 2f; // Radius within which the enemy will attack
     public float speed = 3f; // Speed of the enemy movement
     public float attackOffset = 2f; // Offset for the attack position
     public float KeepXDistanceFromTarget = 2f;
     public float KeepYDistanceFromTarget = 1f;
+    public float DamageInvulnerabilityTime = 0.25f;
+
+    public int EnemyHealth = 3;
 
     public GameObject projectilePrefab; // Reference to the projectile prefab
     public float shootingCooldown = 3f; // Cooldown time for shooting
@@ -20,10 +32,12 @@ public class AeroBehaviour : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private Transform _attackTarget; // Reference to the player's transform
     private BoxCollider2D _boxCollider;
+    private AudioSource _audioSource;
 
     private bool _targetSideIsLeft = false;
-    private bool _groundCollided = false;
     private bool isChasing = false;
+    private bool _hasDamageInvulnerability = false;
+    private bool _isDead = false;
     private float lastShotTime; // Time of the last shot
 
     private Vector2 _flyTarget = new();
@@ -33,13 +47,8 @@ public class AeroBehaviour : MonoBehaviour
     private float _targetDistance = 0;
     private float _usedSpeed = 0;
 
+    private int _currentHealth = 3;
     private int _groundLayerMask;
-
-    private void Start()
-    {
-        _attackTarget = GameObject.FindGameObjectWithTag("Player").transform;
-        lastShotTime = Time.time; // Initialize last shot time
-    }
 
     private void Awake()
     {
@@ -58,14 +67,70 @@ public class AeroBehaviour : MonoBehaviour
             Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(AeroBehaviour)}");
         }
 
+        if (!TryGetComponent(out _audioSource))
+        {
+            Debug.LogError($"{nameof(AudioSource)} not found on {nameof(AeroBehaviour)}");
+        }
+
         _groundLayerMask = LayerMask.GetMask("Ground");
 
         _targetDistance = Mathf.Sqrt(Mathf.Pow(KeepXDistanceFromTarget, 2) + Mathf.Pow(KeepXDistanceFromTarget, 2));
+    }
 
-        _groundCollided = false;
+    private void Start()
+    {
+        _attackTarget = GameObject.FindGameObjectWithTag("Player").transform;
+        lastShotTime = Time.time; // Initialize last shot time
+
+        _currentHealth = EnemyHealth;
     }
 
     private void FixedUpdate()
+    {
+        if (!_hasDamageInvulnerability && !_isDead)
+        {
+            MovementBehaviour();
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log($"Collision: {other.gameObject.name}");
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone"))
+        {
+            Vector2 collisionDirection = (transform.position - other.transform.position);
+
+            if (other.gameObject.CompareTag("PlayerSword"))
+            {
+                RecieveDamage(collisionDirection);
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        // Draw chase and attack radii in the editor
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, chaseRadius);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRadius);
+    }
+
+    void MovementBehaviour()
     {
         _flyTarget = transform.position;
 
@@ -88,8 +153,8 @@ public class AeroBehaviour : MonoBehaviour
             var rayStartX = _boxCollider.transform.position + (Vector3)_boxCollider.offset;
             var rayStartY = _boxCollider.transform.position + (Vector3)_boxCollider.offset;
 
-            bool hitX = Physics2D.Raycast(rayStartX, rayDirectionX, _boxCollider.size.x, _groundLayerMask);
-            bool hitY = Physics2D.Raycast(rayStartY, rayDirectionY, _boxCollider.size.y, _groundLayerMask);
+            bool hitX = Physics2D.Raycast(rayStartX, rayDirectionX, _boxCollider.size.x + 0.25f, _groundLayerMask);
+            bool hitY = Physics2D.Raycast(rayStartY, rayDirectionY, _boxCollider.size.y + 0.25f, _groundLayerMask);
 
             if (hitX && !hitY)
             {
@@ -117,37 +182,60 @@ public class AeroBehaviour : MonoBehaviour
         Debug.DrawLine(transform.position, _flyTarget, Color.red);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void RecieveDamage(Vector2 damageDir)
     {
-        if (collision.gameObject.layer == _groundLayerMask)
-        {
-            _groundCollided = true;
-        }
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == _groundLayerMask)
-        {
-            _groundCollided = true;
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == _groundLayerMask)
-        {
-            _groundCollided = false;
-        }
-    }
-
-    void FlapWings()
-    {
-        if (_groundCollided)
+        if (_hasDamageInvulnerability)
         {
             return;
         }
 
+        ApplyDamageKnockback(damageDir);
+
+        _currentHealth -= 1;
+
+        if (_currentHealth <= 0)
+        {
+            Debug.Log($"AERO DIED {_currentHealth}");
+
+            _isDead = true;
+            StartCoroutine(ActivateDeathAndDestroy());
+        }
+        else
+        {
+            StartCoroutine(ActivateDamageTakenTime(DamageInvulnerabilityTime));
+        }
+    }
+
+    private IEnumerator ActivateDamageTakenTime(float duration)
+    {
+        PlaySound(AeroSounds.Hit);
+        _hasDamageInvulnerability = true;
+        _spriteRenderer.color = Color.red;
+
+        yield return new WaitForSeconds(duration);
+
+        _hasDamageInvulnerability = false;
+        _spriteRenderer.color = Color.white;
+    }
+
+    private IEnumerator ActivateDeathAndDestroy()
+    {
+        PlaySound(AeroSounds.Death);
+        _spriteRenderer.enabled = false;
+
+        yield return new WaitForSeconds(1.0f);
+
+        Destroy(gameObject);
+    }
+
+    private void ApplyDamageKnockback(Vector2 knockbackDir)
+    {
+        var knockbackDirForce = knockbackDir.normalized * _rigidBody.mass * 2.5f;
+        _rigidBody.AddForce(knockbackDirForce, ForceMode2D.Force);
+    }
+
+    void FlapWings()
+    {
         _waveOffset = Mathf.Sin(Time.time * waveFrequency) * waveAmplitude * 0.01f;
 
         if (isChasing)
@@ -160,7 +248,7 @@ public class AeroBehaviour : MonoBehaviour
 
     void TryFlyToTarget()
     {
-        if (_attackTarget == null || _groundCollided)
+        if (_attackTarget == null)
         {
             return;
         }
@@ -210,7 +298,6 @@ public class AeroBehaviour : MonoBehaviour
     {
         GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
 
-        // Calculate the direction towards the player
         Vector2 direction = (_attackTarget.position - transform.position).normalized;
         
         if (!projectile.TryGetComponent<Projectile>(out var projectileScript))
@@ -218,16 +305,21 @@ public class AeroBehaviour : MonoBehaviour
             Debug.LogError($"Did not find {nameof(Projectile)} in {nameof(Projectile)}");
         }
 
-        projectileScript.Launch(direction); // Launch the projectile towards the player
+        projectileScript.Launch(direction);
     }
 
-    private void OnDrawGizmos()
+    void PlaySound(AeroSounds soundIndex)
     {
-        // Draw chase and attack radii in the editor
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, chaseRadius);
+        var index = (int)soundIndex;
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRadius);
+        if (_audioSource != null && index < AudioClips.Length && AudioClips[index] != null)
+        {
+            _audioSource.clip = AudioClips[index];
+            _audioSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning($"Error playing Player sound index {index}. {nameof(AudioSource)}, {nameof(AudioClip)}, or the specified sound is not assigned.");
+        }
     }
 }

@@ -7,6 +7,7 @@ public enum PlayerSounds
     Attack = 0,
     Dash,
     Jump,
+    Hit,
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -40,6 +41,7 @@ public class PlayerCharacter : MonoBehaviour
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
     private BoxCollider2D _boxCollider;
+    private BoxCollider2D _swordBoxCollider;
     private Collider2D _platformFallthrough;
     private Material _material;
     private TextMeshPro _floatingText;
@@ -123,6 +125,18 @@ public class PlayerCharacter : MonoBehaviour
             Debug.LogError($"{nameof(TextMeshPro)} not found on {nameof(PlayerCharacter)} FloatingText child");
         }
 
+        var swordArea = transform.Find("SwordArea");
+
+        if (swordArea == null)
+        {
+            Debug.LogError($"SwordArea not found as a child of {nameof(PlayerCharacter)} script");
+        }
+
+        if (!swordArea.TryGetComponent(out _swordBoxCollider))
+        {
+            Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(PlayerCharacter)} SwordArea child");
+        }
+
         _damageZoneLayer = LayerMask.NameToLayer("DamageZone");
 
         _gameUI = FindFirstObjectByType<GameUI>();
@@ -135,6 +149,8 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Start()
     {
+        _swordBoxCollider.gameObject.SetActive(false);
+
         _originalSize = _boxCollider.size;
         _originalOffset = _boxCollider.offset;
 
@@ -182,7 +198,10 @@ public class PlayerCharacter : MonoBehaviour
         Color color = _isGrounded ? Color.green : Color.red;
         DebugUtil.DrawRectangle(GroundCheck.position, _groundCheckSize, color);
 
-        _spriteRenderer.flipX = _facingDirX < 0.0f;
+        if (!_isAttacking && !_isDashing)
+        {
+            _spriteRenderer.flipX = _facingDirX < 0.0f;
+        }
 
         // ------------
         // Get sprite
@@ -240,7 +259,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") && !other.gameObject.CompareTag("PlayerSword"))
         {
             Vector2 collisionDirection = (transform.position - other.transform.position).normalized;
             RecieveDamage(collisionDirection);
@@ -286,6 +305,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private IEnumerator ActivateDamageTakenTime(float duration)
     {
+        PlaySound(PlayerSounds.Hit);
         _controlsAreActive = false;
         _hasDamageInvulnerability = true;
 
@@ -317,7 +337,7 @@ public class PlayerCharacter : MonoBehaviour
         _attackCharged = true;
         _controlsAreActive = true;
 
-        _facingDirX = 0f;
+        _facingDirX = 1f; // NOTE: Facing right
         _dashDirX = 0f;
         _dashTimer = 0f;
         _dashRegenTimer = 0f;
@@ -411,13 +431,14 @@ public class PlayerCharacter : MonoBehaviour
 
         yield return new WaitForSeconds(attackPreSwingTime);
 
-        var attackSwordXOffset = rightSideAttack ? 1f : -1f;
-        // _attackSwordTransform.position = new Vector3(_rigidBody.position.x + attackSwordXOffset, _rigidBody.position.y, _attackSwordTransform.position.z);
+        const float swordAreaXOffset = 0.9f;
+        var attackSwordXOffset = rightSideAttack ? swordAreaXOffset : -swordAreaXOffset;
+        _swordBoxCollider.offset = new Vector2(attackSwordXOffset, _swordBoxCollider.offset.y);
 
         const float attackVisibleTime = 0.125f;
         float elapsedTime1 = 0f;
 
-        // _attackSwordBoxCollider.enabled = true;
+        _swordBoxCollider.gameObject.SetActive(true);
 
         while (elapsedTime1 < attackVisibleTime)
         {
@@ -425,7 +446,7 @@ public class PlayerCharacter : MonoBehaviour
             yield return null;
         }
 
-        // _attackSwordBoxCollider.enabled = false;
+        _swordBoxCollider.gameObject.SetActive(false);
         _isAttacking = false;
 
         var attackWaitTime = Mathf.Max(AttackSpeed - (attackPreSwingTime + attackVisibleTime), 0f);
