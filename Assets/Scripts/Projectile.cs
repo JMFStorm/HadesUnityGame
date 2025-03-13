@@ -1,14 +1,15 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(CircleCollider2D))]
 public class Projectile : MonoBehaviour
 {
     public float speed = 5f; // Speed of the projectile
     public float lifetime = 3f; // Lifetime of the projectile in seconds
 
-    private Rigidbody2D rb;
-    private SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer component
+    private Rigidbody2D _rb;
+    private SpriteRenderer _spriteRenderer; // Reference to the SpriteRenderer component
+    private Transform _spriteTransform; // Reference to the SpriteRenderer component
 
     private Color _targetColor; // The target color to fade to
     private bool _isFading = false; // Flag to track if fading is active
@@ -18,14 +19,23 @@ public class Projectile : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>(); // Get the Rigidbody2D component
-        spriteRenderer = GetComponent<SpriteRenderer>(); // Get the SpriteRenderer component
+        if (!TryGetComponent(out _rb))
+        {
+            Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(Rigidbody2D)}");
+        }
+
+        _spriteTransform = transform.Find("Sprite");
+
+        if (!_spriteTransform.TryGetComponent(out _spriteRenderer))
+        {
+            Debug.LogError($"{nameof(SpriteRenderer)} not found on child Sprite of {nameof(Projectile)}");
+        }
     }
 
     public void Launch(Vector2 direction)
     {
-        rb.linearVelocity = direction.normalized * speed; // Apply velocity in the launch direction
-        Destroy(gameObject, lifetime); // Destroy the projectile after its lifetime
+        _rb.linearVelocity = direction.normalized * speed;
+        Destroy(gameObject, lifetime);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -49,8 +59,10 @@ public class Projectile : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") && other.gameObject.CompareTag("PlayerSword"))
         {
-            gameObject.SetActive(false);
-            Destroy(gameObject);
+            Debug.Log("Player sword hit!");
+
+            Implode(Color.black, 1.25f);
+            Destroy(gameObject, 2.0f);
         }
     }
 
@@ -62,7 +74,7 @@ public class Projectile : MonoBehaviour
             float t = elapsed / fadeDuration; // Calculate the proportion of the fade duration
 
             // Interpolate between the current color and target color
-            spriteRenderer.color = Color.Lerp(spriteRenderer.color, _targetColor, t);
+            _spriteRenderer.color = Color.Lerp(_spriteRenderer.color, _targetColor, t);
 
             if (1f <= t)
             {
@@ -73,8 +85,9 @@ public class Projectile : MonoBehaviour
 
     private void Implode(Color color, float scale)
     {
+        _rb.simulated = false;
         _targetColor = color;
-        transform.localScale *= scale;
+        _spriteTransform.localScale *= scale;
         _isFading = true;
         _fadeStartTime = Time.time;
     }
