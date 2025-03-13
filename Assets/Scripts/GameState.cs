@@ -64,9 +64,6 @@ public class GameState : MonoBehaviour
         LoadNextLevel();
 
         GlobalLight.intensity = _currentLevel.GlobalLightLevel;
-
-        // Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("FlyingEnemy"), LayerMask.NameToLayer("Platform"), true);
-        // Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("FlyingEnemy"), LayerMask.NameToLayer("Character"), true);
     }
 
     private void Update()

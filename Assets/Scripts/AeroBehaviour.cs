@@ -15,6 +15,7 @@ public class AeroBehaviour : MonoBehaviour
 
     public float chaseRadius = 5f; // Radius within which the enemy will chase the player
     public float attackRadius = 2f; // Radius within which the enemy will attack
+    public float GiveUpRadius = 10f;
     public float speed = 3f; // Speed of the enemy movement
     public float attackOffset = 2f; // Offset for the attack position
     public float KeepXDistanceFromTarget = 2f;
@@ -36,8 +37,10 @@ public class AeroBehaviour : MonoBehaviour
     private Transform _attackTarget; // Reference to the player's transform
     private BoxCollider2D _boxCollider;
     private AudioSource _audioSource;
+    private MainCamera _mainCamera;
 
     private bool _isAttacking = false;
+    private bool _hasGivenUp = false;
     private bool _targetSideIsLeft = false;
     private bool isChasing = false;
     private bool _hasDamageInvulnerability = false;
@@ -45,6 +48,7 @@ public class AeroBehaviour : MonoBehaviour
     private float _lastShotTime; // Time of the last shot
 
     private Vector2 _flyTarget = new();
+    private Vector2 _initialSpawnPosition = new();
 
     private float _waveOffset = 0.0f;
     private float _currentDistanceToTarget = 0;
@@ -84,9 +88,13 @@ public class AeroBehaviour : MonoBehaviour
     private void Start()
     {
         _attackTarget = GameObject.FindGameObjectWithTag("Player").transform;
-        _lastShotTime = Time.time; // Initialize last shot time
+        _mainCamera = FindFirstObjectByType<MainCamera>();
 
         _currentHealth = EnemyHealth;
+
+        _initialSpawnPosition = transform.position;
+
+        ResetInnerState();
     }
 
     private void FixedUpdate()
@@ -111,8 +119,6 @@ public class AeroBehaviour : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log($"Collision: {other.gameObject.name}");
-
         if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone"))
         {
             Vector2 collisionDirection = (transform.position - other.transform.position);
@@ -126,12 +132,60 @@ public class AeroBehaviour : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        // Draw chase and attack radii in the editor
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, chaseRadius);
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRadius);
+
+        Gizmos.color = Color.gray;
+        Gizmos.DrawWireSphere(transform.position, GiveUpRadius);
+    }
+
+    void TeleportToSpwanPosition()
+    {
+        transform.position = _initialSpawnPosition;
+    }
+
+    void ResetInnerState()
+    {
+        _isAttacking = false;
+        _hasGivenUp = false;
+        _targetSideIsLeft = false;
+        isChasing = false;
+        _hasDamageInvulnerability = false;
+        _isDead = false;
+        _lastShotTime = Time.time;
+    }
+
+    static int counter1 = 0;
+
+    private IEnumerator CheckRespawnLocation()
+    {
+        while (_hasGivenUp)
+        {
+            if (isChasing)
+            {
+                yield break;
+            }
+
+            Debug.Log($"Out of range, checking respawn {++counter1}");
+
+            var isEnemyVisible = _mainCamera.IsWorldPositionVisible(transform.position);
+            var isSpawnVisible = _mainCamera.IsWorldPositionVisible(_initialSpawnPosition);
+
+            Debug.Log($"isSpawnVisible: {isSpawnVisible}, isEnemyVisible: {isEnemyVisible}");
+
+            if (!isEnemyVisible && !isSpawnVisible)
+            {
+                TeleportToSpwanPosition();
+                ResetInnerState();
+
+                yield break;
+            }
+
+            yield return new WaitForSeconds(2f);
+        }
     }
 
     void MovementBehaviour()
@@ -140,7 +194,7 @@ public class AeroBehaviour : MonoBehaviour
 
         _currentDistanceToTarget = Vector2.Distance(transform.position, _attackTarget.position);
 
-        if (!isChasing && _currentDistanceToTarget <= chaseRadius)
+        if ((_hasGivenUp || !isChasing) && _currentDistanceToTarget <= chaseRadius)
         {
             isChasing = true;
         }
@@ -149,29 +203,38 @@ public class AeroBehaviour : MonoBehaviour
 
         if (isChasing)
         {
-            var targetDir = transform.position - _attackTarget.position;
-
-            Vector3 rayDirectionX = new Vector3(-targetDir.x, 0, 0).normalized;
-            Vector3 rayDirectionY = new Vector3(0, -targetDir.y, 0).normalized;
-
-            var rayStartX = _boxCollider.transform.position + (Vector3)_boxCollider.offset;
-            var rayStartY = _boxCollider.transform.position + (Vector3)_boxCollider.offset;
-
-            bool hitX = Physics2D.Raycast(rayStartX, rayDirectionX, _boxCollider.size.x + 0.25f, _groundLayerMask);
-            bool hitY = Physics2D.Raycast(rayStartY, rayDirectionY, _boxCollider.size.y + 0.25f, _groundLayerMask);
-
-            if (hitX && !hitY)
+            if (GiveUpRadius < _currentDistanceToTarget)
             {
-                _flyTarget = new Vector2(transform.position.x, _attackTarget.position.y);
-            }
-            else if (hitY && !hitX)
-            {
-                _flyTarget = new Vector2(_attackTarget.position.x, transform.position.y);
+                isChasing = false;
+                _hasGivenUp = true;
+                StartCoroutine(CheckRespawnLocation());
             }
             else
             {
-                TryFlyToTarget();
-                TryAttackPlayer();
+                var targetDir = transform.position - _attackTarget.position;
+
+                Vector3 rayDirectionX = new Vector3(-targetDir.x, 0, 0).normalized;
+                Vector3 rayDirectionY = new Vector3(0, -targetDir.y, 0).normalized;
+
+                var rayStartX = _boxCollider.transform.position + (Vector3)_boxCollider.offset;
+                var rayStartY = _boxCollider.transform.position + (Vector3)_boxCollider.offset;
+
+                bool hitX = Physics2D.Raycast(rayStartX, rayDirectionX, _boxCollider.size.x + 0.25f, _groundLayerMask);
+                bool hitY = Physics2D.Raycast(rayStartY, rayDirectionY, _boxCollider.size.y + 0.25f, _groundLayerMask);
+
+                if (hitX && !hitY)
+                {
+                    _flyTarget = new Vector2(transform.position.x, _attackTarget.position.y);
+                }
+                else if (hitY && !hitX)
+                {
+                    _flyTarget = new Vector2(_attackTarget.position.x, transform.position.y);
+                }
+                else
+                {
+                    TryFlyToTarget();
+                    TryAttackPlayer();
+                }
             }
         }
 

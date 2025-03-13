@@ -13,6 +13,7 @@ public class MainCamera : MonoBehaviour
 
     private ParticleSystem _dustParticleSystem;
     private SpriteRenderer _fogFXSpriteRenderer;
+    private Camera _camera;
 
     private void Awake()
     {
@@ -29,6 +30,11 @@ public class MainCamera : MonoBehaviour
         {
             Debug.LogError($"Did not find component FogFX {nameof(SpriteRenderer)} on {nameof(MainCamera)}");
         }
+
+        if (!TryGetComponent(out _camera))
+        {
+            Debug.LogError($"{nameof(Camera)} not found on {nameof(MainCamera)}");
+        }
     }
 
     void LateUpdate()
@@ -39,6 +45,15 @@ public class MainCamera : MonoBehaviour
         }
 
         FollowTheTarget();
+    }
+
+    public bool IsWorldPositionVisible(Vector2 worldPosition)
+    {
+        Vector3 viewportPoint = _camera.WorldToViewportPoint(worldPosition);
+
+        return viewportPoint.x >= 0 && viewportPoint.x <= 1 &&
+               viewportPoint.y >= 0 && viewportPoint.y <= 1 &&
+               viewportPoint.z > 0;
     }
 
     public void SetFollowTarget(Transform newTarget)

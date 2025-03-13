@@ -1,5 +1,4 @@
 using UnityEngine;
-using static Codice.Client.Common.EventTracking.TrackFeatureUseEvent.Features.DesktopGUI.Filters;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
@@ -12,8 +11,8 @@ public class Projectile : MonoBehaviour
     private SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer component
 
     private Color targetColor; // The target color to fade to
-    private bool isFading = false; // Flag to track if fading is active
-    private float fadeStartTime; // Time when fading started
+    private bool _isFading = false; // Flag to track if fading is active
+    private float _fadeStartTime; // Time when fading started
 
     private readonly float fadeDuration = 0.04f; // Duration for fading effect
 
@@ -33,22 +32,16 @@ public class Projectile : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("FlyingEnemy"))
         {
-            // NOTE: Ignore "self"
-            return;
+            return; // NOTE: Ignore "self"
         }
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            ChangeColor(Color.red);
-            ScaleProjectile(4f);
-            isFading = true;
-            fadeStartTime = Time.time; // Record the time fading started
+            ImplodeAndSestroy(Color.red, 4.0f);
         }
         else
         {
-            ChangeColor(Color.black);
-            isFading = true;
-            fadeStartTime = Time.time;
+            ImplodeAndSestroy(Color.black, 4.0f);
         }
     }
 
@@ -63,33 +56,26 @@ public class Projectile : MonoBehaviour
 
     private void Update()
     {
-        // If fading is active, update the color
-        if (isFading)
+        if (_isFading)
         {
-            float elapsed = Time.time - fadeStartTime; // Time since fading started
+            float elapsed = Time.time - _fadeStartTime;
             float t = elapsed / fadeDuration; // Calculate the proportion of the fade duration
 
             // Interpolate between the current color and target color
             spriteRenderer.color = Color.Lerp(spriteRenderer.color, targetColor, t);
 
-            // Check if the fade is complete
-            if (t >= 1f)
+            if (1f <= t)
             {
-                gameObject.SetActive(false); // Deactivate the projectile
+                gameObject.SetActive(false);
             }
         }
     }
 
-    private void ChangeColor(Color newColor)
+    private void ImplodeAndSestroy(Color color, float scale)
     {
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.color = newColor; // Change the color of the projectile
-        }
-    }
-
-    private void ScaleProjectile(float scaleFactor)
-    {
-        transform.localScale *= scaleFactor; // Scale the projectile by the given factor
+        spriteRenderer.color = color;
+        transform.localScale *= scale;
+        _isFading = true;
+        _fadeStartTime = Time.time;
     }
 }
