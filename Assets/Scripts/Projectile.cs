@@ -10,7 +10,7 @@ public class Projectile : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer; // Reference to the SpriteRenderer component
 
-    private Color targetColor; // The target color to fade to
+    private Color _targetColor; // The target color to fade to
     private bool _isFading = false; // Flag to track if fading is active
     private float _fadeStartTime; // Time when fading started
 
@@ -37,11 +37,11 @@ public class Projectile : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            ImplodeAndSestroy(Color.red, 4.0f);
+            Implode(Color.red, 2.0f);
         }
         else
         {
-            ImplodeAndSestroy(Color.black, 4.0f);
+            Implode(Color.black, 1.1f);
         }
     }
 
@@ -62,7 +62,7 @@ public class Projectile : MonoBehaviour
             float t = elapsed / fadeDuration; // Calculate the proportion of the fade duration
 
             // Interpolate between the current color and target color
-            spriteRenderer.color = Color.Lerp(spriteRenderer.color, targetColor, t);
+            spriteRenderer.color = Color.Lerp(spriteRenderer.color, _targetColor, t);
 
             if (1f <= t)
             {
@@ -71,9 +71,9 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    private void ImplodeAndSestroy(Color color, float scale)
+    private void Implode(Color color, float scale)
     {
-        spriteRenderer.color = color;
+        _targetColor = color;
         transform.localScale *= scale;
         _isFading = true;
         _fadeStartTime = Time.time;
