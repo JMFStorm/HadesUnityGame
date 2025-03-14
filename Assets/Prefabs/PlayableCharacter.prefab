@@ -400,10 +400,13 @@ MonoBehaviour:
   PlatformLayer:
     serializedVersion: 2
     m_Bits: 256
-  AttackSprite: {fileID: -2654942643417293837, guid: eda43e70cba570d4b8b65156b478b5ee, type: 3}
-  IdleSprite: {fileID: -1688018877542749080, guid: eda43e70cba570d4b8b65156b478b5ee, type: 3}
-  AirSprite: {fileID: -1749533885166823637, guid: eda43e70cba570d4b8b65156b478b5ee, type: 3}
-  DashSprite: {fileID: 5893309289020279244, guid: eda43e70cba570d4b8b65156b478b5ee, type: 3}
+  AttackSprite: {fileID: -3207794758648131564, guid: a2385f2fac4ea0b409921c77b25c4c87, type: 3}
+  IdleSprite: {fileID: -110477982548859421, guid: a2385f2fac4ea0b409921c77b25c4c87, type: 3}
+  AirSprite: {fileID: -187015162653042354, guid: a2385f2fac4ea0b409921c77b25c4c87, type: 3}
+  DashSprite: {fileID: 1457241209402208265, guid: a2385f2fac4ea0b409921c77b25c4c87, type: 3}
+  CrouchSprite: {fileID: -3456215218045311911, guid: a2385f2fac4ea0b409921c77b25c4c87, type: 3}
+  HitSprite: {fileID: 5283850233271932449, guid: a2385f2fac4ea0b409921c77b25c4c87, type: 3}
+  MoveSprite: {fileID: -6370293429087372221, guid: a2385f2fac4ea0b409921c77b25c4c87, type: 3}
   MoveSpeed: 5
   JumpForce: 17.5
   DashSpeed: 15

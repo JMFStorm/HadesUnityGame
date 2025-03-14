@@ -1,10 +1,28 @@
 fileFormatVersion: 2
-guid: a731819fda31992438daed53530215b2
+guid: a2385f2fac4ea0b409921c77b25c4c87
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7575905064064642333
-    second: tunnel_outside_pillars_0
+      213: -3207794758648131564
+    second: Spritesheet_updated_14.3_0
+  - first:
+      213: -3456215218045311911
+    second: Spritesheet_updated_14.3_1
+  - first:
+      213: -110477982548859421
+    second: Spritesheet_updated_14.3_2
+  - first:
+      213: 1457241209402208265
+    second: Spritesheet_updated_14.3_3
+  - first:
+      213: 5283850233271932449
+    second: Spritesheet_updated_14.3_4
+  - first:
+      213: -187015162653042354
+    second: Spritesheet_updated_14.3_5
+  - first:
+      213: -6370293429087372221
+    second: Spritesheet_updated_14.3_6
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,9 +69,9 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 128
+  spritePixelsToUnits: 250
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -100,177 +118,155 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tunnel_outside_pillars_0
+      name: player_attack_01
       rect:
         serializedVersion: 2
-        x: 0
-        y: 128
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 20
+        y: 1043
+        width: 491
+        height: 434
+      alignment: 9
+      pivot: {x: 0.2, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3e2185cab7afcd690800000000000000
-      internalID: -7575905064064642333
+      spriteID: 4101b62a9af9b73d0800000000000000
+      internalID: -3207794758648131564
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tunnel_outside_pillars_1
+      name: player_crouch_01
       rect:
         serializedVersion: 2
-        x: 128
-        y: 128
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 515
+        y: 1045
+        width: 506
+        height: 277
+      alignment: 9
+      pivot: {x: 0.5, y: 0.035}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 790d14406f2c3d5428c43a06d2a965ca
-      internalID: -1709551790
+      spriteID: 9542c1d229e0900d0800000000000000
+      internalID: -3456215218045311911
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tunnel_outside_pillars_2
+      name: player_idle_01
       rect:
         serializedVersion: 2
-        x: 256
-        y: 128
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 1104
+        y: 1033
+        width: 335
+        height: 364
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 9f073d7762eb1c044bd3a66856c648ce
-      internalID: 1641511442
+      spriteID: 3e56ca63cd0877ef0800000000000000
+      internalID: -110477982548859421
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tunnel_outside_pillars_3
+      name: player_dash_01
       rect:
         serializedVersion: 2
-        x: 384
-        y: 128
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 3
+        y: 581
+        width: 499
+        height: 276
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: d045df0d0a8b19e4f93e2a479923c04c
-      internalID: 1456924539
+      spriteID: 900ba7eb829293410800000000000000
+      internalID: 1457241209402208265
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tunnel_outside_pillars_4
+      name: player_hit_01
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 536
+        y: 493
+        width: 404
+        height: 421
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 1af0efa232bb4824dbd0f527f5ad0c02
-      internalID: -625404976
+      spriteID: 126d988cac1045940800000000000000
+      internalID: 5283850233271932449
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tunnel_outside_pillars_5
+      name: player_air_01
       rect:
         serializedVersion: 2
-        x: 128
-        y: 0
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 1134
+        y: 553
+        width: 247
+        height: 474
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: ab6f9295898d52245bb3c3481e8a3876
-      internalID: -1487256310
+      spriteID: e49147e43b6976df0800000000000000
+      internalID: -187015162653042354
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tunnel_outside_pillars_6
+      name: player_move_01
       rect:
         serializedVersion: 2
-        x: 256
-        y: 0
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 4
+        y: 22
+        width: 490
+        height: 337
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: ad8356be4a2609f41a47c74c5889035a
-      internalID: 900770838
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: tunnel_outside_pillars_7
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 0
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6aca8e696c381d6419a6f617844f1c98
-      internalID: 547787405
+      spriteID: 34cfd34a0eb2897a0800000000000000
+      internalID: -6370293429087372221
       vertices: []
       indices: 
       edges: []
@@ -279,7 +275,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: c4d0d373b65ca7646b04c469d11e7483
+    spriteID: f5f004aab02ed74438e67b6668580a56
     internalID: 0
     vertices: []
     indices: 
@@ -289,14 +285,13 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      tunnel_outside_pillars_0: -7575905064064642333
-      tunnel_outside_pillars_1: -1709551790
-      tunnel_outside_pillars_2: 1641511442
-      tunnel_outside_pillars_3: 1456924539
-      tunnel_outside_pillars_4: -625404976
-      tunnel_outside_pillars_5: -1487256310
-      tunnel_outside_pillars_6: 900770838
-      tunnel_outside_pillars_7: 547787405
+      player_air_01: -187015162653042354
+      player_attack_01: -3207794758648131564
+      player_crouch_01: -3456215218045311911
+      player_dash_01: 1457241209402208265
+      player_hit_01: 5283850233271932449
+      player_idle_01: -110477982548859421
+      player_move_01: -6370293429087372221
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

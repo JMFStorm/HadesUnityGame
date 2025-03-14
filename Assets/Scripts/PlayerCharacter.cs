@@ -24,6 +24,9 @@ public class PlayerCharacter : MonoBehaviour
     public Sprite IdleSprite;
     public Sprite AirSprite;
     public Sprite DashSprite;
+    public Sprite CrouchSprite;
+    public Sprite HitSprite;
+    public Sprite MoveSprite;
 
     public float MoveSpeed = 5f;
     public float JumpForce = 17f;
@@ -62,6 +65,7 @@ public class PlayerCharacter : MonoBehaviour
     private bool _isAttacking = false;
     private bool _attackCharged = true;
     private bool _hasDamageInvulnerability = false;
+    private bool _inDamageState = false;
 
     private float _facingDirX = 0f;
     private float _dashDirX = 0f;
@@ -208,7 +212,11 @@ public class PlayerCharacter : MonoBehaviour
 
         Sprite usedSprite;
 
-        if (_isAttacking)
+        if (_inDamageState)
+        {
+            usedSprite = HitSprite;
+        }
+        else if (_isAttacking)
         {
             usedSprite = AttackSprite;
         }
@@ -216,9 +224,17 @@ public class PlayerCharacter : MonoBehaviour
         {
             usedSprite = DashSprite;
         }
+        else if (_isCrouching)
+        {
+            usedSprite = CrouchSprite;
+        }
         else if (!_isGrounded)
         {
             usedSprite = AirSprite;
+        }
+        else if (_isGrounded && 0.01f < Mathf.Abs(_rigidBody.linearVelocity.x))
+        {
+            usedSprite = MoveSprite;
         }
         else
         {
@@ -307,6 +323,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         PlaySound(PlayerSounds.Hit);
         _controlsAreActive = false;
+        _inDamageState = true;
         _hasDamageInvulnerability = true;
 
         _spriteRenderer.color = Color.red;
@@ -316,6 +333,7 @@ public class PlayerCharacter : MonoBehaviour
 
         _spriteRenderer.color = Color.gray;
 
+        _inDamageState = false;
         _controlsAreActive = true;
 
         float invulnerabilityTime = Mathf.Max(0, duration - controlsInactive);
@@ -355,21 +373,39 @@ public class PlayerCharacter : MonoBehaviour
             return;
         }
 
-        float moveInput = Input.GetAxisRaw("Horizontal");
+        // -----------------------------------
+        // Get horizontal movement and slide
 
-        _rigidBody.linearVelocity = new Vector2(moveInput * MoveSpeed, _rigidBody.linearVelocity.y);
+        float moveInput = Input.GetAxisRaw("Horizontal");
+        var newMovement = new Vector2(moveInput * MoveSpeed, _rigidBody.linearVelocity.y);
+
+        if (Input.GetButton("Crouch") && _isGrounded && !_isDashing)
+        {
+            var crouchInit = !_isCrouching;
+
+            if (crouchInit)
+            {
+                _rigidBody.linearVelocity = new();
+            }
+
+            _isCrouching = true;
+        }
+        else
+        {
+            _isCrouching = false;
+            _rigidBody.linearVelocity = newMovement;
+        }
 
         if (0f < Mathf.Abs(moveInput))
         {
             _facingDirX = Mathf.Ceil(moveInput);
         }
 
-        _isCrouching = false;
+        // --------------------
+        // Get action buttons
 
-        if (Input.GetButton("Crouch") && Input.GetButtonDown("Jump") && _isGrounded && !_isDashing)
+        if (_isCrouching && Input.GetButtonDown("Jump") && _isGrounded && !_isDashing && _isCrouching)
         {
-            _isCrouching = true;
-
             RaycastHit2D hit = Physics2D.Raycast(
                 transform.position,
                 Vector2.down,
@@ -380,15 +416,13 @@ public class PlayerCharacter : MonoBehaviour
             if (hit.collider != null)
             {
                 _platformFallthrough = hit.collider;
-
                 const float fallthroughCollisionDisableTime = 0.5f;
                 StartCoroutine(DisablePlatformCollisionForTime(_platformFallthrough, fallthroughCollisionDisableTime));
             }
         }
-        else if (Input.GetButtonDown("Jump") && _isGrounded && !_isDashing)
+        else if (Input.GetButtonDown("Jump") && _isGrounded && !_isDashing && !_isCrouching)
         {
             PlaySound(PlayerSounds.Jump);
-
             _rigidBody.linearVelocity = new Vector2(_rigidBody.linearVelocity.x, JumpForce);
         }
         else if (Input.GetButtonDown("Dash") && !_isDashing)
@@ -402,20 +436,14 @@ public class PlayerCharacter : MonoBehaviour
                 DebugLog("No dash available");
             }
         }
-        else if (Input.GetButton("Crouch") && _isGrounded && !_isDashing)
-        {
-            _isCrouching = true;
-        }
 
-        if (Input.GetButtonDown("Attack") && !_isAttacking && _attackCharged && !_isDashing)
+        if (Input.GetButtonDown("Attack") && !_isCrouching && !_isAttacking && _attackCharged && !_isDashing)
         {
             StartCoroutine(PlayerAttack(0f < _facingDirX));
         }
 
-        if (_isAtDoorwayExit && _isGrounded && Input.GetButtonDown("Up"))
+        if (_isAtDoorwayExit && !_isCrouching && _isGrounded && Input.GetButtonDown("Up"))
         {
-            DebugLog("Player doorway exit");
-
             GameState.Instance.LoadNextLevel();
         }
     }
