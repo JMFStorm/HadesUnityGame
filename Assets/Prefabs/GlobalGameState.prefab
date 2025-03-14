@@ -47,13 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 944cb72ad30240b4cb0c77c79ab79570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TunnelLevels:
-  - {fileID: 6378060692577099839, guid: b1d7f133afe56ff4092b4c349c69a02c, type: 3}
-  - {fileID: 3750608127319819093, guid: 6c3509ac74bf0654d9e1260a5cca8179, type: 3}
-  - {fileID: 319463835677160509, guid: 268cf3041ba741749a4fc112cf3e2bdf, type: 3}
-  ArenaLevels:
-  - {fileID: 4057782042372861463, guid: e2eba6883fb7b0048b5276d2f1933f8a, type: 3}
-  - {fileID: 259644864067411462, guid: 111643304bee7ed4186e14b5da44e463, type: 3}
+  GameLevels: []
   PlayerPrefab: {fileID: 2218871938792346492, guid: 5733a604297294142a58f667cdab2a01, type: 3}
   MainCameraPrefab: {fileID: 3018883555529649252, guid: f02c88d847cab044da2a038dfd0c60b1, type: 3}
   GlobalLight: {fileID: 4863655271805905191}
