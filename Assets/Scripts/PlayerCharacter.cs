@@ -277,12 +277,17 @@ public class PlayerCharacter : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") && !other.gameObject.CompareTag("PlayerSword"))
         {
+            if (other.gameObject.CompareTag("Spikes") && _isAttacking)
+            {
+                return; // NOTE: Ignore attacking spikes, but makes "spike-invincible" during the animation
+            }
+
             Vector2 collisionDirection = (transform.position - other.transform.position).normalized;
-            RecieveDamage(collisionDirection);
+            TryRecieveDamage(collisionDirection);
         }
     }
 
-    void RecieveDamage(Vector2 damageDir)
+    void TryRecieveDamage(Vector2 damageDir)
     {
         if (_hasDamageInvulnerability)
         {
@@ -511,6 +516,7 @@ public class PlayerCharacter : MonoBehaviour
     void Dash()
     {
         _rigidBody.linearVelocity = new Vector2(_dashDirX * DashSpeed, 0f);
+        _dashRegenTimer = 0.0f; // NOTE: Reset dash timer when using dash
     }
 
     void StopDash()

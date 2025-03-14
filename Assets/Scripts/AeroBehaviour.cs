@@ -253,6 +253,9 @@ public class AeroBehaviour : MonoBehaviour
             return;
         }
 
+        _isAttacking = false; // NOTE: Reset attack
+        ResetShotLoadTime(66.6f);
+
         ApplyDamageKnockback(damageDir);
 
         _currentHealth -= 1;
@@ -364,8 +367,9 @@ public class AeroBehaviour : MonoBehaviour
 
         yield return new WaitForSeconds(ProjectileLoadTime);
 
-        if (_isDead)
+        if (_isDead || !_isAttacking) // NOTE: _isAttacking might get disabled during wait time
         {
+            Debug.Log("Attack interrupted");
             yield break;
         }
 
@@ -380,9 +384,15 @@ public class AeroBehaviour : MonoBehaviour
         PlaySound(AeroSounds.ProjectileLaunch);
         projectileScript.Launch(direction);
 
-        _lastShotTime = Time.time; // Reset the shot time
+        ResetShotLoadTime();
         _isAttacking = false;
         _spriteRenderer.color = Color.white;
+    }
+
+    void ResetShotLoadTime(float percentage = 100.0f)
+    {
+        var timeOffset = shootingCooldown - (shootingCooldown * (percentage / 100));
+        _lastShotTime = Time.time - timeOffset;
     }
 
     void PlaySound(AeroSounds soundIndex)
