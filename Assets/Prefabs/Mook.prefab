@@ -240,4 +240,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MovementSpeed: 1.5
-  GroundCheck: {fileID: 0}
+  AggroSpeed: 3
+  AttackRange: 1
