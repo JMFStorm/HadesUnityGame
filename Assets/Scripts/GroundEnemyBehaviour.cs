@@ -14,7 +14,9 @@ public enum EnemyState
 public enum MookSoundGroups
 {
     Attack,
-    Hit,
+    AttackHit,
+    AttackMiss,
+    AttackCharge,
     Walk
 }
 
@@ -24,7 +26,8 @@ public enum MookVoiceGroups
     Damage,
     Death,
     Idle,
-    Attack
+    Attack,
+    AttackCharge,
 }
 
 
@@ -41,15 +44,19 @@ public class GroundEnemyBehaviour : MonoBehaviour
     public AudioClip[] DeathVoiceClips;
     public AudioClip[] IdleVoiceClips;
     public AudioClip[] AttackVoiceClips;
+    public AudioClip[] AttackChargeVoiceClips;
 
     public AudioClip[] AttackSoundClips;
     public AudioClip[] HitSoundClips;
     public AudioClip[] WalkSoundClips;
+    public AudioClip[] AttackMissSoundClips;
+    public AudioClip[] AttackChargeSoundClips;
 
     public float MovementSpeed = 1.5f;
     public float AggroSpeed = 3.0f;
     public float AttackRange = 2.0f;
     public float DamageStunTime = 0.5f;
+    public float AttackChargeTime = 0.8f;
 
     public int MaxHealth = 4;
 
@@ -72,6 +79,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
     private int _currentHealth = 4;
     private bool _facingLeft = false;
     private bool _isDead = false;
+    private bool _attackHitPlayer = false;
 
     private enum CollisionTypes
     {
@@ -168,6 +176,12 @@ public class GroundEnemyBehaviour : MonoBehaviour
         {
             RecieveDamage(collisionDirection);
         }
+
+        if (_attackDamageZone.gameObject.activeSelf && other.gameObject.CompareTag("Player") && !_attackHitPlayer)
+        {
+            Debug.Log("Hit player!");
+            _attackHitPlayer = true;
+        }
     }
 
     Color GetEnemyStateColor(EnemyState state)
@@ -232,17 +246,32 @@ public class GroundEnemyBehaviour : MonoBehaviour
     IEnumerator Attack()
     {
         _state = EnemyState.Attacking;
+        _attackHitPlayer = false;
+
+        TryPlayVoiceSource(MookVoiceGroups.AttackCharge);
+        TryPlaySoundSource(MookSoundGroups.AttackCharge);
+
+        yield return new WaitForSeconds(AttackChargeTime);
 
         _attackDamageZone.gameObject.SetActive(true);
 
-        TryPlayVoiceSource(MookVoiceGroups.Attack);
-        PlaySoundSource(MookSoundGroups.Attack);
+        TryPlayVoiceSource(MookVoiceGroups.Attack, true);
+        TryPlaySoundSource(MookSoundGroups.Attack);
 
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.20f);
 
         if (_state != EnemyState.Attacking)
         {
             yield return null;
+        }
+
+        if (_attackHitPlayer)
+        {
+            TryPlaySoundSource(MookSoundGroups.AttackHit);
+        }
+        else
+        {
+            TryPlaySoundSource(MookSoundGroups.AttackMiss);
         }
 
         _spriteRenderer.color = Color.white;
@@ -282,7 +311,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
     private IEnumerator ActivateDamageTakenTime(float duration)
     {
         TryPlayVoiceSource(MookVoiceGroups.Damage);
-        PlaySoundSource(MookSoundGroups.Hit);
+        TryPlaySoundSource(MookSoundGroups.AttackHit);
         _state = EnemyState.HitTaken;
 
         yield return new WaitForSeconds(duration);
@@ -400,7 +429,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        if (_state != EnemyState.Alert)
+        if (_state != EnemyState.Alert || _isDead)
         {
             yield return null;
         }
@@ -414,7 +443,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
     {
         yield return new WaitForSeconds(3.5f);
 
-        if (_state == EnemyState.AttackMoving)
+        if (_state == EnemyState.AttackMoving || _isDead)
         {
             _state = EnemyState.NormalMoving;
         }
@@ -427,7 +456,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
             float moveTime = Random.Range(1.5f, 5f);
             yield return new WaitForSeconds(moveTime);
 
-            if (_state != EnemyState.NormalMoving)
+            if (_state != EnemyState.NormalMoving || _isDead)
             {
                 yield return null;
             }
@@ -435,7 +464,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
             float waitTime = Random.Range(2f, 4f);
             yield return new WaitForSeconds(waitTime);
 
-            if (_state != EnemyState.NormalMoving)
+            if (_state != EnemyState.NormalMoving || _isDead)
             {
                 yield return null;
             }
@@ -458,13 +487,15 @@ public class GroundEnemyBehaviour : MonoBehaviour
         _attackDamageZone.localPosition = new(newDamageZoneX, _attackDamageZone.localPosition.y, _attackDamageZone.localPosition.z);
     }
 
-    void PlaySoundSource(MookSoundGroups soundType)
+    void TryPlaySoundSource(MookSoundGroups soundType)
     {
         AudioClip[] clips = soundType switch
         {
             MookSoundGroups.Attack => AttackSoundClips,
-            MookSoundGroups.Hit => HitSoundClips,
+            MookSoundGroups.AttackHit => HitSoundClips,
             MookSoundGroups.Walk => WalkSoundClips,
+            MookSoundGroups.AttackCharge => AttackChargeSoundClips,
+            MookSoundGroups.AttackMiss => AttackMissSoundClips,
             _ => new AudioClip[] { },
         };
 
@@ -474,10 +505,6 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
             _enemySoundSource.clip = usedClip;
             _enemySoundSource.Play();
-        }
-        else
-        {
-            Debug.LogWarning($"Error playing PlaySoundSource in {nameof(GroundEnemyBehaviour)}");
         }
     }
 
@@ -497,6 +524,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
             MookVoiceGroups.Death => DeathVoiceClips,
             MookVoiceGroups.Idle => IdleVoiceClips,
             MookVoiceGroups.Attack => AttackVoiceClips,
+            MookVoiceGroups.AttackCharge => AttackChargeVoiceClips,
             _ => new AudioClip[] { },
         };
 
@@ -508,10 +536,6 @@ public class GroundEnemyBehaviour : MonoBehaviour
             _enemySoundSource.Play();
 
             _lastVoiceTime = newLastVoiceTime;
-        }
-        else
-        {
-            Debug.LogWarning($"Error playing PlayVoiceSource in {nameof(GroundEnemyBehaviour)}");
         }
     }
 }
