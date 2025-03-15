@@ -16,10 +16,11 @@ public class MookBehaviour : MonoBehaviour
 {
     public float MovementSpeed = 1.5f;
     public float AggroSpeed = 3.0f;
-    public float AttackRange = 1.0f;
+    public float AttackRange = 2.0f;
 
     private Transform _groundCheck;
-    private BoxCollider2D _boxCollider;
+    private Transform _attackDamageZone;
+    private BoxCollider2D _enemyCollider;
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
 
@@ -42,14 +43,14 @@ public class MookBehaviour : MonoBehaviour
 
     void Awake()
     {
-        if (!TryGetComponent(out _boxCollider))
+        if (!TryGetComponent(out _enemyCollider))
         {
             Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(MookBehaviour)}");
         }
 
         if (!TryGetComponent(out _rigidBody))
         {
-            Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(MookBehaviour)}");
+            Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(MookBehaviour)}");
         }
 
         _groundFloorLayer = LayerMask.GetMask("Ground", "Platform");
@@ -63,6 +64,13 @@ public class MookBehaviour : MonoBehaviour
             Debug.LogError($"GroundCheck not found on {nameof(MookBehaviour)}");
         }
 
+        _attackDamageZone = transform.Find("AttackDamageZone");
+
+        if (_attackDamageZone == null)
+        {
+            Debug.LogError($"_damageZoneTransform not found on {nameof(MookBehaviour)}");
+        }
+
         var sprite = transform.Find("Sprite");
 
         if (!sprite.TryGetComponent(out _spriteRenderer))
@@ -73,7 +81,9 @@ public class MookBehaviour : MonoBehaviour
 
     void Start()
     {
+        _attackDamageZone.gameObject.SetActive(false);
         _state = EnemyState.NormalMoving;
+
         StartCoroutine(MovementLoop());
     }
 
@@ -146,10 +156,13 @@ public class MookBehaviour : MonoBehaviour
     {
         _state = EnemyState.Attacking;
 
+        _attackDamageZone.gameObject.SetActive(true);
+
         yield return new WaitForSeconds(1.0f);
 
         _spriteRenderer.color = Color.white;
         _state = EnemyState.NormalMoving;
+        _attackDamageZone.gameObject.SetActive(false);
 
         StartCoroutine(MovementLoop());
     }
@@ -163,7 +176,7 @@ public class MookBehaviour : MonoBehaviour
 
         Debug.DrawRay(_groundCheck.position, Vector2.down * groundRayLength, Color.green);
 
-        float wallRayLength = (_boxCollider.size.x / 2) + 0.1f;
+        float wallRayLength = (_enemyCollider.size.x / 2) + 0.1f;
         RaycastHit2D wallHit = Physics2D.Raycast(transform.position, Vector2.right * direction, wallRayLength, _wallLayer);
         Debug.DrawRay(transform.position, direction * wallRayLength * Vector2.right, wallHit.collider ? Color.magenta : Color.cyan);
 
@@ -298,5 +311,8 @@ public class MookBehaviour : MonoBehaviour
 
         var newCheckerX = _groundCheck.localPosition.x * -1;
         _groundCheck.localPosition = new(newCheckerX, _groundCheck.localPosition.y, _groundCheck.localPosition.z);
+
+        var newDamageZoneX = _attackDamageZone.localPosition.x * -1;
+        _attackDamageZone.localPosition = new(newDamageZoneX, _attackDamageZone.localPosition.y, _attackDamageZone.localPosition.z);
     }
 }

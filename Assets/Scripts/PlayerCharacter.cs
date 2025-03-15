@@ -275,13 +275,15 @@ public class PlayerCharacter : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") && !other.gameObject.CompareTag("PlayerSword"))
+        if (other.gameObject.CompareTag("PlayerSword") || _isAttacking)
         {
-            if (other.gameObject.CompareTag("Spikes") && _isAttacking)
-            {
-                return; // NOTE: Ignore attacking spikes, but makes "spike-invincible" during the animation
-            }
+            return; // NOTE: Ignore damage recieve when attacking
+        }
 
+        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") 
+            || other.gameObject.layer == LayerMask.NameToLayer("Enemy")
+            || other.gameObject.layer == LayerMask.NameToLayer("FlyingEnemy"))
+        {
             Vector2 collisionDirection = (transform.position - other.transform.position).normalized;
             TryRecieveDamage(collisionDirection);
         }
@@ -304,6 +306,8 @@ public class PlayerCharacter : MonoBehaviour
         {
             Debug.Log($"Player DIED {_currentHealth}");
         }
+
+        StopDash();
 
         StartCoroutine(ActivateDamageTakenTime(DamageInvulnerabilityTime));
         ApplyDamageKnockback(damageDir);

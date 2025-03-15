@@ -15,6 +15,8 @@ public class Projectile : MonoBehaviour
     private bool _isFading = false; // Flag to track if fading is active
     private float _fadeStartTime; // Time when fading started
 
+    private Transform _damageZone;
+
     private readonly float fadeDuration = 0.04f; // Duration for fading effect
 
     private void Awake()
@@ -29,6 +31,13 @@ public class Projectile : MonoBehaviour
         if (!_spriteTransform.TryGetComponent(out _spriteRenderer))
         {
             Debug.LogError($"{nameof(SpriteRenderer)} not found on child Sprite of {nameof(Projectile)}");
+        }
+
+        _damageZone = transform.Find("DamageZone");
+
+        if (_damageZone == null)
+        {
+            Debug.LogError($"DamageZone not found on child of {nameof(Projectile)}");
         }
     }
 
@@ -85,6 +94,7 @@ public class Projectile : MonoBehaviour
 
     private void Implode(Color color, float scale)
     {
+        _damageZone.gameObject.SetActive(false);
         _rb.simulated = false;
         _targetColor = color;
         _spriteTransform.localScale *= scale;
