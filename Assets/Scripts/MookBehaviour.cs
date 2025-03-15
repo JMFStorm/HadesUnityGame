@@ -10,10 +10,42 @@ public enum EnemyState
     NormalMoving,
 }
 
+public enum MookSoundGroups
+{
+    Attack,
+    Hit,
+    Walk
+}
+
+public enum MookVoiceGroups
+{
+    // Voices
+    Alert = 0,
+    Damage,
+    Death,
+    Idle,
+    Attack
+}
+
+
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(AudioSource))]
 public class MookBehaviour : MonoBehaviour
 {
+    AudioSource _enemySoundSource;
+    AudioSource _enemyVoiceSource;
+
+    public AudioClip[] AlertVoiceClips;
+    public AudioClip[] DamageVoiceClips;
+    public AudioClip[] DeathVoiceClips;
+    public AudioClip[] IdleVoiceClips;
+    public AudioClip[] AttackVoiceClips;
+
+    public AudioClip[] AttackSoundClips;
+    public AudioClip[] HitSoundClips;
+    public AudioClip[] WalkSoundClips;
+
     public float MovementSpeed = 1.5f;
     public float AggroSpeed = 3.0f;
     public float AttackRange = 2.0f;
@@ -76,6 +108,18 @@ public class MookBehaviour : MonoBehaviour
         if (!sprite.TryGetComponent(out _spriteRenderer))
         {
             Debug.LogError($"{nameof(SpriteRenderer)} not found on child of {nameof(MookBehaviour)}");
+        }
+
+        var audioSources = GetComponents<AudioSource>();
+
+        if (audioSources.Length != 2)
+        {
+            Debug.LogError($"Expected 2 {nameof(AudioSource)} components on {nameof(MookBehaviour)}, but found {audioSources.Length}");
+        }
+        else
+        {
+            _enemySoundSource = audioSources[0];
+            _enemyVoiceSource = audioSources[1];
         }
     }
 
@@ -149,6 +193,8 @@ public class MookBehaviour : MonoBehaviour
 
         TurnAround();
 
+        PlayVoiceSource(MookVoiceGroups.Idle);
+
         _state = EnemyState.NormalMoving;
     }
 
@@ -157,6 +203,9 @@ public class MookBehaviour : MonoBehaviour
         _state = EnemyState.Attacking;
 
         _attackDamageZone.gameObject.SetActive(true);
+
+        PlayVoiceSource(MookVoiceGroups.Attack);
+        PlaySoundSource(MookSoundGroups.Attack);
 
         yield return new WaitForSeconds(1.0f);
 
@@ -259,6 +308,8 @@ public class MookBehaviour : MonoBehaviour
         _spriteRenderer.color = Color.yellow;
         _state = EnemyState.Alert;
 
+        PlayVoiceSource(MookVoiceGroups.Alert);
+
         yield return new WaitForSeconds(0.5f);
 
         _spriteRenderer.color = Color.red;
@@ -280,7 +331,7 @@ public class MookBehaviour : MonoBehaviour
     {
         while (true)
         {
-            float moveTime = Random.Range(2f, 8f);
+            float moveTime = UnityEngine.Random.Range(2f, 8f);
             yield return new WaitForSeconds(moveTime);
 
             if (_state != EnemyState.NormalMoving)
@@ -288,7 +339,7 @@ public class MookBehaviour : MonoBehaviour
                 yield return null;
             }
 
-            float waitTime = Random.Range(2f, 4f);
+            float waitTime = UnityEngine.Random.Range(2f, 4f);
             yield return new WaitForSeconds(waitTime);
 
             if (_state != EnemyState.NormalMoving)
@@ -296,7 +347,7 @@ public class MookBehaviour : MonoBehaviour
                 yield return null;
             }
 
-            if (0.75f < Random.value)
+            if (0.75f < UnityEngine.Random.Range(0f, 1f))
             {
                 TurnAround();
             }
@@ -314,5 +365,53 @@ public class MookBehaviour : MonoBehaviour
 
         var newDamageZoneX = _attackDamageZone.localPosition.x * -1;
         _attackDamageZone.localPosition = new(newDamageZoneX, _attackDamageZone.localPosition.y, _attackDamageZone.localPosition.z);
+    }
+
+    void PlaySoundSource(MookSoundGroups soundType)
+    {
+        AudioClip[] clips = soundType switch
+        {
+            MookSoundGroups.Attack => AttackSoundClips,
+            MookSoundGroups.Hit => HitSoundClips,
+            MookSoundGroups.Walk => WalkSoundClips,
+            _ => new AudioClip[] { },
+        };
+
+        if (0 < clips.Length)
+        {
+            AudioClip usedClip = clips[UnityEngine.Random.Range(0, clips.Length)];
+
+            _enemySoundSource.clip = usedClip;
+            _enemySoundSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning($"Error playing PlaySoundSource in {nameof(MookBehaviour)}");
+        }
+    }
+
+    void PlayVoiceSource(MookVoiceGroups soundType)
+    {
+        AudioClip[] clips = soundType switch
+        {
+            MookVoiceGroups.Alert => AlertVoiceClips,
+            MookVoiceGroups.Damage => DamageVoiceClips,
+            MookVoiceGroups.Death => DeathVoiceClips,
+            MookVoiceGroups.Idle => IdleVoiceClips,
+            MookVoiceGroups.Attack => AttackVoiceClips,
+            _ => new AudioClip[] { },
+        };
+
+        if (0 < clips.Length)
+        {
+            AudioClip usedClip = clips[UnityEngine.Random.Range(0, clips.Length)];
+
+            _enemySoundSource.clip = usedClip;
+            _enemySoundSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning($"Error playing PlayVoiceSource in {nameof(MookBehaviour)}");
+        }
     }
 }

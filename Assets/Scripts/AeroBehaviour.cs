@@ -81,7 +81,6 @@ public class AeroBehaviour : MonoBehaviour
         }
 
         _groundLayerMask = LayerMask.GetMask("Ground");
-
         _targetDistance = Mathf.Sqrt(Mathf.Pow(KeepXDistanceFromTarget, 2) + Mathf.Pow(KeepXDistanceFromTarget, 2));
     }
 
