@@ -20,7 +20,6 @@ public enum MookSoundGroups
 
 public enum MookVoiceGroups
 {
-    // Voices
     Alert = 0,
     Damage,
     Death,
@@ -156,19 +155,18 @@ public class GroundEnemyBehaviour : MonoBehaviour
             DetectPlayerAndAggro();
         }
 
+        _spriteRenderer.flipX = !_facingLeft;
         _spriteRenderer.color = GetEnemyStateColor(_state);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone"))
-        {
-            Vector2 collisionDirection = (transform.position - other.transform.position);
+        Vector2 collisionDirection = (transform.position - other.transform.position);
 
-            if (other.gameObject.CompareTag("PlayerSword"))
-            {
-                RecieveDamage(collisionDirection);
-            }
+        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") && other.gameObject.CompareTag("PlayerSword")
+            || other.gameObject.layer == LayerMask.NameToLayer("EnvDamageZone"))
+        {
+            RecieveDamage(collisionDirection);
         }
     }
 
@@ -176,13 +174,10 @@ public class GroundEnemyBehaviour : MonoBehaviour
     {
         return state switch
         {
-            EnemyState.NormalMoving => Color.green,
             EnemyState.Alert => Color.yellow,
-            EnemyState.AttackMoving => Color.red,
-            EnemyState.Attacking => Color.blue,
-            EnemyState.Passive => Color.gray,
-            EnemyState.HitTaken => Color.cyan,
-            _ => throw new System.NotImplementedException(),
+            EnemyState.AttackMoving => Color.yellow,
+            EnemyState.HitTaken => Color.red,
+            _ => Color.white,
         };
     }
 
@@ -287,6 +282,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
     private IEnumerator ActivateDamageTakenTime(float duration)
     {
         TryPlayVoiceSource(MookVoiceGroups.Damage);
+        PlaySoundSource(MookSoundGroups.Hit);
         _state = EnemyState.HitTaken;
 
         yield return new WaitForSeconds(duration);
@@ -304,8 +300,8 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
     private void ApplyDamageKnockback(Vector2 knockbackDir)
     {
-        var knockbackDirForce = _rigidBody.mass * 4.5f * knockbackDir.normalized;
-        _rigidBody.AddForce(knockbackDirForce, ForceMode2D.Force);
+        var knockbackDirForce = new Vector2(knockbackDir.normalized.x, 6.5f);
+        _rigidBody.linearVelocity = knockbackDirForce;
     }
 
     CollisionTypes GetRaycastCollisions()
@@ -315,11 +311,11 @@ public class GroundEnemyBehaviour : MonoBehaviour
         const float groundRayLength = 0.25f;
         RaycastHit2D groundHit = Physics2D.Raycast(_groundCheck.position, Vector2.down, groundRayLength, _groundFloorLayer);
 
-        Debug.DrawRay(_groundCheck.position, Vector2.down * groundRayLength, Color.green);
+        float wallRayLength = (_enemyCollider.size.x / 2) + 0.5f;
+        RaycastHit2D wallHit = Physics2D.Raycast(_enemyCollider.bounds.center, Vector2.right * direction, wallRayLength, _wallLayer);
 
-        float wallRayLength = (_enemyCollider.size.x / 2) + 0.1f;
-        RaycastHit2D wallHit = Physics2D.Raycast(transform.position, Vector2.right * direction, wallRayLength, _wallLayer);
-        Debug.DrawRay(transform.position, direction * wallRayLength * Vector2.right, wallHit.collider ? Color.magenta : Color.cyan);
+        Debug.DrawRay(_groundCheck.position, Vector2.down * groundRayLength, Color.green);
+        Debug.DrawRay(_enemyCollider.bounds.center, direction * wallRayLength * Vector2.right, wallHit.collider ? Color.magenta : Color.cyan);
 
         if (wallHit.collider)
         {
@@ -350,7 +346,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
         Vector2 detectionBoxSize = new(detectionDistance, 1.5f);
 
         var detectionOffset = (detectionDistance * 0.25f) * Vector2.right;
-        Vector2 boxPosition = (Vector2)transform.position + (_facingLeft ? -detectionOffset : detectionOffset);
+        Vector2 boxPosition = (Vector2)_enemyCollider.bounds.center + (_facingLeft ? -detectionOffset : detectionOffset);
 
         Collider2D hit = Physics2D.OverlapBox(boxPosition, detectionBoxSize, 0f, _playerLayer);
 
@@ -428,7 +424,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
     {
         while (true)
         {
-            float moveTime = Random.Range(2f, 8f);
+            float moveTime = Random.Range(1.5f, 5f);
             yield return new WaitForSeconds(moveTime);
 
             if (_state != EnemyState.NormalMoving)
@@ -444,9 +440,9 @@ public class GroundEnemyBehaviour : MonoBehaviour
                 yield return null;
             }
 
-            if (0.75f < Random.Range(0f, 1f))
+            if (0.5f < Random.Range(0f, 1f))
             {
-                TurnAround();
+                TryPlayVoiceSource(MookVoiceGroups.Idle);
             }
         }
     }

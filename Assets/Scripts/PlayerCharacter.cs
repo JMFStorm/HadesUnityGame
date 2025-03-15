@@ -43,7 +43,7 @@ public class PlayerCharacter : MonoBehaviour
     private AudioSource _audioSource;
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
-    private BoxCollider2D _boxCollider;
+    private BoxCollider2D _physicsCollider;
     private BoxCollider2D _swordBoxCollider;
     private Collider2D _platformFallthrough;
     private Material _material;
@@ -100,7 +100,7 @@ public class PlayerCharacter : MonoBehaviour
             Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(PlayerCharacter)}");
         }
 
-        if (!TryGetComponent(out _boxCollider))
+        if (!TryGetComponent(out _physicsCollider))
         {
             Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(PlayerCharacter)}");
         }
@@ -155,8 +155,8 @@ public class PlayerCharacter : MonoBehaviour
     {
         _swordBoxCollider.gameObject.SetActive(false);
 
-        _originalSize = _boxCollider.size;
-        _originalOffset = _boxCollider.offset;
+        _originalSize = _physicsCollider.size;
+        _originalOffset = _physicsCollider.offset;
 
         _material.SetColor("_NewColor", new(0.21f, 0.25f, 0.3f));
 
@@ -188,15 +188,15 @@ public class PlayerCharacter : MonoBehaviour
 
         if (_isCrouching)
         {
-            _boxCollider.size = new Vector2(_originalSize.x, _originalSize.y * 0.5f);
-            _boxCollider.offset = new Vector2(_originalOffset.x, _originalOffset.y - 0.25f);
+            _physicsCollider.size = new Vector2(_originalSize.x, _originalSize.y * 0.5f);
+            _physicsCollider.offset = new Vector2(_originalOffset.x, _originalOffset.y - 0.25f);
 
             Debug.DrawRay(transform.position, Vector2.down * _platformFallthroughRaycastDistance, Color.red);
         }
         else
         {
-            _boxCollider.size = _originalSize;
-            _boxCollider.offset = _originalOffset;
+            _physicsCollider.size = _originalSize;
+            _physicsCollider.offset = _originalOffset;
         }
 
         Color color = _isGrounded ? Color.green : Color.red;
@@ -496,11 +496,11 @@ public class PlayerCharacter : MonoBehaviour
     {
         DebugLog($"DisableCollisionForTime start {platformCollider.name}");
 
-        Physics2D.IgnoreCollision(_boxCollider, platformCollider, true);
+        Physics2D.IgnoreCollision(_physicsCollider, platformCollider, true);
 
         yield return new WaitForSeconds(time);
 
-        Physics2D.IgnoreCollision(_boxCollider, platformCollider, false);
+        Physics2D.IgnoreCollision(_physicsCollider, platformCollider, false);
     }
 
     void StartDash()
