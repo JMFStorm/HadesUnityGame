@@ -255,7 +255,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         _attackDamageZone.gameObject.SetActive(true);
 
-        TryPlayVoiceSource(MookVoiceGroups.Attack, true);
+        TryPlayVoiceSource(MookVoiceGroups.Attack);
         TryPlaySoundSource(MookSoundGroups.Attack);
 
         yield return new WaitForSeconds(0.20f);
@@ -265,11 +265,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
             yield return null;
         }
 
-        if (_attackHitPlayer)
-        {
-            TryPlaySoundSource(MookSoundGroups.AttackHit);
-        }
-        else
+        if (!_attackHitPlayer)
         {
             TryPlaySoundSource(MookSoundGroups.AttackMiss);
         }

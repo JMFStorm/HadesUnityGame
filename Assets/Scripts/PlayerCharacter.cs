@@ -49,6 +49,7 @@ public class PlayerCharacter : MonoBehaviour
     private Material _material;
     private TextMeshPro _floatingText;
     private GameUI _gameUI;
+    private GameState _gameState;
 
     private Vector2 _groundCheckSize = new(0.5f, 0.25f);
     private Vector2 _originalSize;
@@ -148,6 +149,13 @@ public class PlayerCharacter : MonoBehaviour
         if (_gameUI == null)
         {
             Debug.LogError($"{nameof(GameUI)} not found on {nameof(PlayerCharacter)}");
+        }
+
+        _gameState = FindFirstObjectByType<GameState>();
+
+        if (_gameState == null)
+        {
+            Debug.LogError($"{nameof(GameState)} not found on {nameof(PlayerCharacter)}");
         }
     }
 
@@ -280,8 +288,7 @@ public class PlayerCharacter : MonoBehaviour
             return; // NOTE: Ignore damage recieve when attacking
         }
 
-        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone")
-            || other.gameObject.layer == LayerMask.NameToLayer("EnvDamageZone"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") || other.gameObject.layer == LayerMask.NameToLayer("EnvDamageZone"))
         {
             Vector2 collisionDirection = (transform.position - other.transform.position).normalized;
             TryRecieveDamage(collisionDirection);
@@ -452,7 +459,7 @@ public class PlayerCharacter : MonoBehaviour
 
         if (_isAtDoorwayExit && !_isCrouching && _isGrounded && Input.GetButtonDown("Up"))
         {
-            GameState.Instance.LoadNextLevel();
+            _gameState.LoadNextLevel();
         }
     }
 
@@ -558,9 +565,14 @@ public class PlayerCharacter : MonoBehaviour
             _audioSource.clip = _audioClips[index];
             _audioSource.Play();
         }
-        else
+    }
+
+    void PlayDamageSound(AudioClip clip)
+    {
+        if (clip != null)
         {
-            Debug.LogWarning($"Error playing Player sound index {index}. {nameof(AudioSource)}, {nameof(AudioClip)}, or the specified sound is not assigned.");
+            _audioSource.clip = clip;
+            _audioSource.Play();
         }
     }
 

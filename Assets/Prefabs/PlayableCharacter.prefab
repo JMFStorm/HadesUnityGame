@@ -348,6 +348,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c7bee8536862cd74594cd4232d27826e, type: 3}
   - {fileID: 8300000, guid: 0fce7e4723ab6ff43aa729ce14021fd5, type: 3}
   GroundCheck: {fileID: 8886047964763647662}
+  _gruntHit: {fileID: 8300000, guid: 947540a8c8ac8864ba9c13681016e7f9, type: 3}
+  _mookHit: {fileID: 8300000, guid: db0ab9fee56409941a5f28d73b316080, type: 3}
   GroundCollisionLayer:
     serializedVersion: 2
     m_Bits: 4416

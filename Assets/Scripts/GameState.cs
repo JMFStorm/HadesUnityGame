@@ -4,8 +4,6 @@ using UnityEngine.Rendering.Universal;
 
 public class GameState : MonoBehaviour
 {
-    public static GameState Instance { get; private set; }
-
     public List<Level> GameLevels = new();
 
     public PlayerCharacter PlayerPrefab;
@@ -23,16 +21,6 @@ public class GameState : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-
         var bgRenderer = transform.Find("BackgroundRenderer");
 
         if (bgRenderer == null)
