@@ -35,6 +35,7 @@ public class AeroBehaviour : MonoBehaviour
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
     private Transform _attackTarget; // Reference to the player's transform
+    private Transform _enemyDamageZone;
     private BoxCollider2D _boxCollider;
     private AudioSource _audioSource;
     private MainCamera _mainCamera;
@@ -78,6 +79,13 @@ public class AeroBehaviour : MonoBehaviour
         if (!TryGetComponent(out _audioSource))
         {
             Debug.LogError($"{nameof(AudioSource)} not found on {nameof(AeroBehaviour)}");
+        }
+
+        _enemyDamageZone = transform.Find("EnemyDamageZone");
+
+        if (_enemyDamageZone == null)
+        {
+            Debug.LogError($"EnemyDamageZone not found on {nameof(AeroBehaviour)}");
         }
 
         _groundLayerMask = LayerMask.GetMask("Ground");
@@ -157,8 +165,6 @@ public class AeroBehaviour : MonoBehaviour
         _lastShotTime = Time.time;
     }
 
-    static int counter1 = 0;
-
     private IEnumerator CheckRespawnLocation()
     {
         while (_hasGivenUp)
@@ -167,8 +173,6 @@ public class AeroBehaviour : MonoBehaviour
             {
                 yield break;
             }
-
-            Debug.Log($"Out of range, checking respawn {++counter1}");
 
             var isEnemyVisible = _mainCamera.IsWorldPositionVisible(transform.position);
             var isSpawnVisible = _mainCamera.IsWorldPositionVisible(_initialSpawnPosition);
@@ -262,7 +266,7 @@ public class AeroBehaviour : MonoBehaviour
         if (_currentHealth <= 0)
         {
             _isDead = true;
-            StartCoroutine(ActivateDeathAndDestroy());
+            ActivateDeathAndDestroy();
         }
         else
         {
@@ -282,14 +286,13 @@ public class AeroBehaviour : MonoBehaviour
         _spriteRenderer.color = Color.white;
     }
 
-    private IEnumerator ActivateDeathAndDestroy()
+    void ActivateDeathAndDestroy()
     {
         PlaySound(AeroSounds.Death);
         _spriteRenderer.enabled = false;
+        _enemyDamageZone.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(1.0f);
-
-        Destroy(gameObject);
+        Destroy(gameObject, 1.5f);
     }
 
     private void ApplyDamageKnockback(Vector2 knockbackDir)

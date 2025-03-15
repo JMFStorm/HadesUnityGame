@@ -203,7 +203,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 384
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -340,7 +340,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2583185495068856640}
   - component: {fileID: 4168831224152326850}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: EnemyDamageZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}

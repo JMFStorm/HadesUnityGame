@@ -8,6 +8,7 @@ public enum EnemyState
     AttackMoving,
     Attacking,
     NormalMoving,
+    HitTaken
 }
 
 public enum MookSoundGroups
@@ -31,7 +32,7 @@ public enum MookVoiceGroups
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(AudioSource))]
-public class MookBehaviour : MonoBehaviour
+public class GroundEnemyBehaviour : MonoBehaviour
 {
     AudioSource _enemySoundSource;
     AudioSource _enemyVoiceSource;
@@ -49,9 +50,13 @@ public class MookBehaviour : MonoBehaviour
     public float MovementSpeed = 1.5f;
     public float AggroSpeed = 3.0f;
     public float AttackRange = 2.0f;
+    public float DamageStunTime = 0.5f;
+
+    public int MaxHealth = 4;
 
     private Transform _groundCheck;
     private Transform _attackDamageZone;
+    private Transform _enemyDamageZone;
     private BoxCollider2D _enemyCollider;
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
@@ -64,7 +69,10 @@ public class MookBehaviour : MonoBehaviour
 
     private EnemyState _state;
 
+    private float _lastVoiceTime = 0;
+    private int _currentHealth = 4;
     private bool _facingLeft = false;
+    private bool _isDead = false;
 
     private enum CollisionTypes
     {
@@ -77,44 +85,51 @@ public class MookBehaviour : MonoBehaviour
     {
         if (!TryGetComponent(out _enemyCollider))
         {
-            Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(MookBehaviour)}");
+            Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(GroundEnemyBehaviour)}");
         }
 
         if (!TryGetComponent(out _rigidBody))
         {
-            Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(MookBehaviour)}");
+            Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(GroundEnemyBehaviour)}");
         }
 
         _groundFloorLayer = LayerMask.GetMask("Ground", "Platform");
-        _wallLayer = LayerMask.GetMask("Ground", "DamageZone");
+        _wallLayer = LayerMask.GetMask("Ground", "EnvDamageZone");
         _playerLayer = LayerMask.GetMask("Character");
 
         _groundCheck = transform.Find("GroundCheck");
 
         if (_groundCheck == null)
         {
-            Debug.LogError($"GroundCheck not found on {nameof(MookBehaviour)}");
+            Debug.LogError($"GroundCheck not found on {nameof(GroundEnemyBehaviour)}");
         }
 
         _attackDamageZone = transform.Find("AttackDamageZone");
 
         if (_attackDamageZone == null)
         {
-            Debug.LogError($"_damageZoneTransform not found on {nameof(MookBehaviour)}");
+            Debug.LogError($"_damageZoneTransform not found on {nameof(GroundEnemyBehaviour)}");
+        }
+
+        _enemyDamageZone = transform.Find("EnemyDamageZone");
+
+        if (_enemyDamageZone == null)
+        {
+            Debug.LogError($"EnemyDamageZone not found on {nameof(AeroBehaviour)}");
         }
 
         var sprite = transform.Find("Sprite");
 
         if (!sprite.TryGetComponent(out _spriteRenderer))
         {
-            Debug.LogError($"{nameof(SpriteRenderer)} not found on child of {nameof(MookBehaviour)}");
+            Debug.LogError($"{nameof(SpriteRenderer)} not found on child of {nameof(GroundEnemyBehaviour)}");
         }
 
         var audioSources = GetComponents<AudioSource>();
 
         if (audioSources.Length != 2)
         {
-            Debug.LogError($"Expected 2 {nameof(AudioSource)} components on {nameof(MookBehaviour)}, but found {audioSources.Length}");
+            Debug.LogError($"Expected 2 {nameof(AudioSource)} components on {nameof(GroundEnemyBehaviour)}, but found {audioSources.Length}");
         }
         else
         {
@@ -125,6 +140,7 @@ public class MookBehaviour : MonoBehaviour
 
     void Start()
     {
+        _currentHealth = MaxHealth;
         _attackDamageZone.gameObject.SetActive(false);
         _state = EnemyState.NormalMoving;
 
@@ -133,12 +149,27 @@ public class MookBehaviour : MonoBehaviour
 
     void Update()
     {
-        TryNormalMovement();
-        TryAggroMovement();
-
-        DetectPlayerAndAggro();
+        if (!_isDead)
+        {
+            TryNormalMovement();
+            TryAggroMovement();
+            DetectPlayerAndAggro();
+        }
 
         _spriteRenderer.color = GetEnemyStateColor(_state);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone"))
+        {
+            Vector2 collisionDirection = (transform.position - other.transform.position);
+
+            if (other.gameObject.CompareTag("PlayerSword"))
+            {
+                RecieveDamage(collisionDirection);
+            }
+        }
     }
 
     Color GetEnemyStateColor(EnemyState state)
@@ -150,6 +181,7 @@ public class MookBehaviour : MonoBehaviour
             EnemyState.AttackMoving => Color.red,
             EnemyState.Attacking => Color.blue,
             EnemyState.Passive => Color.gray,
+            EnemyState.HitTaken => Color.cyan,
             _ => throw new System.NotImplementedException(),
         };
     }
@@ -173,8 +205,6 @@ public class MookBehaviour : MonoBehaviour
 
             if (collisions == CollisionTypes.GroundEdge || collisions == CollisionTypes.WallHit)
             {
-                Debug.Log("Aggro ended on collision " + Time.time);
-
                 // NOTE: End aggro on collisions
                 StartCoroutine(ResetAndTurnAround(1.5f));
                 return;
@@ -187,13 +217,19 @@ public class MookBehaviour : MonoBehaviour
 
     IEnumerator ResetAndTurnAround(float passiveLength)
     {
+        Debug.Log("Set to passive, ResetAndTurnAround()");
         _state = EnemyState.Passive;
 
         yield return new WaitForSeconds(passiveLength);
 
+        if (_state != EnemyState.Passive)
+        {
+            yield return null;
+        }
+
         TurnAround();
 
-        PlayVoiceSource(MookVoiceGroups.Idle);
+        TryPlayVoiceSource(MookVoiceGroups.Idle);
 
         _state = EnemyState.NormalMoving;
     }
@@ -204,16 +240,72 @@ public class MookBehaviour : MonoBehaviour
 
         _attackDamageZone.gameObject.SetActive(true);
 
-        PlayVoiceSource(MookVoiceGroups.Attack);
+        TryPlayVoiceSource(MookVoiceGroups.Attack);
         PlaySoundSource(MookSoundGroups.Attack);
 
         yield return new WaitForSeconds(1.0f);
+
+        if (_state != EnemyState.Attacking)
+        {
+            yield return null;
+        }
 
         _spriteRenderer.color = Color.white;
         _state = EnemyState.NormalMoving;
         _attackDamageZone.gameObject.SetActive(false);
 
         StartCoroutine(MovementLoop());
+    }
+
+    void RecieveDamage(Vector2 damageDir)
+    {
+        if (_state == EnemyState.HitTaken)
+        {
+            return;
+        }
+
+        ApplyDamageKnockback(damageDir);
+
+        _currentHealth -= 1;
+
+        if (_currentHealth <= 0)
+        {
+            _isDead = true;
+            ActivateDeathAndDestroy();
+        }
+        else
+        {
+            if (!_facingLeft && 0f < damageDir.x || _facingLeft && damageDir.x < 0f)
+            {
+                TurnAround();
+            }
+
+            StartCoroutine(ActivateDamageTakenTime(DamageStunTime));
+        }
+    }
+
+    private IEnumerator ActivateDamageTakenTime(float duration)
+    {
+        TryPlayVoiceSource(MookVoiceGroups.Damage);
+        _state = EnemyState.HitTaken;
+
+        yield return new WaitForSeconds(duration);
+
+        _state = EnemyState.NormalMoving;
+    }
+
+    void ActivateDeathAndDestroy()
+    {
+        TryPlayVoiceSource(MookVoiceGroups.Death, true);
+        _enemyDamageZone.gameObject.SetActive(false);
+        _spriteRenderer.enabled = false;
+        Destroy(gameObject, 2.5f);
+    }
+
+    private void ApplyDamageKnockback(Vector2 knockbackDir)
+    {
+        var knockbackDirForce = _rigidBody.mass * 4.5f * knockbackDir.normalized;
+        _rigidBody.AddForce(knockbackDirForce, ForceMode2D.Force);
     }
 
     CollisionTypes GetRaycastCollisions()
@@ -308,9 +400,14 @@ public class MookBehaviour : MonoBehaviour
         _spriteRenderer.color = Color.yellow;
         _state = EnemyState.Alert;
 
-        PlayVoiceSource(MookVoiceGroups.Alert);
+        TryPlayVoiceSource(MookVoiceGroups.Alert);
 
         yield return new WaitForSeconds(0.5f);
+
+        if (_state != EnemyState.Alert)
+        {
+            yield return null;
+        }
 
         _spriteRenderer.color = Color.red;
         _state = EnemyState.AttackMoving;
@@ -331,7 +428,7 @@ public class MookBehaviour : MonoBehaviour
     {
         while (true)
         {
-            float moveTime = UnityEngine.Random.Range(2f, 8f);
+            float moveTime = Random.Range(2f, 8f);
             yield return new WaitForSeconds(moveTime);
 
             if (_state != EnemyState.NormalMoving)
@@ -339,7 +436,7 @@ public class MookBehaviour : MonoBehaviour
                 yield return null;
             }
 
-            float waitTime = UnityEngine.Random.Range(2f, 4f);
+            float waitTime = Random.Range(2f, 4f);
             yield return new WaitForSeconds(waitTime);
 
             if (_state != EnemyState.NormalMoving)
@@ -347,7 +444,7 @@ public class MookBehaviour : MonoBehaviour
                 yield return null;
             }
 
-            if (0.75f < UnityEngine.Random.Range(0f, 1f))
+            if (0.75f < Random.Range(0f, 1f))
             {
                 TurnAround();
             }
@@ -357,8 +454,6 @@ public class MookBehaviour : MonoBehaviour
     void TurnAround()
     {
         _facingLeft = !_facingLeft;
-
-        Debug.Log("Enemy turn around" + Time.time);
 
         var newCheckerX = _groundCheck.localPosition.x * -1;
         _groundCheck.localPosition = new(newCheckerX, _groundCheck.localPosition.y, _groundCheck.localPosition.z);
@@ -379,19 +474,26 @@ public class MookBehaviour : MonoBehaviour
 
         if (0 < clips.Length)
         {
-            AudioClip usedClip = clips[UnityEngine.Random.Range(0, clips.Length)];
+            AudioClip usedClip = clips[Random.Range(0, clips.Length)];
 
             _enemySoundSource.clip = usedClip;
             _enemySoundSource.Play();
         }
         else
         {
-            Debug.LogWarning($"Error playing PlaySoundSource in {nameof(MookBehaviour)}");
+            Debug.LogWarning($"Error playing PlaySoundSource in {nameof(GroundEnemyBehaviour)}");
         }
     }
 
-    void PlayVoiceSource(MookVoiceGroups soundType)
+    void TryPlayVoiceSource(MookVoiceGroups soundType, bool forceSound = false)
     {
+        var newLastVoiceTime = Time.time;
+
+        if (!forceSound && Mathf.Abs(_lastVoiceTime - newLastVoiceTime) < 1.0f)
+        {
+            return;
+        }
+
         AudioClip[] clips = soundType switch
         {
             MookVoiceGroups.Alert => AlertVoiceClips,
@@ -404,14 +506,16 @@ public class MookBehaviour : MonoBehaviour
 
         if (0 < clips.Length)
         {
-            AudioClip usedClip = clips[UnityEngine.Random.Range(0, clips.Length)];
+            AudioClip usedClip = clips[Random.Range(0, clips.Length)];
 
             _enemySoundSource.clip = usedClip;
             _enemySoundSource.Play();
+
+            _lastVoiceTime = newLastVoiceTime;
         }
         else
         {
-            Debug.LogWarning($"Error playing PlayVoiceSource in {nameof(MookBehaviour)}");
+            Debug.LogWarning($"Error playing PlayVoiceSource in {nameof(GroundEnemyBehaviour)}");
         }
     }
 }

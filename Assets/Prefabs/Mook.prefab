@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3597292844046712071}
   - component: {fileID: 1929681175584674419}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: EnemyDamageZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -401,9 +401,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AlertVoiceClips:
   - {fileID: 8300000, guid: c7b90ca61c564694ca9c3ad4bf7ef118, type: 3}
-  - {fileID: 8300000, guid: 0dbd97560bcf24f4dbaf06a56318970e, type: 3}
-  DamageVoiceClips: []
-  DeathVoiceClips: []
+  DamageVoiceClips:
+  - {fileID: 8300000, guid: 35954d21028392140b09c96bd0cfac81, type: 3}
+  - {fileID: 8300000, guid: a7e51ec55a844c549872273410c969fd, type: 3}
+  DeathVoiceClips:
+  - {fileID: 8300000, guid: b19b6604afe6d574f8264540a91bbdd8, type: 3}
+  - {fileID: 8300000, guid: 337f0994de655c24e977f58ef803a7ff, type: 3}
   IdleVoiceClips:
   - {fileID: 8300000, guid: 72e552b9b98dc7443aa8afd5644be728, type: 3}
   - {fileID: 8300000, guid: c352f965322117b4d9ae202c170bf938, type: 3}
@@ -411,11 +414,16 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0dbd97560bcf24f4dbaf06a56318970e, type: 3}
   AttackSoundClips:
   - {fileID: 8300000, guid: 24f65634b5d1b0143a4f0491683d2ce1, type: 3}
-  HitSoundClips: []
-  WalkSoundClips: []
+  HitSoundClips:
+  - {fileID: 8300000, guid: db0ab9fee56409941a5f28d73b316080, type: 3}
+  WalkSoundClips:
+  - {fileID: 8300000, guid: ae6d4cd1c095b4342820d48a195eb987, type: 3}
+  - {fileID: 8300000, guid: 7a1ae42f588ec4348baeccf84049d472, type: 3}
   MovementSpeed: 1.5
-  AggroSpeed: 3
-  AttackRange: 2
+  AggroSpeed: 2.5
+  AttackRange: 1.5
+  DamageStunTime: 0.5
+  MaxHealth: 4
 --- !u!82 &7115644937673184071
 AudioSource:
   m_ObjectHideFlags: 0

@@ -280,9 +280,8 @@ public class PlayerCharacter : MonoBehaviour
             return; // NOTE: Ignore damage recieve when attacking
         }
 
-        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") 
-            || other.gameObject.layer == LayerMask.NameToLayer("Enemy")
-            || other.gameObject.layer == LayerMask.NameToLayer("FlyingEnemy"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone")
+            || other.gameObject.layer == LayerMask.NameToLayer("EnvDamageZone"))
         {
             Vector2 collisionDirection = (transform.position - other.transform.position).normalized;
             TryRecieveDamage(collisionDirection);
