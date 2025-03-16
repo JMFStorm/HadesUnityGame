@@ -195,8 +195,8 @@ public class PlayerCharacter : MonoBehaviour
 
         if (_isCrouching)
         {
-            _physicsCollider.size = new Vector2(_originalSize.x, _originalSize.y * 0.5f);
-            _physicsCollider.offset = new Vector2(_originalOffset.x, _originalOffset.y - 0.25f);
+            _physicsCollider.size = new Vector2(_originalSize.x, _originalSize.y * 0.4f);
+            _physicsCollider.offset = new Vector2(_originalOffset.x, _originalOffset.y - 0.3f);
 
             Debug.DrawRay(transform.position, Vector2.down * _platformFallthroughRaycastDistance, Color.red);
         }
