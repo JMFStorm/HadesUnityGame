@@ -59,7 +59,6 @@ public class GroundEnemyBehaviour : MonoBehaviour
     public float AggroSpeed = 3.0f;
     public float AttackRange = 2.0f;
     public float DamageStunTime = 0.5f;
-    public float AttackChargeTime = 0.8f;
     public float ShadowOutlineThreshold = 0.1f;
     public float NormalWalkFrequency = 0.65f;
     public float AggroWalkFrequency = 0.45f;
@@ -94,7 +93,13 @@ public class GroundEnemyBehaviour : MonoBehaviour
     private bool _isDead = false;
     private bool _attackHitPlayer = false;
 
+    private float _previousAlert = float.MinValue;
+    private float _lastAttackTime = float.MinValue;
+
+    private readonly float _attackCooldown = 1.5f;
+
     private Coroutine _currentWalkCycleCoroutine = null;
+    private Coroutine _currentIdleVoiceCoroutine = null;
 
     private enum CollisionTypes
     {
@@ -224,6 +229,15 @@ public class GroundEnemyBehaviour : MonoBehaviour
             {
                 StopWalkCycleAudio();
             }
+
+            if (_state == EnemyState.Passive || _state == EnemyState.NormalMoving)
+            {
+                TryInitIdleVoiceLoop();
+            }
+            else
+            {
+                StopIdleVoiceLoop();
+            }
         }
 
         _spriteRenderer.flipX = !_facingLeft;
@@ -258,6 +272,36 @@ public class GroundEnemyBehaviour : MonoBehaviour
         };
     }
 
+    void StopIdleVoiceLoop()
+    {
+        if (_currentIdleVoiceCoroutine != null)
+        {
+            StopCoroutine(_currentIdleVoiceCoroutine);
+            _currentIdleVoiceCoroutine = null;
+        }
+    }
+
+    void TryInitIdleVoiceLoop()
+    {
+        if (_currentIdleVoiceCoroutine == null)
+        {
+            _currentIdleVoiceCoroutine = StartCoroutine(IdleVoiceLoop());
+        }
+    }
+
+    IEnumerator IdleVoiceLoop()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(3f, 7f));
+
+            if (0.50f < Random.Range(0f, 1f))
+            {
+                TryPlayVoiceSource(EnemyVoiceGroups.Idle);
+            }
+        }
+    }
+
     void StopWalkCycleAudio()
     {
         if (_currentWalkCycleCoroutine != null)
@@ -271,7 +315,6 @@ public class GroundEnemyBehaviour : MonoBehaviour
     {
         if (_currentWalkCycleCoroutine == null)
         {
-            Debug.Log("StartCoroutine");
             _currentWalkCycleCoroutine = StartCoroutine(WalkCycleAudio(walkFrequency));
         }
     }
@@ -310,6 +353,8 @@ public class GroundEnemyBehaviour : MonoBehaviour
         Debug.Log("Set to passive, ResetAndTurnAround()");
         _state = EnemyState.Passive;
 
+        StopWalkCycleAudio();
+
         yield return new WaitForSeconds(passiveLength);
 
         if (_state != EnemyState.Passive)
@@ -319,11 +364,6 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         TurnAround();
 
-        if (0.50f < Random.Range(0f, 1f))
-        {
-            TryPlayVoiceSource(EnemyVoiceGroups.Idle);
-        }
-
         _state = EnemyState.NormalMoving;
     }
 
@@ -332,10 +372,18 @@ public class GroundEnemyBehaviour : MonoBehaviour
         _state = EnemyState.Attacking;
         _attackHitPlayer = false;
 
-        TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
         TryPlaySoundSource(EnemySoundGroups.AttackCharge);
 
-        yield return new WaitForSeconds(AttackChargeTime);
+        yield return new WaitForSeconds(0.5f);
+
+        if (_isDead)
+        {
+            yield return null;
+        }
+
+        TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
+
+        yield return new WaitForSeconds(1.0f);
 
         if (_isDead)
         {
@@ -347,7 +395,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
         TryPlayVoiceSource(EnemyVoiceGroups.Attack);
         TryPlaySoundSource(EnemySoundGroups.Attack);
 
-        yield return new WaitForSeconds(0.20f);
+        yield return new WaitForSeconds(0.30f);
 
         if (_state != EnemyState.Attacking || _isDead)
         {
@@ -362,6 +410,8 @@ public class GroundEnemyBehaviour : MonoBehaviour
         _spriteRenderer.color = Color.white;
         _state = EnemyState.NormalMoving;
         _attackDamageZone.gameObject.SetActive(false);
+
+        _lastAttackTime = Time.time;
     }
 
     void RecieveDamage(Vector2 damageDir)
@@ -459,6 +509,12 @@ public class GroundEnemyBehaviour : MonoBehaviour
             return;
         }
 
+        if (Mathf.Abs(Time.time - _lastAttackTime) < _attackCooldown)
+        {
+            Debug.Log("Attack cooldown " + Time.time);
+            return;
+        }
+
         const float detectionDistance = 6.0f;
         Vector2 detectionBoxSize = new(detectionDistance, 1.5f);
 
@@ -523,7 +579,14 @@ public class GroundEnemyBehaviour : MonoBehaviour
         _spriteRenderer.color = Color.yellow;
         _state = EnemyState.Alert;
 
-        TryPlayVoiceSource(EnemyVoiceGroups.Alert);
+        const float alertTimeBetween = 12f;
+        var newTime = Time.time;
+
+        if (alertTimeBetween < Mathf.Abs(newTime - _previousAlert))
+        {
+            TryPlayVoiceSource(EnemyVoiceGroups.Alert, true);
+            _previousAlert = newTime;
+        }
 
         yield return new WaitForSeconds(0.5f);
 
