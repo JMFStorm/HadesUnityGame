@@ -404,10 +404,14 @@ public class GroundEnemyBehaviour : MonoBehaviour
     void ActivateDeathAndDestroy()
     {
         _isDead = true;
-        _smokeEffect.Stop();
-        TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
-        _enemyDamageZone.gameObject.SetActive(false);
         _spriteRenderer.enabled = false;
+
+        _enemyDamageZone.gameObject.SetActive(false);
+        _smokeEffect.Stop();
+
+        StopWalkCycleAudio();
+        TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
+
         Destroy(gameObject, 2.5f);
     }
 

@@ -6,8 +6,10 @@ using System.Collections;
 public class GameUI : MonoBehaviour
 {
     public List<Image> HeartSlots;
+
     public Sprite FullHeartSprite;
     public Sprite EmptyHeartSprite;
+    public Sprite ReinforcedHeartSprite;
 
     public List<Image> DashSlots;
     public Sprite DashSprite;
@@ -17,9 +19,13 @@ public class GameUI : MonoBehaviour
     private int _currentHealth;
     private int _currentStamina;
 
+    public readonly int DefaultPlayerHealth = 3;
+    public readonly int MaxPlayerHealth = 5;
+    public readonly int MaxDashes = 2;
+
     void Start()
     {
-        _currentHealth = 3;
+        _currentHealth = DefaultPlayerHealth;
         UpdateUI();
     }
 
@@ -47,19 +53,32 @@ public class GameUI : MonoBehaviour
 
     private void UpdateUI()
     {
-        for (int i = 0; i < HeartSlots.Count; i++)
+        for (int i = 0; i < MaxPlayerHealth; i++)
         {
-            if (i < _currentHealth)
+            HeartSlots[i].enabled = true;
+
+            if (i < DefaultPlayerHealth)
             {
-                HeartSlots[i].sprite = FullHeartSprite;
+                if (i < _currentHealth)
+                {
+                    HeartSlots[i].sprite = FullHeartSprite;
+                }
+                else
+                {
+                    HeartSlots[i].sprite = EmptyHeartSprite;
+                }
+            }
+            else if (DefaultPlayerHealth < _currentHealth && i < _currentHealth)
+            {
+                HeartSlots[i].sprite = ReinforcedHeartSprite;
             }
             else
             {
-                HeartSlots[i].sprite = EmptyHeartSprite;
+                HeartSlots[i].enabled = false;
             }
         }
 
-        for (int i = 0; i < DashSlots.Count; i++)
+        for (int i = 0; i < MaxDashes; i++)
         {
             if (i < _currentStamina)
             {

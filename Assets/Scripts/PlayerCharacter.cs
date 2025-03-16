@@ -38,7 +38,6 @@ public class PlayerCharacter : MonoBehaviour
     public float DamageInvulnerabilityTime = 3.0f;
 
     public bool DebugLogging = false;
-
     public int MaxDashes = 2;
 
     private AudioSource _audioSource;
@@ -76,8 +75,6 @@ public class PlayerCharacter : MonoBehaviour
     private float _dashRegenTimer = 0f;
 
     private int _damageZoneLayer;
-
-    private readonly int _defaultPlayerHealth = 3;
 
     private readonly float _platformFallthroughRaycastDistance = 1.0f;
 
@@ -172,7 +169,7 @@ public class PlayerCharacter : MonoBehaviour
 
         ResetPlayerInnerState();
 
-        SetPlayerHealth(_defaultPlayerHealth);
+        SetPlayerHealth(_gameUI.DefaultPlayerHealth);
     }
 
     void Update()
@@ -345,7 +342,7 @@ public class PlayerCharacter : MonoBehaviour
         yield return new WaitForSeconds(2.5f);
 
         _gameState.RestartLevel();
-        SetPlayerHealth(_defaultPlayerHealth);
+        SetPlayerHealth(_gameUI.DefaultPlayerHealth);
 
         _gameUI.FadeIn(2.0f);
     }
@@ -547,14 +544,19 @@ public class PlayerCharacter : MonoBehaviour
 
     public void SetPlayerHealth(int health)
     {
-        if (health < 0)
+        if (health <= 0)
         {
+            Debug.LogWarning($"Unexpected route to player death from SetPlayerHealth().");
+
             health = 0;
+            StartCoroutine(PlayerDieAndLevelRestart());
         }
 
-        if (_defaultPlayerHealth < health)
+        if (_gameUI.MaxPlayerHealth < health)
         {
-            health = _defaultPlayerHealth;
+            Debug.LogWarning($"SetPlayerHealth() called with {health}, but {_gameUI.MaxPlayerHealth} is max player health.");
+
+            health = _gameUI.MaxPlayerHealth;
         }
 
         _currentHealth = health;
