@@ -111,6 +111,7 @@ public class GameState : MonoBehaviour
         _mainCamera.SetCameraBoundaries(bl, tr);
         _mainCamera.SetDustFXStrength(GlobalLight.intensity * 0.6f);
         _mainCamera.SetFogFXLevel(_currentLevel.HeavyFog);
+        _mainCamera.SetVignetteIntensity(1.0f - GlobalLight.intensity);
 
         var levelEnter = _currentLevel.GetLevelEntrance();
 

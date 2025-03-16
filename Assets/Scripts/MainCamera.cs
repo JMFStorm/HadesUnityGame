@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class MainCamera : MonoBehaviour
 {
@@ -14,6 +16,8 @@ public class MainCamera : MonoBehaviour
     private ParticleSystem _dustParticleSystem;
     private SpriteRenderer _fogFXSpriteRenderer;
     private Camera _camera;
+
+    private Vignette _vignetteFX;
 
     private void Awake()
     {
@@ -31,6 +35,14 @@ public class MainCamera : MonoBehaviour
             Debug.LogError($"Did not find component FogFX {nameof(SpriteRenderer)} on {nameof(MainCamera)}");
         }
 
+        var vignetteFX = transform.Find("VignetteFX");
+        var volume = vignetteFX.GetComponent<Volume>();
+
+        if (!volume.profile.TryGet(out _vignetteFX))
+        {
+            Debug.LogError($"Did not find component _vignetteFX {nameof(Vignette)} on {nameof(MainCamera)}");
+        }
+
         if (!TryGetComponent(out _camera))
         {
             Debug.LogError($"{nameof(Camera)} not found on {nameof(MainCamera)}");
@@ -45,6 +57,30 @@ public class MainCamera : MonoBehaviour
         }
 
         FollowTheTarget();
+    }
+
+    public void SetVignetteIntensity(float intensity)
+    {
+        if (_vignetteFX != null)
+        {
+            const float min = 0.3f;
+            const float max = 0.6f;
+
+            if (intensity < min)
+            {
+                intensity = min;
+            }
+
+            if (max < intensity)
+            {
+                intensity = max;
+            }
+
+            var newValue = Mathf.Clamp01(intensity);
+            _vignetteFX.intensity.value = newValue;
+
+            Debug.Log($"Vignette set to intensity: {newValue}");
+        }
     }
 
     public bool IsWorldPositionVisible(Vector2 worldPosition)
