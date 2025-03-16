@@ -402,9 +402,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AlertVoiceClips:
   - {fileID: 8300000, guid: c7b90ca61c564694ca9c3ad4bf7ef118, type: 3}
-  DamageVoiceClips:
-  - {fileID: 8300000, guid: 35954d21028392140b09c96bd0cfac81, type: 3}
-  - {fileID: 8300000, guid: a7e51ec55a844c549872273410c969fd, type: 3}
+  DamageTakenVoiceClips: []
   DeathVoiceClips:
   - {fileID: 8300000, guid: b19b6604afe6d574f8264540a91bbdd8, type: 3}
   - {fileID: 8300000, guid: 337f0994de655c24e977f58ef803a7ff, type: 3}
@@ -416,7 +414,7 @@ MonoBehaviour:
   AttackChargeVoiceClips: []
   AttackSoundClips:
   - {fileID: 8300000, guid: 24f65634b5d1b0143a4f0491683d2ce1, type: 3}
-  HitSoundClips:
+  DamageTakenSoundClips:
   - {fileID: 8300000, guid: db0ab9fee56409941a5f28d73b316080, type: 3}
   WalkSoundClips:
   - {fileID: 8300000, guid: ae6d4cd1c095b4342820d48a195eb987, type: 3}
@@ -429,6 +427,8 @@ MonoBehaviour:
   DamageStunTime: 0.5
   AttackChargeTime: 0.8
   ShadowOutlineThreshold: 0.015
+  NormalWalkFrequency: 0.65
+  AggroWalkFrequency: 0.45
   IsShadowVariant: 0
   MaxHealth: 4
 --- !u!82 &7115644937673184071
@@ -453,9 +453,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 10
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -488,7 +488,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -550,9 +550,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 10
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -585,7 +585,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public enum EnemyState
 {
@@ -11,16 +12,16 @@ public enum EnemyState
     HitTaken
 }
 
-public enum MookSoundGroups
+public enum EnemySoundGroups
 {
     Attack,
-    AttackHit,
+    DamageTaken,
     AttackMiss,
     AttackCharge,
     Walk
 }
 
-public enum MookVoiceGroups
+public enum EnemyVoiceGroups
 {
     Alert = 0,
     Damage,
@@ -42,14 +43,14 @@ public class GroundEnemyBehaviour : MonoBehaviour
     AudioSource _enemyVoiceSource;
 
     public AudioClip[] AlertVoiceClips;
-    public AudioClip[] DamageVoiceClips;
+    public AudioClip[] DamageTakenVoiceClips;
     public AudioClip[] DeathVoiceClips;
     public AudioClip[] IdleVoiceClips;
     public AudioClip[] AttackVoiceClips;
     public AudioClip[] AttackChargeVoiceClips;
 
     public AudioClip[] AttackSoundClips;
-    public AudioClip[] HitSoundClips;
+    public AudioClip[] DamageTakenSoundClips;
     public AudioClip[] WalkSoundClips;
     public AudioClip[] AttackMissSoundClips;
     public AudioClip[] AttackChargeSoundClips;
@@ -60,10 +61,13 @@ public class GroundEnemyBehaviour : MonoBehaviour
     public float DamageStunTime = 0.5f;
     public float AttackChargeTime = 0.8f;
     public float ShadowOutlineThreshold = 0.1f;
+    public float NormalWalkFrequency = 0.65f;
+    public float AggroWalkFrequency = 0.45f;
 
     public bool IsShadowVariant = false;
-
     public int MaxHealth = 4;
+
+    public const float MaxSoundDistance = 14f;
 
     private Transform _groundCheck;
     private Transform _attackDamageZone;
@@ -75,6 +79,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
     private Material _material;
     private ParticleSystem _smokeEffect;
     private PlayerCharacter _playerCharacter;
+    private MainCamera _mainCamera;
 
     private Vector2 _aggroTarget;
 
@@ -88,6 +93,8 @@ public class GroundEnemyBehaviour : MonoBehaviour
     private bool _facingLeft = false;
     private bool _isDead = false;
     private bool _attackHitPlayer = false;
+
+    private Coroutine _currentWalkCycleCoroutine = null;
 
     private enum CollisionTypes
     {
@@ -167,6 +174,13 @@ public class GroundEnemyBehaviour : MonoBehaviour
         {
             Debug.LogError($"{nameof(PlayerCharacter)} not found on {nameof(GroundEnemyBehaviour)}");
         }
+
+        _mainCamera = FindFirstObjectByType<MainCamera>();
+
+        if (_mainCamera == null)
+        {
+            Debug.LogError($"{nameof(MainCamera)} not found on {nameof(PlayerCharacter)}");
+        }
     }
 
     void Start()
@@ -188,8 +202,6 @@ public class GroundEnemyBehaviour : MonoBehaviour
         _currentHealth = MaxHealth;
         _attackDamageZone.gameObject.SetActive(false);
         _state = EnemyState.NormalMoving;
-
-        StartCoroutine(MovementLoop());
     }
 
     void Update()
@@ -199,6 +211,19 @@ public class GroundEnemyBehaviour : MonoBehaviour
             TryNormalMovement();
             TryAggroMovement();
             DetectPlayerAndAggro();
+
+            if (_state == EnemyState.NormalMoving)
+            {
+                TryInitWalkCycleAudio(NormalWalkFrequency);
+            }
+            else if (_state == EnemyState.AttackMoving)
+            {
+                TryInitWalkCycleAudio(AggroWalkFrequency);
+            }
+            else
+            {
+                StopWalkCycleAudio();
+            }
         }
 
         _spriteRenderer.flipX = !_facingLeft;
@@ -231,6 +256,24 @@ public class GroundEnemyBehaviour : MonoBehaviour
             EnemyState.HitTaken => Color.red,
             _ => Color.white,
         };
+    }
+
+    void StopWalkCycleAudio()
+    {
+        if (_currentWalkCycleCoroutine != null)
+        {
+            StopCoroutine(_currentWalkCycleCoroutine);
+            _currentWalkCycleCoroutine = null;
+        }
+    }
+
+    void TryInitWalkCycleAudio(float walkFrequency)
+    {
+        if (_currentWalkCycleCoroutine == null)
+        {
+            Debug.Log("StartCoroutine");
+            _currentWalkCycleCoroutine = StartCoroutine(WalkCycleAudio(walkFrequency));
+        }
     }
 
     void TryAggroMovement()
@@ -276,7 +319,10 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         TurnAround();
 
-        TryPlayVoiceSource(MookVoiceGroups.Idle);
+        if (0.50f < Random.Range(0f, 1f))
+        {
+            TryPlayVoiceSource(EnemyVoiceGroups.Idle);
+        }
 
         _state = EnemyState.NormalMoving;
     }
@@ -286,8 +332,8 @@ public class GroundEnemyBehaviour : MonoBehaviour
         _state = EnemyState.Attacking;
         _attackHitPlayer = false;
 
-        TryPlayVoiceSource(MookVoiceGroups.AttackCharge);
-        TryPlaySoundSource(MookSoundGroups.AttackCharge);
+        TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
+        TryPlaySoundSource(EnemySoundGroups.AttackCharge);
 
         yield return new WaitForSeconds(AttackChargeTime);
 
@@ -298,8 +344,8 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         _attackDamageZone.gameObject.SetActive(true);
 
-        TryPlayVoiceSource(MookVoiceGroups.Attack);
-        TryPlaySoundSource(MookSoundGroups.Attack);
+        TryPlayVoiceSource(EnemyVoiceGroups.Attack);
+        TryPlaySoundSource(EnemySoundGroups.Attack);
 
         yield return new WaitForSeconds(0.20f);
 
@@ -310,14 +356,12 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         if (!_attackHitPlayer)
         {
-            TryPlaySoundSource(MookSoundGroups.AttackMiss);
+            TryPlaySoundSource(EnemySoundGroups.AttackMiss);
         }
 
         _spriteRenderer.color = Color.white;
         _state = EnemyState.NormalMoving;
         _attackDamageZone.gameObject.SetActive(false);
-
-        StartCoroutine(MovementLoop());
     }
 
     void RecieveDamage(Vector2 damageDir)
@@ -348,8 +392,8 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
     private IEnumerator ActivateDamageTakenTime(float duration)
     {
-        TryPlayVoiceSource(MookVoiceGroups.Damage);
-        TryPlaySoundSource(MookSoundGroups.AttackHit);
+        TryPlayVoiceSource(EnemyVoiceGroups.Damage, true);
+        TryPlaySoundSource(EnemySoundGroups.DamageTaken);
         _state = EnemyState.HitTaken;
 
         yield return new WaitForSeconds(duration);
@@ -361,7 +405,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
     {
         _isDead = true;
         _smokeEffect.Stop();
-        TryPlayVoiceSource(MookVoiceGroups.Death, true);
+        TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
         _enemyDamageZone.gameObject.SetActive(false);
         _spriteRenderer.enabled = false;
         Destroy(gameObject, 2.5f);
@@ -450,6 +494,16 @@ public class GroundEnemyBehaviour : MonoBehaviour
         _rigidBody.linearVelocity = new Vector2(newMovement, _rigidBody.linearVelocity.y);
     }
 
+    IEnumerator WalkCycleAudio(float frequency)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(frequency);
+
+            TryPlaySoundSource(EnemySoundGroups.Walk);
+        }
+    }
+
     IEnumerator ActivateAggro()
     {
         var targetDir = transform.position.x - _aggroTarget.x;
@@ -465,7 +519,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
         _spriteRenderer.color = Color.yellow;
         _state = EnemyState.Alert;
 
-        TryPlayVoiceSource(MookVoiceGroups.Alert);
+        TryPlayVoiceSource(EnemyVoiceGroups.Alert);
 
         yield return new WaitForSeconds(0.5f);
 
@@ -489,33 +543,6 @@ public class GroundEnemyBehaviour : MonoBehaviour
         }
     }
 
-    IEnumerator MovementLoop()
-    {
-        while (true)
-        {
-            float moveTime = Random.Range(1.5f, 5f);
-            yield return new WaitForSeconds(moveTime);
-
-            if (_state != EnemyState.NormalMoving || _isDead)
-            {
-                yield return null;
-            }
-
-            float waitTime = Random.Range(2f, 4f);
-            yield return new WaitForSeconds(waitTime);
-
-            if (_state != EnemyState.NormalMoving || _isDead)
-            {
-                yield return null;
-            }
-
-            if (0.5f < Random.Range(0f, 1f))
-            {
-                TryPlayVoiceSource(MookVoiceGroups.Idle);
-            }
-        }
-    }
-
     void TurnAround()
     {
         _facingLeft = !_facingLeft;
@@ -527,28 +554,34 @@ public class GroundEnemyBehaviour : MonoBehaviour
         _attackDamageZone.localPosition = new(newDamageZoneX, _attackDamageZone.localPosition.y, _attackDamageZone.localPosition.z);
     }
 
-    void TryPlaySoundSource(MookSoundGroups soundType)
+    void TryPlaySoundSource(EnemySoundGroups soundType)
     {
         AudioClip[] clips = soundType switch
         {
-            MookSoundGroups.Attack => AttackSoundClips,
-            MookSoundGroups.AttackHit => HitSoundClips,
-            MookSoundGroups.Walk => WalkSoundClips,
-            MookSoundGroups.AttackCharge => AttackChargeSoundClips,
-            MookSoundGroups.AttackMiss => AttackMissSoundClips,
+            EnemySoundGroups.Attack => AttackSoundClips,
+            EnemySoundGroups.DamageTaken => DamageTakenSoundClips,
+            EnemySoundGroups.Walk => WalkSoundClips,
+            EnemySoundGroups.AttackCharge => AttackChargeSoundClips,
+            EnemySoundGroups.AttackMiss => AttackMissSoundClips,
             _ => new AudioClip[] { },
         };
+
+        if (!_mainCamera.IsWorldPositionVisible(_enemySoundSource.transform.position))
+        {
+            return;
+        }
 
         if (0 < clips.Length)
         {
             AudioClip usedClip = clips[Random.Range(0, clips.Length)];
 
             _enemySoundSource.clip = usedClip;
+            _enemySoundSource.volume = soundType == EnemySoundGroups.Walk ? 0.35f : 1.0f;
             _enemySoundSource.Play();
         }
     }
 
-    void TryPlayVoiceSource(MookVoiceGroups soundType, bool forceSound = false)
+    void TryPlayVoiceSource(EnemyVoiceGroups soundType, bool forceSound = false)
     {
         var newLastVoiceTime = Time.time;
 
@@ -557,14 +590,19 @@ public class GroundEnemyBehaviour : MonoBehaviour
             return;
         }
 
+        if (!_mainCamera.IsWorldPositionVisible(_enemySoundSource.transform.position))
+        {
+            return;
+        }
+
         AudioClip[] clips = soundType switch
         {
-            MookVoiceGroups.Alert => AlertVoiceClips,
-            MookVoiceGroups.Damage => DamageVoiceClips,
-            MookVoiceGroups.Death => DeathVoiceClips,
-            MookVoiceGroups.Idle => IdleVoiceClips,
-            MookVoiceGroups.Attack => AttackVoiceClips,
-            MookVoiceGroups.AttackCharge => AttackChargeVoiceClips,
+            EnemyVoiceGroups.Alert => AlertVoiceClips,
+            EnemyVoiceGroups.Damage => DamageTakenVoiceClips,
+            EnemyVoiceGroups.Death => DeathVoiceClips,
+            EnemyVoiceGroups.Idle => IdleVoiceClips,
+            EnemyVoiceGroups.Attack => AttackVoiceClips,
+            EnemyVoiceGroups.AttackCharge => AttackChargeVoiceClips,
             _ => new AudioClip[] { },
         };
 
@@ -572,8 +610,8 @@ public class GroundEnemyBehaviour : MonoBehaviour
         {
             AudioClip usedClip = clips[Random.Range(0, clips.Length)];
 
-            _enemySoundSource.clip = usedClip;
-            _enemySoundSource.Play();
+            _enemyVoiceSource.clip = usedClip;
+            _enemyVoiceSource.Play();
 
             _lastVoiceTime = newLastVoiceTime;
         }

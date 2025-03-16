@@ -328,7 +328,9 @@ public class PlayerCharacter : MonoBehaviour
 
     IEnumerator PlayerDieAndLevelRestart()
     {
+        PlaySound(PlayerSounds.Hit);
         ControlsEnabled(false);
+
         _hasDamageInvulnerability = true;
         _inDamageState = true;
 

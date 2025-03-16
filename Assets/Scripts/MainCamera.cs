@@ -63,19 +63,6 @@ public class MainCamera : MonoBehaviour
     {
         if (_vignetteFX != null)
         {
-            const float min = 0.3f;
-            const float max = 0.6f;
-
-            if (intensity < min)
-            {
-                intensity = min;
-            }
-
-            if (max < intensity)
-            {
-                intensity = max;
-            }
-
             var newValue = Mathf.Clamp01(intensity);
             _vignetteFX.intensity.value = newValue;
 
@@ -90,6 +77,11 @@ public class MainCamera : MonoBehaviour
         return viewportPoint.x >= 0 && viewportPoint.x <= 1 &&
                viewportPoint.y >= 0 && viewportPoint.y <= 1 &&
                viewportPoint.z > 0;
+    }
+
+    public Camera GetCamera()
+    {
+        return _camera;
     }
 
     public void SetFollowTarget(Transform newTarget)
@@ -222,9 +214,15 @@ public class MainCamera : MonoBehaviour
         main.startColor = new Color(main.startColor.color.r, main.startColor.color.g, main.startColor.color.b, normalizedValue);
     }
 
-    public void SetFogFXLevel(bool heavyFog)
+    public void SetFogFXLevel(bool heavyFog, Color colorMultiplier)
     {
-        var usedColor = heavyFog ? new Color(0.6f, 0.6f, 0.6f, 22f / 256f) : new Color(0.6f, 0.6f, 0.6f, 12f / 256f);
+        var alpha = heavyFog ? 30f / 256f : 12f / 256f;
+        var diffuse = new Color(0.6f, 0.6f, 0.6f) * colorMultiplier;
+        var usedColor = new Color(diffuse.r, diffuse.g, diffuse.b, alpha);
+
         _fogFXSpriteRenderer.material.SetColor("_FogColor", usedColor);
+
+        var usedSpeed = heavyFog ? 5f : 2.5f;
+        _fogFXSpriteRenderer.material.SetFloat("_FogSpeed", usedSpeed);
     }
 }

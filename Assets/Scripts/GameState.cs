@@ -18,7 +18,7 @@ public class GameState : MonoBehaviour
     private GameUI _gameUI;
 
     private int _currentLevelIndex = 0;
-    private readonly float _cameraZOffset = -50.0f;
+    private readonly float _cameraZOffset = -1.0f;
 
     private void Awake()
     {
@@ -55,8 +55,6 @@ public class GameState : MonoBehaviour
         _mainCamera.SetFollowTarget(_player.transform);
 
         LoadAndSetLevelIndex(0);
-
-        GlobalLight.intensity = _currentLevel.GlobalLightLevel;
     }
 
     private void Update()
@@ -76,7 +74,7 @@ public class GameState : MonoBehaviour
 
     private void BGParallaxEffect()
     {
-        float parallaxFactor = _currentLevel.ParallaxEffectFactor;
+        float parallaxFactor = Level.ParallaxEffectFactor;
         Vector3 deltaMovement = _mainCamera.transform.position - _prevCameraPosition;
 
         _backgroundRenderer.transform.position += deltaMovement * parallaxFactor;
@@ -113,13 +111,17 @@ public class GameState : MonoBehaviour
 
         ApplyBackground(bl, tr, usedSprite);
 
-        GlobalLight.intensity = _currentLevel.GlobalLightLevel;
+        var lightIntensity = GetLightLevelValue(_currentLevel.LightLevel);
+        GlobalLight.intensity = lightIntensity;
+
         Debug.Log($"GlobalLight.intensity set = {GlobalLight.intensity}");
 
         _mainCamera.SetCameraBoundaries(bl, tr);
         _mainCamera.SetDustFXStrength(GlobalLight.intensity * 0.6f);
-        _mainCamera.SetFogFXLevel(_currentLevel.HeavyFog);
-        _mainCamera.SetVignetteIntensity(1.0f - GlobalLight.intensity);
+        _mainCamera.SetFogFXLevel(_currentLevel.HeavyFog, _currentLevel.FogColorMultiplier);
+
+        var vignetteValue = GetVignetteIntensity(_currentLevel.LightLevel);
+        _mainCamera.SetVignetteIntensity(vignetteValue);
 
         _gameUI.FadeIn(2.0f);
 
@@ -168,7 +170,7 @@ public class GameState : MonoBehaviour
         {
             Vector2 spriteSize = _backgroundRenderer.sprite.bounds.size;
 
-            float additionalScaleFactor = _currentLevel.ParallaxBackground ? _currentLevel.ParallaxBackgroundSizeMultiplier : 1.0f;
+            float additionalScaleFactor = _currentLevel.ParallaxBackground ? Level.ParallaxBackgroundSizeMultiplier : 1.0f;
 
             // Use the larger scale factor to ensure full coverage
             float scaleFactor = Mathf.Max(width / spriteSize.x, height / spriteSize.y) * additionalScaleFactor;
@@ -178,5 +180,38 @@ public class GameState : MonoBehaviour
         // Position the background at the center of the boundary
         Vector3 center = (bottomLeft + topRight) / 2f;
         _backgroundRenderer.transform.position = new Vector3(center.x, center.y, 40);
+    }
+
+    float GetLightLevelValue(LevelLightLevels level)
+    {
+        return level switch
+        {
+            LevelLightLevels.PitchBlack => 0f,
+            LevelLightLevels.VeryDark => 0.025f,
+            LevelLightLevels.Dark => 0.1f,
+            LevelLightLevels.Normal => 0.6f,
+            LevelLightLevels.Bright => 0.85f,
+            LevelLightLevels.VeryBright => 1.1f,
+            _ => 0f
+        };
+    }
+
+    float GetVignetteIntensity(LevelLightLevels level)
+    {
+        const float min = 0.2f;
+        const float max = 0.5f;
+
+        return level switch
+        {
+            LevelLightLevels.PitchBlack => max,
+            LevelLightLevels.VeryDark => max,
+            LevelLightLevels.Dark => max,
+
+            LevelLightLevels.Normal => min,
+            LevelLightLevels.Bright => min,
+            LevelLightLevels.VeryBright => min,
+
+            _ => min
+        };
     }
 }
