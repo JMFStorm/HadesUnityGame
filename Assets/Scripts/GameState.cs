@@ -15,6 +15,7 @@ public class GameState : MonoBehaviour
     private PlayerCharacter _player;
     private MainCamera _mainCamera;
     private Vector3 _prevCameraPosition;
+    private GameUI _gameUI;
 
     private int _currentLevelIndex = 0;
     private readonly float _cameraZOffset = -50.0f;
@@ -31,6 +32,13 @@ public class GameState : MonoBehaviour
         if (!bgRenderer.TryGetComponent(out _backgroundRenderer))
         {
             Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(GameState)}");
+        }
+
+        _gameUI = FindFirstObjectByType<GameUI>();
+
+        if (_gameUI == null)
+        {
+            Debug.LogError($"{nameof(GameUI)} not found on {nameof(PlayerCharacter)}");
         }
 
         _backgroundRenderer.sortingLayerName = "Background";
@@ -112,6 +120,8 @@ public class GameState : MonoBehaviour
         _mainCamera.SetDustFXStrength(GlobalLight.intensity * 0.6f);
         _mainCamera.SetFogFXLevel(_currentLevel.HeavyFog);
         _mainCamera.SetVignetteIntensity(1.0f - GlobalLight.intensity);
+
+        _gameUI.FadeIn(2.0f);
 
         var levelEnter = _currentLevel.GetLevelEntrance();
 

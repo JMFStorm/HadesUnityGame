@@ -74,6 +74,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private Material _material;
     private ParticleSystem _smokeEffect;
+    private PlayerCharacter _playerCharacter;
 
     private Vector2 _aggroTarget;
 
@@ -158,6 +159,13 @@ public class GroundEnemyBehaviour : MonoBehaviour
         {
             _enemySoundSource = audioSources[0];
             _enemyVoiceSource = audioSources[1];
+        }
+
+        _playerCharacter = FindFirstObjectByType<PlayerCharacter>();
+
+        if (_playerCharacter == null)
+        {
+            Debug.LogError($"{nameof(PlayerCharacter)} not found on {nameof(GroundEnemyBehaviour)}");
         }
     }
 
@@ -398,7 +406,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
     void DetectPlayerAndAggro()
     {
-        if (_state != EnemyState.NormalMoving)
+        if (_state != EnemyState.NormalMoving || _playerCharacter.IsDead())
         {
             return;
         }
