@@ -1,28 +1,31 @@
 fileFormatVersion: 2
-guid: a2385f2fac4ea0b409921c77b25c4c87
+guid: 481a2bcda97e0e04e883ce9b2100fb96
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3207794758648131564
-    second: Spritesheet_updated_14.3_0
+      213: -7484798057092346830
+    second: player_sprites_still_01_0
   - first:
-      213: -3456215218045311911
-    second: Spritesheet_updated_14.3_1
+      213: 6585005144127111842
+    second: player_sprites_still_01_1
   - first:
-      213: -110477982548859421
-    second: Spritesheet_updated_14.3_2
+      213: 8239644987484492401
+    second: player_sprites_still_01_2
   - first:
-      213: 1457241209402208265
-    second: Spritesheet_updated_14.3_3
+      213: -7520911404637286169
+    second: player_sprites_still_01_3
   - first:
-      213: 5283850233271932449
-    second: Spritesheet_updated_14.3_4
+      213: -852248050498708689
+    second: player_sprites_still_01_4
   - first:
-      213: -187015162653042354
-    second: Spritesheet_updated_14.3_5
+      213: -4665004419640009118
+    second: player_sprites_still_01_5
   - first:
-      213: -6370293429087372221
-    second: Spritesheet_updated_14.3_6
+      213: -2649168705230691579
+    second: player_sprites_still_01_6
+  - first:
+      213: -5007399392941087032
+    second: player_sprites_still_01_7
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -118,77 +121,55 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: player_attack_01
+      name: player_sprites_still_01_idle
       rect:
         serializedVersion: 2
-        x: 20
-        y: 1043
-        width: 491
-        height: 434
-      alignment: 9
-      pivot: {x: 0.2, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4101b62a9af9b73d0800000000000000
-      internalID: -3207794758648131564
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player_crouch_01
-      rect:
-        serializedVersion: 2
-        x: 515
-        y: 1045
-        width: 506
-        height: 277
-      alignment: 9
-      pivot: {x: 0.5, y: 0.035}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9542c1d229e0900d0800000000000000
-      internalID: -3456215218045311911
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player_idle_01
-      rect:
-        serializedVersion: 2
-        x: 1104
-        y: 1033
+        x: 76
+        y: 1032
         width: 335
-        height: 364
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        height: 365
+      alignment: 9
+      pivot: {x: 0.5, y: 0.0125}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3e56ca63cd0877ef0800000000000000
-      internalID: -110477982548859421
+      spriteID: 23c0a7fb2d7a02890800000000000000
+      internalID: -7484798057092346830
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_dash_01
+      name: player_sprites_still_01_move
       rect:
         serializedVersion: 2
-        x: 3
-        y: 581
+        x: 519
+        y: 1051
+        width: 488
+        height: 335
+      alignment: 9
+      pivot: {x: 0.5, y: 0.012}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a201db2a43a26b50800000000000000
+      internalID: 6585005144127111842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_sprites_still_01_dash
+      rect:
+        serializedVersion: 2
+        x: 1031
+        y: 1095
         width: 499
         height: 276
       alignment: 7
@@ -199,42 +180,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 900ba7eb829293410800000000000000
-      internalID: 1457241209402208265
+      spriteID: 172575ae579195270800000000000000
+      internalID: 8239644987484492401
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_hit_01
+      name: player_sprites_still_01_air
       rect:
         serializedVersion: 2
-        x: 536
-        y: 493
-        width: 404
-        height: 421
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 126d988cac1045940800000000000000
-      internalID: 5283850233271932449
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player_air_01
-      rect:
-        serializedVersion: 2
-        x: 1134
-        y: 553
+        x: 106
+        y: 554
         width: 247
-        height: 474
+        height: 473
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -243,20 +202,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e49147e43b6976df0800000000000000
-      internalID: -187015162653042354
+      spriteID: 7e0196bccea50a790800000000000000
+      internalID: -7520911404637286169
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_move_01
+      name: player_sprites_still_01_attack
       rect:
         serializedVersion: 2
-        x: 4
-        y: 22
-        width: 490
-        height: 337
+        x: 534
+        y: 529
+        width: 491
+        height: 434
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -265,8 +224,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 34cfd34a0eb2897a0800000000000000
-      internalID: -6370293429087372221
+      spriteID: f2b5189d9e43c24f0800000000000000
+      internalID: -852248050498708689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_sprites_still_01_crouch
+      rect:
+        serializedVersion: 2
+        x: 1028
+        y: 530
+        width: 508
+        height: 279
+      alignment: 9
+      pivot: {x: 0.5, y: 0.03}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26edab35233924fb0800000000000000
+      internalID: -4665004419640009118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_sprites_still_01_hit
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 0
+        width: 403
+        height: 400
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 503a4a639134c3bd0800000000000000
+      internalID: -2649168705230691579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_sprites_still_01_dead
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 13
+        width: 512
+        height: 224
+      alignment: 9
+      pivot: {x: 0.5, y: 0.02}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c66d3f48c4228ab0800000000000000
+      internalID: -5007399392941087032
       vertices: []
       indices: 
       edges: []
@@ -275,7 +300,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: f5f004aab02ed74438e67b6668580a56
+    spriteID: 8cb896d722617394fafef9d22a4316ba
     internalID: 0
     vertices: []
     indices: 
@@ -285,13 +310,14 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      player_air_01: -187015162653042354
-      player_attack_01: -3207794758648131564
-      player_crouch_01: -3456215218045311911
-      player_dash_01: 1457241209402208265
-      player_hit_01: 5283850233271932449
-      player_idle_01: -110477982548859421
-      player_move_01: -6370293429087372221
+      player_sprites_still_01_air: -7520911404637286169
+      player_sprites_still_01_attack: -852248050498708689
+      player_sprites_still_01_crouch: -4665004419640009118
+      player_sprites_still_01_dash: 8239644987484492401
+      player_sprites_still_01_dead: -5007399392941087032
+      player_sprites_still_01_hit: -2649168705230691579
+      player_sprites_still_01_idle: -7484798057092346830
+      player_sprites_still_01_move: 6585005144127111842
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

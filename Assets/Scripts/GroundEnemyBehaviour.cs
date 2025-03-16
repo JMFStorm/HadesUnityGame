@@ -36,6 +36,8 @@ public enum MookVoiceGroups
 [RequireComponent(typeof(AudioSource))]
 public class GroundEnemyBehaviour : MonoBehaviour
 {
+    private static float _lastVoiceTime = 0;
+
     AudioSource _enemySoundSource;
     AudioSource _enemyVoiceSource;
 
@@ -81,7 +83,6 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
     private EnemyState _state;
 
-    private float _lastVoiceTime = 0;
     private int _currentHealth = 4;
     private bool _facingLeft = false;
     private bool _isDead = false;

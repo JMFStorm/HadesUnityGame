@@ -27,6 +27,7 @@ public class PlayerCharacter : MonoBehaviour
     public Sprite CrouchSprite;
     public Sprite HitSprite;
     public Sprite MoveSprite;
+    public Sprite DeadSprite;
 
     public float MoveSpeed = 5f;
     public float JumpForce = 17f;
@@ -67,6 +68,7 @@ public class PlayerCharacter : MonoBehaviour
     private bool _attackCharged = true;
     private bool _hasDamageInvulnerability = false;
     private bool _inDamageState = false;
+    private bool _isDead = false;
 
     private float _facingDirX = 0f;
     private float _dashDirX = 0f;
@@ -219,7 +221,11 @@ public class PlayerCharacter : MonoBehaviour
 
         Sprite usedSprite;
 
-        if (_inDamageState)
+        if (_isDead)
+        {
+            usedSprite = DeadSprite;
+        }
+        else if (_inDamageState)
         {
             usedSprite = HitSprite;
         }
@@ -312,8 +318,6 @@ public class PlayerCharacter : MonoBehaviour
 
         if (_currentHealth <= 0)
         {
-            Debug.Log($"Player DIED {_currentHealth}");
-
             StartCoroutine(PlayerDieAndLevelRestart());
         }
         else
@@ -326,8 +330,13 @@ public class PlayerCharacter : MonoBehaviour
     {
         ControlsEnabled(false);
         _hasDamageInvulnerability = true;
+        _inDamageState = true;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.5f);
+
+        _isDead = true;
+
+        yield return new WaitForSeconds(3.0f);
 
         _gameState.RestartLevel();
         SetPlayerHealth(_defaultPlayerHealth);
@@ -383,6 +392,8 @@ public class PlayerCharacter : MonoBehaviour
         _isAttacking = false;
         _attackCharged = true;
         _hasDamageInvulnerability = false;
+        _isDead = false;
+        _inDamageState = false;
 
         ControlsEnabled(true);
 
@@ -399,7 +410,7 @@ public class PlayerCharacter : MonoBehaviour
 
     void PlayerMovementControls()
     {
-        if (!_controlsAreActive)
+        if (!_controlsAreActive || _isDead)
         {
             return;
         }
