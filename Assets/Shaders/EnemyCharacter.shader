@@ -8,6 +8,7 @@ Shader "Custom/EnemyCharacter"
         _ZWrite("ZWrite", Float) = 0
 
         _IsShadowVariant("Is Shadow Variant", Float) = 0 // Fänne: If is shadow variant boolean
+        _ShadowOutlineThreshold("Color avg threshold for shadow outlines", Float) = 0 // Fänne: If is shadow variant float threshold
 
         // Legacy properties. They're here so that materials using this shader can gracefully fallback to the legacy sprite shader.
         [HideInInspector] _Color("Tint", Color) = (1,1,1,1)
@@ -75,7 +76,8 @@ Shader "Custom/EnemyCharacter"
             // NOTE: Do not ifdef the properties here as SRP batcher can not handle different layouts.
             CBUFFER_START(UnityPerMaterial)
                 half4 _Color;
-                float _IsShadowVariant;
+                float _IsShadowVariant; // Fänne: variable
+                float _ShadowOutlineThreshold; // Fänne: variable
             CBUFFER_END
 
             #if USE_SHAPE_LIGHT_TYPE_0
@@ -177,14 +179,14 @@ Shader "Custom/EnemyCharacter"
                     half colorsSum = (mainTexColor.r + mainTexColor.g + mainTexColor.b) / 3.0;
 
                     // Define the brightness threshold
-                    half threshold = 0.02; // Adjust this value as needed
+                    half threshold = _ShadowOutlineThreshold;
 
                     half3 modifiedColor;
     
                     if (colorsSum < threshold)
                     {
                         // Invert dark colors to brighter gray
-                        modifiedColor = half3(1, 1, 1) - (half3(colorsSum, colorsSum, colorsSum) * 10);
+                        modifiedColor = half3(0.5, 0.5, 0.5) - half3(colorsSum, colorsSum, colorsSum);
                     }
                     else
                     {

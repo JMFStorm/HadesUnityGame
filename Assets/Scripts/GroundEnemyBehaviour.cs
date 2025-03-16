@@ -57,6 +57,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
     public float AttackRange = 2.0f;
     public float DamageStunTime = 0.5f;
     public float AttackChargeTime = 0.8f;
+    public float ShadowOutlineThreshold = 0.1f;
 
     public bool IsShadowVariant = false;
 
@@ -162,6 +163,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
     void Start()
     {
          _material.SetFloat("_IsShadowVariant", IsShadowVariant ? 1f : 0f);
+         _material.SetFloat("_ShadowOutlineThreshold", ShadowOutlineThreshold);
 
         if (IsShadowVariant)
         {
@@ -322,7 +324,6 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         if (_currentHealth <= 0)
         {
-            _isDead = true;
             ActivateDeathAndDestroy();
         }
         else
@@ -349,6 +350,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
     void ActivateDeathAndDestroy()
     {
+        _isDead = true;
         _smokeEffect.Stop();
         TryPlayVoiceSource(MookVoiceGroups.Death, true);
         _enemyDamageZone.gameObject.SetActive(false);
@@ -472,7 +474,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
     {
         yield return new WaitForSeconds(3.5f);
 
-        if (_state == EnemyState.AttackMoving || _isDead)
+        if (_state == EnemyState.AttackMoving && !_isDead)
         {
             _state = EnemyState.NormalMoving;
         }
