@@ -5,10 +5,12 @@ public class MovingPlatforms : MonoBehaviour
 {
 	public float PlatformSpeed = 3.0f;
 	public bool LoopAround = true;
+	public bool InitStatic = false;
 
 	private readonly List<Vector3> _platformPoints = new();
 	private Vector3 _targetPoint;
 
+    private bool moveInitiated = false;
     private bool stepsIncrease = true;
     private int _currentPointIndex = 0;
 
@@ -27,6 +29,10 @@ public class MovingPlatforms : MonoBehaviour
         _targetPoint = _platformPoints[_currentPointIndex];
     }
 
+    private void Start()
+    {
+    }
+
     void TryAddPoint(string name)
     {
         var point = transform.Find(name);
@@ -35,10 +41,6 @@ public class MovingPlatforms : MonoBehaviour
         {
             _platformPoints.Add(point.transform.position);
         }
-    }
-
-    void Start()
-    {
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -50,6 +52,7 @@ public class MovingPlatforms : MonoBehaviour
             if (collisionNormal.y < 0f)
             {
                 collision.transform.SetParent(transform);
+                moveInitiated = true;
             }
         }
     }
@@ -64,7 +67,10 @@ public class MovingPlatforms : MonoBehaviour
 
     void FixedUpdate()
 	{
-		PlatformMovement();
+        if (!InitStatic || (InitStatic && moveInitiated))
+        {
+            PlatformMovement();
+        }
 	}
 
     void PlatformMovement()

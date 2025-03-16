@@ -170,8 +170,7 @@ public class PlayerCharacter : MonoBehaviour
 
         ResetPlayerInnerState();
 
-        _currentHealth = _defaultPlayerHealth;
-        _gameUI.SetHealth(_currentHealth);
+        SetPlayerHealth(_defaultPlayerHealth);
     }
 
     void Update()
@@ -308,15 +307,30 @@ public class PlayerCharacter : MonoBehaviour
 
         Debug.Log($"Player took damage, health remaining: {_currentHealth}");
 
+        StopDash();
+        ApplyDamageKnockback(damageDir);
+
         if (_currentHealth <= 0)
         {
             Debug.Log($"Player DIED {_currentHealth}");
+
+            StartCoroutine(PlayerDieAndLevelRestart());
         }
+        else
+        {
+            StartCoroutine(ActivateDamageTakenTime(DamageInvulnerabilityTime));
+        }
+    }
 
-        StopDash();
+    IEnumerator PlayerDieAndLevelRestart()
+    {
+        ControlsEnabled(false);
+        _hasDamageInvulnerability = true;
 
-        StartCoroutine(ActivateDamageTakenTime(DamageInvulnerabilityTime));
-        ApplyDamageKnockback(damageDir);
+        yield return new WaitForSeconds(1.5f);
+
+        _gameState.RestartLevel();
+        SetPlayerHealth(_defaultPlayerHealth);
     }
 
     private void ApplyDamageKnockback(Vector2 knockbackDir)
@@ -337,7 +351,7 @@ public class PlayerCharacter : MonoBehaviour
     private IEnumerator ActivateDamageTakenTime(float duration)
     {
         PlaySound(PlayerSounds.Hit);
-        _controlsAreActive = false;
+        ControlsEnabled(false);
         _inDamageState = true;
         _hasDamageInvulnerability = true;
 
@@ -349,7 +363,7 @@ public class PlayerCharacter : MonoBehaviour
         _spriteRenderer.color = Color.gray;
 
         _inDamageState = false;
-        _controlsAreActive = true;
+        ControlsEnabled(true);
 
         float invulnerabilityTime = Mathf.Max(0, duration - controlsInactive);
 
@@ -368,7 +382,9 @@ public class PlayerCharacter : MonoBehaviour
         _isCrouching = false;
         _isAttacking = false;
         _attackCharged = true;
-        _controlsAreActive = true;
+        _hasDamageInvulnerability = false;
+
+        ControlsEnabled(true);
 
         _facingDirX = 1f; // NOTE: Facing right
         _dashDirX = 0f;
@@ -508,6 +524,27 @@ public class PlayerCharacter : MonoBehaviour
         yield return new WaitForSeconds(time);
 
         Physics2D.IgnoreCollision(_physicsCollider, platformCollider, false);
+    }
+
+    public void SetPlayerHealth(int health)
+    {
+        if (health < 0)
+        {
+            health = 0;
+        }
+
+        if (_defaultPlayerHealth < health)
+        {
+            health = _defaultPlayerHealth;
+        }
+
+        _currentHealth = health;
+        _gameUI.SetHealth(_currentHealth);
+    }
+
+    void ControlsEnabled(bool isEnabled)
+    {
+        _controlsAreActive = isEnabled;
     }
 
     void StartDash()

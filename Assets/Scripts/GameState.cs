@@ -46,7 +46,7 @@ public class GameState : MonoBehaviour
         _prevCameraPosition = _mainCamera.transform.position;
         _mainCamera.SetFollowTarget(_player.transform);
 
-        LoadNextLevel();
+        LoadAndSetLevelIndex(0);
 
         GlobalLight.intensity = _currentLevel.GlobalLightLevel;
     }
@@ -131,9 +131,19 @@ public class GameState : MonoBehaviour
 
     public void LoadNextLevel()
     {
-        LoadLevelIndex(_currentLevelIndex);
-
         _currentLevelIndex = (_currentLevelIndex + 1) % GameLevels.Count;
+        LoadLevelIndex(_currentLevelIndex);
+    }
+
+    public void LoadAndSetLevelIndex(int levelIndex)
+    {
+        _currentLevelIndex = levelIndex;
+        LoadLevelIndex(_currentLevelIndex);
+    }
+
+    public void RestartLevel()
+    {
+        LoadLevelIndex(_currentLevelIndex);
     }
 
     public void ApplyBackground(Vector2 bottomLeft, Vector2 topRight, Sprite background)
