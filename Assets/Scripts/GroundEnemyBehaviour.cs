@@ -65,6 +65,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
     private Transform _groundCheck;
     private Transform _attackDamageZone;
     private Transform _enemyDamageZone;
+    private Transform _particleFx;
     private BoxCollider2D _enemyCollider;
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
@@ -138,9 +139,9 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         _material = _spriteRenderer.material;
 
-        var particleFx = transform.Find("ParticleFX");
+        _particleFx = transform.Find("ParticleFX");
 
-        if (!particleFx.TryGetComponent(out _smokeEffect))
+        if (!_particleFx.TryGetComponent(out _smokeEffect))
         {
             Debug.LogError($"{nameof(ParticleSystem)} not found on child of {nameof(GroundEnemyBehaviour)}");
         }
@@ -164,11 +165,13 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         if (IsShadowVariant)
         {
+            _particleFx.gameObject.SetActive(true);
             _smokeEffect.Play();
         }
         else
         {
             _smokeEffect.Stop();
+            _particleFx.gameObject.SetActive(false);
         }
 
         _currentHealth = MaxHealth;
@@ -277,6 +280,11 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         yield return new WaitForSeconds(AttackChargeTime);
 
+        if (_isDead)
+        {
+            yield return null;
+        }
+
         _attackDamageZone.gameObject.SetActive(true);
 
         TryPlayVoiceSource(MookVoiceGroups.Attack);
@@ -284,7 +292,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         yield return new WaitForSeconds(0.20f);
 
-        if (_state != EnemyState.Attacking)
+        if (_state != EnemyState.Attacking || _isDead)
         {
             yield return null;
         }
@@ -341,6 +349,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
     void ActivateDeathAndDestroy()
     {
+        _smokeEffect.Stop();
         TryPlayVoiceSource(MookVoiceGroups.Death, true);
         _enemyDamageZone.gameObject.SetActive(false);
         _spriteRenderer.enabled = false;
