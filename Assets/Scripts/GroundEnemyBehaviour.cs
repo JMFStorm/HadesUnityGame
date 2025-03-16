@@ -58,6 +58,8 @@ public class GroundEnemyBehaviour : MonoBehaviour
     public float DamageStunTime = 0.5f;
     public float AttackChargeTime = 0.8f;
 
+    public bool IsShadowVariant = false;
+
     public int MaxHealth = 4;
 
     private Transform _groundCheck;
@@ -66,6 +68,8 @@ public class GroundEnemyBehaviour : MonoBehaviour
     private BoxCollider2D _enemyCollider;
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
+    private Material _material;
+    private ParticleSystem _smokeEffect;
 
     private Vector2 _aggroTarget;
 
@@ -132,6 +136,15 @@ public class GroundEnemyBehaviour : MonoBehaviour
             Debug.LogError($"{nameof(SpriteRenderer)} not found on child of {nameof(GroundEnemyBehaviour)}");
         }
 
+        _material = _spriteRenderer.material;
+
+        var particleFx = transform.Find("ParticleFX");
+
+        if (!particleFx.TryGetComponent(out _smokeEffect))
+        {
+            Debug.LogError($"{nameof(ParticleSystem)} not found on child of {nameof(GroundEnemyBehaviour)}");
+        }
+
         var audioSources = GetComponents<AudioSource>();
 
         if (audioSources.Length != 2)
@@ -147,6 +160,17 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
     void Start()
     {
+         _material.SetFloat("_IsShadowVariant", IsShadowVariant ? 1f : 0f);
+
+        if (IsShadowVariant)
+        {
+            _smokeEffect.Play();
+        }
+        else
+        {
+            _smokeEffect.Stop();
+        }
+
         _currentHealth = MaxHealth;
         _attackDamageZone.gameObject.SetActive(false);
         _state = EnemyState.NormalMoving;

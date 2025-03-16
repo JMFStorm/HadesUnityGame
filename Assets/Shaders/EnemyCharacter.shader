@@ -7,6 +7,8 @@ Shader "Custom/EnemyCharacter"
         _NormalMap("Normal Map", 2D) = "bump" {}
         _ZWrite("ZWrite", Float) = 0
 
+        _IsShadowVariant("Is Shadow Variant", Float) = 0 // Fänne: If is shadow variant boolean
+
         // Legacy properties. They're here so that materials using this shader can gracefully fallback to the legacy sprite shader.
         [HideInInspector] _Color("Tint", Color) = (1,1,1,1)
         [HideInInspector] _RendererColor("RendererColor", Color) = (1,1,1,1)
@@ -73,6 +75,7 @@ Shader "Custom/EnemyCharacter"
             // NOTE: Do not ifdef the properties here as SRP batcher can not handle different layouts.
             CBUFFER_START(UnityPerMaterial)
                 half4 _Color;
+                float _IsShadowVariant;
             CBUFFER_END
 
             #if USE_SHAPE_LIGHT_TYPE_0
@@ -152,17 +155,55 @@ Shader "Custom/EnemyCharacter"
                     return half4(redValue, 0.0, 0.0, main.a);
                 }
 
-                // For non-red pixels, proceed with normal lighting calculations
-                const half4 mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
-                SurfaceData2D surfaceData;
-                InputData2D inputData;
+                if (_IsShadowVariant == 0) // Fänne: Normal color calculation
+                {
+                    // For non-red pixels, proceed with normal lighting calculations
+                    const half4 mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
+                    SurfaceData2D surfaceData;
+                    InputData2D inputData;
 
-                InitializeSurfaceData(main.rgb, main.a, mask, surfaceData);
-                InitializeInputData(i.uv, i.lightingUV, inputData);
+                    InitializeSurfaceData(main.rgb, main.a, mask, surfaceData);
+                    InitializeInputData(i.uv, i.lightingUV, inputData);
 
-                SETUP_DEBUG_TEXTURE_DATA_2D_NO_TS(inputData, i.positionWS, i.positionCS, _MainTex);
+                    SETUP_DEBUG_TEXTURE_DATA_2D_NO_TS(inputData, i.positionWS, i.positionCS, _MainTex);
 
-                return CombinedShapeLightShared(surfaceData, inputData);
+                    return CombinedShapeLightShared(surfaceData, inputData);
+                }
+                else // Fänne: Color calculation for shadow variant
+                {
+                    // Sample the main texture
+                    half4 mainTexColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
+   
+                    half colorsSum = (mainTexColor.r + mainTexColor.g + mainTexColor.b) / 3.0;
+
+                    // Define the brightness threshold
+                    half threshold = 0.02; // Adjust this value as needed
+
+                    half3 modifiedColor;
+    
+                    if (colorsSum < threshold)
+                    {
+                        // Invert dark colors to brighter gray
+                        modifiedColor = half3(1, 1, 1) - (half3(colorsSum, colorsSum, colorsSum) * 10);
+                    }
+                    else
+                    {
+                        // Set the pixel to black
+                        modifiedColor = half3(0, 0, 0);
+                    }
+
+                    // Initialize surface and input data for lighting calculations
+                    half4 mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
+                    SurfaceData2D surfaceData;
+                    InputData2D inputData;
+
+                    // Pass the modified color to lighting
+                    InitializeSurfaceData(modifiedColor, mainTexColor.a, mask, surfaceData);
+                    InitializeInputData(i.uv, i.lightingUV, inputData);
+
+                    // Get the final lit color
+                    return CombinedShapeLightShared(surfaceData, inputData);
+                }
             }
             ENDHLSL
         }
