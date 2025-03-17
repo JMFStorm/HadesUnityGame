@@ -511,7 +511,6 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         if (Mathf.Abs(Time.time - _lastAttackTime) < _attackCooldown)
         {
-            Debug.Log("Attack cooldown " + Time.time);
             return;
         }
 

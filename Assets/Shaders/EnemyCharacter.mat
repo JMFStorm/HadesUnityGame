@@ -43,7 +43,7 @@ Material:
     m_Floats:
     - _EnableExternalAlpha: 0
     - _IsShadowVariant: 0
-    - _ShadowOutlineThreshold: 0.015
+    - _ShadowOutlineThreshold: 0.01
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

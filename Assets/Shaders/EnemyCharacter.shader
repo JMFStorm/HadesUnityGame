@@ -8,7 +8,6 @@ Shader "Custom/EnemyCharacter"
         _ZWrite("ZWrite", Float) = 0
 
         _IsShadowVariant("Is Shadow Variant", Float) = 0 // Fänne: If is shadow variant boolean
-        _ShadowOutlineThreshold("Color avg threshold for shadow outlines", Float) = 0 // Fänne: If is shadow variant float threshold
 
         // Legacy properties. They're here so that materials using this shader can gracefully fallback to the legacy sprite shader.
         [HideInInspector] _Color("Tint", Color) = (1,1,1,1)
@@ -77,7 +76,6 @@ Shader "Custom/EnemyCharacter"
             CBUFFER_START(UnityPerMaterial)
                 half4 _Color;
                 float _IsShadowVariant; // Fänne: variable
-                float _ShadowOutlineThreshold; // Fänne: variable
             CBUFFER_END
 
             #if USE_SHAPE_LIGHT_TYPE_0
@@ -128,7 +126,7 @@ Shader "Custom/EnemyCharacter"
                 half4 main = i.color * SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
 
                 // Check if the pixel is pure red (or close to pure red)
-                if (main.g == 0.0 && main.b == 0.0 && main.r > 0.0)
+                if (0.05 < main.r && main.g < 0.01 && main.b < 0.01)
                 {
                     // Sample the mask texture
                     const half4 mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
@@ -175,18 +173,13 @@ Shader "Custom/EnemyCharacter"
                 {
                     // Sample the main texture
                     half4 mainTexColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
-   
-                    half colorsSum = (mainTexColor.r + mainTexColor.g + mainTexColor.b) / 3.0;
-
-                    // Define the brightness threshold
-                    half threshold = _ShadowOutlineThreshold;
-
+  
                     half3 modifiedColor;
     
-                    if (colorsSum < threshold)
+                    if (mainTexColor.r < 0.05 && mainTexColor.g < 0.05 && mainTexColor.b < 0.05)
                     {
                         // Invert dark colors to brighter gray
-                        modifiedColor = half3(0.5, 0.5, 0.5) - half3(colorsSum, colorsSum, colorsSum);
+                        modifiedColor = half3(0.3, 0.3, 0.3) - (half3(mainTexColor.r, mainTexColor.g, mainTexColor.b) * 10);
                     }
                     else
                     {

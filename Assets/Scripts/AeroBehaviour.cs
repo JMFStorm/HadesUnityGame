@@ -23,15 +23,17 @@ public class AeroBehaviour : MonoBehaviour
     public float KeepYDistanceFromTarget = 1f;
     public float DamageInvulnerabilityTime = 0.25f;
     public float ProjectileLoadTime = 0.75f;
+    public float shootingCooldown = 3f; // Cooldown time for shooting
+    public float waveAmplitude = 5f; // Height of the wave
+    public float waveFrequency = 2f; // Speed of the wave movement
+
+    // For shadow variant
+    public bool IsShadowVariant = false;
+    public float ShadowOutlineThreshold = 0.1f;
 
     public int EnemyHealth = 3;
 
     public GameObject projectilePrefab; // Reference to the projectile prefab
-    public float shootingCooldown = 3f; // Cooldown time for shooting
-
-    // Wave movement parameters
-    public float waveAmplitude = 5f; // Height of the wave
-    public float waveFrequency = 2f; // Speed of the wave movement
 
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
@@ -40,6 +42,11 @@ public class AeroBehaviour : MonoBehaviour
     private BoxCollider2D _boxCollider;
     private AudioSource _audioSource;
     private MainCamera _mainCamera;
+
+    // For shadow variant
+    private Material _material;
+    private ParticleSystem _smokeEffect;
+    private Transform _particleFx;
 
     private Coroutine _flapWings = null;
 
@@ -91,12 +98,35 @@ public class AeroBehaviour : MonoBehaviour
             Debug.LogError($"EnemyDamageZone not found on {nameof(AeroBehaviour)}");
         }
 
+        _material = _spriteRenderer.material;
+
+        _particleFx = transform.Find("ParticleFX");
+
+        if (!_particleFx.TryGetComponent(out _smokeEffect))
+        {
+            Debug.LogError($"{nameof(ParticleSystem)} not found on child of {nameof(GroundEnemyBehaviour)}");
+        }
+
         _groundLayerMask = LayerMask.GetMask("Ground");
         _targetDistance = Mathf.Sqrt(Mathf.Pow(KeepXDistanceFromTarget, 2) + Mathf.Pow(KeepXDistanceFromTarget, 2));
     }
 
     private void Start()
     {
+        _material.SetFloat("_IsShadowVariant", IsShadowVariant ? 1f : 0f);
+        _material.SetFloat("_ShadowOutlineThreshold", ShadowOutlineThreshold);
+
+        if (IsShadowVariant)
+        {
+            _particleFx.gameObject.SetActive(true);
+            _smokeEffect.Play();
+        }
+        else
+        {
+            _smokeEffect.Stop();
+            _particleFx.gameObject.SetActive(false);
+        }
+
         _attackTarget = GameObject.FindGameObjectWithTag("Player").transform;
         _mainCamera = FindFirstObjectByType<MainCamera>();
 
