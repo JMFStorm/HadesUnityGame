@@ -191,7 +191,7 @@ Transform:
   m_GameObject: {fileID: 4310241827634196520}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0.7, z: 0}
+  m_LocalPosition: {x: 1, y: 0.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -241,7 +241,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2, y: 0.5}
+  m_Size: {x: 2, y: 0.3}
   m_EdgeRadius: 0
 --- !u!1 &4425494048583587651
 GameObject:
@@ -425,7 +425,6 @@ MonoBehaviour:
   AggroSpeed: 2.5
   AttackRange: 1.5
   DamageStunTime: 0.5
-  AttackChargeTime: 0.8
   ShadowOutlineThreshold: 0.015
   NormalWalkFrequency: 0.65
   AggroWalkFrequency: 0.45

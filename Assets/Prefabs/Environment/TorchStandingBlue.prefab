@@ -12,6 +12,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: TorchStandingBlue
       objectReference: {fileID: 0}
+    - target: {fileID: 2080670720782861315, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.735849
+      objectReference: {fileID: 0}
+    - target: {fileID: 2080670720782861315, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.7336914
+      objectReference: {fileID: 0}
+    - target: {fileID: 2080670720782861315, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.65601635
+      objectReference: {fileID: 0}
     - target: {fileID: 2642337181622815530, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
