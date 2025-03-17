@@ -348,6 +348,10 @@ PrefabInstance:
       propertyPath: 'HeartSlots.Array.data[4]'
       value: 
       objectReference: {fileID: 1507855704}
+    - target: {fileID: 4863655271805905191, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_Intensity
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 6418170319196612165, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
