@@ -189,9 +189,10 @@ public class GameState : MonoBehaviour
             LevelLightLevels.PitchBlack => 0f,
             LevelLightLevels.VeryDark => 0.025f,
             LevelLightLevels.Dark => 0.1f,
-            LevelLightLevels.Normal => 0.6f,
-            LevelLightLevels.Bright => 0.85f,
-            LevelLightLevels.VeryBright => 1.1f,
+            LevelLightLevels.Dim => 0.25f,
+            LevelLightLevels.Normal => 0.4f,
+            LevelLightLevels.Bright => 0.55f,
+            LevelLightLevels.VeryBright => 0.75f,
             _ => 0f
         };
     }

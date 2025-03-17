@@ -121,7 +121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1118835950742489674}
-  - component: {fileID: 259644864067411462}
+  - component: {fileID: 4657302896168997985}
   m_Layer: 0
   m_Name: DevArenaBackgroundTest01
   m_TagString: Untagged
@@ -151,7 +151,7 @@ Transform:
   - {fileID: 7101372422982130013}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &259644864067411462
+--- !u!114 &4657302896168997985
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,11 +160,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7124016329805607455}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2310d6f9d2bd8344bb3b2da36aa5bda3, type: 3}
+  m_Script: {fileID: 11500000, guid: 13a30323f5dd2474da5b5a8cfd383f47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   LevelBackgrounds:
-  - {fileID: 1761394023, guid: 8c04a948f3d5e2a4893e7374edaad5b0, type: 3}
+  - {fileID: 21300000, guid: 9df091f10c0e3e045aa888d8f616eab1, type: 3}
   LightLevel: 2
   ParallaxBackground: 1
   HeavyFog: 0
@@ -242,7 +242,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8310471813695882055
 Transform:
   m_ObjectHideFlags: 0

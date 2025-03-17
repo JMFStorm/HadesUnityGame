@@ -5,6 +5,7 @@ public enum LevelLightLevels
     PitchBlack = 0,
     VeryDark,
     Dark,
+    Dim,
     Normal,
     Bright,
     VeryBright

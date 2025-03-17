@@ -11,7 +11,6 @@ public enum PlayerSounds
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(BoxCollider2D))]
 public class PlayerCharacter : MonoBehaviour
 {
     public AudioClip[] _audioClips;
@@ -43,7 +42,7 @@ public class PlayerCharacter : MonoBehaviour
     private AudioSource _audioSource;
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
-    private BoxCollider2D _physicsCollider;
+    private CapsuleCollider2D _physicsCollider;
     private BoxCollider2D _swordBoxCollider;
     private Collider2D _platformFallthrough;
     private Material _material;
@@ -102,7 +101,7 @@ public class PlayerCharacter : MonoBehaviour
 
         if (!TryGetComponent(out _physicsCollider))
         {
-            Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(PlayerCharacter)}");
+            Debug.LogError($"{nameof(CapsuleCollider2D)} not found on {nameof(PlayerCharacter)}");
         }
 
         if (!TryGetComponent(out _audioSource))

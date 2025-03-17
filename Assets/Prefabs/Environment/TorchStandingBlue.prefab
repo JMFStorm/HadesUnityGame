@@ -76,6 +76,14 @@ PrefabInstance:
       propertyPath: color2.r
       value: 0.7028302
       objectReference: {fileID: 0}
+    - target: {fileID: 4573065420501557834, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
+      propertyPath: minIntensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4573065420501557834, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
+      propertyPath: intensitySpeed
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 7942698519581878399, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
       propertyPath: m_Sprite
       value: 

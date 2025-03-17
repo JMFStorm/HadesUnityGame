@@ -39,7 +39,7 @@ public class AeroBehaviour : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private Transform _attackTarget; // Reference to the player's transform
     private Transform _enemyDamageZone;
-    private BoxCollider2D _boxCollider;
+    private CapsuleCollider2D _physicsCollider;
     private AudioSource _audioSource;
     private MainCamera _mainCamera;
 
@@ -81,7 +81,7 @@ public class AeroBehaviour : MonoBehaviour
             Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(AeroBehaviour)}");
         }
 
-        if (!TryGetComponent(out _boxCollider))
+        if (!TryGetComponent(out _physicsCollider))
         {
             Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(AeroBehaviour)}");
         }
@@ -255,11 +255,11 @@ public class AeroBehaviour : MonoBehaviour
                 Vector3 rayDirectionX = new Vector3(-targetDir.x, 0, 0).normalized;
                 Vector3 rayDirectionY = new Vector3(0, -targetDir.y, 0).normalized;
 
-                var rayStartX = _boxCollider.transform.position + (Vector3)_boxCollider.offset;
-                var rayStartY = _boxCollider.transform.position + (Vector3)_boxCollider.offset;
+                var rayStartX = _physicsCollider.transform.position + (Vector3)_physicsCollider.offset;
+                var rayStartY = _physicsCollider.transform.position + (Vector3)_physicsCollider.offset;
 
-                bool hitX = Physics2D.Raycast(rayStartX, rayDirectionX, _boxCollider.size.x + 0.25f, _groundLayerMask);
-                bool hitY = Physics2D.Raycast(rayStartY, rayDirectionY, _boxCollider.size.y + 0.25f, _groundLayerMask);
+                bool hitX = Physics2D.Raycast(rayStartX, rayDirectionX, _physicsCollider.size.x + 0.25f, _groundLayerMask);
+                bool hitY = Physics2D.Raycast(rayStartY, rayDirectionY, _physicsCollider.size.y + 0.25f, _groundLayerMask);
 
                 if (hitX && !hitY)
                 {
@@ -473,6 +473,12 @@ public class AeroBehaviour : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(8.0f / 10.0f);
+
+            if (_isDead)
+            {
+                yield return null;
+            }
+
             PlaySound(AeroSounds.Wings);
         }
     }
