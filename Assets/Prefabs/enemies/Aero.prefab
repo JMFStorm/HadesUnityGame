@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1887247781124116668}
   - component: {fileID: 4172504946652307102}
   - component: {fileID: 8555710142796696427}
+  - component: {fileID: 5176929850465969991}
   m_Layer: 11
   m_Name: Aero
   m_TagString: Untagged
@@ -82,7 +83,7 @@ SpriteRenderer:
   m_SortingLayerID: 1880951291
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6107fe11fb12a764eb67895d57eff2b5, type: 3}
+  m_Sprite: {fileID: -2434612972625218437, guid: 0d13feb737b133e42a7914905821d903, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -173,6 +174,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a17edfb68596fee4ba25dd6a15a04d30, type: 3}
   - {fileID: 8300000, guid: 109ed0628f3107f4d85bed16f8048dc8, type: 3}
   - {fileID: 8300000, guid: 9449cc0118ad27948aaa526ee47cdcc3, type: 3}
+  - {fileID: 8300000, guid: 219d09415e51ee84d99bd32199dfe1db, type: 3}
   chaseRadius: 6
   attackRadius: 5
   GiveUpRadius: 12
@@ -221,17 +223,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.15}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 9.6, y: 5.4}
+    oldSize: {x: 2.048, y: 2.048}
     newSize: {x: 9.6, y: 5.4}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 1}
+  m_Size: {x: 1, y: 1.5}
   m_EdgeRadius: 0
 --- !u!82 &8555710142796696427
 AudioSource:
@@ -330,6 +332,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &5176929850465969991
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4364403561124163838}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1d68f0a67d8b6c040adca5f1a36bacb0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7676254737861935546
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,7 +420,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.15}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -406,5 +430,5 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.55, y: 1.05}
+  m_Size: {x: 1.1, y: 1.6}
   m_EdgeRadius: 0

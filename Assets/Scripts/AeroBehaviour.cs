@@ -7,6 +7,7 @@ public enum AeroSounds
     Death,
     Preattack,
     ProjectileLaunch,
+    Wings,
 }
 
 public class AeroBehaviour : MonoBehaviour
@@ -39,6 +40,8 @@ public class AeroBehaviour : MonoBehaviour
     private BoxCollider2D _boxCollider;
     private AudioSource _audioSource;
     private MainCamera _mainCamera;
+
+    private Coroutine _flapWings = null;
 
     private bool _isAttacking = false;
     private bool _hasGivenUp = false;
@@ -163,6 +166,9 @@ public class AeroBehaviour : MonoBehaviour
         _hasDamageInvulnerability = false;
         _isDead = false;
         _lastShotTime = Time.time;
+
+        StopWingsFlap();
+        StartWingsFlap();
     }
 
     private IEnumerator CheckRespawnLocation()
@@ -288,7 +294,9 @@ public class AeroBehaviour : MonoBehaviour
 
     void ActivateDeathAndDestroy()
     {
+        StopWingsFlap();
         PlaySound(AeroSounds.Death);
+
         _spriteRenderer.enabled = false;
         _enemyDamageZone.gameObject.SetActive(false);
 
@@ -409,6 +417,33 @@ public class AeroBehaviour : MonoBehaviour
         else
         {
             Debug.LogWarning($"Error playing Player sound index {index}. {nameof(AudioSource)}, {nameof(AudioClip)}, or the specified sound is not assigned.");
+        }
+    }
+
+    void StopWingsFlap()
+    {
+        if (_flapWings != null)
+        {
+            StopCoroutine(_flapWings);
+        }
+    }
+
+    void StartWingsFlap()
+    {
+        if (_flapWings == null)
+        {
+            StartCoroutine(FlapWingsLoop());
+        }
+    }
+
+    IEnumerator FlapWingsLoop()
+    {
+        yield return new WaitForSeconds(4.0f / 10.0f);
+
+        while (true)
+        {
+            yield return new WaitForSeconds(8.0f / 10.0f);
+            PlaySound(AeroSounds.Wings);
         }
     }
 }
