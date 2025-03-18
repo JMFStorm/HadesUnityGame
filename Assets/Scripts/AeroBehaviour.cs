@@ -45,8 +45,6 @@ public class AeroBehaviour : MonoBehaviour
 
     // For shadow variant
     private Material _material;
-    private ParticleSystem _smokeEffect;
-    private Transform _particleFx;
 
     private Coroutine _flapWings = null;
 
@@ -100,13 +98,6 @@ public class AeroBehaviour : MonoBehaviour
 
         _material = _spriteRenderer.material;
 
-        _particleFx = transform.Find("ParticleFX");
-
-        if (!_particleFx.TryGetComponent(out _smokeEffect))
-        {
-            Debug.LogError($"{nameof(ParticleSystem)} not found on child of {nameof(GroundEnemyBehaviour)}");
-        }
-
         _groundLayerMask = LayerMask.GetMask("Ground");
         _targetDistance = Mathf.Sqrt(Mathf.Pow(KeepXDistanceFromTarget, 2) + Mathf.Pow(KeepXDistanceFromTarget, 2));
     }
@@ -115,17 +106,6 @@ public class AeroBehaviour : MonoBehaviour
     {
         _material.SetFloat("_IsShadowVariant", IsShadowVariant ? 1f : 0f);
         _material.SetFloat("_ShadowOutlineThreshold", ShadowOutlineThreshold);
-
-        if (IsShadowVariant)
-        {
-            _particleFx.gameObject.SetActive(true);
-            _smokeEffect.Play();
-        }
-        else
-        {
-            _smokeEffect.Stop();
-            _particleFx.gameObject.SetActive(false);
-        }
 
         _attackTarget = GameObject.FindGameObjectWithTag("Player").transform;
         _mainCamera = FindFirstObjectByType<MainCamera>();

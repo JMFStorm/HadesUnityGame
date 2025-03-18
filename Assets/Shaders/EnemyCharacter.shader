@@ -143,13 +143,13 @@ Shader "Custom/EnemyCharacter"
                     // Extract the light intensity (e.g., use the luminance of the lit color)
                     half lightIntensity = Luminance(litColor.rgb);
 
-                    // Set the maximum brightness of the red channel to 0.3 in darkness
-                    half maxRedInDarkness = 0.2;
+                    // Set the min brightness of the red channel in darkness
+                    half minRedInDarkness = 0.6;
 
                     // Scale the red value based on light intensity
-                    // In darkness (lightIntensity = 0), redValue = maxRedInDarkness
-                    // As light intensity increases, redValue can exceed maxRedInDarkness
-                    half redValue = maxRedInDarkness + (main.r * lightIntensity);
+                    // In darkness (lightIntensity = 0), redValue = minRedInDarkness
+                    // As light intensity increases, redValue can exceed minRedInDarkness
+                    half redValue = minRedInDarkness + (main.r * lightIntensity);
 
                     // Return the final color with adjusted red channel
                     return half4(redValue, 0.0, 0.0, main.a);
@@ -179,7 +179,7 @@ Shader "Custom/EnemyCharacter"
                     if (mainTexColor.r < 0.05 && mainTexColor.g < 0.05 && mainTexColor.b < 0.05)
                     {
                         // Invert dark colors to brighter gray
-                        modifiedColor = half3(0.3, 0.3, 0.3) - (half3(mainTexColor.r, mainTexColor.g, mainTexColor.b) * 10);
+                        modifiedColor = half3(0.5 / 255.0, 0.5 / 255.0, 0.5 / 255);
                     }
                     else
                     {
