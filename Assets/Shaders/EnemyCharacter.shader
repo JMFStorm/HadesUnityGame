@@ -179,7 +179,7 @@ Shader "Custom/EnemyCharacter"
                     if (mainTexColor.r < 0.05 && mainTexColor.g < 0.05 && mainTexColor.b < 0.05)
                     {
                         // Invert dark colors to brighter gray
-                        modifiedColor = half3(0.5 / 255.0, 0.5 / 255.0, 0.5 / 255);
+                        modifiedColor = half3(1.0 / 255.0, 1.0 / 255.0, 1.0 / 255);
                     }
                     else
                     {

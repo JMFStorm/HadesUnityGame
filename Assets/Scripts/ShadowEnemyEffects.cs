@@ -19,6 +19,7 @@ public class ShadowEnemyEffects : MonoBehaviour
         _material = spriteRenderer.material;
 
         _shadowFXInstanciated = Instantiate(ShadowFXPrefab, transform.position, Quaternion.identity);
+        _shadowFXInstanciated.transform.SetParent(transform);
     }
 
     void Start()

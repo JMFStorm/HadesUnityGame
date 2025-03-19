@@ -63,7 +63,6 @@ public class GroundEnemyBehaviour : MonoBehaviour
     public float NormalWalkFrequency = 0.65f;
     public float AggroWalkFrequency = 0.45f;
 
-    public bool IsShadowVariant = false;
     public int MaxHealth = 4;
 
     public const float MaxSoundDistance = 14f;
@@ -71,12 +70,9 @@ public class GroundEnemyBehaviour : MonoBehaviour
     private Transform _groundCheck;
     private Transform _attackDamageZone;
     private Transform _enemyDamageZone;
-    private Transform _particleFx;
     private BoxCollider2D _enemyCollider;
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
-    private Material _material;
-    private ParticleSystem _smokeEffect;
     private PlayerCharacter _playerCharacter;
     private MainCamera _mainCamera;
 
@@ -145,20 +141,9 @@ public class GroundEnemyBehaviour : MonoBehaviour
             Debug.LogError($"EnemyDamageZone not found on {nameof(AeroBehaviour)}");
         }
 
-        var sprite = transform.Find("Sprite");
-
-        if (!sprite.TryGetComponent(out _spriteRenderer))
+        if (!TryGetComponent(out _spriteRenderer))
         {
             Debug.LogError($"{nameof(SpriteRenderer)} not found on child of {nameof(GroundEnemyBehaviour)}");
-        }
-
-        _material = _spriteRenderer.material;
-
-        _particleFx = transform.Find("ParticleFX");
-
-        if (!_particleFx.TryGetComponent(out _smokeEffect))
-        {
-            Debug.LogError($"{nameof(ParticleSystem)} not found on child of {nameof(GroundEnemyBehaviour)}");
         }
 
         var audioSources = GetComponents<AudioSource>();
@@ -190,20 +175,6 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
     void Start()
     {
-         _material.SetFloat("_IsShadowVariant", IsShadowVariant ? 1f : 0f);
-         _material.SetFloat("_ShadowOutlineThreshold", ShadowOutlineThreshold);
-
-        if (IsShadowVariant)
-        {
-            _particleFx.gameObject.SetActive(true);
-            _smokeEffect.Play();
-        }
-        else
-        {
-            _smokeEffect.Stop();
-            _particleFx.gameObject.SetActive(false);
-        }
-
         _currentHealth = MaxHealth;
         _attackDamageZone.gameObject.SetActive(false);
         _state = EnemyState.NormalMoving;
@@ -267,7 +238,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
         {
             EnemyState.Alert => Color.yellow,
             EnemyState.AttackMoving => Color.yellow,
-            EnemyState.HitTaken => Color.red,
+            EnemyState.HitTaken => new Color(1f, 0.8f, 0.8f),
             _ => Color.white,
         };
     }
@@ -457,7 +428,6 @@ public class GroundEnemyBehaviour : MonoBehaviour
         _spriteRenderer.enabled = false;
 
         _enemyDamageZone.gameObject.SetActive(false);
-        _smokeEffect.Stop();
 
         StopWalkCycleAudio();
         TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
