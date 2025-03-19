@@ -31,11 +31,12 @@ Transform:
   m_GameObject: {fileID: 4364403561124163838}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.073, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2583185495068856640}
+  - {fileID: 8939804094844915541}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4781977844695474614
@@ -82,7 +83,7 @@ SpriteRenderer:
   m_SortingLayerID: 1880951291
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2434612972625218437, guid: 0d13feb737b133e42a7914905821d903, type: 3}
+  m_Sprite: {fileID: -2221194587738731766, guid: 8b8c5a0435f87bc479e0471583e18226, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -151,7 +152,6 @@ MonoBehaviour:
   waveAmplitude: 1
   waveFrequency: 2
   IsShadowVariant: 0
-  ShadowOutlineThreshold: 0.1
   EnemyHealth: 3
   projectilePrefab: {fileID: 6511049569049512373, guid: 228912b296a387c44b211139c74a8888, type: 3}
 --- !u!82 &8555710142796696427
@@ -310,6 +310,37 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.35}
   m_Size: {x: 0.9, y: 1.2}
   m_Direction: 0
+--- !u!1 &7541917772692835313
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8939804094844915541}
+  m_Layer: 11
+  m_Name: ProjectileOffset
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8939804094844915541
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7541917772692835313}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.4, y: -0.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3548766360781035238}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7676254737861935546
 GameObject:
   m_ObjectHideFlags: 0

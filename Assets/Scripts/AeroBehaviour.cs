@@ -48,6 +48,7 @@ public class AeroBehaviour : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private Transform _attackTarget; // Reference to the player's transform
     private Transform _enemyDamageZone;
+    private Transform _projectileStart;
     private CapsuleCollider2D _physicsCollider;
     private AudioSource _audioSource;
     private MainCamera _mainCamera;
@@ -65,7 +66,9 @@ public class AeroBehaviour : MonoBehaviour
 
     private Vector2 _flyTarget = new();
     private Vector2 _initialSpawnPosition = new();
+    private Vector2 _targetDir = new();
 
+    private float _directionX = 1;
     private float _waveOffset = 0.0f;
     private float _currentDistanceToTarget = 0;
     private float _targetDistance = 0;
@@ -110,7 +113,7 @@ public class AeroBehaviour : MonoBehaviour
             Debug.LogError($"EnemyDamageZone not found on {nameof(AeroBehaviour)}");
         }
 
-
+        _projectileStart = transform.Find("ProjectileOffset");
 
         _groundLayerMask = LayerMask.GetMask("Ground");
         _targetDistance = Mathf.Sqrt(Mathf.Pow(KeepXDistanceFromTarget, 2) + Mathf.Pow(KeepXDistanceFromTarget, 2));
@@ -167,6 +170,7 @@ public class AeroBehaviour : MonoBehaviour
 
     void ResetInnerState()
     {
+        _directionX = 1;
         _hasGivenUp = false;
         _targetSideIsLeft = false;
         isChasing = false;
@@ -227,6 +231,9 @@ public class AeroBehaviour : MonoBehaviour
 
         if (isChasing)
         {
+            _targetDir = _attackTarget.position - transform.position;
+            _directionX = _targetDir.normalized.x < 0 ? -1f : 1f;
+
             if (GiveUpRadius < _currentDistanceToTarget)
             {
                 isChasing = false;
@@ -235,10 +242,8 @@ public class AeroBehaviour : MonoBehaviour
             }
             else
             {
-                var targetDir = transform.position - _attackTarget.position;
-
-                Vector3 rayDirectionX = new Vector3(-targetDir.x, 0, 0).normalized;
-                Vector3 rayDirectionY = new Vector3(0, -targetDir.y, 0).normalized;
+                Vector3 rayDirectionX = new Vector3(_targetDir.x, 0, 0).normalized;
+                Vector3 rayDirectionY = new Vector3(0, _targetDir.y, 0).normalized;
 
                 var rayStartX = _physicsCollider.transform.position + (Vector3)_physicsCollider.offset;
                 var rayStartY = _physicsCollider.transform.position + (Vector3)_physicsCollider.offset;
@@ -343,18 +348,14 @@ public class AeroBehaviour : MonoBehaviour
             return;
         }
 
-        var directionVector = (Vector2)_attackTarget.position - (Vector2)transform.position;
-
-        if (directionVector.x < -0.5f)
+        if (_targetDir.x < -0.5f)
         {
-            _targetSideIsLeft = true;
+            FaceTargetDirection();
         }
-        else if (0.5f < directionVector.x)
+        else if (0.5f < _targetDir.x)
         {
-            _targetSideIsLeft = false;
+            FaceTargetDirection();
         }
-
-        Vector2 direction = directionVector.normalized;
 
         Vector2 flyTargetPlain = (Vector2)_attackTarget.position
             + new Vector2(_targetSideIsLeft ? -KeepXDistanceFromTarget : KeepXDistanceFromTarget, 0)
@@ -362,10 +363,17 @@ public class AeroBehaviour : MonoBehaviour
 
         var isBackingUp = _currentDistanceToTarget < _targetDistance;
         _usedSpeed *= (isBackingUp ? 0.5f : 1.0f);
-        
-        _spriteRenderer.flipX = 0.0f < direction.x;
-
         _flyTarget = flyTargetPlain;
+    }
+
+    private void FaceTargetDirection()
+    {
+        var right = 0.0f < _directionX;
+        _targetSideIsLeft = !right;
+        _spriteRenderer.flipX = right;
+        _projectileStart.localPosition =  new(right ? Mathf.Abs(_projectileStart.localPosition.x) : -Mathf.Abs(_projectileStart.localPosition.x), _projectileStart.localPosition.y);
+
+        Debug.Log("right " + right);
     }
 
     private void TryAttackPlayer()
@@ -413,7 +421,7 @@ public class AeroBehaviour : MonoBehaviour
             yield break;
         }
 
-        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        GameObject projectile = Instantiate(projectilePrefab, _projectileStart.transform.position, Quaternion.identity);
         Vector2 direction = (_attackTarget.position - transform.position).normalized;
 
         if (!projectile.TryGetComponent<Projectile>(out var projectileScript))
