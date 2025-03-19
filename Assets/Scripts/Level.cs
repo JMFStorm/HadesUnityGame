@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum LevelLightLevels
@@ -10,14 +11,22 @@ public enum LevelLightLevels
     Bright,
     VeryBright
 }
+
+public enum LevelSoundscapeType
+{
+    Tunnel = 0,
+    Arena,
+    Ghastly
+}
+
 public class Level : MonoBehaviour
 {
-    public Sprite[] BackgroundImages;
+    public List<Sprite> BackgroundImages = new();
+    public List<Sprite> SeamlessBackgrounds = new();
 
     public LevelLightLevels LightLevel = 0;
-    public LevelThemeType LevelTheme = 0;
+    public LevelSoundscapeType LevelSoundscape = 0;
 
-    public bool ParallaxBackground = false;
     public bool HeavyFog = false;
     public Color FogColorMultiplier = new(1, 1, 1, 1);
 
@@ -82,6 +91,18 @@ public class Level : MonoBehaviour
 
     public Sprite GetLevelBackground()
     {
-        return 0 < BackgroundImages.Length ? BackgroundImages[0] : null;
+        if (0 < BackgroundImages.Count)
+        {
+            return BackgroundImages[0];
+        }
+
+        if (SeamlessBackgrounds.Count <= 0)
+        {
+            Debug.LogError("Level is missing backgrounds data.");
+
+            return null;
+        }
+
+        return SeamlessBackgrounds[0];
     }
 }

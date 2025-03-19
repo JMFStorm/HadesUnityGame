@@ -6,7 +6,6 @@ using UnityEngine.Rendering.Universal;
 public class GameState : MonoBehaviour
 {
     public List<Level> GameLevels = new();
-    public List<LevelTheme> LevelThemes = new();
 
     public PlayerCharacter PlayerPrefab;
     public MainCamera MainCameraPrefab;
@@ -108,8 +107,6 @@ public class GameState : MonoBehaviour
         var (bl, tr) = _currentLevel.GetLevelBoundaries();
         _currentLevelBg = _currentLevel.GetLevelBackground();
 
-        var theme = LevelThemes.First(x => x.Theme == _currentLevel.LevelTheme);
-
         if (_currentLevelBg != null)
         {
             Debug.Log($"Used background sprite: {_currentLevelBg.name}");
@@ -118,7 +115,7 @@ public class GameState : MonoBehaviour
         else
         {
             Debug.Log($"Used background seamless image: {""}");
-            ApplySeamlessBackground(theme.SeamlessBackgrounds.First());
+            ApplySeamlessBackground(_currentLevel.SeamlessBackgrounds.First());
         }
 
         var lightIntensity = GetLightLevelValue(_currentLevel.LightLevel);
@@ -180,7 +177,7 @@ public class GameState : MonoBehaviour
         {
             Vector2 spriteSize = _backgroundRenderer.sprite.bounds.size;
 
-            float additionalScaleFactor = _currentLevel.ParallaxBackground ? Level.ParallaxBackgroundSizeMultiplier : 1.0f;
+            float additionalScaleFactor = Level.ParallaxBackgroundSizeMultiplier;
 
             // Use the larger scale factor to ensure full coverage
             float scaleFactor = Mathf.Max(width / spriteSize.x, height / spriteSize.y) * additionalScaleFactor;
@@ -258,9 +255,9 @@ public class GameState : MonoBehaviour
             LevelLightLevels.VeryDark => 0.025f,
             LevelLightLevels.Dark => 0.1f,
             LevelLightLevels.Dim => 0.25f,
-            LevelLightLevels.Normal => 0.4f,
-            LevelLightLevels.Bright => 0.55f,
-            LevelLightLevels.VeryBright => 0.75f,
+            LevelLightLevels.Normal => 0.35f,
+            LevelLightLevels.Bright => 0.5f,
+            LevelLightLevels.VeryBright => 0.65f,
             _ => 0f
         };
     }

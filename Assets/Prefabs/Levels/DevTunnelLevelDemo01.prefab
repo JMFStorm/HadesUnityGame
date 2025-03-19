@@ -187,11 +187,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BackgroundImages: []
+  SeamlessBackgrounds:
+  - {fileID: 21300000, guid: 84871f60f2f3dd74b917aa30035e5b5f, type: 3}
   LightLevel: 3
-  LevelTheme: 2
+  LevelSoundscape: 2
   ParallaxBackground: 1
   HeavyFog: 1
-  FogColorMultiplier: {r: 0.7971698, g: 0.88844335, b: 1, a: 1}
+  FogColorMultiplier: {r: 0.70825917, g: 0.7819509, b: 0.8679245, a: 1}
 --- !u!1 &8498639014900740298
 GameObject:
   m_ObjectHideFlags: 0

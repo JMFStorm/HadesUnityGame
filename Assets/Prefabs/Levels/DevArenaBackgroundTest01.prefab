@@ -162,10 +162,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13a30323f5dd2474da5b5a8cfd383f47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BackgroundImages: []
+  BackgroundImages:
+  - {fileID: 21300000, guid: 6ce06dcaa35f4ab4f9ccf986334c452c, type: 3}
+  SeamlessBackgrounds: []
   LightLevel: 3
-  LevelTheme: 1
-  ParallaxBackground: 1
+  LevelSoundscape: 1
   HeavyFog: 0
   FogColorMultiplier: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &7672637331557194527
