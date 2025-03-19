@@ -16,6 +16,7 @@ public class GameState : MonoBehaviour
     private MainCamera _mainCamera;
     private Vector3 _prevCameraPosition;
     private GameUI _gameUI;
+    private GlobalAudio _globalAudio;
 
     private SpriteRenderer _backgroundRenderer;
     private Sprite _currentLevelBg = null;
@@ -44,7 +45,14 @@ public class GameState : MonoBehaviour
 
         if (_gameUI == null)
         {
-            Debug.LogError($"{nameof(GameUI)} not found on {nameof(PlayerCharacter)}");
+            Debug.LogError($"{nameof(GameUI)} not found on {nameof(GameState)}");
+        }
+
+        _globalAudio = FindFirstObjectByType<GlobalAudio>();
+
+        if (_globalAudio == null)
+        {
+            Debug.LogError($"{nameof(GlobalAudio)} not found on {nameof(GameState)}");
         }
 
         _backgroundRenderer.sortingLayerName = "Background";
@@ -117,6 +125,9 @@ public class GameState : MonoBehaviour
             Debug.Log($"Used background seamless image: {""}");
             ApplySeamlessBackground(_currentLevel.SeamlessBackgrounds.First());
         }
+
+        _globalAudio.StopAmbience();
+        _globalAudio.PlayAmbience(_currentLevel.LevelSoundscape);
 
         var lightIntensity = GetLightLevelValue(_currentLevel.LightLevel);
         GlobalLight.intensity = lightIntensity;

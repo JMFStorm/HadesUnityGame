@@ -12,13 +12,6 @@ public enum LevelLightLevels
     VeryBright
 }
 
-public enum LevelSoundscapeType
-{
-    Tunnel = 0,
-    Arena,
-    Ghastly
-}
-
 public class Level : MonoBehaviour
 {
     public List<Sprite> BackgroundImages = new();

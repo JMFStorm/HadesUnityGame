@@ -191,9 +191,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 84871f60f2f3dd74b917aa30035e5b5f, type: 3}
   LightLevel: 3
   LevelSoundscape: 2
-  ParallaxBackground: 1
-  HeavyFog: 1
-  FogColorMultiplier: {r: 0.70825917, g: 0.7819509, b: 0.8679245, a: 1}
+  HeavyFog: 0
+  FogColorMultiplier: {r: 0.8254717, g: 0.90400946, b: 1, a: 1}
 --- !u!1 &8498639014900740298
 GameObject:
   m_ObjectHideFlags: 0
@@ -64759,7 +64758,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2871681367256504200, guid: c6267ae3f697ef949a57c1a1a83cf56a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -14
+      value: -27
       objectReference: {fileID: 0}
     - target: {fileID: 3185602110749030334, guid: c6267ae3f697ef949a57c1a1a83cf56a, type: 3}
       propertyPath: m_Name
