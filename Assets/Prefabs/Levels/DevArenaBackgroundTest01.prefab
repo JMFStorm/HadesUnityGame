@@ -163,10 +163,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BackgroundImages: []
-  LightLevel: 2
+  LightLevel: 3
   LevelTheme: 1
   ParallaxBackground: 1
-  HeavyFog: 1
+  HeavyFog: 0
   FogColorMultiplier: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &7672637331557194527
 GameObject:

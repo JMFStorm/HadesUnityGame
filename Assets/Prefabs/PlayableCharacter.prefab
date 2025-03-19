@@ -364,7 +364,7 @@ MonoBehaviour:
   DeadSprite: {fileID: -5007399392941087032, guid: 481a2bcda97e0e04e883ce9b2100fb96, type: 3}
   MoveSpeed: 4
   JumpForce: 17.5
-  DashSpeed: 15
+  DashSpeed: 16.5
   DashingTime: 0.175
   DashRechargeTime: 1.25
   AttackSpeed: 0.4
