@@ -12,9 +12,10 @@ public enum LevelLightLevels
 }
 public class Level : MonoBehaviour
 {
-    public Sprite[] LevelBackgrounds;
+    public Sprite[] BackgroundImages;
 
     public LevelLightLevels LightLevel = 0;
+    public LevelThemeType LevelTheme = 0;
 
     public bool ParallaxBackground = false;
     public bool HeavyFog = false;
@@ -79,8 +80,8 @@ public class Level : MonoBehaviour
         return new();
     }
 
-    public Sprite[] GetLevelBackgrounds()
+    public Sprite GetLevelBackground()
     {
-        return LevelBackgrounds;
+        return 0 < BackgroundImages.Length ? BackgroundImages[0] : null;
     }
 }

@@ -48,7 +48,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameLevels:
-  - {fileID: 259644864067411462, guid: 111643304bee7ed4186e14b5da44e463, type: 3}
+  - {fileID: 1514047593086382533, guid: c02045f98f152bd4b936cf55f8335280, type: 3}
+  - {fileID: 4657302896168997985, guid: 111643304bee7ed4186e14b5da44e463, type: 3}
+  LevelThemes:
+  - {fileID: 3890477272722359771, guid: fa0960749ef8d754bab03c65901860f0, type: 3}
   PlayerPrefab: {fileID: 2218871938792346492, guid: 5733a604297294142a58f667cdab2a01, type: 3}
   MainCameraPrefab: {fileID: 3018883555529649252, guid: f02c88d847cab044da2a038dfd0c60b1, type: 3}
   GlobalLight: {fileID: 4863655271805905191}
@@ -101,7 +104,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.4
+  m_Intensity: 0.6
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: bd544566e12429bf00000000f330ab1dcbc24148fb091d7067c59b48ab2296e3a78a24fe83a362a2
@@ -699,6 +702,8 @@ MonoBehaviour:
   - {fileID: 633850288931656203}
   - {fileID: 4043565453142946131}
   - {fileID: 1261685222703099031}
+  - {fileID: 8352185636186911230}
+  - {fileID: 4097489592816480607}
   FullHeartSprite: {fileID: 7352902161746852887, guid: 497c4a5755be0eb4e8452e878574b3f4, type: 3}
   EmptyHeartSprite: {fileID: 3730287977931372868, guid: 497c4a5755be0eb4e8452e878574b3f4, type: 3}
   ReinforcedHeartSprite: {fileID: 1150907877628102484, guid: 18665e52254c74444bd34054c3008625, type: 3}
@@ -976,7 +981,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 5c700d377be3f554d9b9c8050624f470, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

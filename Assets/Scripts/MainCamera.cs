@@ -84,6 +84,13 @@ public class MainCamera : MonoBehaviour
         return _camera;
     }
 
+    public Vector2 GetCameraViewSize()
+    {
+        float height = Camera.main.orthographicSize * 2f;
+        float width = height * Camera.main.aspect;
+        return new Vector2(width, height);
+    }
+
     public void SetFollowTarget(Transform newTarget)
     {
         FollowTarget = newTarget;

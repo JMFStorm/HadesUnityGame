@@ -353,6 +353,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: LevelThemes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: 'GameLevels.Array.data[0]'
       value: 
       objectReference: {fileID: 1514047593086382533, guid: c02045f98f152bd4b936cf55f8335280, type: 3}
@@ -360,10 +364,18 @@ PrefabInstance:
       propertyPath: 'GameLevels.Array.data[1]'
       value: 
       objectReference: {fileID: 4657302896168997985, guid: 111643304bee7ed4186e14b5da44e463, type: 3}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'LevelThemes.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3890477272722359771, guid: fa0960749ef8d754bab03c65901860f0, type: 3}
     - target: {fileID: 4863655271805905191, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_Intensity
       value: 0.6
       objectReference: {fileID: 0}
+    - target: {fileID: 5599592823766887949, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5c700d377be3f554d9b9c8050624f470, type: 2}
     - target: {fileID: 6418170319196612165, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
