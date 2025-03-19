@@ -10,6 +10,13 @@ public enum AeroSounds
     Wings,
 }
 
+public enum AeroAnimationState
+{
+    Normal = 0,
+    Attack,
+    Dead
+}
+
 public class AeroBehaviour : MonoBehaviour
 {
     public AudioClip[] AudioClips;
@@ -35,6 +42,9 @@ public class AeroBehaviour : MonoBehaviour
 
     public GameObject projectilePrefab; // Reference to the projectile prefab
 
+    private AeroAnimationState _state = 0;
+
+    private Animator _animatior;
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
     private Transform _attackTarget; // Reference to the player's transform
@@ -47,13 +57,14 @@ public class AeroBehaviour : MonoBehaviour
     private Material _material;
 
     private Coroutine _flapWings = null;
+    private Coroutine _attackMove = null;
 
-    private bool _isAttacking = false;
+    private bool _attackInterrupted = false;
     private bool _hasGivenUp = false;
     private bool _targetSideIsLeft = false;
     private bool isChasing = false;
+    private bool _isAttacking = false;
     private bool _hasDamageInvulnerability = false;
-    private bool _isDead = false;
     private float _lastShotTime; // Time of the last shot
 
     private Vector2 _flyTarget = new();
@@ -67,11 +78,18 @@ public class AeroBehaviour : MonoBehaviour
     private int _currentHealth = 3;
     private int _groundLayerMask;
 
+    private readonly int _animationFPS = 10;
+
     private void Awake()
     {
         if (!TryGetComponent(out _spriteRenderer))
         {
             Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(AeroBehaviour)}");
+        }
+
+        if (!TryGetComponent(out _animatior))
+        {
+            Debug.LogError($"{nameof(Animator)} not found on {nameof(AeroBehaviour)}");
         }
 
         if (!TryGetComponent(out _rigidBody))
@@ -111,7 +129,6 @@ public class AeroBehaviour : MonoBehaviour
         _mainCamera = FindFirstObjectByType<MainCamera>();
 
         _currentHealth = EnemyHealth;
-
         _initialSpawnPosition = transform.position;
 
         ResetInnerState();
@@ -119,22 +136,10 @@ public class AeroBehaviour : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!_hasDamageInvulnerability && !_isDead)
+        if (!_hasDamageInvulnerability && _state != AeroAnimationState.Dead)
         {
             MovementBehaviour();
         }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -169,15 +174,22 @@ public class AeroBehaviour : MonoBehaviour
 
     void ResetInnerState()
     {
-        _isAttacking = false;
         _hasGivenUp = false;
         _targetSideIsLeft = false;
         isChasing = false;
+        _isAttacking = false;
         _hasDamageInvulnerability = false;
-        _isDead = false;
         _lastShotTime = Time.time;
 
+        _rigidBody.linearVelocity = new();
+
+        _state = AeroAnimationState.Normal;
+
+        _animatior.SetBool("_IsAttacking", false);
+
         StopWingsFlap();
+        StopAttackMove();
+
         StartWingsFlap();
     }
 
@@ -272,16 +284,16 @@ public class AeroBehaviour : MonoBehaviour
             return;
         }
 
-        _isAttacking = false; // NOTE: Reset attack
-        ResetShotLoadTime(66.6f);
+        _attackInterrupted = true;
 
+        ResetShotLoadTime(66.6f);
         ApplyDamageKnockback(damageDir);
 
         _currentHealth -= 1;
 
         if (_currentHealth <= 0)
         {
-            _isDead = true;
+            _state = AeroAnimationState.Dead;
             ActivateDeathAndDestroy();
         }
         else
@@ -294,7 +306,7 @@ public class AeroBehaviour : MonoBehaviour
     {
         PlaySound(AeroSounds.Hit);
         _hasDamageInvulnerability = true;
-        _spriteRenderer.color = Color.red;
+        _spriteRenderer.color = new Color(1.0f, 0.8f, 0.8f);
 
         yield return new WaitForSeconds(duration);
 
@@ -365,33 +377,52 @@ public class AeroBehaviour : MonoBehaviour
 
     private void TryAttackPlayer()
     {
-        if (attackRadius < _currentDistanceToTarget || _isAttacking)
+        if (attackRadius < _currentDistanceToTarget)
         {
             return;
         }
 
         var canShoot = _lastShotTime + shootingCooldown <= Time.time;
 
-        if (canShoot)
+        if (canShoot && !_isAttacking)
         {
-            StartCoroutine(ActivateShootAtPlayer());
+            _isAttacking = true;
         }
     }
 
-    private IEnumerator ActivateShootAtPlayer()
+    private IEnumerator AttackMove()
     {
+        Debug.Log("AttackMove INIT");
+
+        _state = AeroAnimationState.Attack;
+        _animatior.SetBool("_IsAttacking", true);
+
         PlaySound(AeroSounds.Preattack);
 
-        _isAttacking = true;
-        _spriteRenderer.color = Color.yellow;
+        _attackInterrupted = false;
 
-        yield return new WaitForSeconds(ProjectileLoadTime);
+        yield return new WaitForSeconds(4.0f / _animationFPS); // NOTE: Padding time?
 
-        if (_isDead || !_isAttacking) // NOTE: _isAttacking might get disabled during wait time
+        yield return new WaitForSeconds(10f / _animationFPS);
+
+        if (_state == AeroAnimationState.Dead)
         {
-            Debug.Log("Attack interrupted");
+            Debug.Log("Attack interrupted from death!");
+
+            _isAttacking = false;
             yield break;
         }
+
+        if (_attackInterrupted)
+        {
+            Debug.Log("Attack interrupted from damage!");
+
+            _isAttacking = false;
+            StartWingsFlap();
+            yield break;
+        }
+
+        Debug.Log("AttackMove SHOOT");
 
         GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
         Vector2 direction = (_attackTarget.position - transform.position).normalized;
@@ -401,12 +432,21 @@ public class AeroBehaviour : MonoBehaviour
             Debug.LogError($"Did not find {nameof(Projectile)} in {nameof(Projectile)}");
         }
 
+        ResetShotLoadTime();
+
         PlaySound(AeroSounds.ProjectileLaunch);
         projectileScript.Launch(direction);
 
-        ResetShotLoadTime();
+        // NOTE: Set animation state beck a bit "prematurely" to avoid extra loop
+        _state = AeroAnimationState.Normal;
+        _animatior.SetBool("_IsAttacking", false);
+
+        yield return new WaitForSeconds(6.0f / _animationFPS);
+
+        Debug.Log("AttackMove END");
+
         _isAttacking = false;
-        _spriteRenderer.color = Color.white;
+        StartWingsFlap();
     }
 
     void ResetShotLoadTime(float percentage = 100.0f)
@@ -430,33 +470,77 @@ public class AeroBehaviour : MonoBehaviour
         }
     }
 
+    void StopAttackMove()
+    {
+        if (_attackMove != null)
+        {
+            StopCoroutine(_attackMove);
+            _attackMove = null;
+        }
+    }
+
+    void StartAttackMove()
+    {
+        if (_attackMove == null)
+        {
+            StopWingsFlap();
+            _attackMove = StartCoroutine(AttackMove());
+        }
+    }
+
     void StopWingsFlap()
     {
         if (_flapWings != null)
         {
             StopCoroutine(_flapWings);
+            _flapWings = null;
         }
     }
 
     void StartWingsFlap()
     {
+        Debug.Log("StartWingsFlap CALLED");
+
         if (_flapWings == null)
         {
-            StartCoroutine(FlapWingsLoop());
+            Debug.Log("StartWingsFlap CALL INIT");
+
+            StopAttackMove();
+
+            _flapWings = StartCoroutine(FlapWingsLoop());
+        }
+        else
+        {
+            Debug.Log("StartWingsFlap NOT INIT");
         }
     }
 
     IEnumerator FlapWingsLoop()
     {
-        yield return new WaitForSeconds(4.0f / 10.0f);
+        Debug.Log("FlapWingsLoop START");
+
+        yield return new WaitForSeconds(4.0f / _animationFPS);
 
         while (true)
         {
-            yield return new WaitForSeconds(8.0f / 10.0f);
+            Debug.Log("FlapWingsLoop LOOP");
 
-            if (_isDead)
+            if (_isAttacking)
             {
-                yield return null;
+                // NOTE: Attack move gets initiated in main animation loop
+
+                Debug.Log("FlapWingsLoop attack END");
+
+                StartAttackMove();
+
+                yield break;
+            }
+
+            yield return new WaitForSeconds(8.0f / _animationFPS);
+
+            if (_state == AeroAnimationState.Dead)
+            {
+                yield break;
             }
 
             PlaySound(AeroSounds.Wings);
