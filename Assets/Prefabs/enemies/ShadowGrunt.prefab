@@ -63,5 +63,26 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7264945473187392854, guid: 1c18e695883718b458b44a6050e583ae, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5145641216798727757}
   m_SourcePrefab: {fileID: 100100000, guid: 1c18e695883718b458b44a6050e583ae, type: 3}
+--- !u!1 &5517803580046124513 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7264945473187392854, guid: 1c18e695883718b458b44a6050e583ae, type: 3}
+  m_PrefabInstance: {fileID: 2900714489826347191}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5145641216798727757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5517803580046124513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82f54fcf973927d409e05fcab27e7655, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShadowFXPrefab: {fileID: 1384114421223530757, guid: ae7c3c39ce1ebcd428ad9356cdea90f4, type: 3}

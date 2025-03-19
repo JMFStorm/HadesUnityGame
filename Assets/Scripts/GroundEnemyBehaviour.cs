@@ -12,49 +12,10 @@ public enum EnemyState
     HitTaken
 }
 
-public enum EnemySoundGroups
-{
-    Attack,
-    DamageTaken,
-    AttackMiss,
-    AttackCharge,
-    Walk
-}
-
-public enum EnemyVoiceGroups
-{
-    Alert = 0,
-    Damage,
-    Death,
-    Idle,
-    Attack,
-    AttackCharge,
-}
-
-
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(AudioSource))]
 public class GroundEnemyBehaviour : MonoBehaviour
 {
-    private static float _lastVoiceTime = 0;
-
-    AudioSource _enemySoundSource;
-    AudioSource _enemyVoiceSource;
-
-    public AudioClip[] AlertVoiceClips;
-    public AudioClip[] DamageTakenVoiceClips;
-    public AudioClip[] DeathVoiceClips;
-    public AudioClip[] IdleVoiceClips;
-    public AudioClip[] AttackVoiceClips;
-    public AudioClip[] AttackChargeVoiceClips;
-
-    public AudioClip[] AttackSoundClips;
-    public AudioClip[] DamageTakenSoundClips;
-    public AudioClip[] WalkSoundClips;
-    public AudioClip[] AttackMissSoundClips;
-    public AudioClip[] AttackChargeSoundClips;
-
     public float MovementSpeed = 1.5f;
     public float AggroSpeed = 3.0f;
     public float AttackRange = 2.0f;
@@ -75,6 +36,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private PlayerCharacter _playerCharacter;
     private MainCamera _mainCamera;
+    private EnemySounds _soundEmitter;
 
     private Vector2 _aggroTarget;
 
@@ -116,6 +78,11 @@ public class GroundEnemyBehaviour : MonoBehaviour
             Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(GroundEnemyBehaviour)}");
         }
 
+        if (!TryGetComponent<EnemySounds>(out _soundEmitter))
+        {
+            Debug.LogError($"{nameof(EnemySounds)} not found on {nameof(GroundEnemyBehaviour)}");
+        }
+
         _groundFloorLayer = LayerMask.GetMask("Ground", "Platform");
         _wallLayer = LayerMask.GetMask("Ground", "EnvDamageZone");
         _playerLayer = LayerMask.GetMask("Character");
@@ -144,18 +111,6 @@ public class GroundEnemyBehaviour : MonoBehaviour
         if (!TryGetComponent(out _spriteRenderer))
         {
             Debug.LogError($"{nameof(SpriteRenderer)} not found on child of {nameof(GroundEnemyBehaviour)}");
-        }
-
-        var audioSources = GetComponents<AudioSource>();
-
-        if (audioSources.Length != 2)
-        {
-            Debug.LogError($"Expected 2 {nameof(AudioSource)} components on {nameof(GroundEnemyBehaviour)}, but found {audioSources.Length}");
-        }
-        else
-        {
-            _enemySoundSource = audioSources[0];
-            _enemyVoiceSource = audioSources[1];
         }
 
         _playerCharacter = FindFirstObjectByType<PlayerCharacter>();
@@ -268,7 +223,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
             if (0.50f < Random.Range(0f, 1f))
             {
-                TryPlayVoiceSource(EnemyVoiceGroups.Idle);
+                _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Idle);
             }
         }
     }
@@ -343,7 +298,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
         _state = EnemyState.Attacking;
         _attackHitPlayer = false;
 
-        TryPlaySoundSource(EnemySoundGroups.AttackCharge);
+        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.AttackCharge);
 
         yield return new WaitForSeconds(0.5f);
 
@@ -352,7 +307,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
             yield return null;
         }
 
-        TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
+        _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
 
         yield return new WaitForSeconds(1.0f);
 
@@ -363,8 +318,8 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         _attackDamageZone.gameObject.SetActive(true);
 
-        TryPlayVoiceSource(EnemyVoiceGroups.Attack);
-        TryPlaySoundSource(EnemySoundGroups.Attack);
+        _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Attack);
+        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Attack);
 
         yield return new WaitForSeconds(0.30f);
 
@@ -375,7 +330,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         if (!_attackHitPlayer)
         {
-            TryPlaySoundSource(EnemySoundGroups.AttackMiss);
+            _soundEmitter.TryPlaySoundSource(EnemySoundGroups.AttackMiss);
         }
 
         _spriteRenderer.color = Color.white;
@@ -413,8 +368,8 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
     private IEnumerator ActivateDamageTakenTime(float duration)
     {
-        TryPlayVoiceSource(EnemyVoiceGroups.Damage, true);
-        TryPlaySoundSource(EnemySoundGroups.DamageTaken);
+        _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Damage, true);
+        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
         _state = EnemyState.HitTaken;
 
         yield return new WaitForSeconds(duration);
@@ -430,7 +385,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
         _enemyDamageZone.gameObject.SetActive(false);
 
         StopWalkCycleAudio();
-        TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
+        _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
 
         Destroy(gameObject, 2.5f);
     }
@@ -529,7 +484,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
         {
             yield return new WaitForSeconds(frequency);
 
-            TryPlaySoundSource(EnemySoundGroups.Walk);
+            _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Walk);
         }
     }
 
@@ -553,7 +508,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         if (alertTimeBetween < Mathf.Abs(newTime - _previousAlert))
         {
-            TryPlayVoiceSource(EnemyVoiceGroups.Alert, true);
+            _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Alert, true);
             _previousAlert = newTime;
         }
 
@@ -588,68 +543,5 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         var newDamageZoneX = _attackDamageZone.localPosition.x * -1;
         _attackDamageZone.localPosition = new(newDamageZoneX, _attackDamageZone.localPosition.y, _attackDamageZone.localPosition.z);
-    }
-
-    void TryPlaySoundSource(EnemySoundGroups soundType)
-    {
-        AudioClip[] clips = soundType switch
-        {
-            EnemySoundGroups.Attack => AttackSoundClips,
-            EnemySoundGroups.DamageTaken => DamageTakenSoundClips,
-            EnemySoundGroups.Walk => WalkSoundClips,
-            EnemySoundGroups.AttackCharge => AttackChargeSoundClips,
-            EnemySoundGroups.AttackMiss => AttackMissSoundClips,
-            _ => new AudioClip[] { },
-        };
-
-        if (!_mainCamera.IsWorldPositionVisible(_enemySoundSource.transform.position))
-        {
-            return;
-        }
-
-        if (0 < clips.Length)
-        {
-            AudioClip usedClip = clips[Random.Range(0, clips.Length)];
-
-            _enemySoundSource.clip = usedClip;
-            _enemySoundSource.volume = soundType == EnemySoundGroups.Walk ? 0.35f : 1.0f;
-            _enemySoundSource.Play();
-        }
-    }
-
-    void TryPlayVoiceSource(EnemyVoiceGroups soundType, bool forceSound = false)
-    {
-        var newLastVoiceTime = Time.time;
-
-        if (!forceSound && Mathf.Abs(_lastVoiceTime - newLastVoiceTime) < 1.0f)
-        {
-            return;
-        }
-
-        if (!_mainCamera.IsWorldPositionVisible(_enemySoundSource.transform.position))
-        {
-            return;
-        }
-
-        AudioClip[] clips = soundType switch
-        {
-            EnemyVoiceGroups.Alert => AlertVoiceClips,
-            EnemyVoiceGroups.Damage => DamageTakenVoiceClips,
-            EnemyVoiceGroups.Death => DeathVoiceClips,
-            EnemyVoiceGroups.Idle => IdleVoiceClips,
-            EnemyVoiceGroups.Attack => AttackVoiceClips,
-            EnemyVoiceGroups.AttackCharge => AttackChargeVoiceClips,
-            _ => new AudioClip[] { },
-        };
-
-        if (0 < clips.Length)
-        {
-            AudioClip usedClip = clips[Random.Range(0, clips.Length)];
-
-            _enemyVoiceSource.clip = usedClip;
-            _enemyVoiceSource.Play();
-
-            _lastVoiceTime = newLastVoiceTime;
-        }
     }
 }

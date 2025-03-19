@@ -508,8 +508,6 @@ public class AeroBehaviour : MonoBehaviour
 
         while (true)
         {
-            Debug.Log("FlapWingsLoop LOOP");
-
             if (_isAttacking)
             {
                 // NOTE: Attack move gets initiated in main animation loop
