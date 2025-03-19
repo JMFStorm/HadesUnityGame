@@ -4,6 +4,7 @@ Shader "Custom/ScrollingSprite"
     {
         _MainTex ("Texture", 2D) = "white" {}
         _UVOffset ("UV Offset", Vector) = (0, 0, 0, 0)
+        _UVScale ("UV Scale", Vector) = (1, 1, 0, 0) // Add UV scaling property
     }
     SubShader
     {
@@ -30,12 +31,15 @@ Shader "Custom/ScrollingSprite"
 
             sampler2D _MainTex;
             float4 _UVOffset; // Custom offset
+            float4 _UVScale;  // Custom UV scale
 
             v2f vert (appdata_t v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv + _UVOffset.xy; // Apply UV offset
+
+                // Scale the UVs based on _UVScale
+                o.uv = v.uv * _UVScale.xy + _UVOffset.xy; // Apply UV scale and offset
                 return o;
             }
 

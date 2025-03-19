@@ -4,6 +4,7 @@ using UnityEngine;
 public enum LevelThemeType
 {
     DarkTunnel = 0,
+    DarkArena
 }
 
 [System.Serializable]

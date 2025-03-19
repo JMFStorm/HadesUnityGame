@@ -22,6 +22,7 @@ public class GameState : MonoBehaviour
     private Sprite _currentLevelBg = null;
     private Material _levelBGMaterial;
     private Vector2 _bgOffset = new();
+    private float _bgUVMultiplier = new();
 
     private int _currentLevelIndex = 0;
     private readonly float _cameraZOffset = -1.0f;
@@ -76,6 +77,11 @@ public class GameState : MonoBehaviour
         }
 
         _prevCameraPosition = _mainCamera.transform.position;
+    }
+
+    private void LateUpdate()
+    {
+
     }
 
     private List<Level> CreateGameLevelLayout()
@@ -184,6 +190,8 @@ public class GameState : MonoBehaviour
         // Position the background at the center of the boundary
         Vector3 center = (bottomLeft + topRight) / 2f;
         _backgroundRenderer.transform.position = new Vector3(center.x, center.y, 40);
+
+        _backgroundRenderer.transform.SetParent(null);
     }
 
     public void ApplySeamlessBackground(Sprite background)
@@ -214,7 +222,15 @@ public class GameState : MonoBehaviour
         }
 
         _backgroundRenderer.transform.localScale = newScale * 1.1f;
-        _backgroundRenderer.transform.position = (Vector2)_mainCamera.transform.position;
+        _backgroundRenderer.transform.SetParent(_mainCamera.transform);
+
+        float bgSideSize = Mathf.Min(spriteHeight, spriteWidth);
+        float cameraSideSize = Mathf.Min(cameraView.x, cameraView.y);
+        _bgUVMultiplier = background.pixelsPerUnit / spriteWidth;
+
+        Debug.Log($"uvMultiplier: {_bgUVMultiplier}");
+
+        _levelBGMaterial.SetVector("_UVScale", new Vector4(_bgUVMultiplier, _bgUVMultiplier, 1, 1));
     }
 
     private void BGImageParallaxScroll()
@@ -229,10 +245,9 @@ public class GameState : MonoBehaviour
     {
         Vector2 deltaMovement = _mainCamera.transform.position - _prevCameraPosition;
 
-        _bgOffset += deltaMovement / 28f;
+        _bgOffset += (deltaMovement / 28f) * _bgUVMultiplier;
 
         _levelBGMaterial.SetVector("_UVOffset", (Vector4)_bgOffset);
-        _backgroundRenderer.transform.position = (Vector2)_mainCamera.transform.position;
     }
 
     float GetLightLevelValue(LevelLightLevels level)
