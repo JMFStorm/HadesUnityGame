@@ -39,6 +39,8 @@ public class PlayerCharacter : MonoBehaviour
     public bool DebugLogging = false;
     public int MaxDashes = 2;
 
+    private Animator _animator;
+
     private AudioSource _audioSource;
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
@@ -82,19 +84,17 @@ public class PlayerCharacter : MonoBehaviour
 
     void Awake()
     {
+        if (!TryGetComponent(out _animator))
+        {
+            Debug.LogError($"{nameof(Animator)} not found on {nameof(PlayerCharacter)}");
+        }
+
         if (!TryGetComponent(out _rigidBody))
         {
             Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(PlayerCharacter)}");
         }
 
-        var spriteRenderer = transform.Find("SpriteRenderer");
-
-        if (spriteRenderer == null)
-        {
-            Debug.LogError($"SpriteRenderer child not found on {nameof(PlayerCharacter)} game object");
-        }
-
-        if (!spriteRenderer.TryGetComponent(out _spriteRenderer))
+        if (!TryGetComponent(out _spriteRenderer))
         {
             Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(PlayerCharacter)}");
         }
@@ -191,10 +191,10 @@ public class PlayerCharacter : MonoBehaviour
 
         DashRegen();
 
-        if (_isCrouching)
+        if (_isCrouching || _isDashing)
         {
             _physicsCollider.size = new Vector2(_originalSize.x, 0.33f);
-            _physicsCollider.offset = new Vector2(_originalOffset.x, -0.25f);
+            _physicsCollider.offset = new Vector2(_originalOffset.x, _originalOffset.y - 0.25f);
 
             Debug.DrawRay(transform.position, Vector2.down * _platformFallthroughRaycastDistance, Color.red);
         }
@@ -212,46 +212,45 @@ public class PlayerCharacter : MonoBehaviour
             _spriteRenderer.flipX = _facingDirX < 0.0f;
         }
 
-        // ------------
-        // Get sprite
+        // ---------------
+        // Get animation
 
-        Sprite usedSprite;
+        string usedAnim;
 
         if (_isDead)
         {
-            usedSprite = DeadSprite;
+            usedAnim = "PlayerDeath";
         }
         else if (_inDamageState)
         {
-            usedSprite = HitSprite;
+            usedAnim = "PlayerHit";
         }
         else if (_isAttacking)
         {
-            usedSprite = AttackSprite;
+            usedAnim = "PlayerAttack";
         }
         else if (_isDashing)
         {
-            usedSprite = DashSprite;
+            usedAnim = "PlayerDash";
         }
         else if (_isCrouching)
         {
-            usedSprite = CrouchSprite;
+            usedAnim = "PlayerCrouch";
         }
         else if (!_isGrounded)
         {
-            usedSprite = AirSprite;
+            usedAnim = "PlayerAir";
         }
         else if (_isGrounded && 0.01f < Mathf.Abs(_rigidBody.linearVelocity.x))
         {
-            usedSprite = MoveSprite;
+            usedAnim = "PlayerMove";
         }
         else
         {
-            usedSprite = IdleSprite;
+            usedAnim = "PlayerIdle";
         }
 
-        _spriteRenderer.sprite = usedSprite;
-
+        _animator.Play(usedAnim);
     }
 
     void FixedUpdate()
