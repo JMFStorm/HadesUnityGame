@@ -36,7 +36,6 @@ public class AeroBehaviour : MonoBehaviour
 
     // For shadow variant
     public bool IsShadowVariant = false;
-    public float ShadowOutlineThreshold = 0.1f;
 
     public int EnemyHealth = 3;
 
@@ -52,9 +51,6 @@ public class AeroBehaviour : MonoBehaviour
     private CapsuleCollider2D _physicsCollider;
     private AudioSource _audioSource;
     private MainCamera _mainCamera;
-
-    // For shadow variant
-    private Material _material;
 
     private Coroutine _flapWings = null;
     private Coroutine _attackMove = null;
@@ -114,7 +110,7 @@ public class AeroBehaviour : MonoBehaviour
             Debug.LogError($"EnemyDamageZone not found on {nameof(AeroBehaviour)}");
         }
 
-        _material = _spriteRenderer.material;
+
 
         _groundLayerMask = LayerMask.GetMask("Ground");
         _targetDistance = Mathf.Sqrt(Mathf.Pow(KeepXDistanceFromTarget, 2) + Mathf.Pow(KeepXDistanceFromTarget, 2));
@@ -122,9 +118,6 @@ public class AeroBehaviour : MonoBehaviour
 
     private void Start()
     {
-        _material.SetFloat("_IsShadowVariant", IsShadowVariant ? 1f : 0f);
-        _material.SetFloat("_ShadowOutlineThreshold", ShadowOutlineThreshold);
-
         _attackTarget = GameObject.FindGameObjectWithTag("Player").transform;
         _mainCamera = FindFirstObjectByType<MainCamera>();
 
@@ -392,8 +385,6 @@ public class AeroBehaviour : MonoBehaviour
 
     private IEnumerator AttackMove()
     {
-        Debug.Log("AttackMove INIT");
-
         _state = AeroAnimationState.Attack;
         _animatior.SetBool("_IsAttacking", true);
 
@@ -422,8 +413,6 @@ public class AeroBehaviour : MonoBehaviour
             yield break;
         }
 
-        Debug.Log("AttackMove SHOOT");
-
         GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
         Vector2 direction = (_attackTarget.position - transform.position).normalized;
 
@@ -442,8 +431,6 @@ public class AeroBehaviour : MonoBehaviour
         _animatior.SetBool("_IsAttacking", false);
 
         yield return new WaitForSeconds(6.0f / _animationFPS);
-
-        Debug.Log("AttackMove END");
 
         _isAttacking = false;
         StartWingsFlap();
@@ -499,26 +486,16 @@ public class AeroBehaviour : MonoBehaviour
 
     void StartWingsFlap()
     {
-        Debug.Log("StartWingsFlap CALLED");
-
         if (_flapWings == null)
         {
-            Debug.Log("StartWingsFlap CALL INIT");
-
             StopAttackMove();
 
             _flapWings = StartCoroutine(FlapWingsLoop());
-        }
-        else
-        {
-            Debug.Log("StartWingsFlap NOT INIT");
         }
     }
 
     IEnumerator FlapWingsLoop()
     {
-        Debug.Log("FlapWingsLoop START");
-
         yield return new WaitForSeconds(4.0f / _animationFPS);
 
         while (true)
@@ -528,8 +505,6 @@ public class AeroBehaviour : MonoBehaviour
             if (_isAttacking)
             {
                 // NOTE: Attack move gets initiated in main animation loop
-
-                Debug.Log("FlapWingsLoop attack END");
 
                 StartAttackMove();
 

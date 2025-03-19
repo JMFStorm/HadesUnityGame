@@ -89,13 +89,6 @@ public class Level : MonoBehaviour
             return BackgroundImages[0];
         }
 
-        if (SeamlessBackgrounds.Count <= 0)
-        {
-            Debug.LogError("Level is missing backgrounds data.");
-
-            return null;
-        }
-
-        return SeamlessBackgrounds[0];
+        return null;
     }
 }

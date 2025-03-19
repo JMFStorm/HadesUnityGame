@@ -184,22 +184,22 @@ public class GameState : MonoBehaviour
         float width = topRight.x - bottomLeft.x;
         float height = topRight.y - bottomLeft.y;
 
-        if (_backgroundRenderer.sprite != null)
-        {
-            Vector2 spriteSize = _backgroundRenderer.sprite.bounds.size;
+        Vector2 spriteSize = _backgroundRenderer.sprite.bounds.size;
 
-            float additionalScaleFactor = Level.ParallaxBackgroundSizeMultiplier;
+        float additionalScaleFactor = Level.ParallaxBackgroundSizeMultiplier;
 
-            // Use the larger scale factor to ensure full coverage
-            float scaleFactor = Mathf.Max(width / spriteSize.x, height / spriteSize.y) * additionalScaleFactor;
-            _backgroundRenderer.transform.localScale = new Vector3(scaleFactor, scaleFactor, 1);
-        }
+        // Use the larger scale factor to ensure full coverage
+        float scaleFactor = Mathf.Max(width / spriteSize.x, height / spriteSize.y) * additionalScaleFactor;
+        _backgroundRenderer.transform.localScale = new Vector3(scaleFactor, scaleFactor, 1);
 
         // Position the background at the center of the boundary
         Vector3 center = (bottomLeft + topRight) / 2f;
         _backgroundRenderer.transform.position = new Vector3(center.x, center.y, 40);
-
         _backgroundRenderer.transform.SetParent(null);
+
+        _levelBGMaterial.SetVector("_UVScale", new Vector4(1, 1, 1, 1));
+        _bgOffset = new Vector4(0, 0, 0, 0);
+        _levelBGMaterial.SetVector("_UVOffset", _bgOffset);
     }
 
     public void ApplySeamlessBackground(Sprite background)
@@ -231,6 +231,7 @@ public class GameState : MonoBehaviour
 
         _backgroundRenderer.transform.localScale = newScale * 1.1f;
         _backgroundRenderer.transform.SetParent(_mainCamera.transform);
+        _backgroundRenderer.transform.localPosition = new Vector3(0,0,1);
 
         float bgSideSize = Mathf.Min(spriteHeight, spriteWidth);
         float cameraSideSize = Mathf.Min(cameraView.x, cameraView.y);
@@ -239,6 +240,8 @@ public class GameState : MonoBehaviour
         Debug.Log($"uvMultiplier: {_bgUVMultiplier}");
 
         _levelBGMaterial.SetVector("_UVScale", new Vector4(_bgUVMultiplier, _bgUVMultiplier, 1, 1));
+        _bgOffset = new Vector4(0, 0, 0, 0);
+        _levelBGMaterial.SetVector("_UVOffset", _bgOffset);
     }
 
     private void BGImageParallaxScroll()
