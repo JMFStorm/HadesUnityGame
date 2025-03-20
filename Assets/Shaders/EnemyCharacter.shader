@@ -43,7 +43,6 @@ Shader "Custom/EnemyCharacter"
 
             // GPU Instancing
             #pragma multi_compile_instancing
-            #pragma multi_compile _ DEBUG_DISPLAY SKINNED_SPRITE
 
             struct Attributes
             {
@@ -60,9 +59,6 @@ Shader "Custom/EnemyCharacter"
                 half4   color       : COLOR;
                 float2  uv          : TEXCOORD0;
                 half2   lightingUV  : TEXCOORD1;
-                #if defined(DEBUG_DISPLAY)
-                float3  positionWS  : TEXCOORD2;
-                #endif
                 UNITY_VERTEX_OUTPUT_STEREO
             };
 
@@ -71,7 +67,6 @@ Shader "Custom/EnemyCharacter"
 
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);
-            UNITY_TEXTURE_STREAMING_DEBUG_VARS_FOR_TEX(_MainTex);
 
             TEXTURE2D(_MaskTex);
             SAMPLER(sampler_MaskTex);
@@ -107,14 +102,10 @@ Shader "Custom/EnemyCharacter"
                 Varyings o = (Varyings)0;
                 UNITY_SETUP_INSTANCE_ID(v);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
-                UNITY_SKINNED_VERTEX_COMPUTE(v);
 
                 // SetUpSpriteInstanceProperties(); // Fänne: unknown function
                 v.positionOS = UnityFlipSprite(v.positionOS, unity_SpriteProps.xy);
                 o.positionCS = TransformObjectToHClip(v.positionOS);
-                #if defined(DEBUG_DISPLAY)
-                o.positionWS = TransformObjectToWorld(v.positionOS);
-                #endif
                 o.uv = v.uv;
                 o.lightingUV = half2(ComputeScreenPos(o.positionCS / o.positionCS.w).xy);
 
@@ -206,8 +197,6 @@ Shader "Custom/EnemyCharacter"
                     InitializeSurfaceData(main.rgb, main.a, mask, surfaceData);
                     InitializeInputData(i.uv, i.lightingUV, inputData);
 
-                    SETUP_DEBUG_TEXTURE_DATA_2D_NO_TS(inputData, i.positionWS, i.positionCS, _MainTex);
-
                     return CombinedShapeLightShared(surfaceData, inputData);
                 }
                 else // Fänne: Color calculation for shadow variant
@@ -275,7 +264,6 @@ Shader "Custom/EnemyCharacter"
 
             // GPU Instancing
             #pragma multi_compile_instancing
-            #pragma multi_compile _ SKINNED_SPRITE
 
             struct Attributes
             {
@@ -283,7 +271,6 @@ Shader "Custom/EnemyCharacter"
                 float4 color        : COLOR;
                 float2 uv           : TEXCOORD0;
                 float4 tangent      : TANGENT;
-                UNITY_SKINNED_VERTEX_INPUTS
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
@@ -295,7 +282,6 @@ Shader "Custom/EnemyCharacter"
                 half3   normalWS        : TEXCOORD1;
                 half3   tangentWS       : TEXCOORD2;
                 half3   bitangentWS     : TEXCOORD3;
-                UNITY_VERTEX_OUTPUT_STEREO
             };
 
             TEXTURE2D(_MainTex);
@@ -313,7 +299,6 @@ Shader "Custom/EnemyCharacter"
                 Varyings o = (Varyings)0;
                 UNITY_SETUP_INSTANCE_ID(attributes);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
-                UNITY_SKINNED_VERTEX_COMPUTE(attributes);
 
                 // SetUpSpriteInstanceProperties(); // Fänne: unknown function
                 attributes.positionOS = UnityFlipSprite(attributes.positionOS, unity_SpriteProps.xy);
@@ -345,24 +330,18 @@ Shader "Custom/EnemyCharacter"
             HLSLPROGRAM
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/Core2D.hlsl"
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/DebugMipmapStreamingMacros.hlsl"
-            #if defined(DEBUG_DISPLAY)
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Debug/Debugging2D.hlsl"
-            #endif
 
             #pragma vertex UnlitVertex
             #pragma fragment UnlitFragment
 
             // GPU Instancing
             #pragma multi_compile_instancing
-            #pragma multi_compile _ DEBUG_DISPLAY SKINNED_SPRITE
 
             struct Attributes
             {
                 float3 positionOS   : POSITION;
                 float4 color        : COLOR;
                 float2 uv           : TEXCOORD0;
-                UNITY_SKINNED_VERTEX_INPUTS
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
@@ -371,15 +350,10 @@ Shader "Custom/EnemyCharacter"
                 float4  positionCS      : SV_POSITION;
                 float4  color           : COLOR;
                 float2  uv              : TEXCOORD0;
-                #if defined(DEBUG_DISPLAY)
-                float3  positionWS  : TEXCOORD2;
-                #endif
-                UNITY_VERTEX_OUTPUT_STEREO
             };
 
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);
-            UNITY_TEXTURE_STREAMING_DEBUG_VARS_FOR_TEX(_MainTex);
 
             // NOTE: Do not ifdef the properties here as SRP batcher can not handle different layouts.
             CBUFFER_START( UnityPerMaterial )
@@ -391,14 +365,10 @@ Shader "Custom/EnemyCharacter"
                 Varyings o = (Varyings)0;
                 UNITY_SETUP_INSTANCE_ID(attributes);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
-                UNITY_SKINNED_VERTEX_COMPUTE(attributes);
 
                 // SetUpSpriteInstanceProperties(); // Fänne: unknown function
                 attributes.positionOS = UnityFlipSprite( attributes.positionOS, unity_SpriteProps.xy);
                 o.positionCS = TransformObjectToHClip(attributes.positionOS);
-                #if defined(DEBUG_DISPLAY)
-                o.positionWS = TransformObjectToWorld(attributes.positionOS);
-                #endif
                 o.uv = attributes.uv;
                 o.color = attributes.color * _Color * unity_SpriteColor;
                 return o;
@@ -408,21 +378,6 @@ Shader "Custom/EnemyCharacter"
             {
                 return float4(1, 0, 0, 1);
                 float4 mainTex = i.color * SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
-
-                #if defined(DEBUG_DISPLAY)
-                SurfaceData2D surfaceData;
-                InputData2D inputData;
-                half4 debugColor = 0;
-
-                InitializeSurfaceData(mainTex.rgb, mainTex.a, surfaceData);
-                InitializeInputData(i.uv, inputData);
-                SETUP_DEBUG_TEXTURE_DATA_2D_NO_TS(inputData, i.positionWS, i.positionCS, _MainTex);
-
-                if(CanDebugOverrideOutputColor(surfaceData, inputData, debugColor))
-                {
-                    return debugColor;
-                }
-                #endif
 
                 return mainTex;
             }
