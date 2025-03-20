@@ -4,7 +4,10 @@ public class ShadowEnemyEffects : MonoBehaviour
 {
     public GameObject ShadowFXPrefab;
 
-    public readonly float ShadowOutlineThreshold = 0.1f;
+    public float OutlineThickness = 0.3f;
+
+    public Color InlineColor = new(0.12f, 0.12f, 0.12f, 1f);
+    public Color OutlineColor = new(0.22f, 0.22f, 0.22f, 1f);
 
     private Material _material;
     private GameObject _shadowFXInstanciated;
@@ -25,7 +28,11 @@ public class ShadowEnemyEffects : MonoBehaviour
     void Start()
     {
         _material.SetFloat("_IsShadowVariant", 1f);
-        _material.SetFloat("_ShadowOutlineThreshold", ShadowOutlineThreshold);
+        _material.SetFloat("_OutlineThickness", OutlineThickness);
+        _material.SetColor("_InlineColor", InlineColor);
+        _material.SetColor("_OutlineColor", OutlineColor);
+
+        _material.SetColor("_DamageColor", new(0,0,0));
     }
 
 

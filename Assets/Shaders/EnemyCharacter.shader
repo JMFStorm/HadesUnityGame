@@ -8,6 +8,10 @@ Shader "Custom/EnemyCharacter"
         _ZWrite("ZWrite", Float) = 0
 
         _IsShadowVariant("Is Shadow Variant", Float) = 0 // Fänne: If is shadow variant boolean
+        _OutlineColor("Outline Color", Color) = (0.5, 0.5, 0.5, 1)
+        _InlineColor("Inline Color", Color) = (0.5, 0.5, 0.5, 1)
+        _OutlineThickness("Outline Thickness", Float) = 0.3
+        _DamageColor("Damage color of enemy", Color) = (1.0, 1.0, 1.0, 1)
 
         // Legacy properties. They're here so that materials using this shader can gracefully fallback to the legacy sprite shader.
         [HideInInspector] _Color("Tint", Color) = (1,1,1,1)
@@ -76,6 +80,10 @@ Shader "Custom/EnemyCharacter"
             CBUFFER_START(UnityPerMaterial)
                 half4 _Color;
                 float _IsShadowVariant; // Fänne: variable
+                half4 _OutlineColor;
+                float _OutlineThickness;
+                half4 _InlineColor;
+                half4 _DamageColor;
             CBUFFER_END
 
             #if USE_SHAPE_LIGHT_TYPE_0
@@ -121,9 +129,30 @@ Shader "Custom/EnemyCharacter"
                 return dot(color, half3(0.299, 0.587, 0.114));
             }
 
+            bool IsTransparent(float2 uv) {
+                half4 sampleColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv);
+                return sampleColor.a < 0.5; // Adjust threshold as needed
+            }
+
             half4 CombinedShapeLightFragment(Varyings i) : SV_Target // Fänne: modified fragment shader
             {
                 half4 main = i.color * SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
+
+                // Sample surrounding pixels
+                float2 texelSize = 1.0 / _ScreenParams.xy * _OutlineThickness; // Adjust based on screen size
+
+                // Track transparency of surrounding pixels
+                int transparentCount = 0;
+                const int totalSamples = 8; // Number of surrounding pixels checked
+
+                transparentCount += IsTransparent(i.uv + float2(-texelSize.x, 0)); // Left
+                transparentCount += IsTransparent(i.uv + float2(texelSize.x, 0));  // Right
+                transparentCount += IsTransparent(i.uv + float2(0, -texelSize.y)); // Down
+                transparentCount += IsTransparent(i.uv + float2(0, texelSize.y));  // Up
+                transparentCount += IsTransparent(i.uv + float2(-texelSize.x, -texelSize.y)); // Bottom-left
+                transparentCount += IsTransparent(i.uv + float2(texelSize.x, -texelSize.y));  // Bottom-right
+                transparentCount += IsTransparent(i.uv + float2(-texelSize.x, texelSize.y));  // Top-left
+                transparentCount += IsTransparent(i.uv + float2(texelSize.x, texelSize.y));   // Top-right
 
                 // Check if the pixel is pure red (or close to pure red)
                 if (0.05 < main.r && main.g < 0.01 && main.b < 0.01)
@@ -162,6 +191,18 @@ Shader "Custom/EnemyCharacter"
                     SurfaceData2D surfaceData;
                     InputData2D inputData;
 
+                    if (0.01 < _DamageColor.r + _DamageColor.g + _DamageColor.b)
+                    {
+                        if (!(main.r < 0.01 && main.g < 0.01 && main.b < 0.01))
+                        {
+                            if (transparentCount <= 0)
+                            {
+                                // If damage is on, set damage color to body areas
+                                main = _DamageColor;
+                            }
+                        }
+                    }
+
                     InitializeSurfaceData(main.rgb, main.a, mask, surfaceData);
                     InitializeInputData(i.uv, i.lightingUV, inputData);
 
@@ -171,20 +212,36 @@ Shader "Custom/EnemyCharacter"
                 }
                 else // Fänne: Color calculation for shadow variant
                 {
+                    // Fänne: Outlines
+                    {
+                        // If at least one surrounding pixel is non-transparent, but not all => apply the outline color
+                        if (0 < transparentCount && transparentCount < totalSamples) {
+                             return _OutlineColor;
+                        }
+                    }
+
                     // Sample the main texture
                     half4 mainTexColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
   
                     half3 modifiedColor;
     
-                    if (mainTexColor.r < 0.05 && mainTexColor.g < 0.05 && mainTexColor.b < 0.05)
+                    if (mainTexColor.r < 0.01 && mainTexColor.g < 0.01 && mainTexColor.b < 0.01)
                     {
                         // Invert dark colors to brighter gray
-                        modifiedColor = half3(1.0 / 255.0, 1.0 / 255.0, 1.0 / 255);
+                        modifiedColor = _InlineColor;
                     }
                     else
                     {
-                        // Set the pixel to black
-                        modifiedColor = half3(0, 0, 0);
+                        if (0.01 < _DamageColor.r + _DamageColor.g + _DamageColor.b)
+                        {
+                            // If damage is on, set damage color to body areas
+                            modifiedColor = _DamageColor;
+                        }
+                        else
+                        {
+                            // Set the pixel to black
+                            modifiedColor = half3(0, 0, 0);
+                        }
                     }
 
                     // Initialize surface and input data for lighting calculations

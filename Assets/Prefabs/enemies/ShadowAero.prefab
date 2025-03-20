@@ -21,6 +21,18 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1887247781124116668, guid: 3569d3c3904eaf643823af319dc57108, type: 3}
+      propertyPath: DamageColor.b
+      value: 0.11672304
+      objectReference: {fileID: 0}
+    - target: {fileID: 1887247781124116668, guid: 3569d3c3904eaf643823af319dc57108, type: 3}
+      propertyPath: DamageColor.g
+      value: 0.11672304
+      objectReference: {fileID: 0}
+    - target: {fileID: 1887247781124116668, guid: 3569d3c3904eaf643823af319dc57108, type: 3}
+      propertyPath: DamageColor.r
+      value: 0.5754717
+      objectReference: {fileID: 0}
+    - target: {fileID: 1887247781124116668, guid: 3569d3c3904eaf643823af319dc57108, type: 3}
       propertyPath: IsShadowVariant
       value: 1
       objectReference: {fileID: 0}
@@ -104,3 +116,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShadowFXPrefab: {fileID: 1384114421223530757, guid: ae7c3c39ce1ebcd428ad9356cdea90f4, type: 3}
+  OutlineThickness: 0.3
+  InlineColor: {r: 0.12, g: 0.12, b: 0.12, a: 1}
+  OutlineColor: {r: 0.22, g: 0.22, b: 0.22, a: 1}

@@ -27,8 +27,7 @@ public class AeroBehaviour : MonoBehaviour
     public float waveAmplitude = 5f; // Height of the wave
     public float waveFrequency = 2f; // Speed of the wave movement
 
-    // For shadow variant
-    public bool IsShadowVariant = false;
+    public Color DamageColor = new(0.8f, 0.1f, 0.1f, 1f);
 
     public int EnemyHealth = 3;
 
@@ -43,6 +42,8 @@ public class AeroBehaviour : MonoBehaviour
     private CapsuleCollider2D _physicsCollider;
     private AudioSource _audioSource;
     private MainCamera _mainCamera;
+
+    private Material _material;
 
     private Coroutine _flapWings = null;
     private Coroutine _attackMove = null;
@@ -77,6 +78,8 @@ public class AeroBehaviour : MonoBehaviour
         {
             Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(AeroBehaviour)}");
         }
+
+        _material = _spriteRenderer.material;
 
         if (!TryGetComponent(out _animatior))
         {
@@ -160,6 +163,11 @@ public class AeroBehaviour : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, GiveUpRadius);
     }
 
+    void SetDamageColor(bool inDamage)
+    {
+        _material.SetColor("_DamageColor", inDamage ? DamageColor : new(0, 0, 0));
+    }
+
     void TeleportToSpwanPosition()
     {
         transform.position = _initialSpawnPosition;
@@ -179,6 +187,7 @@ public class AeroBehaviour : MonoBehaviour
         _rigidBody.linearVelocity = new();
 
         _animatior.SetBool("_IsAttacking", false);
+        SetDamageColor(false);
 
         StopWingsFlap();
         StopAttackMove();
@@ -301,12 +310,12 @@ public class AeroBehaviour : MonoBehaviour
     {
         PlaySound(AeroSounds.Hit);
         _hasDamageInvulnerability = true;
-        _spriteRenderer.color = new Color(1.0f, 0.8f, 0.8f);
+        SetDamageColor(true);
 
         yield return new WaitForSeconds(duration);
 
         _hasDamageInvulnerability = false;
-        _spriteRenderer.color = Color.white;
+        SetDamageColor(false);
     }
 
     void ActivateDeathAndDestroy()

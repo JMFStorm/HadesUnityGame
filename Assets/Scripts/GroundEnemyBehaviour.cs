@@ -24,10 +24,13 @@ public class GroundEnemyBehaviour : MonoBehaviour
     public float NormalWalkFrequency = 0.65f;
     public float AggroWalkFrequency = 0.45f;
 
+    public Color DamageColor = new(0.8f, 0.1f, 0.1f, 1f);
+
     public int MaxHealth = 4;
 
     public const float MaxSoundDistance = 14f;
 
+    private Material _material;
     private Transform _groundCheck;
     private Transform _attackDamageZone;
     private Transform _enemyDamageZone;
@@ -78,7 +81,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
             Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(GroundEnemyBehaviour)}");
         }
 
-        if (!TryGetComponent<EnemySounds>(out _soundEmitter))
+        if (!TryGetComponent(out _soundEmitter))
         {
             Debug.LogError($"{nameof(EnemySounds)} not found on {nameof(GroundEnemyBehaviour)}");
         }
@@ -113,6 +116,8 @@ public class GroundEnemyBehaviour : MonoBehaviour
             Debug.LogError($"{nameof(SpriteRenderer)} not found on child of {nameof(GroundEnemyBehaviour)}");
         }
 
+        _material = _spriteRenderer.material;
+
         _playerCharacter = FindFirstObjectByType<PlayerCharacter>();
 
         if (_playerCharacter == null)
@@ -133,6 +138,7 @@ public class GroundEnemyBehaviour : MonoBehaviour
         _currentHealth = MaxHealth;
         _attackDamageZone.gameObject.SetActive(false);
         _state = EnemyState.NormalMoving;
+        SetDamageColor(false);
     }
 
     void Update()
@@ -190,6 +196,11 @@ public class GroundEnemyBehaviour : MonoBehaviour
             Debug.Log("Hit player!");
             _attackHitPlayer = true;
         }
+    }
+
+    void SetDamageColor(bool inDamage)
+    {
+        _material.SetColor("_DamageColor", inDamage ? DamageColor : new(0, 0, 0));
     }
 
     Color GetEnemyStateColor(EnemyState state)
@@ -379,9 +390,13 @@ public class GroundEnemyBehaviour : MonoBehaviour
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
         _state = EnemyState.HitTaken;
 
+        SetDamageColor(true);
+
         yield return new WaitForSeconds(duration);
 
         _state = EnemyState.NormalMoving;
+
+        SetDamageColor(false);
     }
 
     void ActivateDeathAndDestroy()

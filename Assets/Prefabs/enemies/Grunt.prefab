@@ -240,6 +240,7 @@ MonoBehaviour:
   ShadowOutlineThreshold: 0.02
   NormalWalkFrequency: 0.65
   AggroWalkFrequency: 0.45
+  DamageColor: {r: 0.49019608, g: 0.078431375, b: 0.078431375, a: 1}
   MaxHealth: 6
 --- !u!114 &-319049766929285414
 MonoBehaviour:
