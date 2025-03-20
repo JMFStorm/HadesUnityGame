@@ -42,14 +42,14 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
-    - _IsShadowVariant: 0
-    - _OutlineThickness: 0.3
+    - _IsShadowVariant: 1
+    - _OutlineThickness: 0.35
     - _ShadowOutlineThreshold: 0.01
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DamageColor: {r: 0, g: 0, b: 0, a: 1}
-    - _InlineColor: {r: 0.078431375, g: 0.078431375, b: 0.078431375, a: 1}
+    - _InlineColor: {r: 0.03773582, g: 0.03773582, b: 0.03773582, a: 1}
     - _NewColor: {r: 1, g: 0, b: 1, a: 1}
     - _OutlineColor: {r: 0.3137255, g: 0.3137255, b: 0.3137255, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}

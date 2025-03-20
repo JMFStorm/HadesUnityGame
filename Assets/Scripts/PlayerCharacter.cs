@@ -10,6 +10,11 @@ public enum PlayerSounds
     Hit,
 }
 
+public static class PlayerColors
+{
+    public static Color Default = new(0.08f, 0.25f, 0.31f);
+}
+
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerCharacter : MonoBehaviour
 {
@@ -161,7 +166,7 @@ public class PlayerCharacter : MonoBehaviour
         _originalSize = _physicsCollider.size;
         _originalOffset = _physicsCollider.offset;
 
-        _material.SetColor("_NewColor", new(0.21f, 0.25f, 0.3f));
+        _material.SetColor("_NewColor", new(0f, 0f, 1f));
     }
 
     private void Start()
@@ -298,6 +303,11 @@ public class PlayerCharacter : MonoBehaviour
             Vector2 collisionDirection = (transform.position - other.transform.position).normalized;
             TryRecieveDamage(collisionDirection);
         }
+    }
+
+    public void SetPlayerColor(Color color)
+    {
+        _material.SetColor("_NewColor", color);
     }
 
     void TryRecieveDamage(Vector2 damageDir)

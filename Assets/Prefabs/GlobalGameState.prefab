@@ -596,7 +596,7 @@ MonoBehaviour:
   PlayerPrefab: {fileID: 2218871938792346492, guid: 5733a604297294142a58f667cdab2a01, type: 3}
   MainCameraPrefab: {fileID: 3018883555529649252, guid: f02c88d847cab044da2a038dfd0c60b1, type: 3}
   GlobalLight: {fileID: 4863655271805905191}
-  SkipIntro: 0
+  SkipIntro: 1
 --- !u!1 &1045008951805014043
 GameObject:
   m_ObjectHideFlags: 0
@@ -1727,7 +1727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: ce050ae110886a3429771a5ca6876b6f, type: 2}
+  m_Material: {fileID: 2100000, guid: 35ba2524fa2b3ef48b96e0f247b0468f, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -3429,6 +3429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dd61dd4db96d5948bbf5c1a491c16a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IntroTitle: {fileID: 7546014276469622301}
   MainMenuPanel: {fileID: 2170859690744708753}
   PauseMenuPanel: {fileID: 1644715253910318011}
   GameOverPanel: {fileID: 1045008951805014043}

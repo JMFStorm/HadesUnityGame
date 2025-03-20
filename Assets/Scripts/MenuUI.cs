@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuUI : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class MenuUI : MonoBehaviour
 
     private GameState _gameState;
     private TextMeshProUGUI _introText;
+    private Material _deathScreenMaterial;
 
     private Coroutine _introCoroutine = null;
 
@@ -20,13 +22,27 @@ public class MenuUI : MonoBehaviour
 
         if (_gameState == null)
         {
-            Debug.LogError($"{nameof(GameState)} not found on {nameof(PlayerCharacter)}");
+            Debug.LogError($"{nameof(GameState)} not found on {nameof(MenuUI)}");
         }
 
         if (!IntroTitle.TryGetComponent(out _introText))
         {
             Debug.LogError($"{nameof(TextMeshProUGUI)} not found on {nameof(MenuUI)} introTitle child");
         }
+
+        var gameOverPanel = GameOverPanel.transform.Find("PlayerImage");
+
+        if (gameOverPanel == null)
+        {
+            Debug.LogError($"gameOverPanel not found on {nameof(MenuUI)}");
+        }
+
+        if (!gameOverPanel.TryGetComponent(out Image image))
+        {
+            Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(MenuUI)} introTitle child");
+        }
+
+        _deathScreenMaterial = image.material;
 
         IntroTitle.SetActive(false);
         PauseMenuPanel.SetActive(false);
@@ -37,6 +53,11 @@ public class MenuUI : MonoBehaviour
     void Start()
     {
         HideMainMenu(true);
+    }
+
+    public void SetPlayerColorOnUIImages(Color color)
+    {
+        _deathScreenMaterial.SetColor("_NewColor", color);
     }
 
     public void GameOverScreen(bool active)

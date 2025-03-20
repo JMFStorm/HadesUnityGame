@@ -125,7 +125,7 @@ Shader "Custom/PlayerCharacter"
                     half brightness = main.b;
 
                     // Check if Blue is the dominant color (red and green is 0)
-                    if (main.r < main.b && main.g < main.b && main.g < 0.01 && main.r < 0.01)
+                    if (main.r < main.b && main.g < main.b && main.g < (1.0 / 256.0) && main.r < (1.0 / 256.0))
                     {
                         main.rgb = _NewColor.rgb * brightness;
                     }
