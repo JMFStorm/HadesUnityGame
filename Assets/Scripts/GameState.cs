@@ -255,6 +255,7 @@ public class GameState : MonoBehaviour
     public void RestartLevel()
     {
         _menuUI.GameOverScreen(false);
+        _menuUI.ActivatePauseMenu(false);
         LoadLevelIndex(_currentLevelIndex, true);
     }
 
