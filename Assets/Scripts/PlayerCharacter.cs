@@ -155,17 +155,17 @@ public class PlayerCharacter : MonoBehaviour
         {
             Debug.LogError($"{nameof(GameState)} not found on {nameof(PlayerCharacter)}");
         }
-    }
 
-    private void Start()
-    {
         _swordBoxCollider.gameObject.SetActive(false);
 
         _originalSize = _physicsCollider.size;
         _originalOffset = _physicsCollider.offset;
 
         _material.SetColor("_NewColor", new(0.21f, 0.25f, 0.3f));
+    }
 
+    private void Start()
+    {
         ResetPlayerInnerState();
 
         SetPlayerHealth(_gameUI.DefaultPlayerHealth);

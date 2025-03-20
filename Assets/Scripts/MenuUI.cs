@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MenuUI : MonoBehaviour
 {
+    public GameObject IntroTitle;
     public GameObject MainMenuPanel;
     public GameObject PauseMenuPanel;
     public GameObject GameOverPanel;
@@ -13,7 +14,7 @@ public class MenuUI : MonoBehaviour
 
     private Coroutine _introCoroutine = null;
 
-    void Start()
+    private void Awake()
     {
         _gameState = FindFirstObjectByType<GameState>();
 
@@ -22,28 +23,20 @@ public class MenuUI : MonoBehaviour
             Debug.LogError($"{nameof(GameState)} not found on {nameof(PlayerCharacter)}");
         }
 
-        var introTitle = transform.Find("IntroTitle");
-
-        if (introTitle == null)
-        {
-            Debug.LogError($"introTitle not found as a child of {nameof(MenuUI)} script");
-        }
-
-        if (!introTitle.TryGetComponent(out _introText))
+        if (!IntroTitle.TryGetComponent(out _introText))
         {
             Debug.LogError($"{nameof(TextMeshProUGUI)} not found on {nameof(MenuUI)} introTitle child");
         }
 
-        HideMainMenu(true);
-
-        _introText.gameObject.SetActive(false);
+        IntroTitle.SetActive(false);
         PauseMenuPanel.SetActive(false);
         GameOverPanel.SetActive(false);
         MainMenuPanel.SetActive(false);
     }
 
-    void Update()
+    void Start()
     {
+        HideMainMenu(true);
     }
 
     public void GameOverScreen(bool active)
@@ -80,7 +73,7 @@ public class MenuUI : MonoBehaviour
             StopCoroutine(_introCoroutine);
             _gameState.SetGameState(GameStateType.MainMenu);
 
-            _introText.gameObject.SetActive(false);
+            IntroTitle.SetActive(false);
             MainMenuPanel.SetActive(true);
         }
         else
@@ -96,7 +89,7 @@ public class MenuUI : MonoBehaviour
 
     private IEnumerator IntroSequence()
     {
-        _introText.gameObject.SetActive(true);
+        IntroTitle.SetActive(true);
 
         const float fadeInDuration = 7f;
 
@@ -149,7 +142,7 @@ public class MenuUI : MonoBehaviour
 
         yield return new WaitForSeconds(1);
 
-        _introText.gameObject.SetActive(false);
+        IntroTitle.SetActive(false);
         MainMenuPanel.SetActive(true);
     }
 }
