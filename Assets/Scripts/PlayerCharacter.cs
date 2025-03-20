@@ -173,6 +173,11 @@ public class PlayerCharacter : MonoBehaviour
 
     void Update()
     {
+        if (_gameState.GetGameState() != GameStateType.MainGame)
+        {
+            return;
+        }
+        
         PlayerMovementControls();
 
         if (_isDashing)

@@ -356,11 +356,11 @@ public class AeroBehaviour : MonoBehaviour
             return;
         }
 
-        if (_targetDir.x < -0.5f)
+        if (_targetDir.x < -0.3f)
         {
             FaceTargetDirection();
         }
-        else if (0.5f < _targetDir.x)
+        else if (0.3f < _targetDir.x)
         {
             FaceTargetDirection();
         }

@@ -1,5 +1,3 @@
-using log4net.Core;
-using NUnit.Framework.Constraints;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,14 +12,15 @@ public enum LevelSoundscapeType
 public enum AnnouncerVoiceGroup
 {
     IntroTile = 0,
-
+    GameOver,
 }
 
 public class GlobalAudio : MonoBehaviour
 {
     public AudioClip[] levelAmbienceAudios;
 
-    public List<AudioClip> AnnouncerIntroTileVoices = new();
+    public List<AudioClip> AnnouncerIntroTitleVoices = new();
+    public List<AudioClip> AnnouncerGameOverVoices = new();
 
     private AudioSource _levelFXaudioSource;
     private AudioSource _hadesAnnouncerAudioSource;
@@ -41,7 +40,8 @@ public class GlobalAudio : MonoBehaviour
     {
         return group switch
         {
-            AnnouncerVoiceGroup.IntroTile => AnnouncerIntroTileVoices,
+            AnnouncerVoiceGroup.IntroTile => AnnouncerIntroTitleVoices,
+            AnnouncerVoiceGroup.GameOver => AnnouncerGameOverVoices,
             _ => new()
         };
     }

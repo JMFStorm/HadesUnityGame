@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public enum GameStateType
 {
+    IntroScreen,
     MainMenu,
-    MainGame
+    MainGame,
+    PauseMenu,
+    GameOverMenu
 }
 
 public class GameState : MonoBehaviour
@@ -33,6 +35,7 @@ public class GameState : MonoBehaviour
     private Sprite _currentLevelBg = null;
     private Material _levelBGMaterial;
     private Vector2 _bgOffset = new();
+
     private float _bgUVMultiplier = new();
 
     private int _currentLevelIndex = 0;
@@ -106,6 +109,24 @@ public class GameState : MonoBehaviour
 
             _prevCameraPosition = _mainCamera.transform.position;
         }
+
+        if (Input.GetButtonDown("Escape"))
+        {
+            var gameState = GetGameState();
+
+            if (gameState == GameStateType.IntroScreen)
+            {
+                _mainMenu.SkipIntroSequence();
+            }
+            else if (gameState == GameStateType.MainGame)
+            {
+                _mainMenu.ActivatePauseMenu(true);
+            }
+            else if (gameState == GameStateType.PauseMenu)
+            {
+                _mainMenu.ActivatePauseMenu(false);
+            }
+        }
     }
 
     private void LateUpdate()
@@ -113,9 +134,19 @@ public class GameState : MonoBehaviour
 
     }
 
+    public void SetGameState(GameStateType type)
+    {
+        _gameState = type;
+    }
+
+    public GameStateType GetGameState()
+    {
+        return _gameState;
+    }
+
     void InitGameIntro()
     {
-        _gameState = GameStateType.MainMenu;
+        SetGameState(GameStateType.IntroScreen);
 
         _mainMenu.HideMainMenu(true);
         _gameUI.HideUI(true);
@@ -128,14 +159,14 @@ public class GameState : MonoBehaviour
     {
         Debug.Log("StartNewGame clicked!");
 
-        _gameState = GameStateType.MainGame;
+        SetGameState(GameStateType.MainGame);
         _gameUI.HideUI(false);
         _mainMenu.HideMainMenu(true);
 
         _player = Instantiate(PlayerPrefab);
         _mainCamera.SetFollowTarget(_player.transform);
 
-        LoadLevelIndex(0);
+        LoadLevelIndex(0, false);
     }
 
     public void QuitGame()
@@ -145,7 +176,7 @@ public class GameState : MonoBehaviour
         Application.Quit();
     }
 
-    public void LoadLevelIndex(int index)
+    public void LoadLevelIndex(int index, bool isRetry)
     {
         if (index < 0 || GameLevels.Count <= index)
         {
@@ -192,7 +223,7 @@ public class GameState : MonoBehaviour
 
         _gameUI.FadeIn(2.0f);
 
-        if (_currentLevel.AnnouncerIntro != null)
+        if (!isRetry && _currentLevel.AnnouncerIntro != null)
         {
             _globalAudio.PlayAnnouncerVoiceClip(_currentLevel.AnnouncerIntro);
         }
@@ -217,18 +248,19 @@ public class GameState : MonoBehaviour
     public void LoadNextLevel()
     {
         _currentLevelIndex = (_currentLevelIndex + 1) % GameLevels.Count;
-        LoadLevelIndex(_currentLevelIndex);
+        LoadLevelIndex(_currentLevelIndex, false);
     }
 
     public void LoadAndSetLevelIndex(int levelIndex)
     {
         _currentLevelIndex = levelIndex;
-        LoadLevelIndex(_currentLevelIndex);
+        LoadLevelIndex(_currentLevelIndex, false);
     }
 
     public void RestartLevel()
     {
-        LoadLevelIndex(_currentLevelIndex);
+        LoadLevelIndex(_currentLevelIndex, true);
+        _globalAudio.PlayAnnouncerVoiceType(AnnouncerVoiceGroup.GameOver);
     }
 
     public void ApplyBackgroundImage(Vector2 bottomLeft, Vector2 topRight, Sprite background)

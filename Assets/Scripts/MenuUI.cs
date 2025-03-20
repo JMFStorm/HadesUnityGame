@@ -5,11 +5,22 @@ using UnityEngine;
 public class MenuUI : MonoBehaviour
 {
     public GameObject MainMenuPanel;
+    public GameObject PauseMenuPanel;
 
+    private GameState _gameState;
     private TextMeshProUGUI _introText;
+
+    private Coroutine _introCoroutine = null;
 
     void Start()
     {
+        _gameState = FindFirstObjectByType<GameState>();
+
+        if (_gameState == null)
+        {
+            Debug.LogError($"{nameof(GameState)} not found on {nameof(PlayerCharacter)}");
+        }
+
         var introTitle = transform.Find("IntroTitle");
 
         if (introTitle == null)
@@ -23,17 +34,40 @@ public class MenuUI : MonoBehaviour
         }
 
         HideMainMenu(true);
+
+        _introText.gameObject.SetActive(false);
+        PauseMenuPanel.SetActive(false);
+        MainMenuPanel.SetActive(false);
     }
 
     void Update()
     {
-        
+    }
+
+    public void ActivatePauseMenu(bool setActive)
+    {
+        PauseMenuPanel.SetActive(setActive);
+        Time.timeScale = setActive ? 1f : 1f;
+
+        _gameState.SetGameState(setActive ? GameStateType.PauseMenu : GameStateType.MainGame);
     }
 
     public void HideMainMenu(bool setHide)
     {
-        _introText.gameObject.SetActive(!setHide);
         MainMenuPanel.SetActive(!setHide);
+    }
+
+    public void SkipIntroSequence()
+    {
+        if (_introCoroutine != null)
+        {
+            StopCoroutine(_introCoroutine);
+            _gameState.SetGameState(GameStateType.MainMenu);
+        }
+        else
+        {
+            Debug.LogWarning("Tried to SkipIntroSequence, but not valid.");
+        }
     }
 
     public void PlayIntroAndThenMainMenu()
