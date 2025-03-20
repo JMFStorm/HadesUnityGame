@@ -177,7 +177,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             return;
         }
-        
+
         PlayerMovementControls();
 
         if (_isDashing)
@@ -258,7 +258,7 @@ public class PlayerCharacter : MonoBehaviour
         _animator.Play(usedAnim);
     }
 
-    void FixedUpdate()
+    public void FixedUpdate()
     {
         _isGrounded = Physics2D.OverlapBox(GroundCheck.position, _groundCheckSize, 0, GroundCollisionLayer);
     }
