@@ -172,6 +172,11 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (_isDead)
+        {
+            return;
+        }
+
         Vector2 collisionDirection = (transform.position - other.transform.position);
 
         if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") && other.gameObject.CompareTag("PlayerSword")
@@ -353,6 +358,8 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         if (_currentHealth <= 0)
         {
+            _isDead = true;
+            StopAllCoroutines();
             ActivateDeathAndDestroy();
         }
         else

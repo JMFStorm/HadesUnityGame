@@ -10,13 +10,6 @@ public enum AeroSounds
     Wings,
 }
 
-public enum AeroAnimationState
-{
-    Normal = 0,
-    Attack,
-    Dead
-}
-
 public class AeroBehaviour : MonoBehaviour
 {
     public AudioClip[] AudioClips;
@@ -41,8 +34,6 @@ public class AeroBehaviour : MonoBehaviour
 
     public GameObject projectilePrefab; // Reference to the projectile prefab
 
-    private AeroAnimationState _state = 0;
-
     private Animator _animatior;
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
@@ -63,6 +54,7 @@ public class AeroBehaviour : MonoBehaviour
     private bool _isAttacking = false;
     private bool _hasDamageInvulnerability = false;
     private float _lastShotTime; // Time of the last shot
+    private bool _isDead = false;
 
     private Vector2 _flyTarget = new();
     private Vector2 _initialSpawnPosition = new();
@@ -132,7 +124,7 @@ public class AeroBehaviour : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!_hasDamageInvulnerability && _state != AeroAnimationState.Dead)
+        if (!_hasDamageInvulnerability && !_isDead)
         {
             MovementBehaviour();
         }
@@ -140,6 +132,11 @@ public class AeroBehaviour : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (_isDead)
+        {
+            return;
+        }
+
         if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone"))
         {
             Vector2 collisionDirection = (transform.position - other.transform.position);
@@ -177,10 +174,9 @@ public class AeroBehaviour : MonoBehaviour
         _isAttacking = false;
         _hasDamageInvulnerability = false;
         _lastShotTime = Time.time;
+        _isDead = false;
 
         _rigidBody.linearVelocity = new();
-
-        _state = AeroAnimationState.Normal;
 
         _animatior.SetBool("_IsAttacking", false);
 
@@ -291,7 +287,8 @@ public class AeroBehaviour : MonoBehaviour
 
         if (_currentHealth <= 0)
         {
-            _state = AeroAnimationState.Dead;
+            _isDead = true;
+            StopAllCoroutines();
             ActivateDeathAndDestroy();
         }
         else
@@ -314,6 +311,8 @@ public class AeroBehaviour : MonoBehaviour
 
     void ActivateDeathAndDestroy()
     {
+        _isDead = true;
+
         StopWingsFlap();
         PlaySound(AeroSounds.Death);
 
@@ -393,7 +392,6 @@ public class AeroBehaviour : MonoBehaviour
 
     private IEnumerator AttackMove()
     {
-        _state = AeroAnimationState.Attack;
         _animatior.SetBool("_IsAttacking", true);
 
         PlaySound(AeroSounds.Preattack);
@@ -404,7 +402,7 @@ public class AeroBehaviour : MonoBehaviour
 
         yield return new WaitForSeconds(10f / _animationFPS);
 
-        if (_state == AeroAnimationState.Dead)
+        if (_isDead)
         {
             Debug.Log("Attack interrupted from death!");
 
@@ -435,7 +433,6 @@ public class AeroBehaviour : MonoBehaviour
         projectileScript.Launch(direction);
 
         // NOTE: Set animation state beck a bit "prematurely" to avoid extra loop
-        _state = AeroAnimationState.Normal;
         _animatior.SetBool("_IsAttacking", false);
 
         yield return new WaitForSeconds(6.0f / _animationFPS);
@@ -519,7 +516,7 @@ public class AeroBehaviour : MonoBehaviour
 
             yield return new WaitForSeconds(8.0f / _animationFPS);
 
-            if (_state == AeroAnimationState.Dead)
+            if (_isDead)
             {
                 yield break;
             }
