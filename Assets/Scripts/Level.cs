@@ -14,6 +14,8 @@ public enum LevelLightLevels
 
 public class Level : MonoBehaviour
 {
+    public AudioClip AnnouncerIntro = null;
+
     public List<Sprite> BackgroundImages = new();
     public List<Sprite> SeamlessBackgrounds = new();
 

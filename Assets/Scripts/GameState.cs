@@ -2,6 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using static UnityEditor.Experimental.GraphView.GraphView;
+
+public enum GameStateType
+{
+    MainMenu,
+    MainGame
+}
 
 public class GameState : MonoBehaviour
 {
@@ -10,6 +17,9 @@ public class GameState : MonoBehaviour
     public PlayerCharacter PlayerPrefab;
     public MainCamera MainCameraPrefab;
     public Light2D GlobalLight;
+    public bool SkipIntro = false;
+
+    private GameStateType _gameState;
 
     private Level _currentLevel;
     private PlayerCharacter _player;
@@ -17,6 +27,7 @@ public class GameState : MonoBehaviour
     private Vector3 _prevCameraPosition;
     private GameUI _gameUI;
     private GlobalAudio _globalAudio;
+    private MenuUI _mainMenu;
 
     private SpriteRenderer _backgroundRenderer;
     private Sprite _currentLevelBg = null;
@@ -29,11 +40,16 @@ public class GameState : MonoBehaviour
 
     private void Awake()
     {
+        if (!transform.Find("MenuCanvas").TryGetComponent(out _mainMenu))
+        {
+            Debug.LogError($"Did not find {nameof(MenuUI)} in child of MenuCanvas in {nameof(GameState)}.");
+        }
+
         var bgRenderer = transform.Find("BackgroundRenderer");
 
         if (bgRenderer == null)
         {
-            Debug.LogError($"Did not find BackgroundRenderer in {nameof(GameState)}script.");
+            Debug.LogError($"Did not find BackgroundRenderer in {nameof(GameState)}.");
         }
 
         if (!bgRenderer.TryGetComponent(out _backgroundRenderer))
@@ -57,33 +73,39 @@ public class GameState : MonoBehaviour
 
         _backgroundRenderer.sortingLayerName = "Background";
         _levelBGMaterial = _backgroundRenderer.material;
-
-        _player = Instantiate(PlayerPrefab, Vector3.zero, Quaternion.identity);
-        _mainCamera = Instantiate(MainCameraPrefab, new(0, 0, -10f), Quaternion.identity);
     }
 
     private void Start()
     {
-        GameLevels = CreateGameLevelLayout();
+        _mainCamera = Instantiate(MainCameraPrefab, new(0, 0, -1f), Quaternion.identity);
+        _mainCamera.SetDustFXStrength(0);
+        _mainCamera.SetFogFXLevel(false, new(0, 0, 0));
 
-        _prevCameraPosition = _mainCamera.transform.position;
-        _mainCamera.SetFollowTarget(_player.transform);
-
-        LoadAndSetLevelIndex(0);
+        if (SkipIntro)
+        {
+            StartNewGame();
+        }
+        else
+        {
+            InitGameIntro();
+        }
     }
 
     private void Update()
     {
-        if (_currentLevelBg)
+        if (_gameState == GameStateType.MainGame)
         {
-            BGImageParallaxScroll();
-        }
-        else
-        {
-            SeamlessBackgroundParallaxScroll();
-        }
+            if (_currentLevelBg)
+            {
+                BGImageParallaxScroll();
+            }
+            else
+            {
+                SeamlessBackgroundParallaxScroll();
+            }
 
-        _prevCameraPosition = _mainCamera.transform.position;
+            _prevCameraPosition = _mainCamera.transform.position;
+        }
     }
 
     private void LateUpdate()
@@ -91,9 +113,36 @@ public class GameState : MonoBehaviour
 
     }
 
-    private List<Level> CreateGameLevelLayout()
+    void InitGameIntro()
     {
-        return GameLevels;
+        _gameState = GameStateType.MainMenu;
+
+        _mainMenu.HideMainMenu(true);
+        _gameUI.HideUI(true);
+
+        _globalAudio.PlayAnnouncerVoiceType(AnnouncerVoiceGroup.IntroTile);
+        _mainMenu.PlayIntroAndThenMainMenu();
+    }
+
+    public void StartNewGame()
+    {
+        Debug.Log("StartNewGame clicked!");
+
+        _gameState = GameStateType.MainGame;
+        _gameUI.HideUI(false);
+        _mainMenu.HideMainMenu(true);
+
+        _player = Instantiate(PlayerPrefab);
+        _mainCamera.SetFollowTarget(_player.transform);
+
+        LoadLevelIndex(0);
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Game Quit");
+
+        Application.Quit();
     }
 
     public void LoadLevelIndex(int index)
@@ -143,11 +192,16 @@ public class GameState : MonoBehaviour
 
         _gameUI.FadeIn(2.0f);
 
+        if (_currentLevel.AnnouncerIntro != null)
+        {
+            _globalAudio.PlayAnnouncerVoiceClip(_currentLevel.AnnouncerIntro);
+        }
+
         var levelEnter = _currentLevel.GetLevelEntrance();
 
         if (levelEnter != null)
         {
-            var newPlayerStart = levelEnter - new Vector3(0, 0.5f, 0);
+            var newPlayerStart = levelEnter - new Vector3(0, 1.0f, 0);
             _player.transform.position = new Vector3(newPlayerStart.x, newPlayerStart.y, 0);
             _mainCamera.transform.position = new Vector3(newPlayerStart.x, newPlayerStart.y, _cameraZOffset);
             _prevCameraPosition = _mainCamera.transform.position;

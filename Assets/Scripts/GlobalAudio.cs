@@ -1,4 +1,7 @@
+using log4net.Core;
+using NUnit.Framework.Constraints;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum LevelSoundscapeType
@@ -8,11 +11,20 @@ public enum LevelSoundscapeType
     Ghastly
 }
 
+public enum AnnouncerVoiceGroup
+{
+    IntroTile = 0,
+
+}
+
 public class GlobalAudio : MonoBehaviour
 {
     public AudioClip[] levelAmbienceAudios;
 
+    public List<AudioClip> AnnouncerIntroTileVoices = new();
+
     private AudioSource _levelFXaudioSource;
+    private AudioSource _hadesAnnouncerAudioSource;
 
     private Coroutine _fadeCoroutine;
 
@@ -20,6 +32,37 @@ public class GlobalAudio : MonoBehaviour
     {
         _levelFXaudioSource = gameObject.AddComponent<AudioSource>();
         _levelFXaudioSource.spatialBlend = 0; // 2D global sound
+
+        _hadesAnnouncerAudioSource = gameObject.AddComponent<AudioSource>();
+        _hadesAnnouncerAudioSource.spatialBlend = 0; // 2D global sound
+    }
+
+    List<AudioClip> GetAnnouncerVoiceClips(AnnouncerVoiceGroup group)
+    {
+        return group switch
+        {
+            AnnouncerVoiceGroup.IntroTile => AnnouncerIntroTileVoices,
+            _ => new()
+        };
+    }
+
+    public void PlayAnnouncerVoiceType(AnnouncerVoiceGroup type)
+    {
+        var clips = GetAnnouncerVoiceClips(type);
+
+        AudioClip usedClip = clips[Random.Range(0, clips.Count)];
+
+        PlayAnnouncerVoiceClip(usedClip);
+    }
+
+    public void PlayAnnouncerVoiceClip(AudioClip clip)
+    {
+        if (clip != null && (_hadesAnnouncerAudioSource.clip != clip || !_hadesAnnouncerAudioSource.isPlaying))
+        {
+            _hadesAnnouncerAudioSource.loop = false;
+            _hadesAnnouncerAudioSource.clip = clip;
+            _hadesAnnouncerAudioSource.Play();
+        }
     }
 
     public void PlayAmbience(LevelSoundscapeType type)

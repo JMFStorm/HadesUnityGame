@@ -49,6 +49,11 @@ public class MainCamera : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        _dustParticleSystem.Stop();
+    }
+
     void LateUpdate()
     {
         if (FollowTarget == null)
@@ -217,6 +222,15 @@ public class MainCamera : MonoBehaviour
 
     public void SetDustFXStrength(float normalizedValue)
     {
+        if (!_dustParticleSystem.isPlaying && 0.0f < normalizedValue)
+        {
+            _dustParticleSystem.Play();
+        }
+        else if (_dustParticleSystem.isPlaying && normalizedValue == 0.0f)
+        {
+            _dustParticleSystem.Stop();
+        }
+
         var main = _dustParticleSystem.main;
         main.startColor = new Color(main.startColor.color.r, main.startColor.color.g, main.startColor.color.b, normalizedValue);
     }

@@ -16,6 +16,8 @@ public class GameUI : MonoBehaviour
 
     public Image FadeImage;
 
+    private Coroutine _fadeCoroutine;
+
     private int _currentHealth;
     private int _currentStamina;
 
@@ -29,14 +31,9 @@ public class GameUI : MonoBehaviour
         UpdateUI();
     }
 
-    public void ShowUI()
+    public void HideUI(bool hide)
     {
-        gameObject.SetActive(true);
-    }
-
-    public void HideUI()
-    {
-        gameObject.SetActive(false);
+        gameObject.SetActive(!hide);
     }
 
     public void SetHealth(int healthAmount)
@@ -94,12 +91,22 @@ public class GameUI : MonoBehaviour
 
     public void FadeOut(float fadeDuration)
     {
-        StartCoroutine(FadeOutLoop(fadeDuration));
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeOutLoop(fadeDuration));
     }
 
     public void FadeIn(float fadeDuration)
     {
-        StartCoroutine(FadeInLoop(fadeDuration));
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeInLoop(fadeDuration));
     }
 
     IEnumerator FadeInLoop(float fadeDuration)
