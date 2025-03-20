@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!224 &37462479 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6674045430641939535, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+  m_PrefabInstance: {fileID: 8349402883727872494}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &767751651
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,22 +323,6 @@ PrefabInstance:
       propertyPath: SkipIntro
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: AnnouncerIntroTileVoices.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: 'AnnouncerIntroTileVoices.Array.data[0]'
-      value: 
-      objectReference: {fileID: 8300000, guid: 28f30ac3216fb584cb918993bb1e0a46, type: 3}
-    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: 'AnnouncerIntroTileVoices.Array.data[1]'
-      value: 
-      objectReference: {fileID: 8300000, guid: 4070b11fbd0e928498ac70f49640bd4d, type: 3}
-    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: 'AnnouncerIntroTileVoices.Array.data[2]'
-      value: 
-      objectReference: {fileID: 8300000, guid: bfd1863b29ce3c64cbf22dba975252c6, type: 3}
     - target: {fileID: 6418170319196612165, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -350,6 +339,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6741174123491099270, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: IntroText
+      value: 
+      objectReference: {fileID: 37462479}
     - target: {fileID: 7644549424531848138, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -364,18 +357,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7644549424531848138, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8179873900804555191, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: m_Color.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8179873900804555191, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: m_Color.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8179873900804555191, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
-      propertyPath: m_Color.r
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8282802379396548567, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}

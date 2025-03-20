@@ -81,7 +81,7 @@ public class GameState : MonoBehaviour
         _mainCamera.SetDustFXStrength(0);
         _mainCamera.SetFogFXLevel(false, new(0, 0, 0));
 
-        if (SkipIntro)
+        if (Debug.isDebugBuild && SkipIntro)
         {
             StartNewGame();
         }
