@@ -117,5 +117,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShadowFXPrefab: {fileID: 1384114421223530757, guid: ae7c3c39ce1ebcd428ad9356cdea90f4, type: 3}
   OutlineThickness: 0.3
-  InlineColor: {r: 0.039215688, g: 0.039215688, b: 0.039215688, a: 1}
-  OutlineColor: {r: 0.25882354, g: 0.25882354, b: 0.25882354, a: 1}
+  InlineColor: {r: 0.078431375, g: 0.078431375, b: 0.078431375, a: 1}
+  OutlineColor: {r: 0.3137255, g: 0.3137255, b: 0.3137255, a: 1}
