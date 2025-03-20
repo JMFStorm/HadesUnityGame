@@ -73,7 +73,7 @@ public class GlobalAudio : MonoBehaviour
         {
             _levelFXaudioSource.clip = clip;
             _levelFXaudioSource.loop = true;
-            _levelFXaudioSource.volume = 0.1f;
+            _levelFXaudioSource.volume = 0.2f;
             _levelFXaudioSource.Play();
         }
     }

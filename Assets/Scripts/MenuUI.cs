@@ -6,6 +6,7 @@ public class MenuUI : MonoBehaviour
 {
     public GameObject MainMenuPanel;
     public GameObject PauseMenuPanel;
+    public GameObject GameOverPanel;
 
     private GameState _gameState;
     private TextMeshProUGUI _introText;
@@ -37,6 +38,7 @@ public class MenuUI : MonoBehaviour
 
         _introText.gameObject.SetActive(false);
         PauseMenuPanel.SetActive(false);
+        GameOverPanel.SetActive(false);
         MainMenuPanel.SetActive(false);
     }
 
@@ -44,10 +46,24 @@ public class MenuUI : MonoBehaviour
     {
     }
 
+    public void GameOverScreen(bool active)
+    {
+        if (active)
+        {
+            Time.timeScale = 0;
+            GameOverPanel.SetActive(true);
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            GameOverPanel.SetActive(false);
+        }
+    }
+
     public void ActivatePauseMenu(bool setActive)
     {
         PauseMenuPanel.SetActive(setActive);
-        Time.timeScale = setActive ? 1f : 1f;
+        Time.timeScale = setActive ? 0f : 1f;
 
         _gameState.SetGameState(setActive ? GameStateType.PauseMenu : GameStateType.MainGame);
     }
@@ -63,6 +79,9 @@ public class MenuUI : MonoBehaviour
         {
             StopCoroutine(_introCoroutine);
             _gameState.SetGameState(GameStateType.MainMenu);
+
+            _introText.gameObject.SetActive(false);
+            MainMenuPanel.SetActive(true);
         }
         else
         {
@@ -72,21 +91,7 @@ public class MenuUI : MonoBehaviour
 
     public void PlayIntroAndThenMainMenu()
     {
-        StartCoroutine(IntroSequence());
-    }
-
-    IEnumerator IntroSequence1()
-    {
-        Debug.Log("Title visible");
-
-        _introText.gameObject.SetActive(true);
-
-        yield return new WaitForSeconds(2);
-
-        Debug.Log("Main menu visible");
-
-        _introText.gameObject.SetActive(false);
-        MainMenuPanel.SetActive(true);
+        _introCoroutine = StartCoroutine(IntroSequence());
     }
 
     private IEnumerator IntroSequence()

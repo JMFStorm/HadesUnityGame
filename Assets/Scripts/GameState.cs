@@ -149,7 +149,7 @@ public class GameState : MonoBehaviour
         SetGameState(GameStateType.IntroScreen);
 
         _mainMenu.HideMainMenu(true);
-        _gameUI.HideUI(true);
+        _gameUI.HidePlayerStats(true);
 
         _globalAudio.PlayAnnouncerVoiceType(AnnouncerVoiceGroup.IntroTile);
         _mainMenu.PlayIntroAndThenMainMenu();
@@ -160,7 +160,7 @@ public class GameState : MonoBehaviour
         Debug.Log("StartNewGame clicked!");
 
         SetGameState(GameStateType.MainGame);
-        _gameUI.HideUI(false);
+        _gameUI.HidePlayerStats(false);
         _mainMenu.HideMainMenu(true);
 
         _player = Instantiate(PlayerPrefab);
@@ -221,6 +221,7 @@ public class GameState : MonoBehaviour
         var vignetteValue = GetVignetteIntensity(_currentLevel.LightLevel);
         _mainCamera.SetVignetteIntensity(vignetteValue);
 
+        _gameUI.HidePlayerStats(false);
         _gameUI.FadeIn(2.0f);
 
         if (!isRetry && _currentLevel.AnnouncerIntro != null)
@@ -243,6 +244,14 @@ public class GameState : MonoBehaviour
         }
 
         _player.ResetPlayerInnerState();
+
+        Time.timeScale = 1f;
+    }
+
+    public void RestartLevel()
+    {
+        _mainMenu.GameOverScreen(false);
+        LoadLevelIndex(_currentLevelIndex, true);
     }
 
     public void LoadNextLevel()
@@ -257,9 +266,13 @@ public class GameState : MonoBehaviour
         LoadLevelIndex(_currentLevelIndex, false);
     }
 
-    public void RestartLevel()
+    public void GameOverScreen()
     {
-        LoadLevelIndex(_currentLevelIndex, true);
+        _currentLevel.gameObject.SetActive(false);
+        _gameUI.HideFadeEffectRect(false);
+        _gameUI.HidePlayerStats(true);
+        _gameUI.HideFadeEffectRect(true);
+        _mainMenu.GameOverScreen(true);
         _globalAudio.PlayAnnouncerVoiceType(AnnouncerVoiceGroup.GameOver);
     }
 

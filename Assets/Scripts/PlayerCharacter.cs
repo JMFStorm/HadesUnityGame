@@ -340,14 +340,12 @@ public class PlayerCharacter : MonoBehaviour
 
         yield return new WaitForSeconds(2.0f);
 
+        _gameUI.HidePlayerStats(true);
         _gameUI.FadeOut(1.5f);
 
         yield return new WaitForSeconds(2.5f);
 
-        _gameState.RestartLevel();
-        SetPlayerHealth(_gameUI.DefaultPlayerHealth);
-
-        _gameUI.FadeIn(2.0f);
+        _gameState.GameOverScreen();
     }
 
     private void ApplyDamageKnockback(Vector2 knockbackDir)
@@ -409,6 +407,9 @@ public class PlayerCharacter : MonoBehaviour
         _dashDirX = 0f;
         _dashTimer = 0f;
         _dashRegenTimer = 0f;
+
+        _currentHealth = 3;
+        _gameUI.SetHealth(_currentHealth);
 
         _currentDashes = MaxDashes;
         _gameUI.SetStamina(_currentDashes);

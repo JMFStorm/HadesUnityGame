@@ -21,19 +21,27 @@ public class GameUI : MonoBehaviour
     private int _currentHealth;
     private int _currentStamina;
 
+    private Transform _playerStats;
+
     public readonly int DefaultPlayerHealth = 3;
     public readonly int MaxPlayerHealth = 5;
     public readonly int MaxDashes = 2;
+
+    private void Awake()
+    {
+        _playerStats = transform.Find("PlayerStats");
+    }
 
     void Start()
     {
         _currentHealth = DefaultPlayerHealth;
         UpdateUI();
+        FadeImage.gameObject.SetActive(false);
     }
 
-    public void HideUI(bool hide)
+    public void HidePlayerStats(bool hide)
     {
-        gameObject.SetActive(!hide);
+        _playerStats.gameObject.SetActive(!hide);
     }
 
     public void SetHealth(int healthAmount)
@@ -109,8 +117,15 @@ public class GameUI : MonoBehaviour
         _fadeCoroutine = StartCoroutine(FadeInLoop(fadeDuration));
     }
 
+    public void HideFadeEffectRect(bool hide)
+    {
+        FadeImage.gameObject.SetActive(!hide);
+    }
+
     IEnumerator FadeInLoop(float fadeDuration)
     {
+        HideFadeEffectRect(false);
+
         float elapsedTime = 0f;
         Color color = FadeImage.color;
 
@@ -121,10 +136,14 @@ public class GameUI : MonoBehaviour
             FadeImage.color = color;
             yield return null;
         }
+
+        HideFadeEffectRect(true);
     }
 
     IEnumerator FadeOutLoop(float fadeDuration)
     {
+        HideFadeEffectRect(false);
+
         float elapsedTime = 0f;
         Color color = FadeImage.color;
 
