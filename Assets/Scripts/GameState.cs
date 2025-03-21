@@ -30,7 +30,7 @@ public class GameState : MonoBehaviour
     private GameUI _gameUI;
     private GlobalAudio _globalAudio;
     private MenuUI _menuUI;
-    private Color _playerColor;
+    private Color _playerColor = PlayerColors.BloodstoneRedColor;
 
     private SpriteRenderer _backgroundRenderer;
     private Sprite _currentLevelBg = null;
