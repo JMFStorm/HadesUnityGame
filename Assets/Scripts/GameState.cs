@@ -27,10 +27,10 @@ public class GameState : MonoBehaviour
     private PlayerCharacter _player;
     private MainCamera _mainCamera;
     private Vector3 _prevCameraPosition;
-    private Color _playerColor = PlayerColors.Default;
     private GameUI _gameUI;
     private GlobalAudio _globalAudio;
     private MenuUI _menuUI;
+    private Color _playerColor;
 
     private SpriteRenderer _backgroundRenderer;
     private Sprite _currentLevelBg = null;
@@ -156,6 +156,18 @@ public class GameState : MonoBehaviour
         _menuUI.PlayIntroAndThenMainMenu();
     }
 
+    public void ClickStartNewGame()
+    {
+        _menuUI.HidePlayerColorPanel(false);
+        _menuUI.HideMainMenu(true);
+    }
+
+    public void ClickPlayerColorPageBetBack()
+    {
+        _menuUI.HidePlayerColorPanel(true);
+        _menuUI.HideMainMenu(false);
+    }
+
     public void StartNewGame()
     {
         Debug.Log("StartNewGame clicked!");
@@ -163,12 +175,10 @@ public class GameState : MonoBehaviour
         SetGameState(GameStateType.MainGame);
         _gameUI.HidePlayerStats(false);
         _menuUI.HideMainMenu(true);
+        _menuUI.HidePlayerColorPanel(true);
 
         _player = Instantiate(PlayerPrefab);
         _mainCamera.SetFollowTarget(_player.transform);
-
-        _player.SetPlayerColor(_playerColor);
-        _menuUI.SetPlayerColorOnUIImages(_playerColor);
 
         LoadLevelIndex(0, false);
     }
@@ -248,6 +258,7 @@ public class GameState : MonoBehaviour
         }
 
         _player.ResetPlayerInnerState();
+        SetPlayerColor(_playerColor);
 
         Time.timeScale = 1f;
     }
@@ -398,4 +409,24 @@ public class GameState : MonoBehaviour
             _ => min
         };
     }
+
+    public void SetGlobalPlayerColor(string colorName)
+    {
+        _playerColor = PlayerColors.StringToColor(colorName);
+        SetPlayerColor(_playerColor);
+    }
+
+    void SetPlayerColor(Color color)
+    {
+        if (_player != null)
+        {
+            _player.SetPlayerColor(color);
+        }
+
+        if (_menuUI != null)
+        {
+            _menuUI.SetPlayerColorOnUIImages(color);
+        }
+    }        
 }
+

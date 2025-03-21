@@ -9,6 +9,7 @@ public class MenuUI : MonoBehaviour
     public GameObject MainMenuPanel;
     public GameObject PauseMenuPanel;
     public GameObject GameOverPanel;
+    public GameObject PlayerColorPanel;
 
     private GameState _gameState;
     private TextMeshProUGUI _introText;
@@ -48,6 +49,7 @@ public class MenuUI : MonoBehaviour
         PauseMenuPanel.SetActive(false);
         GameOverPanel.SetActive(false);
         MainMenuPanel.SetActive(false);
+        PlayerColorPanel.SetActive(false);
     }
 
     void Start()
@@ -72,6 +74,11 @@ public class MenuUI : MonoBehaviour
             Time.timeScale = 1f;
             GameOverPanel.SetActive(false);
         }
+    }
+
+    public void HidePlayerColorPanel(bool hide)
+    {
+        PlayerColorPanel.SetActive(!hide);
     }
 
     public void ActivatePauseMenu(bool setActive)

@@ -12,7 +12,24 @@ public enum PlayerSounds
 
 public static class PlayerColors
 {
-    public static Color Default = new(0.08f, 0.25f, 0.31f);
+    public static Color DarkBlueColor = new(0.08f, 0.25f, 0.31f);
+    public static Color BlueColor = new(0.0f, 0.0f, 0.9f);
+    public static Color RedColor = new(0.9f, 0.0f, 0.0f);
+
+    public const string BlueStr = "Blue";
+    public const string RedStr = "Red";
+    public const string DarkBlueStr = "DarkBlue";
+
+    public static Color StringToColor(string str)
+    {
+        return str switch
+        {
+            DarkBlueStr => DarkBlueColor,
+            BlueStr => BlueColor,
+            RedStr => RedColor,
+            _ => BlueColor,
+        };
+    }
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
