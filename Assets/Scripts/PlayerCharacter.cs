@@ -13,12 +13,20 @@ public enum PlayerSounds
 public static class PlayerColors
 {
     public static Color DarkBlueColor = new(0.08f, 0.25f, 0.31f);
-    public static Color BlueColor = new(0.0f, 0.0f, 0.9f);
-    public static Color RedColor = new(0.9f, 0.0f, 0.0f);
+    public static Color BlueColor = new(0.08f, 0.19f, 0.6f);
+    public static Color RedColor = new(0.61f, 0.13f, 0.09f);
+    public static Color DarkRedColor = new(0.4f, 0.14f, 0.14f);
+    public static Color DarkGreenColor = new(0.24f, 0.44f, 0.22f);
+    public static Color VioletColor = new(0.29f, 0.16f, 0.42f);
+    public static Color YellowColor = new(0.70f, 0.64f, 0.0f);
 
     public const string BlueStr = "Blue";
     public const string RedStr = "Red";
     public const string DarkBlueStr = "DarkBlue";
+    public const string DarkRedStr = "DarkRed";
+    public const string DarkGreenStr = "DarkGreen";
+    public const string VioletStr = "Violet";
+    public const string YellowStr = "Yellow";
 
     public static Color StringToColor(string str)
     {
@@ -27,6 +35,9 @@ public static class PlayerColors
             DarkBlueStr => DarkBlueColor,
             BlueStr => BlueColor,
             RedStr => RedColor,
+            DarkRedStr => RedColor,
+            DarkGreenStr => DarkGreenColor,
+            VioletStr => VioletColor,
             _ => BlueColor,
         };
     }
