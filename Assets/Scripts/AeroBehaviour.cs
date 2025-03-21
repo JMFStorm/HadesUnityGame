@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public enum AeroSounds
 {
@@ -42,6 +43,7 @@ public class AeroBehaviour : MonoBehaviour
     private CapsuleCollider2D _physicsCollider;
     private AudioSource _audioSource;
     private MainCamera _mainCamera;
+    private PlayerCharacter _player;
 
     private Material _material;
 
@@ -116,7 +118,8 @@ public class AeroBehaviour : MonoBehaviour
 
     private void Start()
     {
-        _attackTarget = GameObject.FindGameObjectWithTag("Player").transform;
+        _player = FindFirstObjectByType<PlayerCharacter>();
+        _attackTarget = _player.transform;
         _mainCamera = FindFirstObjectByType<MainCamera>();
 
         _currentHealth = EnemyHealth;
@@ -234,7 +237,7 @@ public class AeroBehaviour : MonoBehaviour
 
         _usedSpeed = speed;
 
-        if (isChasing)
+        if (isChasing && !_player.IsDead())
         {
             _targetDir = _attackTarget.position - transform.position;
             _directionX = _targetDir.normalized.x < 0 ? -1f : 1f;
