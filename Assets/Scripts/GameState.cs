@@ -24,6 +24,7 @@ public class GameState : MonoBehaviour
 
     private GameStateType _gameState;
 
+    private List<ArenaEvent> _currentLevelArenaEvents = new();
     private Level _currentLevel;
     private PlayerCharacter _player;
     private MainCamera _mainCamera;
@@ -131,11 +132,6 @@ public class GameState : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
-    {
-
-    }
-
     public void SetGameState(GameStateType type)
     {
         _gameState = type;
@@ -173,8 +169,6 @@ public class GameState : MonoBehaviour
 
     public void StartNewGame()
     {
-        Debug.Log("StartNewGame clicked!");
-
         SetGameState(GameStateType.MainGame);
         _gameUI.HidePlayerStats(false);
         _menuUI.HideMainMenu(true);
@@ -206,6 +200,8 @@ public class GameState : MonoBehaviour
             Destroy(_currentLevel.gameObject);
             _currentLevel = null;
         }
+
+        ClearArenaEvents();
 
         _currentLevel = Instantiate(GameLevels[index], Vector3.zero, Quaternion.identity);
 
@@ -261,6 +257,8 @@ public class GameState : MonoBehaviour
         {
             Debug.LogError("LevelEnter not found!");
         }
+
+        GetLevelArenaEvents();
 
         _player.ResetPlayerInnerState();
         SetPlayerColor(_playerColor);
@@ -432,6 +430,29 @@ public class GameState : MonoBehaviour
         {
             _menuUI.SetPlayerColorOnUIImages(color);
         }
-    }        
+    }
+
+    void ClearArenaEvents()
+    {
+        foreach (var arenaEvent in _currentLevelArenaEvents)
+        {
+            arenaEvent.ResetArenaEvent();
+        }
+
+        _currentLevelArenaEvents.Clear();
+    }
+
+    void GetLevelArenaEvents()
+    {
+        var levelArenaEvents = GameObject.FindGameObjectsWithTag("ArenaEvent");
+
+        foreach (var obj in levelArenaEvents)
+        {
+            if (obj.TryGetComponent<ArenaEvent>(out var arenaEvent))
+            {
+                _currentLevelArenaEvents.Add(arenaEvent);
+            }
+        }
+    }
 }
 

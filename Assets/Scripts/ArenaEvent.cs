@@ -22,12 +22,16 @@ public class ArenaEvent : MonoBehaviour
     public GameObject ShadowGrunt;
     public GameObject ShadowAero;
 
-    private bool _arenaTriggered = false;
+    private bool _arenaEventOngoing = false;
+    private bool _arenaEnded = false;
 
     private List<ArenaEventSpawn> _arenaSpawns = new();
+    private List<ArenaEventSpawn> _arenaSpawnsOriginal = new();
 
     private Dictionary<string, EnemyBase> _spawnPointDict = new();
     private Dictionary<string, ArenaEventSpawn> _enemyDict = new();
+
+    private List<EnemyBase> _currentEnemies = new();
 
     private void OnEnable()
     {
@@ -42,20 +46,18 @@ public class ArenaEvent : MonoBehaviour
     private void Awake()
     {
         _arenaSpawns = GetSpawnPoints();
+        _arenaSpawnsOriginal = _arenaSpawns.Select(spawn => ArenaEventSpawn.Clone(spawn)).ToList();
     }
 
     public void TriggerArenaEvent()
     {
-        _arenaTriggered = true;
-
-        Debug.Log("TriggerArenaEvent called");
+        _arenaEventOngoing = true;
 
         foreach (var spawn in _arenaSpawns)
         {
             TrySpawnEnemy(spawn);
         }
     }
-
 
     void TrySpawnEnemy(ArenaEventSpawn spawnpoint)
     {
@@ -65,19 +67,17 @@ public class ArenaEvent : MonoBehaviour
 
             if (0 < current.SpawnCount)
             {
-                Debug.Log($"{spawnpoint.name}: {current.EnemyType}, {current.SpawnCount}");
-
                 var enemyPrefab = GetEnemyByType(current.EnemyType);
 
                 GameObject newEnemy = Instantiate(enemyPrefab, spawnpoint.transform.position, Quaternion.identity);
                 var enemy = newEnemy.GetComponent<EnemyBase>();
 
+                _currentEnemies.Add(enemy);
                 _spawnPointDict.Add(spawnpoint.Id, enemy);
                 _enemyDict.Add(enemy.Id, spawnpoint);
 
-                Debug.Log($"Spawned enemy: {newEnemy.name}");
-
                 --current.SpawnCount;
+
                 break;
             }
             else
@@ -98,8 +98,6 @@ public class ArenaEvent : MonoBehaviour
                 if (child.TryGetComponent<ArenaEventSpawn>(out var spawnComponent))
                 {
                     spawnPoints.Add(spawnComponent);
-
-                    Debug.Log($"{spawnComponent.name} added to spawn points");
                 }
             }
         }
@@ -127,9 +125,37 @@ public class ArenaEvent : MonoBehaviour
 
         var spawnPoint = _enemyDict[enemy.Id];
 
+        _currentEnemies.Remove(enemy);
+
         _enemyDict.Remove(enemy.Id);
         _spawnPointDict.Remove(spawnPoint.Id);
 
         TrySpawnEnemy(spawnPoint);
+
+        if (_arenaSpawns.All(x => x.SpawnData.Count <= 0))
+        {
+            CompleteArenaEvent();
+        }
+    }
+
+    void CompleteArenaEvent()
+    {
+        _arenaEventOngoing = false;
+        _arenaEnded = true;
+    }
+
+    public void ResetArenaEvent()
+    {
+        _arenaSpawns = _arenaSpawnsOriginal;
+
+        foreach (var enemy in _currentEnemies)
+        {
+            Destroy(enemy.gameObject);
+        }
+
+        _currentEnemies.Clear();
+
+        _arenaEventOngoing = false;
+        _arenaEnded = false;
     }
 }

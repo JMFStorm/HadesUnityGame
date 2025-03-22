@@ -13,6 +13,25 @@ public class ArenaEventSpawn : MonoBehaviour
 {
     public List<EnemySpawnData> SpawnData = new();
 
+    public static ArenaEventSpawn Clone(ArenaEventSpawn original)
+    {
+        GameObject newObject = new(original.name + "_CopyOriginal");
+        ArenaEventSpawn clone = newObject.AddComponent<ArenaEventSpawn>();
+
+        clone.SpawnData = new List<EnemySpawnData>();
+
+        foreach (var spawn in original.SpawnData)
+        {
+            clone.SpawnData.Add(new EnemySpawnData
+            {
+                EnemyType = spawn.EnemyType,
+                SpawnCount = spawn.SpawnCount
+            });
+        }
+
+        return clone;
+    }
+
     public string Id;
 
     private void Awake()
