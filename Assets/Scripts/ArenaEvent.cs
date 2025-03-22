@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static PlasticGui.LaunchDiffParameters;
 
 public enum EnemyType
 {
@@ -75,13 +76,21 @@ public class ArenaEvent : MonoBehaviour
             {
                 var collider = blocker.GetComponent<BoxCollider2D>();
 
-                SpriteRenderer sr = blocker.AddComponent<SpriteRenderer>();
+                var sr = blocker.transform.Find("Sprite").GetComponent<SpriteRenderer>();
                 sr.color = new Color(0.8f, 0f, 0f, 0.6f);
                 sr.sortingOrder = -1;
+                sr.transform.localScale = new Vector3(collider.size.x, collider.size.y, 1);
+                sr.transform.position += (Vector3)collider.offset;
 
-                collider.transform.localScale = new Vector3(collider.size.x, collider.size.y, 1);
+                var material = sr.material;
+                material.SetFloat("_UVScaleX", collider.size.x);
+                material.SetFloat("_UVScaleY", collider.size.y);
+                material.SetFloat("_Distortion", 0.6f);
+                material.SetFloat("_Speed", 0.2f);
+                material.SetColor("_Color", new Color(0.0f, 0.0f, 0.0f, 1.0f));
 
                 blocker.SetActive(true);
+                StartCoroutine(FadeBlockerEffect(sr, 0f, 1.0f, 3f));
             }
         }
 
@@ -90,6 +99,30 @@ public class ArenaEvent : MonoBehaviour
             _globalAudio.PlayAnnouncerVoiceType(AnnouncesVoiceGroup);
         }
     }
+
+    IEnumerator FadeBlockerEffect(SpriteRenderer blockerRenderer, float startAlpha, float endAlpha, float duration)
+    {
+        float elapsedTime = 0f;
+
+        Color initialColor = new(0f, 0f, 0f, 0f);
+
+        while (elapsedTime < duration)
+        {
+            float alpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
+
+            var newColor = new Color(initialColor.r, initialColor.g, initialColor.b, alpha);
+            elapsedTime += Time.deltaTime;
+
+            blockerRenderer.material.SetColor("_Color", newColor);
+
+            Debug.Log("alpha " + alpha);
+
+            yield return null;
+        }
+
+        blockerRenderer.color = new Color(initialColor.r, initialColor.g, initialColor.b, endAlpha);
+    }
+
 
     void TrySpawnEnemy(ArenaEventSpawn spawnpoint)
     {
@@ -103,6 +136,7 @@ public class ArenaEvent : MonoBehaviour
 
                 GameObject newEnemy = Instantiate(enemyPrefab, spawnpoint.transform.position, Quaternion.identity);
                 newEnemy.SetActive(false);
+                newEnemy.transform.SetParent(this.transform);
 
                 var enemy = newEnemy.GetComponent<EnemyBase>();
 
@@ -157,6 +191,14 @@ public class ArenaEvent : MonoBehaviour
         }
 
         return blockers;
+    }
+
+    void DeactivateBlockers()
+    {
+        foreach (var blocker in _eventPlayerBlockers)
+        {
+            blocker.gameObject.SetActive(false);
+        }
     }
 
     public List<ArenaEventSpawn> GetSpawnPoints()
@@ -214,6 +256,8 @@ public class ArenaEvent : MonoBehaviour
     void CompleteArenaEvent()
     {
         Debug.Log("Arena event completed");
+
+        DeactivateBlockers();
     }
 
     public void ResetArenaEvent()
@@ -222,7 +266,7 @@ public class ArenaEvent : MonoBehaviour
 
         foreach (var enemy in _currentEnemies)
         {
-            Destroy(enemy.gameObject);
+            // Destroy(enemy.gameObject);
         }
 
         _currentEnemies.Clear();
