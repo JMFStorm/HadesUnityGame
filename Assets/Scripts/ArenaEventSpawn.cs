@@ -9,6 +9,8 @@ public class EnemySpawnData
     public int SpawnCount;
 }
 
+[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(AudioSource))]
 public class ArenaEventSpawn : MonoBehaviour
 {
     public List<EnemySpawnData> SpawnData = new();

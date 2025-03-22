@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -22,6 +23,9 @@ public class ArenaEvent : MonoBehaviour
     public GameObject ShadowGrunt;
     public GameObject ShadowAero;
 
+    public Sprite TeleporterSprite;
+    public AudioClip TeleporterStartSound;
+
     private bool _arenaEventOngoing = false;
     private bool _arenaEnded = false;
 
@@ -32,6 +36,8 @@ public class ArenaEvent : MonoBehaviour
     private Dictionary<string, ArenaEventSpawn> _enemyDict = new();
 
     private List<EnemyBase> _currentEnemies = new();
+
+    private Coroutine _enemyTeleportCoroutine = null;
 
     private void OnEnable()
     {
@@ -70,6 +76,8 @@ public class ArenaEvent : MonoBehaviour
                 var enemyPrefab = GetEnemyByType(current.EnemyType);
 
                 GameObject newEnemy = Instantiate(enemyPrefab, spawnpoint.transform.position, Quaternion.identity);
+                newEnemy.SetActive(false);
+
                 var enemy = newEnemy.GetComponent<EnemyBase>();
 
                 _currentEnemies.Add(enemy);
@@ -78,6 +86,8 @@ public class ArenaEvent : MonoBehaviour
 
                 --current.SpawnCount;
 
+                _enemyTeleportCoroutine = StartCoroutine(SpawnEnemyFromTeleport(enemy, spawnpoint));
+
                 break;
             }
             else
@@ -85,6 +95,26 @@ public class ArenaEvent : MonoBehaviour
                 spawnpoint.SpawnData.RemoveAt(0);
             }
         }
+    }
+
+    IEnumerator SpawnEnemyFromTeleport(EnemyBase enemy, ArenaEventSpawn spawn)
+    {
+        var spriteRenderer = spawn.GetComponent<SpriteRenderer>();
+        var audioSource = spawn.GetComponent<AudioSource>();
+
+        audioSource.clip = TeleporterStartSound;
+        audioSource.loop = false;
+        audioSource.volume = 0.75f;
+        audioSource.Play();
+
+        spriteRenderer.enabled = true;
+        spriteRenderer.sprite = TeleporterSprite;
+
+        yield return new WaitForSeconds(2.0f);
+
+        enemy.gameObject.SetActive(true);
+
+        spriteRenderer.enabled = false;
     }
 
     public List<ArenaEventSpawn> GetSpawnPoints()
@@ -121,8 +151,6 @@ public class ArenaEvent : MonoBehaviour
 
     private void HandleEnemyDeath(EnemyBase enemy)
     {
-        Debug.Log($"Enemy {enemy.name} died. Spawning new one...");
-
         var spawnPoint = _enemyDict[enemy.Id];
 
         _currentEnemies.Remove(enemy);
@@ -157,5 +185,7 @@ public class ArenaEvent : MonoBehaviour
 
         _arenaEventOngoing = false;
         _arenaEnded = false;
+
+        StopCoroutine(_enemyTeleportCoroutine);
     }
 }
