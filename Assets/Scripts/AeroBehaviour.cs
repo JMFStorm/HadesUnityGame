@@ -74,8 +74,10 @@ public class AeroBehaviour : EnemyBase
 
     private readonly int _animationFPS = 10;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         if (!TryGetComponent(out _spriteRenderer))
         {
             Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(AeroBehaviour)}");

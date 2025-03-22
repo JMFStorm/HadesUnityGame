@@ -50,39 +50,40 @@ public class ArenaEvent : MonoBehaviour
 
         Debug.Log("TriggerArenaEvent called");
 
-        TrySpawnNewEnemies();
-    }
-
-    void TrySpawnNewEnemies()
-    {
         foreach (var spawn in _arenaSpawns)
         {
-            foreach (var item in spawn.SpawnData)
-            {
-                TrySpawnEnemy(spawn, item);
-            }
+            TrySpawnEnemy(spawn);
         }
     }
 
-    void TrySpawnEnemy(ArenaEventSpawn spawnpoint, EnemySpawnData spawnItem)
+
+    void TrySpawnEnemy(ArenaEventSpawn spawnpoint)
     {
-        var contains = _spawnPointDict.ContainsKey(spawnpoint.Id);
-
-        if (0 < spawnItem.SpawnCount && !contains)
+        while (0 < spawnpoint.SpawnData.Count)
         {
-            Debug.Log($"{spawnpoint.name}: {spawnItem.EnemyType}, {spawnItem.SpawnCount}");
+            var current = spawnpoint.SpawnData[0];
 
-            var enemyPrefab = GetEnemyByType(spawnItem.EnemyType);
+            if (0 < current.SpawnCount)
+            {
+                Debug.Log($"{spawnpoint.name}: {current.EnemyType}, {current.SpawnCount}");
 
-            GameObject newEnemy = Instantiate(enemyPrefab, spawnpoint.transform.position, Quaternion.identity);
-            var enemy = newEnemy.GetComponent<EnemyBase>();
+                var enemyPrefab = GetEnemyByType(current.EnemyType);
 
-            _spawnPointDict.Add(spawnpoint.Id, enemy);
-            _enemyDict.Add(enemy.Id, spawnpoint);
+                GameObject newEnemy = Instantiate(enemyPrefab, spawnpoint.transform.position, Quaternion.identity);
+                var enemy = newEnemy.GetComponent<EnemyBase>();
 
-            Debug.Log($"Spawned enemy: {newEnemy.name}");
+                _spawnPointDict.Add(spawnpoint.Id, enemy);
+                _enemyDict.Add(enemy.Id, spawnpoint);
 
-            --spawnItem.SpawnCount;
+                Debug.Log($"Spawned enemy: {newEnemy.name}");
+
+                --current.SpawnCount;
+                break;
+            }
+            else
+            {
+                spawnpoint.SpawnData.RemoveAt(0);
+            }
         }
     }
 
@@ -125,9 +126,10 @@ public class ArenaEvent : MonoBehaviour
         Debug.Log($"Enemy {enemy.name} died. Spawning new one...");
 
         var spawnPoint = _enemyDict[enemy.Id];
+
         _enemyDict.Remove(enemy.Id);
         _spawnPointDict.Remove(spawnPoint.Id);
 
-        TrySpawnNewEnemies();
+        TrySpawnEnemy(spawnPoint);
     }
 }

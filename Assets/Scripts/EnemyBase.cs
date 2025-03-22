@@ -7,7 +7,7 @@ public abstract class EnemyBase : MonoBehaviour
 
     public string Id;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         if (string.IsNullOrEmpty(Id))
         {

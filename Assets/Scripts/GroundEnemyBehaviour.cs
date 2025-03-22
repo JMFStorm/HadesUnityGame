@@ -14,7 +14,7 @@ public enum EnemyState
 
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
-public class GroundEnemyBehaviour : MonoBehaviour
+public class GroundEnemyBehaviour : EnemyBase
 {
     public float MovementSpeed = 1.5f;
     public float AggroSpeed = 3.0f;
@@ -69,8 +69,10 @@ public class GroundEnemyBehaviour : MonoBehaviour
         WallHit
     }
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         if (!TryGetComponent(out _enemyCollider))
         {
             Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(GroundEnemyBehaviour)}");
@@ -408,6 +410,8 @@ public class GroundEnemyBehaviour : MonoBehaviour
 
         StopWalkCycleAudio();
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
+
+        SignalDieEvent();
 
         Destroy(gameObject, 2.5f);
     }
