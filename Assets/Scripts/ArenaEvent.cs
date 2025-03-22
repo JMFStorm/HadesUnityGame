@@ -26,11 +26,9 @@ public class ArenaEvent : MonoBehaviour
     public Sprite TeleporterSprite;
     public AudioClip TeleporterStartSound;
 
+    public bool BlockingEvent = false;
     public bool UseHadesVoice = false;
     public AnnouncerVoiceGroup AnnouncesVoiceGroup;
-
-    private bool _arenaEventOngoing = false;
-    private bool _arenaEnded = false;
 
     private GlobalAudio _globalAudio;
 
@@ -41,6 +39,7 @@ public class ArenaEvent : MonoBehaviour
     private Dictionary<string, ArenaEventSpawn> _enemyDict = new();
 
     private List<EnemyBase> _currentEnemies = new();
+    private List<GameObject> _eventPlayerBlockers = new();
 
     private Coroutine _enemyTeleportCoroutine = null;
 
@@ -57,6 +56,7 @@ public class ArenaEvent : MonoBehaviour
     private void Awake()
     {
         _arenaSpawns = GetSpawnPoints();
+        _eventPlayerBlockers = GetBlockersAndDeactivate();
         _arenaSpawnsOriginal = _arenaSpawns.Select(spawn => spawn).ToList();
 
         _globalAudio = FindFirstObjectByType<GlobalAudio>();
@@ -64,11 +64,25 @@ public class ArenaEvent : MonoBehaviour
 
     public void TriggerArenaEvent()
     {
-        _arenaEventOngoing = true;
-
         foreach (var spawn in _arenaSpawns)
         {
             TrySpawnEnemy(spawn);
+        }
+
+        if (BlockingEvent)
+        {
+            foreach (var blocker in _eventPlayerBlockers)
+            {
+                var collider = blocker.GetComponent<BoxCollider2D>();
+
+                SpriteRenderer sr = blocker.AddComponent<SpriteRenderer>();
+                sr.color = new Color(0.8f, 0f, 0f, 0.6f);
+                sr.sortingOrder = -1;
+
+                collider.transform.localScale = new Vector3(collider.size.x, collider.size.y, 1);
+
+                blocker.SetActive(true);
+            }
         }
 
         if (UseHadesVoice)
@@ -129,6 +143,22 @@ public class ArenaEvent : MonoBehaviour
         spriteRenderer.enabled = false;
     }
 
+    public List<GameObject> GetBlockersAndDeactivate()
+    {
+        List<GameObject> blockers = new();
+
+        foreach (Transform child in transform)
+        {
+            if (child.name.ToLower().Contains("block"))
+            {
+                child.gameObject.SetActive(false);
+                blockers.Add(child.gameObject);
+            }
+        }
+
+        return blockers;
+    }
+
     public List<ArenaEventSpawn> GetSpawnPoints()
     {
         List<ArenaEventSpawn> spawnPoints = new();
@@ -163,7 +193,10 @@ public class ArenaEvent : MonoBehaviour
 
     private void HandleEnemyDeath(EnemyBase enemy)
     {
-        var spawnPoint = _enemyDict[enemy.Id];
+        if (!_enemyDict.TryGetValue(enemy.Id, out var spawnPoint))
+        {
+            return;
+        }
 
         _currentEnemies.Remove(enemy);
 
@@ -180,8 +213,7 @@ public class ArenaEvent : MonoBehaviour
 
     void CompleteArenaEvent()
     {
-        _arenaEventOngoing = false;
-        _arenaEnded = true;
+        Debug.Log("Arena event completed");
     }
 
     public void ResetArenaEvent()
@@ -194,9 +226,6 @@ public class ArenaEvent : MonoBehaviour
         }
 
         _currentEnemies.Clear();
-
-        _arenaEventOngoing = false;
-        _arenaEnded = false;
 
         StopCoroutine(_enemyTeleportCoroutine);
     }
