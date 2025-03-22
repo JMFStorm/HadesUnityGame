@@ -1,3 +1,4 @@
+using Mono.Cecil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,15 @@ public enum LevelSoundscapeType
     Ghastly
 }
 
+public enum GlobalMusic
+{
+    None = 0,
+    TensionBooster1,
+    ReverberedAudio1,
+    MysticTexture1,
+    MysticTexture2,
+}
+
 public enum AnnouncerVoiceGroup
 {
     IntroTile = 0,
@@ -17,23 +27,28 @@ public enum AnnouncerVoiceGroup
 
 public class GlobalAudio : MonoBehaviour
 {
-    public AudioClip[] levelAmbienceAudios;
+    public AudioClip[] LevelAmbienceAudios;
+    public AudioClip[] GlobalMusicAudios;
 
     public List<AudioClip> AnnouncerIntroTitleVoices = new();
     public List<AudioClip> AnnouncerGameOverVoices = new();
 
-    private AudioSource _levelFXaudioSource;
+    private AudioSource _levelAmbienceAudioSource;
     private AudioSource _hadesAnnouncerAudioSource;
+    private AudioSource _globalMusicAudioSource;
 
-    private Coroutine _fadeCoroutine;
+    private Coroutine _fadeMusicCoroutine;
 
     void Awake()
     {
-        _levelFXaudioSource = gameObject.AddComponent<AudioSource>();
-        _levelFXaudioSource.spatialBlend = 0; // 2D global sound
+        _levelAmbienceAudioSource = gameObject.AddComponent<AudioSource>();
+        _levelAmbienceAudioSource.spatialBlend = 0; // 2D global sound
 
         _hadesAnnouncerAudioSource = gameObject.AddComponent<AudioSource>();
         _hadesAnnouncerAudioSource.spatialBlend = 0; // 2D global sound
+
+        _globalMusicAudioSource = gameObject.AddComponent<AudioSource>();
+        _globalMusicAudioSource.spatialBlend = 0; // 2D global sound
     }
 
     List<AudioClip> GetAnnouncerVoiceClips(AnnouncerVoiceGroup group)
@@ -67,40 +82,68 @@ public class GlobalAudio : MonoBehaviour
 
     public void PlayAmbience(LevelSoundscapeType type)
     {
-        AudioClip clip = levelAmbienceAudios[(int)type];
+        AudioClip clip = LevelAmbienceAudios[(int)type];
 
-        if (clip != null && (_levelFXaudioSource.clip != clip || !_levelFXaudioSource.isPlaying))
+        if (clip != null && (_levelAmbienceAudioSource.clip != clip || !_levelAmbienceAudioSource.isPlaying))
         {
-            _levelFXaudioSource.clip = clip;
-            _levelFXaudioSource.loop = true;
-            _levelFXaudioSource.volume = 0.2f;
-            _levelFXaudioSource.Play();
+            _levelAmbienceAudioSource.clip = clip;
+            _levelAmbienceAudioSource.loop = true;
+            _levelAmbienceAudioSource.volume = 0.3f;
+            _levelAmbienceAudioSource.Play();
         }
     }
 
     public void StopAmbience()
     {
-        _levelFXaudioSource.Stop();
+        _levelAmbienceAudioSource.Stop();
     }
 
-    private void StartFade(AudioSource source, float targetVolume, float duration, bool stopAfterFade = false)
+    public void PlayGlobalMusic(GlobalMusic music, bool loop, float? volume = null)
     {
-        if (_fadeCoroutine != null)
+        if (music == GlobalMusic.None)
         {
-            StopCoroutine(_fadeCoroutine);
+            StartFade(ref _fadeMusicCoroutine, _globalMusicAudioSource, 0, 2f, true, _globalMusicAudioSource.volume);
+            return;
         }
 
-        _fadeCoroutine = StartCoroutine(FadeAudio(source, targetVolume, duration, stopAfterFade));
+        AudioClip clip = GlobalMusicAudios[(int)(music - 1)];
+
+        if (clip != null && (_globalMusicAudioSource.clip != clip || !_globalMusicAudioSource.isPlaying))
+        {
+            var usedVol  = volume ?? 1.0f;
+
+            _globalMusicAudioSource.clip = clip;
+            _globalMusicAudioSource.loop = loop;
+            _globalMusicAudioSource.volume = usedVol;
+            _globalMusicAudioSource.Play();
+
+            StartFade(ref _fadeMusicCoroutine, _globalMusicAudioSource, usedVol, 3f, false, 0f);
+        }
     }
 
-    private IEnumerator FadeAudio(AudioSource source, float targetVolume, float duration, bool stopAfterFade)
+    private void StartFade(ref Coroutine coroutine, AudioSource source, float targetVolume, float duration, bool stopAfterFade, float startVolume)
     {
-        float startVolume = source.volume;
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+        }
+
+        coroutine = StartCoroutine(FadeAudio(source, targetVolume, duration, stopAfterFade, startVolume));
+    }
+
+    private IEnumerator FadeAudio(AudioSource source, float targetVolume, float duration, bool stopAfterFade, float? startVolume = null)
+    {
+        float startVolume1 = startVolume ?? source.volume;
         float time = 0f;
+
+        if (!stopAfterFade)
+        {
+            source.Play();
+        }
 
         while (time < duration)
         {
-            source.volume = Mathf.Lerp(startVolume, targetVolume, time / duration);
+            source.volume = Mathf.Lerp(startVolume1, targetVolume, time / duration);
             time += Time.deltaTime;
             yield return null;
         }

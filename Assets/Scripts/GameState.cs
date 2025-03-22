@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -154,6 +155,8 @@ public class GameState : MonoBehaviour
 
         _globalAudio.PlayAnnouncerVoiceType(AnnouncerVoiceGroup.IntroTile);
         _menuUI.PlayIntroAndThenMainMenu();
+
+        _globalAudio.PlayGlobalMusic(GlobalMusic.TensionBooster1, false, 0.7f);
     }
 
     public void ClickStartNewGame()
@@ -222,6 +225,8 @@ public class GameState : MonoBehaviour
 
         _globalAudio.StopAmbience();
         _globalAudio.PlayAmbience(_currentLevel.LevelSoundscape);
+
+        _globalAudio.PlayGlobalMusic(_currentLevel.LevelMusic, true, 0.2f);
 
         var lightIntensity = GetLightLevelValue(_currentLevel.LightLevel);
         GlobalLight.intensity = lightIntensity;

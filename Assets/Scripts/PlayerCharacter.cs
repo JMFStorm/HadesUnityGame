@@ -284,6 +284,7 @@ public class PlayerCharacter : MonoBehaviour
         }
         else if (!_isGrounded)
         {
+            Debug.Log(_rigidBody.linearVelocityY);
             usedAnim = "PlayerAir";
         }
         else if (_isGrounded && 0.01f < Mathf.Abs(_rigidBody.linearVelocity.x))
@@ -300,20 +301,14 @@ public class PlayerCharacter : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (_rigidBody.linearVelocityY <= _newJumpVelocityThreshold)
+        _isGrounded = Physics2D.OverlapBox(GroundCheck.position, _groundCheckSize, 0, GroundCollisionLayer);
+
+        if (_isGrounded)
         {
-            var isGrounded = Physics2D.OverlapBox(GroundCheck.position, _groundCheckSize, 0, GroundCollisionLayer);
-
-            if (isGrounded)
-            {
-                _groundedTime += Time.fixedDeltaTime;
-            }
-
-            _isGrounded = isGrounded;
+            _groundedTime += Time.fixedDeltaTime;
         }
         else
         {
-            _isGrounded = false;
             _groundedTime = 0f;
         }
     }
@@ -533,8 +528,6 @@ public class PlayerCharacter : MonoBehaviour
         }
         else if (Input.GetButtonDown("Jump") && _isGrounded && !_isDashing && !_isCrouching)
         {
-            Debug.Log($"_newJumpTimeCooldown: {_newJumpTimeCooldown}, _groundedTime: {_groundedTime}");
-
             if (_rigidBody.linearVelocityY <= _newJumpVelocityThreshold && _newJumpTimeCooldown < _groundedTime)
             {
                 PlaySound(PlayerSounds.Jump);

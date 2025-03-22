@@ -320,7 +320,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: SkipIntro
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: 'GameLevels.Array.data[0]'
@@ -330,6 +330,54 @@ PrefabInstance:
       propertyPath: 'GameLevels.Array.data[1]'
       value: 
       objectReference: {fileID: 1514047593086382533, guid: c02045f98f152bd4b936cf55f8335280, type: 3}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: GlobalFXAudios.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GlobalFXAudios.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: d72087c1e0dafaf4ea9749b48d34e539, type: 3}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GlobalFXAudios.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: af355295c12eb07478393e095d7a399e, type: 3}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: GlobalMusicAudios.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: LevelAmbienceAudios.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GlobalMusicAudios.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: d72087c1e0dafaf4ea9749b48d34e539, type: 3}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GlobalMusicAudios.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: af355295c12eb07478393e095d7a399e, type: 3}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GlobalMusicAudios.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: cc812bf5492b2304ba9485a73d192f6c, type: 3}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GlobalMusicAudios.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 66d2da9c290cdf347808cb8b04a61168, type: 3}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'LevelAmbienceAudios.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 7e2f387da1570bb45930f54617ec7d58, type: 3}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'LevelAmbienceAudios.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: ace39a2989957fa448dc7311ee5ba40d, type: 3}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'LevelAmbienceAudios.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: e6623d885eac2f14191c5d8775d73b86, type: 3}
     - target: {fileID: 6418170319196612165, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
