@@ -7,6 +7,7 @@ Shader "Custom/Forcefield"
         _Speed ("Animation Speed", Range(0, 5)) = 1
         _UVScaleX ("UV Scale X", Float) = 1.0
         _UVScaleY ("UV Scale Y", Float) = 1.0
+        _EdgeThickness ("Edge Transparency Thickness", Float) = 0.1 // 10% edge thickness
     }
     SubShader
     {
@@ -28,6 +29,7 @@ Shader "Custom/Forcefield"
 
             struct v2f {
                 float2 uv : TEXCOORD0;
+                float2 unscaledUv : TEXCOORD1;
                 float4 vertex : SV_POSITION;
             };
 
@@ -36,6 +38,7 @@ Shader "Custom/Forcefield"
             float _Speed;
             float _UVScaleX;
             float _UVScaleY;
+            float _EdgeThickness; // Edge thickness for transparency effect
 
             // Procedural noise function
             float rand(float2 co)
@@ -61,16 +64,31 @@ Shader "Custom/Forcefield"
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                
-                // Apply UV scaling
+    
+                // Apply UV scaling to get the scaled version
                 float2 scaledUV = v.uv * float2(_UVScaleX, _UVScaleY);
+
+                // Store the unscaled UV (for static reference)
+                o.unscaledUv = scaledUV;
+
+                // Apply distortion to the scaled UV (this will be animated)
                 o.uv = scaledUV + noise(scaledUV * 10 + _Time.y * _Speed) * _Distortion;
-                
+
                 return o;
             }
 
             fixed4 frag(v2f i) : SV_Target
             {
+                // Calculate distance from the center of the UV space (0.5, 0.5)
+                float2 center = float2(0.5, 0.5) * float2(_UVScaleX, _UVScaleY);
+                float2 uvDist = abs(i.unscaledUv - center);
+
+                // Calculate the edge transparency effect based on the distance from the center
+                // Get max distance in x or y direction (use one of the axis to calculate distance)
+                float edgeDist = max(uvDist.x * (1.0 / _UVScaleX), uvDist.y * (1.0 / _UVScaleY)); 
+                
+                float alpha = 1.0 - smoothstep(0.25, 0.5, edgeDist);
+
                 // Use oscillating time instead of linear scrolling
                 float timeFactor = sin(_Time.y * _Speed * 0.1) * 0.5 + 0.5; // Oscillates between 0 and 1
 
@@ -81,8 +99,9 @@ Shader "Custom/Forcefield"
                 float n = noise(noiseUV); // Apply noise function
                 float glow = smoothstep(0.3, 0.7, n); // Glow effect based on noise intensity
 
-                // Ensure the alpha is correctly used with the color
-                return float4(_Color.rgb * glow, glow * _Color.a); // Transparent glow effect, including alpha from _Color
+                // Final color including glow and alpha (including edge transparency)
+                // return float4(1, 1, 0, alpha);
+                return float4(_Color.rgb * glow, glow * alpha * _Color.a); // Transparent glow effect with alpha from _Color and edge transparency
             }
             ENDCG
         }

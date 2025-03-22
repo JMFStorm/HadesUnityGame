@@ -86,7 +86,7 @@ public class ArenaEvent : MonoBehaviour
                 material.SetFloat("_UVScaleX", collider.size.x);
                 material.SetFloat("_UVScaleY", collider.size.y);
                 material.SetFloat("_Distortion", 0.6f);
-                material.SetFloat("_Speed", 0.2f);
+                material.SetFloat("_Speed", 0.3f);
                 material.SetColor("_Color", new Color(0.0f, 0.0f, 0.0f, 1.0f));
 
                 blocker.SetActive(true);
@@ -114,8 +114,6 @@ public class ArenaEvent : MonoBehaviour
             elapsedTime += Time.deltaTime;
 
             blockerRenderer.material.SetColor("_Color", newColor);
-
-            Debug.Log("alpha " + alpha);
 
             yield return null;
         }
