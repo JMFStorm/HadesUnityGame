@@ -88,6 +88,7 @@ public class PlayerCharacter : MonoBehaviour
     private TextMeshPro _floatingText;
     private GameUI _gameUI;
     private GameState _gameState;
+    private GlobalAudio _globalAudio;
 
     private Vector2 _groundCheckSize = new(0.5f, 0.25f);
     private Vector2 _originalSize;
@@ -187,6 +188,13 @@ public class PlayerCharacter : MonoBehaviour
         if (_gameUI == null)
         {
             Debug.LogError($"{nameof(GameUI)} not found on {nameof(PlayerCharacter)}");
+        }
+
+        _globalAudio = FindFirstObjectByType<GlobalAudio>();
+
+        if (_globalAudio == null)
+        {
+            Debug.LogError($"{nameof(GlobalAudio)} not found on {nameof(PlayerCharacter)}");
         }
 
         _gameState = FindFirstObjectByType<GameState>();
@@ -384,6 +392,8 @@ public class PlayerCharacter : MonoBehaviour
     {
         PlaySound(PlayerSounds.Hit);
         ControlsEnabled(false);
+
+        _globalAudio.StopMusic(4f);
 
         _hasDamageInvulnerability = true;
         _inDamageState = true;

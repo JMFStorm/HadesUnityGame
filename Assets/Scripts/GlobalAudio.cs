@@ -98,6 +98,11 @@ public class GlobalAudio : MonoBehaviour
         _levelAmbienceAudioSource.Stop();
     }
 
+    public void StopMusic(float fadeTime)
+    {
+        StartFade(ref _fadeMusicCoroutine, _globalMusicAudioSource, 0f, fadeTime, true, _globalMusicAudioSource.volume);
+    }
+
     public void PlayGlobalMusic(GlobalMusic music, bool loop, float? volume = null)
     {
         if (music == GlobalMusic.None)

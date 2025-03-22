@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum EnemyType
@@ -24,6 +25,9 @@ public class ArenaEvent : MonoBehaviour
     private bool _arenaTriggered = false;
 
     private List<ArenaEventSpawn> _arenaSpawns = new();
+
+    private Dictionary<string, EnemyBase> _spawnPointDict = new();
+    private Dictionary<string, ArenaEventSpawn> _enemyDict = new();
 
     private void OnEnable()
     {
@@ -62,12 +66,19 @@ public class ArenaEvent : MonoBehaviour
 
     void TrySpawnEnemy(ArenaEventSpawn spawnpoint, EnemySpawnData spawnItem)
     {
-        if (0 < spawnItem.SpawnCount)
+        var contains = _spawnPointDict.ContainsKey(spawnpoint.Id);
+
+        if (0 < spawnItem.SpawnCount && !contains)
         {
             Debug.Log($"{spawnpoint.name}: {spawnItem.EnemyType}, {spawnItem.SpawnCount}");
 
             var enemyPrefab = GetEnemyByType(spawnItem.EnemyType);
+
             GameObject newEnemy = Instantiate(enemyPrefab, spawnpoint.transform.position, Quaternion.identity);
+            var enemy = newEnemy.GetComponent<EnemyBase>();
+
+            _spawnPointDict.Add(spawnpoint.Id, enemy);
+            _enemyDict.Add(enemy.Id, spawnpoint);
 
             Debug.Log($"Spawned enemy: {newEnemy.name}");
 
@@ -112,6 +123,10 @@ public class ArenaEvent : MonoBehaviour
     private void HandleEnemyDeath(EnemyBase enemy)
     {
         Debug.Log($"Enemy {enemy.name} died. Spawning new one...");
+
+        var spawnPoint = _enemyDict[enemy.Id];
+        _enemyDict.Remove(enemy.Id);
+        _spawnPointDict.Remove(spawnPoint.Id);
 
         TrySpawnNewEnemies();
     }
