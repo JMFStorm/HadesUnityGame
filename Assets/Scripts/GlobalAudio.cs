@@ -23,6 +23,9 @@ public enum AnnouncerVoiceGroup
 {
     IntroTile = 0,
     GameOver,
+    ArenaEventLevel1,
+    ArenaEventLevel2,
+    ArenaEventLevel3,
 }
 
 public class GlobalAudio : MonoBehaviour

@@ -34,6 +34,7 @@ public class ArenaEventSpawn : MonoBehaviour
         return clone;
     }
 
+    [HideInInspector]
     public string Id;
 
     private void Awake()

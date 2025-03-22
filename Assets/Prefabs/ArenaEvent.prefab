@@ -46,9 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9652f54ac04ef8345882e3a11b090aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnData:
-  - EnemyType: 0
-    SpawnCount: 2
+  SpawnData: []
   Id: 
 --- !u!212 &4046889499653872117
 SpriteRenderer:
@@ -348,3 +346,5 @@ MonoBehaviour:
   ShadowAero: {fileID: 3059346181665223056, guid: c6267ae3f697ef949a57c1a1a83cf56a, type: 3}
   TeleporterSprite: {fileID: 21300000, guid: e58d055af6c3fff4f852ea0ae4ba7d90, type: 3}
   TeleporterStartSound: {fileID: 8300000, guid: 8f0a127f0acd4b947ba275f7c142e5fd, type: 3}
+  UseHadesVoice: 0
+  AnnouncesVoiceGroup: 0

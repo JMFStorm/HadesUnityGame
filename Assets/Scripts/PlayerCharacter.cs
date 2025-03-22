@@ -290,7 +290,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             usedAnim = "PlayerCrouch";
         }
-        else if (!_isGrounded)
+        else if (!_isGrounded || (_isGrounded && !IsReadyToJumpAgain()))
         {
             usedAnim = "PlayerAir";
         }
@@ -537,7 +537,7 @@ public class PlayerCharacter : MonoBehaviour
         }
         else if (Input.GetButtonDown("Jump") && _isGrounded && !_isDashing && !_isCrouching)
         {
-            if (_rigidBody.linearVelocityY <= _newJumpVelocityThreshold && _newJumpTimeCooldown < _groundedTime)
+            if (IsReadyToJumpAgain())
             {
                 PlaySound(PlayerSounds.Jump);
                 _rigidBody.linearVelocity = new Vector2(_rigidBody.linearVelocity.x, JumpForce);
@@ -565,6 +565,11 @@ public class PlayerCharacter : MonoBehaviour
         {
             _gameState.LoadNextLevel();
         }
+    }
+
+    bool IsReadyToJumpAgain()
+    {
+        return _rigidBody.linearVelocityY <= _newJumpVelocityThreshold && _newJumpTimeCooldown < _groundedTime;
     }
 
     private IEnumerator PlayerAttack(bool rightSideAttack)

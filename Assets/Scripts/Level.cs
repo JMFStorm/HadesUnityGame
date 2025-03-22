@@ -29,6 +29,8 @@ public class Level : MonoBehaviour
     public static readonly float ParallaxBackgroundSizeMultiplier = 1.1f;
     public static readonly float ParallaxEffectFactor = 0.25f;
 
+    private List<ArenaEvent> _currentLevelArenaEvents = new();
+
     private Vector3 _levelBotLeft;
     private Vector3 _levelTopRight;
 
@@ -61,6 +63,34 @@ public class Level : MonoBehaviour
     {
         DebugUtil.DrawCircle(_levelBotLeft, 0.1f, new Color(0, 0, 1.0f));
         DebugUtil.DrawCircle(_levelTopRight, 0.1f, new Color(0, 0, 1.0f));
+    }
+
+    public void ClearArenaEvents()
+    {
+        foreach (var arenaEvent in _currentLevelArenaEvents)
+        {
+            arenaEvent.ResetArenaEvent();
+        }
+
+        _currentLevelArenaEvents.Clear();
+    }
+
+    public void MakeLevelArenaEvents()
+    {
+        ClearArenaEvents();
+
+        foreach (Transform child in transform.Find("Events").transform)
+        {
+            if (child.TryGetComponent<ArenaEvent>(out var arenaEvent))
+            {
+                _currentLevelArenaEvents.Add(arenaEvent);
+            }
+        }
+    }
+
+    public List<ArenaEvent> GetLevelArenaEvents()
+    {
+        return _currentLevelArenaEvents;
     }
 
     public (Vector3 botLeft, Vector3 topRight) GetLevelBoundaries()

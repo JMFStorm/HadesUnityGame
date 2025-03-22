@@ -133,6 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ea75002fc3105942b61ef90cb723ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 
   AudioClips:
   - {fileID: 8300000, guid: 0fce7e4723ab6ff43aa729ce14021fd5, type: 3}
   - {fileID: 8300000, guid: a17edfb68596fee4ba25dd6a15a04d30, type: 3}
@@ -289,7 +290,7 @@ CapsuleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 384
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

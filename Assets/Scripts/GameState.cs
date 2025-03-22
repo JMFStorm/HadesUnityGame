@@ -24,7 +24,6 @@ public class GameState : MonoBehaviour
 
     private GameStateType _gameState;
 
-    private List<ArenaEvent> _currentLevelArenaEvents = new();
     private Level _currentLevel;
     private PlayerCharacter _player;
     private MainCamera _mainCamera;
@@ -197,11 +196,10 @@ public class GameState : MonoBehaviour
 
         if (_currentLevel != null)
         {
+            _currentLevel.ClearArenaEvents();
             Destroy(_currentLevel.gameObject);
             _currentLevel = null;
         }
-
-        ClearArenaEvents();
 
         _currentLevel = Instantiate(GameLevels[index], Vector3.zero, Quaternion.identity);
 
@@ -221,7 +219,6 @@ public class GameState : MonoBehaviour
 
         _globalAudio.StopAmbience();
         _globalAudio.PlayAmbience(_currentLevel.LevelSoundscape);
-
         _globalAudio.PlayGlobalMusic(_currentLevel.LevelMusic, true, 0.2f);
 
         var lightIntensity = GetLightLevelValue(_currentLevel.LightLevel);
@@ -258,7 +255,7 @@ public class GameState : MonoBehaviour
             Debug.LogError("LevelEnter not found!");
         }
 
-        GetLevelArenaEvents();
+        _currentLevel.MakeLevelArenaEvents();
 
         _player.ResetPlayerInnerState();
         SetPlayerColor(_playerColor);
@@ -276,12 +273,6 @@ public class GameState : MonoBehaviour
     public void LoadNextLevel()
     {
         _currentLevelIndex = (_currentLevelIndex + 1) % GameLevels.Count;
-        LoadLevelIndex(_currentLevelIndex, false);
-    }
-
-    public void LoadAndSetLevelIndex(int levelIndex)
-    {
-        _currentLevelIndex = levelIndex;
         LoadLevelIndex(_currentLevelIndex, false);
     }
 
@@ -429,29 +420,6 @@ public class GameState : MonoBehaviour
         if (_menuUI != null)
         {
             _menuUI.SetPlayerColorOnUIImages(color);
-        }
-    }
-
-    void ClearArenaEvents()
-    {
-        foreach (var arenaEvent in _currentLevelArenaEvents)
-        {
-            arenaEvent.ResetArenaEvent();
-        }
-
-        _currentLevelArenaEvents.Clear();
-    }
-
-    void GetLevelArenaEvents()
-    {
-        var levelArenaEvents = GameObject.FindGameObjectsWithTag("ArenaEvent");
-
-        foreach (var obj in levelArenaEvents)
-        {
-            if (obj.TryGetComponent<ArenaEvent>(out var arenaEvent))
-            {
-                _currentLevelArenaEvents.Add(arenaEvent);
-            }
         }
     }
 }

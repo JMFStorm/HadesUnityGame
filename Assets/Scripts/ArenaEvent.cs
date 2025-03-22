@@ -26,8 +26,13 @@ public class ArenaEvent : MonoBehaviour
     public Sprite TeleporterSprite;
     public AudioClip TeleporterStartSound;
 
+    public bool UseHadesVoice = false;
+    public AnnouncerVoiceGroup AnnouncesVoiceGroup;
+
     private bool _arenaEventOngoing = false;
     private bool _arenaEnded = false;
+
+    private GlobalAudio _globalAudio;
 
     private List<ArenaEventSpawn> _arenaSpawns = new();
     private List<ArenaEventSpawn> _arenaSpawnsOriginal = new();
@@ -52,7 +57,9 @@ public class ArenaEvent : MonoBehaviour
     private void Awake()
     {
         _arenaSpawns = GetSpawnPoints();
-        _arenaSpawnsOriginal = _arenaSpawns.Select(spawn => ArenaEventSpawn.Clone(spawn)).ToList();
+        _arenaSpawnsOriginal = _arenaSpawns.Select(spawn => spawn).ToList();
+
+        _globalAudio = FindFirstObjectByType<GlobalAudio>();
     }
 
     public void TriggerArenaEvent()
@@ -62,6 +69,11 @@ public class ArenaEvent : MonoBehaviour
         foreach (var spawn in _arenaSpawns)
         {
             TrySpawnEnemy(spawn);
+        }
+
+        if (UseHadesVoice)
+        {
+            _globalAudio.PlayAnnouncerVoiceType(AnnouncesVoiceGroup);
         }
     }
 
