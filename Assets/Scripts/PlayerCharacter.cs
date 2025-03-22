@@ -284,7 +284,6 @@ public class PlayerCharacter : MonoBehaviour
         }
         else if (!_isGrounded)
         {
-            Debug.Log(_rigidBody.linearVelocityY);
             usedAnim = "PlayerAir";
         }
         else if (_isGrounded && 0.01f < Mathf.Abs(_rigidBody.linearVelocity.x))

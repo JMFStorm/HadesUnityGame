@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public enum AeroSounds
 {
@@ -11,7 +11,7 @@ public enum AeroSounds
     Wings,
 }
 
-public class AeroBehaviour : MonoBehaviour
+public class AeroBehaviour : EnemyBase
 {
     public AudioClip[] AudioClips;
 
@@ -331,6 +331,7 @@ public class AeroBehaviour : MonoBehaviour
         _spriteRenderer.enabled = false;
         _enemyDamageZone.gameObject.SetActive(false);
 
+        SignalDieEvent();
         Destroy(gameObject, 1.5f);
     }
 
