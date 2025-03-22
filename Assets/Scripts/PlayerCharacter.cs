@@ -111,10 +111,13 @@ public class PlayerCharacter : MonoBehaviour
     private float _dashDirX = 0f;
     private float _dashTimer = 0f;
     private float _dashRegenTimer = 0f;
+    private float _groundedTime = 0f;
 
     private int _damageZoneLayer;
 
     private readonly float _platformFallthroughRaycastDistance = 1.0f;
+    private readonly float _newJumpVelocityThreshold = 0.05f;
+    private readonly float _newJumpTimeCooldown = 0.05f;
 
     private readonly RigidbodyConstraints2D _defaultRigidbodyConstraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
     private readonly RigidbodyConstraints2D _dashingRigidbodyConstraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
@@ -297,7 +300,22 @@ public class PlayerCharacter : MonoBehaviour
 
     public void FixedUpdate()
     {
-        _isGrounded = Physics2D.OverlapBox(GroundCheck.position, _groundCheckSize, 0, GroundCollisionLayer);
+        if (_rigidBody.linearVelocityY <= _newJumpVelocityThreshold)
+        {
+            var isGrounded = Physics2D.OverlapBox(GroundCheck.position, _groundCheckSize, 0, GroundCollisionLayer);
+
+            if (isGrounded)
+            {
+                _groundedTime += Time.fixedDeltaTime;
+            }
+
+            _isGrounded = isGrounded;
+        }
+        else
+        {
+            _isGrounded = false;
+            _groundedTime = 0f;
+        }
     }
 
     private void OnDrawGizmosSelected()
@@ -515,8 +533,14 @@ public class PlayerCharacter : MonoBehaviour
         }
         else if (Input.GetButtonDown("Jump") && _isGrounded && !_isDashing && !_isCrouching)
         {
-            PlaySound(PlayerSounds.Jump);
-            _rigidBody.linearVelocity = new Vector2(_rigidBody.linearVelocity.x, JumpForce);
+            Debug.Log($"_newJumpTimeCooldown: {_newJumpTimeCooldown}, _groundedTime: {_groundedTime}");
+
+            if (_rigidBody.linearVelocityY <= _newJumpVelocityThreshold && _newJumpTimeCooldown < _groundedTime)
+            {
+                PlaySound(PlayerSounds.Jump);
+                _rigidBody.linearVelocity = new Vector2(_rigidBody.linearVelocity.x, JumpForce);
+                _groundedTime = 0.0f;
+            }
         }
         else if (Input.GetButtonDown("Dash") && !_isDashing)
         {
