@@ -86,6 +86,14 @@ Shader "Custom/Forcefield"
                 // Calculate the edge transparency effect based on the distance from the center
                 // Get max distance in x or y direction (use one of the axis to calculate distance)
                 float edgeDist = max(uvDist.x * (1.0 / _UVScaleX), uvDist.y * (1.0 / _UVScaleY)); 
+
+                float edgeThreshold = 0.49;
+
+                // Check if the current pixel is near the edge
+                if (edgeDist > edgeThreshold)
+                {
+                    return float4(0.02, 0.02, 0.02, 0.1);
+                }
                 
                 float alpha = 1.0 - smoothstep(0.25, 0.5, edgeDist);
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Audio;
 using static PlasticGui.LaunchDiffParameters;
 
 public enum EnemyType
@@ -75,6 +76,7 @@ public class ArenaEvent : MonoBehaviour
             foreach (var blocker in _eventPlayerBlockers)
             {
                 var collider = blocker.GetComponent<BoxCollider2D>();
+                var audioSource = blocker.GetComponent<AudioSource>();
 
                 var sr = blocker.transform.Find("Sprite").GetComponent<SpriteRenderer>();
                 sr.color = new Color(0.8f, 0f, 0f, 0.6f);
@@ -87,10 +89,9 @@ public class ArenaEvent : MonoBehaviour
                 material.SetFloat("_UVScaleY", collider.size.y);
                 material.SetFloat("_Distortion", 0.6f);
                 material.SetFloat("_Speed", 0.3f);
-                material.SetColor("_Color", new Color(0.0f, 0.0f, 0.0f, 1.0f));
 
                 blocker.SetActive(true);
-                StartCoroutine(FadeBlockerEffect(sr, 0f, 1.0f, 3f));
+                StartCoroutine(FadeBlockerEffect(blocker, 0f, 1.0f, 3f, true));
             }
         }
 
@@ -100,11 +101,19 @@ public class ArenaEvent : MonoBehaviour
         }
     }
 
-    IEnumerator FadeBlockerEffect(SpriteRenderer blockerRenderer, float startAlpha, float endAlpha, float duration)
+    IEnumerator FadeBlockerEffect(GameObject blocker, float startAlpha, float endAlpha, float duration, bool setActiveAtEnd)
     {
         float elapsedTime = 0f;
 
-        Color initialColor = new(0f, 0f, 0f, 0f);
+        Color initialColor = new(0.0f, 0f, 0.0f, 0f);
+        float initialVolume = startAlpha * 0.2f;
+        float targetVolume = endAlpha * 0.2f;
+
+        var audio = blocker.GetComponent<AudioSource>();
+        var blockerRenderer = blocker.transform.Find("Sprite").GetComponent<SpriteRenderer>();
+
+        var collider = blocker.GetComponent<BoxCollider2D>();
+        collider.enabled = setActiveAtEnd;
 
         while (elapsedTime < duration)
         {
@@ -113,12 +122,16 @@ public class ArenaEvent : MonoBehaviour
             var newColor = new Color(initialColor.r, initialColor.g, initialColor.b, alpha);
             elapsedTime += Time.deltaTime;
 
+            var newVolume = Mathf.Lerp(initialVolume, targetVolume, elapsedTime / duration);
+
+            audio.volume = newVolume;
             blockerRenderer.material.SetColor("_Color", newColor);
 
             yield return null;
         }
 
         blockerRenderer.color = new Color(initialColor.r, initialColor.g, initialColor.b, endAlpha);
+        blocker.SetActive(setActiveAtEnd);
     }
 
 
@@ -195,7 +208,7 @@ public class ArenaEvent : MonoBehaviour
     {
         foreach (var blocker in _eventPlayerBlockers)
         {
-            blocker.gameObject.SetActive(false);
+            StartCoroutine(FadeBlockerEffect(blocker, 1f, 0.0f, 3f, false));
         }
     }
 
@@ -269,6 +282,6 @@ public class ArenaEvent : MonoBehaviour
 
         _currentEnemies.Clear();
 
-        StopCoroutine(_enemyTeleportCoroutine);
+        StopAllCoroutines();
     }
 }
