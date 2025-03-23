@@ -53,7 +53,8 @@ public class PlayerCharacter : MonoBehaviour
     public AudioClip[] _audioClips;
     public Transform GroundCheck;
 
-    public LayerMask GroundCollisionLayer;
+    public LayerMask GroundLayer;
+    public LayerMask DamageEnvLayer;
     public LayerMask PlatformLayer;
 
     public Sprite AttackSprite;
@@ -99,7 +100,10 @@ public class PlayerCharacter : MonoBehaviour
 
     private bool _controlsAreActive = true;
     private bool _isAtDoorwayExit = false;
-    private bool _isGrounded = false;
+    private bool _hasGroundedFeet = false;
+    private bool _isPlatformGrounded = false;
+    private bool _isGroundGrounded = false;
+    private bool _isDamageEnvGrounded = false;
     private bool _isDashing = false;
     private bool _isCrouching = false;
     private bool _isAttacking = false;
@@ -113,6 +117,7 @@ public class PlayerCharacter : MonoBehaviour
     private float _dashTimer = 0f;
     private float _dashRegenTimer = 0f;
     private float _groundedTime = 0f;
+    private float _inAirTime = 0f;
 
     private int _damageZoneLayer;
 
@@ -257,7 +262,7 @@ public class PlayerCharacter : MonoBehaviour
             _physicsCollider.offset = _originalOffset;
         }
 
-        Color color = _isGrounded ? Color.green : Color.red;
+        Color color = _hasGroundedFeet ? Color.green : Color.red;
         DebugUtil.DrawRectangle(GroundCheck.position, _groundCheckSize, color);
 
         if (!_isAttacking && !_isDashing)
@@ -290,11 +295,12 @@ public class PlayerCharacter : MonoBehaviour
         {
             usedAnim = "PlayerCrouch";
         }
-        else if (!_isGrounded || (_isGrounded && !IsReadyToJumpAgain()))
+        else if (!IsReadyToJumpAgain() 
+            && !(_isPlatformGrounded && _rigidBody.linearVelocityY < 1.0f)) // NOTE: Case to ignore when clipping at platform edges
         {
             usedAnim = "PlayerAir";
         }
-        else if (_isGrounded && 0.01f < Mathf.Abs(_rigidBody.linearVelocity.x))
+        else if (_hasGroundedFeet && 0.01f < Mathf.Abs(_rigidBody.linearVelocity.x))
         {
             usedAnim = "PlayerMove";
         }
@@ -308,21 +314,27 @@ public class PlayerCharacter : MonoBehaviour
 
     public void FixedUpdate()
     {
-        _isGrounded = Physics2D.OverlapBox(GroundCheck.position, _groundCheckSize, 0, GroundCollisionLayer);
+        _isPlatformGrounded = Physics2D.OverlapBox(GroundCheck.position, _groundCheckSize, 0, PlatformLayer);
+        _isGroundGrounded = Physics2D.OverlapBox(GroundCheck.position, _groundCheckSize, 0, DamageEnvLayer);
+        _isDamageEnvGrounded = Physics2D.OverlapBox(GroundCheck.position, _groundCheckSize, 0, GroundLayer);
 
-        if (_isGrounded)
+        _hasGroundedFeet = _isPlatformGrounded || _isGroundGrounded || _isDamageEnvGrounded;
+
+        if (_hasGroundedFeet)
         {
+            _inAirTime = 0f;
             _groundedTime += Time.fixedDeltaTime;
         }
         else
         {
             _groundedTime = 0f;
+            _inAirTime += Time.fixedDeltaTime;
         }
     }
 
     private void OnDrawGizmosSelected()
     {
-        if (_isGrounded)
+        if (_hasGroundedFeet)
         {
             Gizmos.color = Color.green;
         }
@@ -456,7 +468,7 @@ public class PlayerCharacter : MonoBehaviour
     public void ResetPlayerInnerState()
     {
         _isAtDoorwayExit = false;
-        _isGrounded = false;
+        _hasGroundedFeet = false;
         _isDashing = false;
         _isCrouching = false;
         _isAttacking = false;
@@ -494,7 +506,7 @@ public class PlayerCharacter : MonoBehaviour
         float moveInput = Input.GetAxisRaw("Horizontal");
         var newMovement = new Vector2(moveInput * MoveSpeed, _rigidBody.linearVelocity.y);
 
-        if (Input.GetButton("Crouch") && _isGrounded && !_isDashing)
+        if (Input.GetButton("Crouch") && _hasGroundedFeet && !_isDashing)
         {
             var crouchInit = !_isCrouching;
 
@@ -519,7 +531,7 @@ public class PlayerCharacter : MonoBehaviour
         // --------------------
         // Get action buttons
 
-        if (_isCrouching && Input.GetButtonDown("Jump") && _isGrounded && !_isDashing && _isCrouching)
+        if (_isCrouching && Input.GetButtonDown("Jump") && _hasGroundedFeet && !_isDashing && _isCrouching)
         {
             RaycastHit2D hit = Physics2D.Raycast(
                 transform.position,
@@ -535,7 +547,7 @@ public class PlayerCharacter : MonoBehaviour
                 StartCoroutine(DisablePlatformCollisionForTime(_platformFallthrough, fallthroughCollisionDisableTime));
             }
         }
-        else if (Input.GetButtonDown("Jump") && _isGrounded && !_isDashing && !_isCrouching)
+        else if (Input.GetButtonDown("Jump") && _hasGroundedFeet && !_isDashing && !_isCrouching)
         {
             if (IsReadyToJumpAgain())
             {
@@ -561,7 +573,7 @@ public class PlayerCharacter : MonoBehaviour
             StartCoroutine(PlayerAttack(0f < _facingDirX));
         }
 
-        if (_isAtDoorwayExit && !_isCrouching && _isGrounded && Input.GetButtonDown("Up"))
+        if (_isAtDoorwayExit && !_isCrouching && _hasGroundedFeet && Input.GetButtonDown("Up"))
         {
             _gameState.LoadNextLevel();
         }
