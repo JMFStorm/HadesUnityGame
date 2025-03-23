@@ -71,7 +71,7 @@ public class PlayerCharacter : MonoBehaviour
     public float DashSpeed = 15f;
     public float DashingTime = 0.175f;
     public float DashRechargeTime = 1.5f;
-    public float AttackSpeed = 0.3f;
+    public float AttackSpeed = 0.5f;
     public float DamageInvulnerabilityTime = 3.0f;
 
     public bool DebugLogging = false;
@@ -107,11 +107,11 @@ public class PlayerCharacter : MonoBehaviour
     private bool _isDashing = false;
     private bool _isCrouching = false;
     private bool _isAttacking = false;
-    private bool _attackCharged = true;
     private bool _hasDamageInvulnerability = false;
     private bool _inDamageState = false;
     private bool _isDead = false;
 
+    public float _lastAttackTime = 0f;
     private float _facingDirX = 0f;
     private float _dashDirX = 0f;
     private float _dashTimer = 0f;
@@ -472,7 +472,6 @@ public class PlayerCharacter : MonoBehaviour
         _isDashing = false;
         _isCrouching = false;
         _isAttacking = false;
-        _attackCharged = true;
         _hasDamageInvulnerability = false;
         _isDead = false;
         _inDamageState = false;
@@ -568,9 +567,12 @@ public class PlayerCharacter : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonDown("Attack") && !_isCrouching && !_isAttacking && _attackCharged && !_isDashing)
+        if (Input.GetButton("Attack") && !_isCrouching && !_isDashing)
         {
-            StartCoroutine(PlayerAttack(0f < _facingDirX));
+            if (!_isAttacking && AttackSpeed < Mathf.Abs(_lastAttackTime - Time.time))
+            {
+                StartCoroutine(PlayerAttack(0f < _facingDirX));
+            }
         }
 
         if (_isAtDoorwayExit && !_isCrouching && _hasGroundedFeet && Input.GetButtonDown("Up"))
@@ -586,12 +588,12 @@ public class PlayerCharacter : MonoBehaviour
 
     private IEnumerator PlayerAttack(bool rightSideAttack)
     {
-        const float attackPreSwingTime = 0.05f;
+        const float attackPreSwingTime = 0.125f;
+
+        _isAttacking = true;
+        _lastAttackTime = Time.time;
 
         PlaySound(PlayerSounds.Attack);
-
-        _attackCharged = false;
-        _isAttacking = true;
 
         yield return new WaitForSeconds(attackPreSwingTime);
 
@@ -599,25 +601,19 @@ public class PlayerCharacter : MonoBehaviour
         var attackSwordXOffset = rightSideAttack ? swordAreaXOffset : -swordAreaXOffset;
         _swordBoxCollider.offset = new Vector2(attackSwordXOffset, _swordBoxCollider.offset.y);
 
-        const float attackVisibleTime = 0.125f;
-        float elapsedTime1 = 0f;
-
+        const float attackVisibleTime = 0.25f;
         _swordBoxCollider.gameObject.SetActive(true);
 
-        while (elapsedTime1 < attackVisibleTime)
-        {
-            elapsedTime1 += Time.deltaTime;
-            yield return null;
-        }
+        yield return new WaitForSeconds(attackVisibleTime);
 
         _swordBoxCollider.gameObject.SetActive(false);
-        _isAttacking = false;
 
-        var attackWaitTime = Mathf.Max(AttackSpeed - (attackPreSwingTime + attackVisibleTime), 0f);
+        const float attackAnimTime = 0.5f;
+        var attackWaitTime = Mathf.Max(attackAnimTime - (attackPreSwingTime + attackVisibleTime), 0f);
 
         yield return new WaitForSeconds(attackWaitTime);
 
-        _attackCharged = true;
+        _isAttacking = false;
     }
 
     private IEnumerator DisablePlatformCollisionForTime(Collider2D platformCollider, float time)

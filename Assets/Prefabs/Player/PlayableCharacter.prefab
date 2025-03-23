@@ -284,10 +284,11 @@ MonoBehaviour:
   DashSpeed: 16.5
   DashingTime: 0.175
   DashRechargeTime: 1.25
-  AttackSpeed: 0.4
+  AttackSpeed: 0.5
   DamageInvulnerabilityTime: 2.5
   DebugLogging: 0
   MaxDashes: 2
+  _lastAttackTime: 0
 --- !u!82 &118842731618917201
 AudioSource:
   m_ObjectHideFlags: 0
