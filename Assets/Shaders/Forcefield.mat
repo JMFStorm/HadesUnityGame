@@ -45,7 +45,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Distortion: 0.5
+    - _Distortion: 0.3
     - _EdgeFadeDistance: 0.1
     - _EdgeThickness: 0.1
     - _EnableExternalAlpha: 0
