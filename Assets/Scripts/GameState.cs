@@ -39,8 +39,6 @@ public class GameState : MonoBehaviour
     private Material _levelBGMaterial;
     private Vector2 _bgOffset = new();
 
-    private Coroutine _playCutsceneCoroutine = null;
-
     private float _bgUVMultiplier = new();
 
     private int _currentLevelIndex = 0;
@@ -133,7 +131,8 @@ public class GameState : MonoBehaviour
             }
             else if (gameState == GameStateType.Cutscene)
             {
-                StopCoroutine(_playCutsceneCoroutine);
+                Debug.Log("_playCutsceneCoroutine");
+                _menuUI.SkipCutscene();
             }
         }
     }
@@ -186,8 +185,7 @@ public class GameState : MonoBehaviour
         if (!skipCutscene)
         {
             SetGameState(GameStateType.Cutscene);
-            _playCutsceneCoroutine = StartCoroutine(_menuUI.PlayIntroCutscene());
-            yield return _playCutsceneCoroutine;
+            yield return StartCoroutine(_menuUI.PlayIntroCutscene());
         }
 
         SetGameState(GameStateType.MainGame);

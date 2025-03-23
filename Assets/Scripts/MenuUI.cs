@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class MenuUI : MonoBehaviour
 {
@@ -22,7 +23,10 @@ public class MenuUI : MonoBehaviour
     private Material _cutsceneMaterial;
     private Image _cutsceneImage;
 
+    private bool _cutsceneCancelled = false;
+
     private Coroutine _introCoroutine = null;
+    private Coroutine _cutsceneCoroutine = null;
 
     private void Awake()
     {
@@ -81,7 +85,23 @@ public class MenuUI : MonoBehaviour
 
     public IEnumerator PlayIntroCutscene()
     {
-        yield return StartCoroutine(PlayCutsceneFromData(IntroCutscene));
+        _cutsceneCancelled = false;
+        _cutsceneCoroutine = StartCoroutine(PlayCutsceneFromData(IntroCutscene));
+
+        yield return _cutsceneCoroutine;
+
+        _cutsceneCoroutine = null;
+    }
+
+    public void SkipCutscene()
+    {
+        if (_cutsceneCoroutine != null)
+        {
+            CutsceneCanvas.SetActive(false);
+
+            _cutsceneCoroutine = null;
+            _cutsceneCancelled = true;
+        }
     }
 
     IEnumerator PlayCutsceneFromData(List<CutsceneData> cutsceneData)
@@ -108,7 +128,27 @@ public class MenuUI : MonoBehaviour
                 _globalAudio.PlaySoundEffect(cutscene.SoundEffect, 0.8f);
             }
 
-            yield return new WaitForSeconds(cutscene.DisplayTime);
+            float elapsedTime = 0f;
+
+            var initialScale = cutscene.ScaleStart;
+            var targetScale = cutscene.ScaleEnd;
+
+            while (elapsedTime < cutscene.DisplayTime)
+            {
+                var newScale = Vector2.Lerp(initialScale, targetScale, elapsedTime / cutscene.DisplayTime);
+                _cutsceneImage.rectTransform.localScale = newScale;
+
+                Debug.Log("loop" + elapsedTime);
+
+                if (_cutsceneCancelled)
+                {
+                    yield break;
+                }
+
+                elapsedTime += Time.deltaTime;
+
+                yield return null;
+            }
         }
 
         CutsceneCanvas.SetActive(false);

@@ -467,18 +467,30 @@ PrefabInstance:
       objectReference: {fileID: 306407765}
     - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: IntroCutscene.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: IntroCutscene.Array.data[0].Image
       value: 
       objectReference: {fileID: 21300000, guid: a03d030b44973ae4a872f4416c734fb6, type: 3}
     - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: IntroCutscene.Array.data[1].Image
+      value: 
+      objectReference: {fileID: -6851398847786062569, guid: 0e816686001048f428b50a43be448c07, type: 3}
+    - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: IntroCutscene.Array.data[0].ScaleEnd.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: IntroCutscene.Array.data[0].ScaleEnd.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: IntroCutscene.Array.data[1].ScaleEnd.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: IntroCutscene.Array.data[1].ScaleEnd.y
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
@@ -492,14 +504,34 @@ PrefabInstance:
     - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: IntroCutscene.Array.data[0].SoundEffect
       value: 
-      objectReference: {fileID: 8300000, guid: d72087c1e0dafaf4ea9749b48d34e539, type: 3}
+      objectReference: {fileID: 8300000, guid: 008aa7b53cba6cb41a5d186e155af822, type: 3}
+    - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: IntroCutscene.Array.data[1].DisplayText
+      value: 666 Aaahh
+      objectReference: {fileID: 0}
+    - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: IntroCutscene.Array.data[1].DisplayTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: IntroCutscene.Array.data[1].SoundEffect
+      value: 
+      objectReference: {fileID: 8300000, guid: 35954d21028392140b09c96bd0cfac81, type: 3}
     - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: IntroCutscene.Array.data[0].ScaleStart.x
-      value: 0.95
+      value: 1.02
       objectReference: {fileID: 0}
     - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: IntroCutscene.Array.data[0].ScaleStart.y
-      value: 0.95
+      value: 1.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: IntroCutscene.Array.data[1].ScaleStart.x
+      value: 1.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: IntroCutscene.Array.data[1].ScaleStart.y
+      value: 1.03
       objectReference: {fileID: 0}
     - target: {fileID: 6418170319196612165, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_AnchorMax.y
