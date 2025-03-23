@@ -7,11 +7,11 @@ Shader "Custom/Forcefield"
         _Speed ("Animation Speed", Range(0, 5)) = 1
         _UVScaleX ("UV Scale X", Float) = 1.0
         _UVScaleY ("UV Scale Y", Float) = 1.0
-        _EdgeThickness ("Edge Transparency Thickness", Float) = 0.1 // 10% edge thickness
     }
     SubShader
     {
-        Tags { "RenderType"="Transparent" "Queue"="Transparent" }
+        // Tags { "RenderType"="Transparent" "Queue"="Transparent" }
+        Tags { "RenderType"="Overlay" "Queue"="Overlay" }
         Blend SrcAlpha OneMinusSrcAlpha // Semi-transparent blending
         Cull Off // Render both sides
 
@@ -107,9 +107,11 @@ Shader "Custom/Forcefield"
                 float n = noise(noiseUV); // Apply noise function
                 float glow = smoothstep(0.3, 0.7, n); // Glow effect based on noise intensity
 
+                float colorAlpha = glow * _Color.a;
+                float3 colorColor = _Color.rgb * glow;
+
                 // Final color including glow and alpha (including edge transparency)
-                // return float4(1, 1, 0, alpha);
-                return float4(_Color.rgb * glow, glow * alpha * _Color.a); // Transparent glow effect with alpha from _Color and edge transparency
+                return float4(colorColor, colorAlpha); // Transparent glow effect with alpha from _Color and edge transparency
             }
             ENDCG
         }

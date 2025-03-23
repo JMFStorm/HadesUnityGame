@@ -47,14 +47,14 @@ Material:
     m_Floats:
     - _Distortion: 0.3
     - _EdgeFadeDistance: 0.1
-    - _EdgeThickness: 0.1
+    - _EdgeThickness: 1
     - _EnableExternalAlpha: 0
     - _Speed: 0.53
-    - _UVScaleX: 2
+    - _UVScaleX: 1
     - _UVScaleY: 5
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 0, g: 0, b: 0, a: 0}
     - _MainColor: {r: 0, g: 0, b: 0, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

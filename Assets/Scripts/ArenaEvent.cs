@@ -208,7 +208,7 @@ public class ArenaEvent : MonoBehaviour
     {
         foreach (var blocker in _eventPlayerBlockers)
         {
-            StartCoroutine(FadeBlockerEffect(blocker, 1f, 0.0f, 3f, false));
+            StartCoroutine(FadeBlockerEffect(blocker, 1f, 0.1f, 3f, false));
         }
     }
 
