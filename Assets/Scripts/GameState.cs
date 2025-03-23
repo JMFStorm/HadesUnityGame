@@ -9,6 +9,7 @@ public enum GameStateType
     IntroScreen,
     MainMenu,
     MainGame,
+    Cutscene,
     PauseMenu,
     GameOverMenu
 }
@@ -37,6 +38,8 @@ public class GameState : MonoBehaviour
     private Sprite _currentLevelBg = null;
     private Material _levelBGMaterial;
     private Vector2 _bgOffset = new();
+
+    private Coroutine _playCutsceneCoroutine = null;
 
     private float _bgUVMultiplier = new();
 
@@ -88,11 +91,11 @@ public class GameState : MonoBehaviour
 
         if (Debug.isDebugBuild && SkipIntro)
         {
-            StartNewGame();
+            StartCoroutine(StartNewGame(true));
         }
         else
         {
-            InitGameIntro();
+            InitGameIntroTitle();
         }
     }
 
@@ -128,6 +131,10 @@ public class GameState : MonoBehaviour
             {
                 _menuUI.ActivatePauseMenu(false);
             }
+            else if (gameState == GameStateType.Cutscene)
+            {
+                StopCoroutine(_playCutsceneCoroutine);
+            }
         }
     }
 
@@ -141,7 +148,7 @@ public class GameState : MonoBehaviour
         return _gameState;
     }
 
-    void InitGameIntro()
+    void InitGameIntroTitle()
     {
         SetGameState(GameStateType.IntroScreen);
 
@@ -166,17 +173,32 @@ public class GameState : MonoBehaviour
         _menuUI.HideMainMenu(false);
     }
 
-    public void StartNewGame()
+    public void ClickStartNewGameFromColorPicker()
     {
-        SetGameState(GameStateType.MainGame);
-        _gameUI.HidePlayerStats(false);
+        StartCoroutine(StartNewGame(false));
+    }
+
+    IEnumerator StartNewGame(bool skipCutscene)
+    {
         _menuUI.HideMainMenu(true);
         _menuUI.HidePlayerColorPanel(true);
+
+        if (!skipCutscene)
+        {
+            SetGameState(GameStateType.Cutscene);
+            _playCutsceneCoroutine = StartCoroutine(_menuUI.PlayIntroCutscene());
+            yield return _playCutsceneCoroutine;
+        }
+
+        SetGameState(GameStateType.MainGame);
+        _gameUI.HidePlayerStats(false);
 
         _player = Instantiate(PlayerPrefab);
         _mainCamera.SetFollowTarget(_player.transform);
 
         LoadLevelIndex(0, false);
+
+        yield return null;
     }
 
     public void QuitGame()

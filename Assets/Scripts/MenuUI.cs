@@ -1,19 +1,26 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuUI : MonoBehaviour
 {
+    public List<CutsceneData> IntroCutscene = new();
+
     public GameObject IntroTitle;
     public GameObject MainMenuPanel;
     public GameObject PauseMenuPanel;
     public GameObject GameOverPanel;
     public GameObject PlayerColorPanel;
+    public GameObject CutsceneCanvas;
 
+    private GlobalAudio _globalAudio;
     private GameState _gameState;
     private TextMeshProUGUI _introText;
     private Material _deathScreenMaterial;
+    private Material _cutsceneMaterial;
+    private Image _cutsceneImage;
 
     private Coroutine _introCoroutine = null;
 
@@ -40,11 +47,26 @@ public class MenuUI : MonoBehaviour
 
         if (!gameOverPanel.TryGetComponent(out Image image))
         {
-            Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(MenuUI)} introTitle child");
+            Debug.LogError($"{nameof(Image)} not found on {nameof(MenuUI)} introTitle child");
         }
 
         _deathScreenMaterial = image.material;
 
+        if (!CutsceneCanvas.TryGetComponent(out _cutsceneImage))
+        {
+            Debug.LogError($"{nameof(Image)} not found on {nameof(MenuUI)} cutscenecanvas child");
+        }
+
+        _cutsceneMaterial = _cutsceneImage.material;
+
+        _globalAudio = FindFirstObjectByType<GlobalAudio>();
+
+        if (_globalAudio == null)
+        {
+            Debug.LogError($"{nameof(GlobalAudio)} not found on {nameof(GameState)}");
+        }
+
+        CutsceneCanvas.SetActive(false);
         IntroTitle.SetActive(false);
         PauseMenuPanel.SetActive(false);
         GameOverPanel.SetActive(false);
@@ -57,9 +79,45 @@ public class MenuUI : MonoBehaviour
         HideMainMenu(true);
     }
 
+    public IEnumerator PlayIntroCutscene()
+    {
+        yield return StartCoroutine(PlayCutsceneFromData(IntroCutscene));
+    }
+
+    IEnumerator PlayCutsceneFromData(List<CutsceneData> cutsceneData)
+    {
+        CutsceneCanvas.SetActive(true);
+
+        foreach (var cutscene in cutsceneData)
+        {
+            var imageRect = _cutsceneImage.GetComponent<RectTransform>();
+            var parentRect = _cutsceneImage.transform.parent.GetComponent<RectTransform>();
+
+            if (imageRect != null && parentRect != null)
+            {
+                imageRect.anchorMin = Vector2.zero; // Bottom-left
+                imageRect.anchorMax = Vector2.one;  // Top-right
+                imageRect.offsetMin = Vector2.zero; // No offset on left/bottom
+                imageRect.offsetMax = Vector2.zero; // No offset on right/top
+            }
+
+            _cutsceneImage.sprite = cutscene.Image;
+
+            if (cutscene.SoundEffect != null)
+            {
+                _globalAudio.PlaySoundEffect(cutscene.SoundEffect, 0.8f);
+            }
+
+            yield return new WaitForSeconds(cutscene.DisplayTime);
+        }
+
+        CutsceneCanvas.SetActive(false);
+    }
+
     public void SetPlayerColorOnUIImages(Color color)
     {
         _deathScreenMaterial.SetColor("_NewColor", color);
+        _cutsceneMaterial.SetColor("_NewColor", color);
     }
 
     public void GameOverScreen(bool active)
