@@ -39,6 +39,7 @@ public class GlobalAudio : MonoBehaviour
     private AudioSource _levelAmbienceAudioSource;
     private AudioSource _hadesAnnouncerAudioSource;
     private AudioSource _globalMusicAudioSource;
+    private AudioSource _globaSoundEffectAudioSource;
 
     private Coroutine _fadeMusicCoroutine;
 
@@ -52,6 +53,9 @@ public class GlobalAudio : MonoBehaviour
 
         _globalMusicAudioSource = gameObject.AddComponent<AudioSource>();
         _globalMusicAudioSource.spatialBlend = 0; // 2D global sound
+
+        _globaSoundEffectAudioSource = gameObject.AddComponent<AudioSource>();
+        _globaSoundEffectAudioSource.spatialBlend = 0; // 2D global sound
     }
 
     List<AudioClip> GetAnnouncerVoiceClips(AnnouncerVoiceGroup group)
@@ -71,6 +75,17 @@ public class GlobalAudio : MonoBehaviour
         AudioClip usedClip = clips[Random.Range(0, clips.Count)];
 
         PlayAnnouncerVoiceClip(usedClip);
+    }
+
+    public void PlaySoundEffect(AudioClip clip, float volume)
+    {
+        if (clip != null && (_globaSoundEffectAudioSource.clip != clip || !_globaSoundEffectAudioSource.isPlaying))
+        {
+            _globaSoundEffectAudioSource.loop = false;
+            _globaSoundEffectAudioSource.volume = volume;
+            _globaSoundEffectAudioSource.clip = clip;
+            _globaSoundEffectAudioSource.Play();
+        }
     }
 
     public void PlayAnnouncerVoiceClip(AudioClip clip)

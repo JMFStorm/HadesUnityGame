@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Audio;
-using static PlasticGui.LaunchDiffParameters;
 
 public enum EnemyType
 {
@@ -27,6 +26,7 @@ public class ArenaEvent : MonoBehaviour
 
     public Sprite TeleporterSprite;
     public AudioClip TeleporterStartSound;
+    public AudioClip BlockingeventEndClip;
 
     public bool BlockingEvent = false;
     public bool UseHadesVoice = false;
@@ -268,17 +268,17 @@ public class ArenaEvent : MonoBehaviour
     {
         Debug.Log("Arena event completed");
 
+        if (BlockingEvent && BlockingeventEndClip != null)
+        {
+            _globalAudio.PlaySoundEffect(BlockingeventEndClip, 0.15f);
+        }
+
         DeactivateBlockers();
     }
 
     public void ResetArenaEvent()
     {
         _arenaSpawns = _arenaSpawnsOriginal;
-
-        foreach (var enemy in _currentEnemies)
-        {
-            // Destroy(enemy.gameObject);
-        }
 
         _currentEnemies.Clear();
 
