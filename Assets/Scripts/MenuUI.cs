@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Video;
 
 public class MenuUI : MonoBehaviour
 {
@@ -15,10 +14,12 @@ public class MenuUI : MonoBehaviour
     public GameObject GameOverPanel;
     public GameObject PlayerColorPanel;
     public GameObject CutsceneCanvas;
+    public GameObject CutsceneText;
 
     private GlobalAudio _globalAudio;
     private GameState _gameState;
-    private TextMeshProUGUI _introText;
+    private TextMeshProUGUI _introTitleText;
+    private TextMeshProUGUI _cutsceneText;
     private Material _deathScreenMaterial;
     private Material _cutsceneMaterial;
     private Image _cutsceneImage;
@@ -37,7 +38,7 @@ public class MenuUI : MonoBehaviour
             Debug.LogError($"{nameof(GameState)} not found on {nameof(MenuUI)}");
         }
 
-        if (!IntroTitle.TryGetComponent(out _introText))
+        if (!IntroTitle.TryGetComponent(out _introTitleText))
         {
             Debug.LogError($"{nameof(TextMeshProUGUI)} not found on {nameof(MenuUI)} introTitle child");
         }
@@ -70,6 +71,12 @@ public class MenuUI : MonoBehaviour
             Debug.LogError($"{nameof(GlobalAudio)} not found on {nameof(GameState)}");
         }
 
+        if (!CutsceneText.TryGetComponent(out _cutsceneText))
+        {
+            Debug.LogError($"{nameof(TextMeshProUGUI)} not found on {nameof(MenuUI)} CutsceneText child");
+        }
+
+        CutsceneText.SetActive(false);
         CutsceneCanvas.SetActive(false);
         IntroTitle.SetActive(false);
         PauseMenuPanel.SetActive(false);
@@ -98,6 +105,7 @@ public class MenuUI : MonoBehaviour
         if (_cutsceneCoroutine != null)
         {
             CutsceneCanvas.SetActive(false);
+            CutsceneText.SetActive(false);
 
             _cutsceneCoroutine = null;
             _cutsceneCancelled = true;
@@ -107,6 +115,7 @@ public class MenuUI : MonoBehaviour
     IEnumerator PlayCutsceneFromData(List<CutsceneData> cutsceneData)
     {
         CutsceneCanvas.SetActive(true);
+        CutsceneText.SetActive(true);
 
         foreach (var cutscene in cutsceneData)
         {
@@ -121,6 +130,7 @@ public class MenuUI : MonoBehaviour
                 imageRect.offsetMax = Vector2.zero; // No offset on right/top
             }
 
+            _cutsceneText.text = cutscene.DisplayText;
             _cutsceneImage.sprite = cutscene.Image;
 
             if (cutscene.SoundEffect != null)
@@ -128,17 +138,34 @@ public class MenuUI : MonoBehaviour
                 _globalAudio.PlaySoundEffect(cutscene.SoundEffect, 0.8f);
             }
 
+            float usedFadeTime = Mathf.Min(cutscene.DisplayTime / 2f, 3f);
+
             float elapsedTime = 0f;
 
-            var initialScale = cutscene.ScaleStart;
-            var targetScale = cutscene.ScaleEnd;
+            var initialScale = new Vector2(1, 1) * cutscene.ZoomStart;
+            var targetScale = new Vector2(1, 1) * cutscene.ZoomEnd;
+
+            var colorVisible = new Color(1f, 1f, 1f, 1f);
+            var colorInvisible = new Color(0f, 0f, 0f, 0f);
 
             while (elapsedTime < cutscene.DisplayTime)
             {
                 var newScale = Vector2.Lerp(initialScale, targetScale, elapsedTime / cutscene.DisplayTime);
                 _cutsceneImage.rectTransform.localScale = newScale;
 
-                Debug.Log("loop" + elapsedTime);
+                if (elapsedTime < usedFadeTime)
+                {
+                    var newColor = Color.Lerp(colorInvisible, colorVisible, elapsedTime / usedFadeTime);
+                    _cutsceneImage.color = newColor;
+                    _cutsceneText.color = newColor;
+                }
+                else if ((cutscene.DisplayTime - usedFadeTime) < elapsedTime)
+                {
+                    float fadeOutTime = cutscene.DisplayTime - elapsedTime;
+                    var newColor = Color.Lerp(colorInvisible, colorVisible, fadeOutTime / usedFadeTime);
+                    _cutsceneImage.color = newColor;
+                    _cutsceneText.color = newColor;
+                }
 
                 if (_cutsceneCancelled)
                 {
@@ -151,6 +178,7 @@ public class MenuUI : MonoBehaviour
             }
         }
 
+        CutsceneText.SetActive(false);
         CutsceneCanvas.SetActive(false);
     }
 
@@ -231,22 +259,22 @@ public class MenuUI : MonoBehaviour
             float progress = elapsedTime / fadeInDuration;
 
             // Fade in the text
-            _introText.color = Color.Lerp(initialColor, targetColor, progress);
+            _introTitleText.color = Color.Lerp(initialColor, targetColor, progress);
 
             // Grow the text size
-            _introText.transform.localScale = Vector3.Lerp(initialScale, targetScale, progress);
+            _introTitleText.transform.localScale = Vector3.Lerp(initialScale, targetScale, progress);
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        _introText.color = targetColor;
-        _introText.transform.localScale = targetScale;
+        _introTitleText.color = targetColor;
+        _introTitleText.transform.localScale = targetScale;
 
         const float fadeOutDuration = 3f;
 
-        initialColor = _introText.color;
-        initialScale = _introText.transform.localScale;
+        initialColor = _introTitleText.color;
+        initialScale = _introTitleText.transform.localScale;
         targetColor = new(0.4f, 0.4f, 0.4f, 0.0f);
         targetScale = new(1.04f, 1.04f, 1f);
 
@@ -257,10 +285,10 @@ public class MenuUI : MonoBehaviour
             float progress = elapsedTime / fadeOutDuration;
 
             // Fade in the text
-            _introText.color = Color.Lerp(initialColor, targetColor, progress);
+            _introTitleText.color = Color.Lerp(initialColor, targetColor, progress);
 
             // Grow the text size
-            _introText.transform.localScale = Vector3.Lerp(initialScale, targetScale, progress);
+            _introTitleText.transform.localScale = Vector3.Lerp(initialScale, targetScale, progress);
 
             elapsedTime += Time.deltaTime;
             yield return null;

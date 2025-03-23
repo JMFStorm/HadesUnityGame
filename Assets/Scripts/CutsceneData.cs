@@ -8,6 +8,6 @@ public class CutsceneData
     public AudioClip SoundEffect;
     public float DisplayTime = 5f;
     public string DisplayText = "";
-    public Vector2 ScaleStart = new(1f, 1f);
-    public Vector2 ScaleEnd = new(1f, 1f);
+    public float ZoomStart = 1f;
+    public float ZoomEnd = 1f;
 }
