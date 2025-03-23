@@ -597,14 +597,27 @@ public class PlayerCharacter : MonoBehaviour
 
         yield return new WaitForSeconds(attackPreSwingTime);
 
-        const float swordAreaXOffset = 0.9f;
+        if (_isDashing)
+        {
+            _isAttacking = false;
+            _swordBoxCollider.gameObject.SetActive(false);
+        }
+
+        float swordAreaXOffset = Mathf.Abs(_swordBoxCollider.offset.x);
         var attackSwordXOffset = rightSideAttack ? swordAreaXOffset : -swordAreaXOffset;
         _swordBoxCollider.offset = new Vector2(attackSwordXOffset, _swordBoxCollider.offset.y);
 
-        const float attackVisibleTime = 0.25f;
+        const float attackVisibleTime = 0.2f;
         _swordBoxCollider.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(attackVisibleTime);
+
+        if (_isDashing)
+        {
+            _isAttacking = false;
+            _swordBoxCollider.gameObject.SetActive(false);
+            yield break;
+        }
 
         _swordBoxCollider.gameObject.SetActive(false);
 
