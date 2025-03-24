@@ -575,7 +575,7 @@ public class PlayerCharacter : MonoBehaviour
 
         if (Input.GetButton("Attack") && !_isCrouching && !_isDashing)
         {
-            if (!_isAttacking && AttackSpeed < Mathf.Abs(_lastAttackTime - Time.time))
+            if (!_isAttacking)
             {
                 StartCoroutine(PlayerAttack(0f < _facingDirX));
             }
@@ -594,44 +594,51 @@ public class PlayerCharacter : MonoBehaviour
 
     private IEnumerator PlayerAttack(bool rightSideAttack)
     {
-        const float attackPreSwingTime = 0.125f;
-
         _isAttacking = true;
-        _lastAttackTime = Time.time;
 
-        yield return new WaitForSeconds(attackPreSwingTime);
-
-        if (_isDashing)
+        while (Input.GetButton("Attack") && _isAttacking)
         {
-            _isAttacking = false;
+            _animator.Play("PlayerAttack", -1, 0f);
+
+            const float attackPreSwingTime = 0.125f;
+
+            _lastAttackTime = Time.time;
+
+            yield return new WaitForSeconds(attackPreSwingTime);
+
+            if (_isDashing)
+            {
+                _isAttacking = false;
+                _swordBoxCollider.gameObject.SetActive(false);
+                yield break;
+            }
+
+            _swordBoxCollider.gameObject.SetActive(true);
+
+            float swordAreaXOffset = Mathf.Abs(_swordBoxCollider.offset.x);
+            var attackSwordXOffset = rightSideAttack ? swordAreaXOffset : -swordAreaXOffset;
+            _swordBoxCollider.offset = new Vector2(attackSwordXOffset, _swordBoxCollider.offset.y);
+
+            const float attackVisibleTime = 0.35f;
+
+            PlaySound(PlayerSounds.Attack);
+
+            yield return new WaitForSeconds(attackVisibleTime);
+
+            if (_isDashing)
+            {
+                _isAttacking = false;
+                _swordBoxCollider.gameObject.SetActive(false);
+                yield break;
+            }
+
             _swordBoxCollider.gameObject.SetActive(false);
-            yield break;
+
+            // yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
+
+            // Debug.Log("_animator.GetCurrentAnimatorStateInfo(0).length " + _animator.GetCurrentAnimatorStateInfo(0).length);
+
         }
-
-        float swordAreaXOffset = Mathf.Abs(_swordBoxCollider.offset.x);
-        var attackSwordXOffset = rightSideAttack ? swordAreaXOffset : -swordAreaXOffset;
-        _swordBoxCollider.offset = new Vector2(attackSwordXOffset, _swordBoxCollider.offset.y);
-
-        const float attackVisibleTime = 0.2f;
-        _swordBoxCollider.gameObject.SetActive(true);
-
-        PlaySound(PlayerSounds.Attack);
-
-        yield return new WaitForSeconds(attackVisibleTime);
-
-        if (_isDashing)
-        {
-            _isAttacking = false;
-            _swordBoxCollider.gameObject.SetActive(false);
-            yield break;
-        }
-
-        _swordBoxCollider.gameObject.SetActive(false);
-
-        const float attackAnimTime = 0.5f;
-        var attackWaitTime = Mathf.Max(attackAnimTime - (attackPreSwingTime + attackVisibleTime), 0f);
-
-        yield return new WaitForSeconds(attackWaitTime);
 
         _isAttacking = false;
     }
