@@ -29,7 +29,6 @@ public class GameState : MonoBehaviour
     private PlayerCharacter _player;
     private MainCamera _mainCamera;
     private Vector3 _prevCameraPosition;
-    private GameUI _gameUI;
     private GlobalAudio _globalAudio;
     private MenuUI _menuUI;
     private Color _playerColor = PlayerColors.BloodstoneRedColor;
@@ -61,13 +60,6 @@ public class GameState : MonoBehaviour
         if (!bgRenderer.TryGetComponent(out _backgroundRenderer))
         {
             Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(GameState)}");
-        }
-
-        _gameUI = FindFirstObjectByType<GameUI>();
-
-        if (_gameUI == null)
-        {
-            Debug.LogError($"{nameof(GameUI)} not found on {nameof(GameState)}");
         }
 
         _globalAudio = FindFirstObjectByType<GlobalAudio>();
@@ -152,7 +144,7 @@ public class GameState : MonoBehaviour
         SetGameState(GameStateType.IntroScreen);
 
         _menuUI.HideMainMenu(true);
-        _gameUI.HidePlayerStats(true);
+        _menuUI.HidePlayerStats(true);
 
         _globalAudio.PlayAnnouncerVoiceType(AnnouncerVoiceGroup.IntroTile);
         _menuUI.PlayIntroAndThenMainMenu();
@@ -189,7 +181,7 @@ public class GameState : MonoBehaviour
         }
 
         SetGameState(GameStateType.MainGame);
-        _gameUI.HidePlayerStats(false);
+        _menuUI.HidePlayerStats(false);
 
         _player = Instantiate(PlayerPrefab);
         _mainCamera.SetFollowTarget(_player.transform);
@@ -253,8 +245,8 @@ public class GameState : MonoBehaviour
         var vignetteValue = GetVignetteIntensity(_currentLevel.LightLevel);
         _mainCamera.SetVignetteIntensity(vignetteValue);
 
-        _gameUI.HidePlayerStats(false);
-        _gameUI.FadeIn(2.0f);
+        _menuUI.HidePlayerStats(false);
+        _menuUI.FadeIn(2.0f);
 
         if (!isRetry && _currentLevel.AnnouncerIntro != null)
         {
@@ -299,9 +291,9 @@ public class GameState : MonoBehaviour
     public void GameOverScreen()
     {
         _currentLevel.gameObject.SetActive(false);
-        _gameUI.HideFadeEffectRect(false);
-        _gameUI.HidePlayerStats(true);
-        _gameUI.HideFadeEffectRect(true);
+        _menuUI.HideFadeEffectRect(false);
+        _menuUI.HidePlayerStats(true);
+        _menuUI.HideFadeEffectRect(true);
         _menuUI.GameOverScreen(true);
         _globalAudio.PlayAnnouncerVoiceType(AnnouncerVoiceGroup.GameOver);
     }
