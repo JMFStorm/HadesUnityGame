@@ -7,11 +7,18 @@ public abstract class EnemyBase : MonoBehaviour
 
     public string Id;
 
+    protected bool IsShadowVariant = false;
+
     protected virtual void Awake()
     {
         if (string.IsNullOrEmpty(Id))
         {
             Id = Guid.NewGuid().ToString();
+        }
+
+        if (TryGetComponent<ShadowEnemyEffects>(out var _))
+        {
+            IsShadowVariant = true;
         }
     }
 

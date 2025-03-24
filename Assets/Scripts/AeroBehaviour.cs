@@ -313,7 +313,10 @@ public class AeroBehaviour : EnemyBase
             return;
         }
 
-        _attackInterrupted = true;
+        if (!IsShadowVariant)
+        {
+            _attackInterrupted = true;
+        }
 
         ResetShotLoadTime(66.6f);
         ApplyDamageKnockback(damageDir);

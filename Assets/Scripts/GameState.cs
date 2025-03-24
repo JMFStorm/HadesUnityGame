@@ -121,7 +121,7 @@ public class GameState : MonoBehaviour
             cursorVisible = false;
         }
 
-        UnityEngine.Cursor.visible = cursorVisible;
+        Cursor.visible = cursorVisible;
 
         if (Input.GetButtonDown("Escape"))
         {
@@ -363,6 +363,8 @@ public class GameState : MonoBehaviour
         _gameUI.HideFadeEffectRect(true);
         _gameUI.GameOverScreen(true);
         _globalAudio.PlayAnnouncerVoiceType(AnnouncerVoiceGroup.GameOver);
+
+        SetGameState(GameStateType.GameOverMenu);
     }
 
     void ClearBackgroundImage()

@@ -89,7 +89,7 @@ public class PlayerCharacter : MonoBehaviour
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
     private CapsuleCollider2D _physicsCollider;
-    private BoxCollider2D _swordBoxCollider;
+    private CapsuleCollider2D _swordBoxCollider;
     private Collider2D _platformFallthrough;
     private Material _material;
     private TextMeshPro _floatingText;
@@ -189,7 +189,7 @@ public class PlayerCharacter : MonoBehaviour
 
         if (!swordArea.TryGetComponent(out _swordBoxCollider))
         {
-            Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(PlayerCharacter)} SwordArea child");
+            Debug.LogError($"{nameof(CapsuleCollider2D)} not found on {nameof(PlayerCharacter)} SwordArea child");
         }
 
         _damageZoneLayer = LayerMask.NameToLayer("DamageZone");
@@ -599,8 +599,6 @@ public class PlayerCharacter : MonoBehaviour
         _isAttacking = true;
         _lastAttackTime = Time.time;
 
-        PlaySound(PlayerSounds.Attack);
-
         yield return new WaitForSeconds(attackPreSwingTime);
 
         if (_isDashing)
@@ -616,6 +614,8 @@ public class PlayerCharacter : MonoBehaviour
 
         const float attackVisibleTime = 0.2f;
         _swordBoxCollider.gameObject.SetActive(true);
+
+        PlaySound(PlayerSounds.Attack);
 
         yield return new WaitForSeconds(attackVisibleTime);
 
