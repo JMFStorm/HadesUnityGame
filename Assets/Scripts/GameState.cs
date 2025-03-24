@@ -43,6 +43,10 @@ public class GameState : MonoBehaviour
     private int _currentLevelIndex = 0;
     private readonly float _cameraZOffset = -1.0f;
 
+    private int _savedLevelIndex = -1;
+    private string _savedLevelName = string.Empty;
+    private bool _canContinueGame = false;
+
     private void Awake()
     {
         if (!transform.Find("UICanvas").TryGetComponent(out _gameUI))
@@ -71,6 +75,8 @@ public class GameState : MonoBehaviour
 
         _backgroundRenderer.sortingLayerName = "Background";
         _levelBGMaterial = _backgroundRenderer.material;
+
+        LoadPersistentStorage();
     }
 
     private void Start()
@@ -152,6 +158,16 @@ public class GameState : MonoBehaviour
         _globalAudio.PlayGlobalMusic(GlobalMusic.TensionBooster1, false, 0.7f);
     }
 
+    public void ClickContinueGameMenuOption()
+    {
+        _gameUI.HideMainMenu(true);
+
+        SetGameState(GameStateType.MainGame);
+        InstantiateGlobalGamePrefabs();
+
+        LoadLevelIndex(_savedLevelIndex, false);
+    }
+
     public void ClickStartNewGame()
     {
         _gameUI.HidePlayerColorPanel(false);
@@ -181,14 +197,18 @@ public class GameState : MonoBehaviour
         }
 
         SetGameState(GameStateType.MainGame);
-        _gameUI.HidePlayerStats(false);
-
-        _player = Instantiate(PlayerPrefab);
-        _mainCamera.SetFollowTarget(_player.transform);
+        InstantiateGlobalGamePrefabs();
 
         LoadLevelIndex(0, false);
 
         yield return null;
+    }
+
+    void InstantiateGlobalGamePrefabs()
+    {
+        _gameUI.HidePlayerStats(false);
+        _player = Instantiate(PlayerPrefab);
+        _mainCamera.SetFollowTarget(_player.transform);
     }
 
     public void QuitGame()
@@ -273,6 +293,10 @@ public class GameState : MonoBehaviour
         SetPlayerColor(_playerColor);
 
         Time.timeScale = 1f;
+
+        PlayerPrefs.SetInt("LevelIndex", index);
+        PlayerPrefs.SetString("LevelName", _currentLevel.name);
+        PlayerPrefs.Save();
     }
 
     public void RestartLevel()
@@ -432,6 +456,33 @@ public class GameState : MonoBehaviour
         if (_gameUI != null)
         {
             _gameUI.SetPlayerColorOnUIImages(color);
+        }
+    }
+
+    void LoadPersistentStorage()
+    {
+        var savedLevelIndex = PlayerPrefs.GetInt("LevelIndex", -1);
+        var savedLevelName = PlayerPrefs.GetString("LevelName", string.Empty);
+
+        Debug.Log($"LevelIndex: {savedLevelIndex}, LevelName: {savedLevelName}");
+
+        if (0 <= savedLevelIndex && savedLevelIndex < GameLevels.Count && savedLevelName.Contains(GameLevels[savedLevelIndex].name))
+        {
+            Debug.Log($"Continue level is valid.");
+
+            _savedLevelIndex = savedLevelIndex;
+            _savedLevelName = savedLevelName;
+
+            _gameUI.EnableContinueMenuOption(true);
+        }
+        else
+        {
+            Debug.Log($"Continue level is NOT VALID.");
+
+            PlayerPrefs.DeleteKey("LevelIndex");
+            PlayerPrefs.DeleteKey("LevelName");
+
+            _gameUI.EnableContinueMenuOption(false);
         }
     }
 }

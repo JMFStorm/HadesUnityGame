@@ -16,6 +16,8 @@ public class GameUI : MonoBehaviour
     public GameObject CutsceneCanvas;
     public GameObject CutsceneText;
 
+    public GameObject ContinueMenuButton;
+
     private GlobalAudio _globalAudio;
     private GameState _gameState;
     private TextMeshProUGUI _introTitleText;
@@ -446,5 +448,10 @@ public class GameUI : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public void EnableContinueMenuOption(bool enable)
+    {
+        ContinueMenuButton.SetActive(enable);
     }
 }
