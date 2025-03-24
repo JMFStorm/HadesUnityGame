@@ -49,7 +49,7 @@ public class MovingPlatforms : MonoBehaviour
         {
             Vector2 collisionNormal = collision.contacts[0].normal;
 
-            if (collisionNormal.y < 0f)
+            if (collisionNormal.y < 0f && Mathf.Abs(collisionNormal.x) < Mathf.Abs(collisionNormal.y))
             {
                 collision.transform.SetParent(transform);
                 moveInitiated = true;
