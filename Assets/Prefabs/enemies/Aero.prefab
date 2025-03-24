@@ -140,14 +140,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 109ed0628f3107f4d85bed16f8048dc8, type: 3}
   - {fileID: 8300000, guid: 9449cc0118ad27948aaa526ee47cdcc3, type: 3}
   - {fileID: 8300000, guid: 219d09415e51ee84d99bd32199dfe1db, type: 3}
-  chaseRadius: 6.5
-  attackRadius: 5
+  chaseRadius: 7
+  attackRadius: 6
   GiveUpRadius: 12
   speed: 3
   attackOffset: 2
   KeepXDistanceFromTarget: 2
   KeepYDistanceFromTarget: 1
-  DamageInvulnerabilityTime: 0.25
+  DamageInvulnerabilityTime: 0.4
   ProjectileLoadTime: 0.75
   shootingCooldown: 3
   waveAmplitude: 1

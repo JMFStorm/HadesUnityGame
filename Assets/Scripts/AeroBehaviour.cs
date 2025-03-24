@@ -422,6 +422,7 @@ public class AeroBehaviour : EnemyBase
             Debug.Log("Attack interrupted from death!");
 
             _isAttacking = false;
+            _animatior.SetBool("_IsAttacking", false);
             yield break;
         }
 
@@ -430,12 +431,13 @@ public class AeroBehaviour : EnemyBase
             Debug.Log("Attack interrupted from damage!");
 
             _isAttacking = false;
+            _animatior.SetBool("_IsAttacking", false);
             StartWingsFlap();
             yield break;
         }
 
         GameObject projectile = Instantiate(projectilePrefab, _projectileStart.transform.position, Quaternion.identity);
-        Vector2 direction = (_attackTarget.position - transform.position).normalized;
+        Vector2 direction = (_attackTarget.position - _projectileStart.position).normalized;
 
         if (!projectile.TryGetComponent<Projectile>(out var projectileScript))
         {
