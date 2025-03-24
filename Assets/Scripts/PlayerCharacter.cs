@@ -87,7 +87,7 @@ public class PlayerCharacter : MonoBehaviour
     private Collider2D _platformFallthrough;
     private Material _material;
     private TextMeshPro _floatingText;
-    private MenuUI _menuUI;
+    private GameUI _gameUI;
     private GameState _gameState;
     private GlobalAudio _globalAudio;
 
@@ -188,11 +188,11 @@ public class PlayerCharacter : MonoBehaviour
 
         _damageZoneLayer = LayerMask.NameToLayer("DamageZone");
 
-        _menuUI = FindFirstObjectByType<MenuUI>();
+        _gameUI = FindFirstObjectByType<GameUI>();
 
-        if (_menuUI == null)
+        if (_gameUI == null)
         {
-            Debug.LogError($"{nameof(MenuUI)} not found on {nameof(PlayerCharacter)}");
+            Debug.LogError($"{nameof(GameUI)} not found on {nameof(PlayerCharacter)}");
         }
 
         _globalAudio = FindFirstObjectByType<GlobalAudio>();
@@ -221,7 +221,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         ResetPlayerInnerState();
 
-        SetPlayerHealth(_menuUI.DefaultPlayerHealth);
+        SetPlayerHealth(_gameUI.DefaultPlayerHealth);
     }
 
     void Update()
@@ -383,7 +383,7 @@ public class PlayerCharacter : MonoBehaviour
 
         _currentHealth -= 1;
 
-        _menuUI.SetHealth(_currentHealth);
+        _gameUI.SetHealth(_currentHealth);
 
         Debug.Log($"Player took damage, health remaining: {_currentHealth}");
 
@@ -416,8 +416,8 @@ public class PlayerCharacter : MonoBehaviour
 
         yield return new WaitForSeconds(2.0f);
 
-        _menuUI.HidePlayerStats(true);
-        _menuUI.FadeOut(1.5f);
+        _gameUI.HidePlayerStats(true);
+        _gameUI.FadeOut(1.5f);
 
         yield return new WaitForSeconds(2.5f);
 
@@ -484,10 +484,10 @@ public class PlayerCharacter : MonoBehaviour
         _dashRegenTimer = 0f;
 
         _currentHealth = 3;
-        _menuUI.SetHealth(_currentHealth);
+        _gameUI.SetHealth(_currentHealth);
 
         _currentDashes = MaxDashes;
-        _menuUI.SetStamina(_currentDashes);
+        _gameUI.SetStamina(_currentDashes);
 
         HideText();
     }
@@ -650,15 +650,15 @@ public class PlayerCharacter : MonoBehaviour
             StartCoroutine(PlayerDieAndLevelRestart());
         }
 
-        if (_menuUI.MaxPlayerHealth < health)
+        if (_gameUI.MaxPlayerHealth < health)
         {
-            Debug.LogWarning($"SetPlayerHealth() called with {health}, but {_menuUI.MaxPlayerHealth} is max player health.");
+            Debug.LogWarning($"SetPlayerHealth() called with {health}, but {_gameUI.MaxPlayerHealth} is max player health.");
 
-            health = _menuUI.MaxPlayerHealth;
+            health = _gameUI.MaxPlayerHealth;
         }
 
         _currentHealth = health;
-        _menuUI.SetHealth(_currentHealth);
+        _gameUI.SetHealth(_currentHealth);
     }
 
     void ControlsEnabled(bool isEnabled)
@@ -676,7 +676,7 @@ public class PlayerCharacter : MonoBehaviour
         _dashTimer = 0f;
         _dashDirX = _facingDirX;
         _currentDashes--;
-        _menuUI.SetStamina(_currentDashes);
+        _gameUI.SetStamina(_currentDashes);
     }
 
     void Dash()
@@ -703,7 +703,7 @@ public class PlayerCharacter : MonoBehaviour
             {
                 _currentDashes++;
                 _dashRegenTimer = 0f;
-                _menuUI.SetStamina(_currentDashes);
+                _gameUI.SetStamina(_currentDashes);
             }
         }
         else

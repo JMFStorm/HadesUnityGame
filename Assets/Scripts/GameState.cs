@@ -30,7 +30,7 @@ public class GameState : MonoBehaviour
     private MainCamera _mainCamera;
     private Vector3 _prevCameraPosition;
     private GlobalAudio _globalAudio;
-    private MenuUI _menuUI;
+    private GameUI _gameUI;
     private Color _playerColor = PlayerColors.BloodstoneRedColor;
 
     private SpriteRenderer _backgroundRenderer;
@@ -45,9 +45,9 @@ public class GameState : MonoBehaviour
 
     private void Awake()
     {
-        if (!transform.Find("MenuCanvas").TryGetComponent(out _menuUI))
+        if (!transform.Find("UICanvas").TryGetComponent(out _gameUI))
         {
-            Debug.LogError($"Did not find {nameof(MenuUI)} in child of MenuCanvas in {nameof(GameState)}.");
+            Debug.LogError($"Did not find {nameof(GameUI)} in child of UICanvas in {nameof(GameState)}.");
         }
 
         var bgRenderer = transform.Find("BackgroundRenderer");
@@ -111,20 +111,20 @@ public class GameState : MonoBehaviour
 
             if (gameState == GameStateType.IntroScreen)
             {
-                _menuUI.SkipIntroSequence();
+                _gameUI.SkipIntroSequence();
             }
             else if (gameState == GameStateType.MainGame)
             {
-                _menuUI.ActivatePauseMenu(true);
+                _gameUI.ActivatePauseMenu(true);
             }
             else if (gameState == GameStateType.PauseMenu)
             {
-                _menuUI.ActivatePauseMenu(false);
+                _gameUI.ActivatePauseMenu(false);
             }
             else if (gameState == GameStateType.Cutscene)
             {
                 Debug.Log("_playCutsceneCoroutine");
-                _menuUI.SkipCutscene();
+                _gameUI.SkipCutscene();
             }
         }
     }
@@ -143,25 +143,25 @@ public class GameState : MonoBehaviour
     {
         SetGameState(GameStateType.IntroScreen);
 
-        _menuUI.HideMainMenu(true);
-        _menuUI.HidePlayerStats(true);
+        _gameUI.HideMainMenu(true);
+        _gameUI.HidePlayerStats(true);
 
         _globalAudio.PlayAnnouncerVoiceType(AnnouncerVoiceGroup.IntroTile);
-        _menuUI.PlayIntroAndThenMainMenu();
+        _gameUI.PlayIntroAndThenMainMenu();
 
         _globalAudio.PlayGlobalMusic(GlobalMusic.TensionBooster1, false, 0.7f);
     }
 
     public void ClickStartNewGame()
     {
-        _menuUI.HidePlayerColorPanel(false);
-        _menuUI.HideMainMenu(true);
+        _gameUI.HidePlayerColorPanel(false);
+        _gameUI.HideMainMenu(true);
     }
 
     public void ClickPlayerColorPageBetBack()
     {
-        _menuUI.HidePlayerColorPanel(true);
-        _menuUI.HideMainMenu(false);
+        _gameUI.HidePlayerColorPanel(true);
+        _gameUI.HideMainMenu(false);
     }
 
     public void ClickStartNewGameFromColorPicker()
@@ -171,17 +171,17 @@ public class GameState : MonoBehaviour
 
     IEnumerator StartNewGame(bool skipCutscene)
     {
-        _menuUI.HideMainMenu(true);
-        _menuUI.HidePlayerColorPanel(true);
+        _gameUI.HideMainMenu(true);
+        _gameUI.HidePlayerColorPanel(true);
 
         if (!skipCutscene)
         {
             SetGameState(GameStateType.Cutscene);
-            yield return StartCoroutine(_menuUI.PlayIntroCutscene());
+            yield return StartCoroutine(_gameUI.PlayIntroCutscene());
         }
 
         SetGameState(GameStateType.MainGame);
-        _menuUI.HidePlayerStats(false);
+        _gameUI.HidePlayerStats(false);
 
         _player = Instantiate(PlayerPrefab);
         _mainCamera.SetFollowTarget(_player.transform);
@@ -245,8 +245,8 @@ public class GameState : MonoBehaviour
         var vignetteValue = GetVignetteIntensity(_currentLevel.LightLevel);
         _mainCamera.SetVignetteIntensity(vignetteValue);
 
-        _menuUI.HidePlayerStats(false);
-        _menuUI.FadeIn(2.0f);
+        _gameUI.HidePlayerStats(false);
+        _gameUI.FadeIn(2.0f);
 
         if (!isRetry && _currentLevel.AnnouncerIntro != null)
         {
@@ -277,8 +277,8 @@ public class GameState : MonoBehaviour
 
     public void RestartLevel()
     {
-        _menuUI.GameOverScreen(false);
-        _menuUI.ActivatePauseMenu(false);
+        _gameUI.GameOverScreen(false);
+        _gameUI.ActivatePauseMenu(false);
         LoadLevelIndex(_currentLevelIndex, true);
     }
 
@@ -291,10 +291,10 @@ public class GameState : MonoBehaviour
     public void GameOverScreen()
     {
         _currentLevel.gameObject.SetActive(false);
-        _menuUI.HideFadeEffectRect(false);
-        _menuUI.HidePlayerStats(true);
-        _menuUI.HideFadeEffectRect(true);
-        _menuUI.GameOverScreen(true);
+        _gameUI.HideFadeEffectRect(false);
+        _gameUI.HidePlayerStats(true);
+        _gameUI.HideFadeEffectRect(true);
+        _gameUI.GameOverScreen(true);
         _globalAudio.PlayAnnouncerVoiceType(AnnouncerVoiceGroup.GameOver);
     }
 
@@ -429,9 +429,9 @@ public class GameState : MonoBehaviour
             _player.SetPlayerColor(color);
         }
 
-        if (_menuUI != null)
+        if (_gameUI != null)
         {
-            _menuUI.SetPlayerColorOnUIImages(color);
+            _gameUI.SetPlayerColorOnUIImages(color);
         }
     }
 }

@@ -2,6 +2,7 @@ using Mono.Cecil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public enum LevelSoundscapeType
 {
@@ -36,10 +37,14 @@ public class GlobalAudio : MonoBehaviour
     public List<AudioClip> AnnouncerIntroTitleVoices = new();
     public List<AudioClip> AnnouncerGameOverVoices = new();
 
+    public AudioClip UIButtonHover;
+    public AudioClip UIButtonSelect;
+
     private AudioSource _levelAmbienceAudioSource;
     private AudioSource _hadesAnnouncerAudioSource;
     private AudioSource _globalMusicAudioSource;
     private AudioSource _globaSoundEffectAudioSource;
+    private AudioSource _globaUIAudioSource;
 
     private Coroutine _fadeMusicCoroutine;
 
@@ -56,6 +61,9 @@ public class GlobalAudio : MonoBehaviour
 
         _globaSoundEffectAudioSource = gameObject.AddComponent<AudioSource>();
         _globaSoundEffectAudioSource.spatialBlend = 0; // 2D global sound
+
+        _globaUIAudioSource = gameObject.AddComponent<AudioSource>();
+        _globaUIAudioSource.spatialBlend = 0; // 2D global sound
     }
 
     List<AudioClip> GetAnnouncerVoiceClips(AnnouncerVoiceGroup group)
@@ -66,6 +74,24 @@ public class GlobalAudio : MonoBehaviour
             AnnouncerVoiceGroup.GameOver => AnnouncerGameOverVoices,
             _ => new()
         };
+    }
+
+    public void PlayUIButtonHover()
+    {
+        PlayUISound(UIButtonHover, 0.05f);
+    }
+
+    public void PlayUIButtonSelect()
+    {
+        PlayUISound(UIButtonSelect, 0.2f);
+    }
+
+    public void PlayUISound(AudioClip clip, float volume)
+    {
+        if (clip != null)
+        {
+            _globaUIAudioSource.PlayOneShot(clip, volume);
+        }
     }
 
     public void PlayAnnouncerVoiceType(AnnouncerVoiceGroup type)

@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MenuUI : MonoBehaviour
+public class GameUI : MonoBehaviour
 {
     public List<CutsceneData> IntroCutscene = new();
 
@@ -59,31 +59,31 @@ public class MenuUI : MonoBehaviour
 
         if (_gameState == null)
         {
-            Debug.LogError($"{nameof(GameState)} not found on {nameof(MenuUI)}");
+            Debug.LogError($"{nameof(GameState)} not found on {nameof(GameUI)}");
         }
 
         if (!IntroTitle.TryGetComponent(out _introTitleText))
         {
-            Debug.LogError($"{nameof(TextMeshProUGUI)} not found on {nameof(MenuUI)} introTitle child");
+            Debug.LogError($"{nameof(TextMeshProUGUI)} not found on {nameof(GameUI)} introTitle child");
         }
 
         var gameOverPanel = GameOverPanel.transform.Find("PlayerImage");
 
         if (gameOverPanel == null)
         {
-            Debug.LogError($"gameOverPanel not found on {nameof(MenuUI)}");
+            Debug.LogError($"gameOverPanel not found on {nameof(GameUI)}");
         }
 
         if (!gameOverPanel.TryGetComponent(out Image image))
         {
-            Debug.LogError($"{nameof(Image)} not found on {nameof(MenuUI)} introTitle child");
+            Debug.LogError($"{nameof(Image)} not found on {nameof(GameUI)} introTitle child");
         }
 
         _deathScreenMaterial = image.material;
 
         if (!CutsceneCanvas.TryGetComponent(out _cutsceneImage))
         {
-            Debug.LogError($"{nameof(Image)} not found on {nameof(MenuUI)} cutscenecanvas child");
+            Debug.LogError($"{nameof(Image)} not found on {nameof(GameUI)} cutscenecanvas child");
         }
 
         _cutsceneMaterial = _cutsceneImage.material;
@@ -97,7 +97,7 @@ public class MenuUI : MonoBehaviour
 
         if (!CutsceneText.TryGetComponent(out _cutsceneText))
         {
-            Debug.LogError($"{nameof(TextMeshProUGUI)} not found on {nameof(MenuUI)} CutsceneText child");
+            Debug.LogError($"{nameof(TextMeshProUGUI)} not found on {nameof(GameUI)} CutsceneText child");
         }
 
         CutsceneText.SetActive(false);
