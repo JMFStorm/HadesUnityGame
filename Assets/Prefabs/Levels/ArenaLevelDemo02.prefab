@@ -406,7 +406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpawnData:
   - EnemyType: 2
-    SpawnCount: 3
+    SpawnCount: 1
   Id: 
 --- !u!212 &8759172465911347516
 SpriteRenderer:
@@ -906,7 +906,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6459010020515987263, guid: f4f8a129a91192d4ca9d3d47c057fa18, type: 3}
       propertyPath: SpawnData.Array.data[0].SpawnCount
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

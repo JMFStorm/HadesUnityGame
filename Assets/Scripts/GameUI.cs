@@ -173,26 +173,23 @@ public class GameUI : MonoBehaviour
             var initialScale = new Vector2(1, 1) * cutscene.ZoomStart;
             var targetScale = new Vector2(1, 1) * cutscene.ZoomEnd;
 
-            var colorVisible = new Color(1f, 1f, 1f, 1f);
-            var colorInvisible = new Color(0f, 0f, 0f, 0f);
+            bool fadeInStarted = false;
+            bool fadeOutStarted = false;
 
             while (elapsedTime < cutscene.DisplayTime)
             {
                 var newScale = Vector2.Lerp(initialScale, targetScale, elapsedTime / cutscene.DisplayTime);
                 _cutsceneImage.rectTransform.localScale = newScale;
 
-                if (elapsedTime < usedFadeTime)
+                if (!fadeInStarted)
                 {
-                    var newColor = Color.Lerp(colorInvisible, colorVisible, elapsedTime / usedFadeTime);
-                    _cutsceneImage.color = newColor;
-                    _cutsceneText.color = newColor;
+                    FadeIn(usedFadeTime);
+                    fadeInStarted = true;
                 }
-                else if ((cutscene.DisplayTime - usedFadeTime) < elapsedTime)
+                else if (!fadeOutStarted && ((cutscene.DisplayTime - usedFadeTime) < elapsedTime))
                 {
-                    float fadeOutTime = cutscene.DisplayTime - elapsedTime;
-                    var newColor = Color.Lerp(colorInvisible, colorVisible, fadeOutTime / usedFadeTime);
-                    _cutsceneImage.color = newColor;
-                    _cutsceneText.color = newColor;
+                    FadeOut(usedFadeTime);
+                    fadeOutStarted = true;
                 }
 
                 if (_cutsceneCancelled)
@@ -206,6 +203,7 @@ public class GameUI : MonoBehaviour
             }
         }
 
+        HideFadeEffectRect(true);
         CutsceneText.SetActive(false);
         CutsceneCanvas.SetActive(false);
     }
@@ -257,6 +255,7 @@ public class GameUI : MonoBehaviour
 
             IntroTitle.SetActive(false);
             MainMenuPanel.SetActive(true);
+            HideFadeEffectRect(true);
         }
         else
         {
@@ -273,52 +272,48 @@ public class GameUI : MonoBehaviour
     {
         IntroTitle.SetActive(true);
 
-        const float fadeInDuration = 7f;
-
-        Color initialColor = new(0.2f, 0.2f, 0.2f, 0.0f);
-        Color targetColor = new(1, 1, 1, 1.0f);
         Vector3 initialScale = new(0.9f, 0.9f, 1f);
         Vector3 targetScale = new(1f, 1f, 1f);
 
+        Color initialColor = new(1, 1, 1, 0f);
+        Color targetColor = new(1, 1, 1, 1f);
+
         float elapsedTime = 0f;
+
+        const float fadeInDuration = 7f;
+
+        _introTitleText.color = initialColor;
 
         while (elapsedTime < fadeInDuration)
         {
             float progress = elapsedTime / fadeInDuration;
-
-            // Fade in the text
-            _introTitleText.color = Color.Lerp(initialColor, targetColor, progress);
-
-            // Grow the text size
             _introTitleText.transform.localScale = Vector3.Lerp(initialScale, targetScale, progress);
 
+            float progressColor = Mathf.Pow(elapsedTime / fadeInDuration, 2f);
+            _introTitleText.color = Color.Lerp(initialColor, targetColor, progressColor);
             elapsedTime += Time.deltaTime;
+
             yield return null;
         }
 
-        _introTitleText.color = targetColor;
         _introTitleText.transform.localScale = targetScale;
+        _introTitleText.color = targetColor;
 
-        const float fadeOutDuration = 3f;
-
-        initialColor = _introTitleText.color;
         initialScale = _introTitleText.transform.localScale;
-        targetColor = new(0.4f, 0.4f, 0.4f, 0.0f);
         targetScale = new(1.04f, 1.04f, 1f);
 
+        const float fadeOutDuration = 3f;
         elapsedTime = 0f;
 
         while (elapsedTime < fadeOutDuration)
         {
             float progress = elapsedTime / fadeOutDuration;
-
-            // Fade in the text
-            _introTitleText.color = Color.Lerp(initialColor, targetColor, progress);
-
-            // Grow the text size
             _introTitleText.transform.localScale = Vector3.Lerp(initialScale, targetScale, progress);
 
+            float progressColor = 1f - Mathf.Pow(1f - (elapsedTime / fadeOutDuration), 2.5f);
+            _introTitleText.color = Color.Lerp(targetColor, initialColor, progressColor);
             elapsedTime += Time.deltaTime;
+
             yield return null;
         }
 
@@ -326,6 +321,8 @@ public class GameUI : MonoBehaviour
 
         IntroTitle.SetActive(false);
         MainMenuPanel.SetActive(true);
+
+        HideFadeEffectRect(true);
     }
 
     public void HidePlayerStats(bool hide)
@@ -416,13 +413,16 @@ public class GameUI : MonoBehaviour
         HideFadeEffectRect(false);
 
         float elapsedTime = 0f;
-        Color color = FadeImage.color;
+        Color color = new(0,0,0,0);
 
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            color.a = 1f - Mathf.Clamp01(elapsedTime / fadeDuration);
+            float newAlpha = Mathf.Pow(elapsedTime / fadeDuration, 2f);
+
+            color.a = 1f - newAlpha;
             FadeImage.color = color;
+
             yield return null;
         }
 
@@ -434,13 +434,16 @@ public class GameUI : MonoBehaviour
         HideFadeEffectRect(false);
 
         float elapsedTime = 0f;
-        Color color = FadeImage.color;
+        Color color = new(0,0,0,1);
 
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            color.a = Mathf.Clamp01(elapsedTime / fadeDuration);
+            float newAlpha = Mathf.Pow(elapsedTime / fadeDuration, 2f);
+
+            color.a = newAlpha;
             FadeImage.color = color;
+
             yield return null;
         }
     }

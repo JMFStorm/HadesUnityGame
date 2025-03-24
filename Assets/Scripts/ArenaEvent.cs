@@ -26,7 +26,7 @@ public class ArenaEvent : MonoBehaviour
 
     public Sprite TeleporterSprite;
     public AudioClip TeleporterStartSound;
-    public AudioClip BlockingeventEndClip;
+    public AudioClip BlockingEventEndClip;
 
     public bool BlockingEvent = false;
     public bool UseHadesVoice = false;
@@ -268,9 +268,9 @@ public class ArenaEvent : MonoBehaviour
     {
         Debug.Log("Arena event completed");
 
-        if (BlockingEvent && BlockingeventEndClip != null)
+        if (BlockingEvent && BlockingEventEndClip != null)
         {
-            _globalAudio.PlaySoundEffect(BlockingeventEndClip, 0.15f);
+            _globalAudio.PlaySoundEffect(BlockingEventEndClip, 0.2f);
         }
 
         DeactivateBlockers();

@@ -734,6 +734,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 2212909691372013823, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3653482839923588972, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 2
@@ -762,6 +766,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 3658519334285283347, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: UIButtonHover
       value: 
@@ -770,6 +778,14 @@ PrefabInstance:
       propertyPath: UIButtonSelect
       value: 
       objectReference: {fileID: 8300000, guid: 4521d7bb670ed5444be3ce584ef0d82b, type: 3}
+    - target: {fileID: 4775787539996582423, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4832925683623961816, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5372491613311197995, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 2
@@ -868,6 +884,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7820940527058433401, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8258035480826773580, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8617912460676330399, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
