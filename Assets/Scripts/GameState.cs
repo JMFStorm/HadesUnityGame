@@ -110,10 +110,19 @@ public class GameState : MonoBehaviour
             _prevCameraPosition = _mainCamera.transform.position;
         }
 
+        var gameState = GetGameState();
+
+        var cursorVisible = true;
+
+        if (gameState == GameStateType.IntroScreen || gameState == GameStateType.MainGame || gameState == GameStateType.Cutscene)
+        {
+            cursorVisible = false;
+        }
+
+        Cursor.visible = cursorVisible;
+
         if (Input.GetButtonDown("Escape"))
         {
-            var gameState = GetGameState();
-
             if (gameState == GameStateType.IntroScreen)
             {
                 _gameUI.SkipIntroSequence();
@@ -161,7 +170,6 @@ public class GameState : MonoBehaviour
     {
         _gameUI.HideMainMenu(true);
 
-        SetGameState(GameStateType.MainGame);
         InstantiateGlobalGamePrefabs();
 
         _playerColor = GetSavedPlayerColor();

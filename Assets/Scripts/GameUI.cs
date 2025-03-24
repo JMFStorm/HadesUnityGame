@@ -325,6 +325,8 @@ public class GameUI : MonoBehaviour
         MainMenuPanel.SetActive(true);
 
         HideFadeEffectRect(true);
+
+        _gameState.SetGameState(GameStateType.MainGame);
     }
 
     public void HidePlayerStats(bool hide)
