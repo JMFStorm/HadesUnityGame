@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum AeroSounds
 {
@@ -57,6 +58,7 @@ public class AeroBehaviour : EnemyBase
     private bool _isAttacking = false;
     private bool _hasDamageInvulnerability = false;
     private float _lastShotTime; // Time of the last shot
+    private float _notSeeingPlayerTime = 0;
     private bool _isDead = false;
 
     private Vector2 _flyTarget = new();
@@ -68,6 +70,8 @@ public class AeroBehaviour : EnemyBase
     private float _currentDistanceToTarget = 0;
     private float _targetDistance = 0;
     private float _usedSpeed = 0;
+
+    private LayerMask _seesTargetLayerMask;
 
     private int _currentHealth = 3;
     private int _groundLayerMask;
@@ -114,6 +118,7 @@ public class AeroBehaviour : EnemyBase
 
         _projectileStart = transform.Find("ProjectileOffset");
 
+        _seesTargetLayerMask = LayerMask.GetMask("Ground", "Character");
         _groundLayerMask = LayerMask.GetMask("Ground");
         _targetDistance = Mathf.Sqrt(Mathf.Pow(KeepXDistanceFromTarget, 2) + Mathf.Pow(KeepXDistanceFromTarget, 2));
     }
@@ -226,13 +231,19 @@ public class AeroBehaviour : EnemyBase
         }
     }
 
+    Vector2 GetTargetDirection()
+    {
+        return (_attackTarget.position - _projectileStart.position).normalized;
+    }
+
     void MovementBehaviour()
     {
         _flyTarget = transform.position;
+        _targetDir = GetTargetDirection();
 
         _currentDistanceToTarget = Vector2.Distance(transform.position, _attackTarget.position);
 
-        if ((_hasGivenUp || !isChasing) && _currentDistanceToTarget <= chaseRadius)
+        if ((_hasGivenUp || !isChasing) && _currentDistanceToTarget <= chaseRadius && SeesPlayer())
         {
             isChasing = true;
         }
@@ -241,10 +252,20 @@ public class AeroBehaviour : EnemyBase
 
         if (isChasing && !_player.IsDead())
         {
-            _targetDir = _attackTarget.position - transform.position;
             _directionX = _targetDir.normalized.x < 0 ? -1f : 1f;
 
-            if (GiveUpRadius < _currentDistanceToTarget)
+            if (SeesPlayer())
+            {
+                _notSeeingPlayerTime = 0f;
+            }
+            else
+            {
+                _notSeeingPlayerTime += Time.deltaTime;
+            }
+
+            const float giveupTime = 3.0f;
+
+            if (GiveUpRadius < _currentDistanceToTarget || giveupTime < _notSeeingPlayerTime)
             {
                 isChasing = false;
                 _hasGivenUp = true;
@@ -321,6 +342,21 @@ public class AeroBehaviour : EnemyBase
 
         _hasDamageInvulnerability = false;
         SetDamageColor(false);
+    }
+
+    bool SeesPlayer()
+    {
+        var dir = GetTargetDirection();
+        RaycastHit2D hit = Physics2D.Raycast(_projectileStart.position, dir, chaseRadius * 2, _seesTargetLayerMask);
+
+        Debug.DrawRay(_projectileStart.position, 2 * chaseRadius * dir, Color.blue);
+
+        if (hit.collider != null)
+        {
+            return hit.collider.CompareTag("Player");
+        }
+
+        return false;
     }
 
     void ActivateDeathAndDestroy()
