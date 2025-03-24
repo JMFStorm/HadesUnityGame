@@ -119,7 +119,7 @@ public class GameState : MonoBehaviour
             cursorVisible = false;
         }
 
-        Cursor.visible = cursorVisible;
+        UnityEngine.Cursor.visible = cursorVisible;
 
         if (Input.GetButtonDown("Escape"))
         {
@@ -166,6 +166,25 @@ public class GameState : MonoBehaviour
         _globalAudio.PlayGlobalMusic(GlobalMusic.TensionBooster1, false, 0.7f);
     }
 
+    public void ClickReturnToMainMenuFromPauseMenu()
+    {
+        _gameUI.ActivatePauseMenu(false);
+        _gameUI.HideMainMenu(false);
+
+        _gameUI.HidePlayerStats(true);
+
+        ClearCurrentLevel();
+
+        _globalAudio.StopAmbience();
+        _globalAudio.StopMusic(1f);
+
+        ClearBackgroundImage();
+
+        Destroy(_player.gameObject);
+
+        SetGameState(GameStateType.MainMenu);
+    }
+
     public void ClickContinueGameMenuOption()
     {
         _gameUI.HideMainMenu(true);
@@ -173,6 +192,9 @@ public class GameState : MonoBehaviour
         InstantiateGlobalGamePrefabs();
 
         _playerColor = GetSavedPlayerColor();
+
+        _savedLevelIndex = PlayerPrefs.GetInt("LevelIndex");
+        _currentLevelIndex = _savedLevelIndex;
 
         LoadLevelIndex(_savedLevelIndex, false);
     }
@@ -228,6 +250,16 @@ public class GameState : MonoBehaviour
         Application.Quit();
     }
 
+    void ClearCurrentLevel()
+    {
+        if (_currentLevel != null)
+        {
+            _currentLevel.ClearArenaEvents();
+            Destroy(_currentLevel.gameObject);
+            _currentLevel = null;
+        }
+    }
+
     public void LoadLevelIndex(int index, bool isRetry)
     {
         if (index < 0 || GameLevels.Count <= index)
@@ -236,12 +268,7 @@ public class GameState : MonoBehaviour
             return;
         }
 
-        if (_currentLevel != null)
-        {
-            _currentLevel.ClearArenaEvents();
-            Destroy(_currentLevel.gameObject);
-            _currentLevel = null;
-        }
+        ClearCurrentLevel();
 
         _currentLevel = Instantiate(GameLevels[index], Vector3.zero, Quaternion.identity);
 
@@ -307,6 +334,8 @@ public class GameState : MonoBehaviour
         PlayerPrefs.SetInt("LevelIndex", index);
         PlayerPrefs.SetString("LevelName", _currentLevel.name);
         PlayerPrefs.Save();
+
+        SetGameState(GameStateType.MainGame);
     }
 
     public void RestartLevel()
@@ -332,8 +361,14 @@ public class GameState : MonoBehaviour
         _globalAudio.PlayAnnouncerVoiceType(AnnouncerVoiceGroup.GameOver);
     }
 
+    void ClearBackgroundImage()
+    {
+        _backgroundRenderer.enabled = false;
+    }
+
     public void ApplyBackgroundImage(Vector2 bottomLeft, Vector2 topRight, Sprite background)
     {
+        _backgroundRenderer.enabled = true;
         _backgroundRenderer.sprite = background;
 
         float width = topRight.x - bottomLeft.x;
@@ -359,6 +394,7 @@ public class GameState : MonoBehaviour
 
     public void ApplySeamlessBackground(Sprite background)
     {
+        _backgroundRenderer.enabled = true;
         _backgroundRenderer.sprite = background;
 
         var cameraView = _mainCamera.GetCameraViewSize();
