@@ -187,6 +187,8 @@ public class GameState : MonoBehaviour
         }
 
         SetGameState(GameStateType.MainMenu);
+
+        LoadPersistentStorage();
     }
 
     public void ClickReturnToMainMenuFromPauseMenu()
@@ -209,6 +211,8 @@ public class GameState : MonoBehaviour
         }
 
         SetGameState(GameStateType.MainMenu);
+
+        LoadPersistentStorage();
     }
 
     public void ClickContinueGameMenuOption()
