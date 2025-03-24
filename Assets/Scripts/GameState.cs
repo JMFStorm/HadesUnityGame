@@ -165,6 +165,8 @@ public class GameState : MonoBehaviour
         SetGameState(GameStateType.MainGame);
         InstantiateGlobalGamePrefabs();
 
+        _playerColor = GetSavedPlayerColor();
+
         LoadLevelIndex(_savedLevelIndex, false);
     }
 
@@ -182,6 +184,7 @@ public class GameState : MonoBehaviour
 
     public void ClickStartNewGameFromColorPicker()
     {
+        SavePlayerColorStorage(_playerColor);
         StartCoroutine(StartNewGame(false));
     }
 
@@ -459,6 +462,27 @@ public class GameState : MonoBehaviour
         }
     }
 
+    void SavePlayerColorStorage(Color color)
+    {
+        PlayerPrefs.SetFloat("PlayerColorR", color.r);
+        PlayerPrefs.SetFloat("PlayerColorG", color.g);
+        PlayerPrefs.SetFloat("PlayerColorB", color.b);
+    }
+
+    Color GetSavedPlayerColor()
+    {
+        var r = PlayerPrefs.GetFloat("PlayerColorR", 0f);
+        var g = PlayerPrefs.GetFloat("PlayerColorG", 0f);
+        var b = PlayerPrefs.GetFloat("PlayerColorB", 1f);
+
+        if ((r < 0f || g < 0 || b < 0f) || (1f < r || 1f < g || 1f < b))
+        {
+            return new Color(0, 0, 1f);
+        }
+
+        return new Color(r, g, b);
+    }
+
     void LoadPersistentStorage()
     {
         var savedLevelIndex = PlayerPrefs.GetInt("LevelIndex", -1);
@@ -484,6 +508,9 @@ public class GameState : MonoBehaviour
 
             _gameUI.EnableContinueMenuOption(false);
         }
+
+        _playerColor = GetSavedPlayerColor();
+        SetPlayerColor(_playerColor);
     }
 }
 
