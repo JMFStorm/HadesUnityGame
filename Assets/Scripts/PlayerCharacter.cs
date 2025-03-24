@@ -555,7 +555,7 @@ public class PlayerCharacter : MonoBehaviour
                 _groundedTime = 0.0f;
             }
         }
-        else if (Input.GetButtonDown("Dash") && !_isDashing)
+        else if (Input.GetButtonDown("Dash") && !_isDashing && !_isAttacking)
         {
             if (0 < _currentDashes)
             {
@@ -601,6 +601,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             _isAttacking = false;
             _swordBoxCollider.gameObject.SetActive(false);
+            yield break;
         }
 
         float swordAreaXOffset = Mathf.Abs(_swordBoxCollider.offset.x);
@@ -677,6 +678,8 @@ public class PlayerCharacter : MonoBehaviour
         _dashDirX = _facingDirX;
         _currentDashes--;
         _gameUI.SetStamina(_currentDashes);
+
+        _isAttacking = false;
     }
 
     void Dash()

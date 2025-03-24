@@ -45,7 +45,6 @@ public class GameState : MonoBehaviour
 
     private int _savedLevelIndex = -1;
     private string _savedLevelName = string.Empty;
-    private bool _canContinueGame = false;
 
     private void Awake()
     {
@@ -496,6 +495,8 @@ public class GameState : MonoBehaviour
 
             _savedLevelIndex = savedLevelIndex;
             _savedLevelName = savedLevelName;
+
+            _currentLevelIndex = _savedLevelIndex;
 
             _gameUI.EnableContinueMenuOption(true);
         }

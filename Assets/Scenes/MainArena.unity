@@ -262,6 +262,34 @@ PrefabInstance:
       propertyPath: 'GameLevels.Array.data[2]'
       value: 
       objectReference: {fileID: 3014003171651010040, guid: 4669513fb0853df44a6156bce1edfcec, type: 3}
+    - target: {fileID: 5175186584248602851, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_text
+      value: Game oVER
+      objectReference: {fileID: 0}
+    - target: {fileID: 5175186584248602851, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: d2c21d75bf9dd244aa3c1610df0ab7dc, type: 2}
+    - target: {fileID: 5175186584248602851, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -2904858443327830552, guid: d2c21d75bf9dd244aa3c1610df0ab7dc, type: 2}
+    - target: {fileID: 5175186584248602851, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7519901710127466724, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8528250670436241324, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8617912460676330399, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8903893813461544670, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_IsActive
       value: 0
