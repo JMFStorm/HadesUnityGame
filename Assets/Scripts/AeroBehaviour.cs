@@ -425,8 +425,6 @@ public class AeroBehaviour : EnemyBase
         _targetSideIsLeft = !right;
         _spriteRenderer.flipX = right;
         _projectileStart.localPosition =  new(right ? Mathf.Abs(_projectileStart.localPosition.x) : -Mathf.Abs(_projectileStart.localPosition.x), _projectileStart.localPosition.y);
-
-        Debug.Log("right " + right);
     }
 
     private void TryAttackPlayer()

@@ -212,8 +212,8 @@ public class GameUI : MonoBehaviour
 
     public void SetPlayerColorOnUIImages(Color color)
     {
-        _deathScreenMaterial.SetColor("_NewColor", color);
-        _cutsceneMaterial.SetColor("_NewColor", color);
+        _deathScreenMaterial?.SetColor("_NewColor", color);
+        _cutsceneMaterial?.SetColor("_NewColor", color);
     }
 
     public void GameOverScreen(bool active)
@@ -326,7 +326,8 @@ public class GameUI : MonoBehaviour
 
         HideFadeEffectRect(true);
 
-        _gameState.SetGameState(GameStateType.MainGame);
+        Cursor.visible = true;
+        _gameState.SetGameState(GameStateType.MainMenu);
     }
 
     public void HidePlayerStats(bool hide)

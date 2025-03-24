@@ -402,16 +402,19 @@ public class GameState : MonoBehaviour
     {
         _backgroundRenderer.enabled = true;
         _backgroundRenderer.sprite = background;
+        _backgroundRenderer.transform.localScale = new Vector3(1, 1, 1);
 
         var cameraView = _mainCamera.GetCameraViewSize();
 
         float spriteHeight = _backgroundRenderer.sprite.bounds.size.y;
         float spriteWidth = _backgroundRenderer.sprite.bounds.size.x;
 
+        Debug.Log($"spriteHeight: {spriteHeight}, spriteWidth: {spriteWidth}");
+
         float spriteAspectRatio = spriteWidth / spriteHeight;
         float cameraAspectRatio = cameraView.x / cameraView.y;
 
-        Vector3 newScale = transform.localScale;
+        Vector2 newScale = transform.localScale;
 
         if (cameraAspectRatio > spriteAspectRatio)
         {
@@ -521,16 +524,16 @@ public class GameState : MonoBehaviour
 
     Color GetSavedPlayerColor()
     {
-        var r = PlayerPrefs.GetFloat("PlayerColorR", 0f);
-        var g = PlayerPrefs.GetFloat("PlayerColorG", 0f);
-        var b = PlayerPrefs.GetFloat("PlayerColorB", 1f);
+        var r = PlayerPrefs.GetFloat("PlayerColorR", -1f);
+        var g = PlayerPrefs.GetFloat("PlayerColorG", -1f);
+        var b = PlayerPrefs.GetFloat("PlayerColorB", -1f);
 
         if ((r < 0f || g < 0 || b < 0f) || (1f < r || 1f < g || 1f < b))
         {
-            return new Color(0, 0, 1f);
+            return PlayerColors.BloodstoneRedColor;
         }
 
-        return new Color(r, g, b);
+        return new Color(r, g, b, 1f); 
     }
 
     void LoadPersistentStorage()
