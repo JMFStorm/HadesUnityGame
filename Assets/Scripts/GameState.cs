@@ -168,6 +168,27 @@ public class GameState : MonoBehaviour
         _globalAudio.PlayGlobalMusic(GlobalMusic.TensionBooster1, false, 0.7f);
     }
 
+    public void ClickReturnToMainMenuFromDeathScreen()
+    {
+        _gameUI.ActivatePauseMenu(false);
+        _gameUI.GameOverScreen(false);
+        _gameUI.HideMainMenu(false);
+
+        _gameUI.HidePlayerStats(true);
+
+        _globalAudio.StopAmbience();
+        _globalAudio.StopMusic(1f);
+
+        ClearBackgroundImage();
+
+        if (_player != null)
+        {
+            Destroy(_player.gameObject);
+        }
+
+        SetGameState(GameStateType.MainMenu);
+    }
+
     public void ClickReturnToMainMenuFromPauseMenu()
     {
         _gameUI.ActivatePauseMenu(false);
@@ -182,7 +203,10 @@ public class GameState : MonoBehaviour
 
         ClearBackgroundImage();
 
-        Destroy(_player.gameObject);
+        if (_player != null)
+        {
+            Destroy(_player.gameObject);
+        }
 
         SetGameState(GameStateType.MainMenu);
     }
