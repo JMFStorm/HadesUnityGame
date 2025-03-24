@@ -39,6 +39,7 @@ public class GlobalAudio : MonoBehaviour
 
     public AudioClip UIButtonHover;
     public AudioClip UIButtonSelect;
+    public AudioClip UIColorSelect;
 
     private AudioSource _levelAmbienceAudioSource;
     private AudioSource _hadesAnnouncerAudioSource;
@@ -84,6 +85,11 @@ public class GlobalAudio : MonoBehaviour
     public void PlayUIButtonSelect()
     {
         PlayUISound(UIButtonSelect, 0.2f);
+    }
+
+    public void PlayUIColorSelect()
+    {
+        PlayUISound(UIColorSelect, 0.2f);
     }
 
     public void PlayUISound(AudioClip clip, float volume)

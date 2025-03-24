@@ -46,6 +46,8 @@ public class GameState : MonoBehaviour
     private int _savedLevelIndex = -1;
     private string _savedLevelName = string.Empty;
 
+    private readonly Color _playerDefaultColor = PlayerColors.BloodstoneRedColor;
+
     private void Awake()
     {
         if (!transform.Find("UICanvas").TryGetComponent(out _gameUI))
@@ -201,6 +203,8 @@ public class GameState : MonoBehaviour
 
     public void ClickStartNewGame()
     {
+        SetPlayerColor(_playerDefaultColor);
+
         _gameUI.HidePlayerColorPanel(false);
         _gameUI.HideMainMenu(true);
     }
@@ -490,6 +494,7 @@ public class GameState : MonoBehaviour
     {
         _playerColor = PlayerColors.StringToColor(colorName);
         SetPlayerColor(_playerColor);
+        _globalAudio.PlayUIColorSelect();
     }
 
     void SetPlayerColor(Color color)

@@ -20,6 +20,8 @@ public static class PlayerColors
     public static Color StormyBlueColor = new(0.08f, 0.25f, 0.31f);
     public static Color OceanBlueColor = new(0.08f, 0.19f, 0.6f);
     public static Color AntiqueGoldColor = new(0.70f, 0.64f, 0.0f);
+    public static Color IceSlayerColor = new(0.23f, 0.54f, 0.56f);
+    public static Color OrangeManColor = new(0.79f, 0.40f, 0.13f);
 
     public const string BloodstoneRedStr = "BloodstoneRed";
     public const string DarkRustStr = "DarkRust";
@@ -29,6 +31,8 @@ public static class PlayerColors
     public const string StormyBlueStr = "StormyBlue";
     public const string OceanBlueStr = "OceanBlue";
     public const string AntiqueGoldStr = "AntiqueGold";
+    public const string IceSlayerStr = "IceSlayer";
+    public const string OrangeManStr = "OrangeMan";
 
     public static Color StringToColor(string str)
     {
@@ -42,6 +46,8 @@ public static class PlayerColors
             StormyBlueStr => StormyBlueColor,
             OceanBlueStr => OceanBlueColor,
             AntiqueGoldStr => AntiqueGoldColor,
+            IceSlayerStr => IceSlayerColor,
+            OrangeManStr => OrangeManColor,
             _ => throw new System.Exception($"Unhandled color str {str}"),
         };
     }
