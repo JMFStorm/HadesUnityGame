@@ -69,6 +69,7 @@ public class AeroBehaviour : EnemyBase
     private float _waveOffset = 0.0f;
     private float _currentDistanceToTarget = 0;
     private float _targetDistance = 0;
+    private float _targetDistanceX = 0;
     private float _usedSpeed = 0;
 
     private LayerMask _seesTargetLayerMask;
@@ -137,6 +138,12 @@ public class AeroBehaviour : EnemyBase
 
     private void FixedUpdate()
     {
+        _flyTarget = transform.position;
+        _targetDir = GetTargetDirection();
+
+        _currentDistanceToTarget = Vector2.Distance(transform.position, _attackTarget.position);
+        _targetDistanceX = Mathf.Abs(transform.position.x - _attackTarget.position.x);
+
         if (!_hasDamageInvulnerability && !_isDead)
         {
             MovementBehaviour();
@@ -238,11 +245,6 @@ public class AeroBehaviour : EnemyBase
 
     void MovementBehaviour()
     {
-        _flyTarget = transform.position;
-        _targetDir = GetTargetDirection();
-
-        _currentDistanceToTarget = Vector2.Distance(transform.position, _attackTarget.position);
-
         if ((_hasGivenUp || !isChasing) && _currentDistanceToTarget <= chaseRadius && SeesPlayer())
         {
             isChasing = true;
@@ -423,7 +425,12 @@ public class AeroBehaviour : EnemyBase
     {
         var right = 0.0f < _directionX;
         _targetSideIsLeft = !right;
-        _spriteRenderer.flipX = right;
+
+        if (0.25f < _targetDistanceX)
+        {
+            _spriteRenderer.flipX = right;
+        }
+
         _projectileStart.localPosition =  new(right ? Mathf.Abs(_projectileStart.localPosition.x) : -Mathf.Abs(_projectileStart.localPosition.x), _projectileStart.localPosition.y);
     }
 
