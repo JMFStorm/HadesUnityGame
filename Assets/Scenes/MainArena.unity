@@ -278,6 +278,10 @@ PrefabInstance:
       propertyPath: 'LevelAmbienceAudios.Array.data[3]'
       value: 
       objectReference: {fileID: 8300000, guid: 9e72d73ceaab49a4392cd21ec093d47e, type: 3}
+    - target: {fileID: 5322306637341527261, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6860375959775874182, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_text
       value: Exit Game
@@ -285,8 +289,38 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 823713029085519058, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8349402883727872496}
   m_SourcePrefab: {fileID: 100100000, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+--- !u!1 &8349402883727872495 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 823713029085519058, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+  m_PrefabInstance: {fileID: 8349402883727872494}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8349402883727872496
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8349402883727872495}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ccd1a9d3363b69246bc323c5825d03cd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
