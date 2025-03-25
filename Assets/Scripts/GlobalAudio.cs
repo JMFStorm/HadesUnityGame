@@ -6,7 +6,8 @@ public enum LevelSoundscapeType
 {
     Tunnel = 0,
     Arena,
-    Ghastly
+    Ghastly,
+    Ghastly2,
 }
 
 public enum GlobalMusic

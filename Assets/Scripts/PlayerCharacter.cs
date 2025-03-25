@@ -57,6 +57,8 @@ public static class PlayerColors
 public class PlayerCharacter : MonoBehaviour
 {
     public AudioClip[] _audioClips;
+    public AudioClip PlayerGetHitVoice;
+    public AudioClip PlayerDeathVoice;
     public Transform GroundCheck;
 
     public LayerMask GroundLayer;
@@ -96,6 +98,7 @@ public class PlayerCharacter : MonoBehaviour
     private GameUI _gameUI;
     private GameState _gameState;
     private GlobalAudio _globalAudio;
+    private AudioSource _playerVoiceAudioSource;
 
     private Vector2 _groundCheckSize = new(0.5f, 0.25f);
     private Vector2 _originalSize;
@@ -221,6 +224,9 @@ public class PlayerCharacter : MonoBehaviour
         _originalOffset = _physicsCollider.offset;
 
         _material.SetColor("_NewColor", new(0f, 0f, 1f));
+
+        _playerVoiceAudioSource = gameObject.AddComponent<AudioSource>();
+        _playerVoiceAudioSource.spatialBlend = 0.9f;
     }
 
     private void Start()
@@ -411,6 +417,7 @@ public class PlayerCharacter : MonoBehaviour
     IEnumerator PlayerDieAndLevelRestart()
     {
         PlaySound(PlayerSounds.Hit);
+        PlayPlayerVoice(PlayerGetHitVoice, 0.25f);
         ControlsEnabled(false);
 
         _globalAudio.StopMusic(4f);
@@ -418,8 +425,9 @@ public class PlayerCharacter : MonoBehaviour
         _hasDamageInvulnerability = true;
         _inDamageState = true;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.8f);
 
+        PlayPlayerVoice(PlayerDeathVoice, 0.8f);
         _isDead = true;
 
         yield return new WaitForSeconds(2.0f);
@@ -450,6 +458,7 @@ public class PlayerCharacter : MonoBehaviour
     private IEnumerator ActivateDamageTakenTime(float duration)
     {
         PlaySound(PlayerSounds.Hit);
+        PlayPlayerVoice(PlayerGetHitVoice, 0.25f);
         ControlsEnabled(false);
         _inDamageState = true;
         _hasDamageInvulnerability = true;
@@ -741,15 +750,6 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
-    void PlayDamageSound(AudioClip clip)
-    {
-        if (clip != null)
-        {
-            _audioSource.clip = clip;
-            _audioSource.Play();
-        }
-    }
-
     void DebugLog(string message)
     {
         if (DebugLogging)
@@ -772,5 +772,16 @@ public class PlayerCharacter : MonoBehaviour
     public bool IsDead()
     {
         return _isDead;
+    }
+
+    public void PlayPlayerVoice(AudioClip clip, float volume)
+    {
+        if (clip != null && (_playerVoiceAudioSource.clip != clip || !_playerVoiceAudioSource.isPlaying))
+        {
+            _playerVoiceAudioSource.loop = false;
+            _playerVoiceAudioSource.volume = volume;
+            _playerVoiceAudioSource.clip = clip;
+            _playerVoiceAudioSource.Play();
+        }
     }
 }
