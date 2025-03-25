@@ -263,7 +263,9 @@ public class GameState : MonoBehaviour
         SetGameState(GameStateType.MainGame);
         InstantiateGlobalGamePrefabs();
 
-        LoadLevelIndex(0, false);
+        _currentLevelIndex = 0;
+
+        LoadLevelIndex(_currentLevelIndex, false);
 
         yield return null;
     }
