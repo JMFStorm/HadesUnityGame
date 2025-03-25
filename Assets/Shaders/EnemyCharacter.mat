@@ -43,15 +43,15 @@ Material:
     m_Floats:
     - _EnableExternalAlpha: 0
     - _IsShadowVariant: 0
-    - _OutlineThickness: 0.2
+    - _OutlineThickness: 0.8
     - _ShadowOutlineThreshold: 0.01
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DamageColor: {r: 0, g: 0, b: 0, a: 1}
-    - _InlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _InlineColor: {r: 0.05, g: 0.05, b: 0.05, a: 1}
     - _NewColor: {r: 1, g: 0, b: 1, a: 1}
-    - _OutlineColor: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
+    - _OutlineColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

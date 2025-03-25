@@ -488,6 +488,8 @@ public class AeroBehaviour : EnemyBase
             Debug.LogError($"Did not find {nameof(Projectile)} in {nameof(Projectile)}");
         }
 
+        projectile.transform.SetParent(this.transform);
+
         ResetShotLoadTime();
 
         PlaySound(AeroSounds.ProjectileLaunch);
