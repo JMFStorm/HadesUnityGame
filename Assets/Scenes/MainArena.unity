@@ -679,6 +679,10 @@ PrefabInstance:
       propertyPath: IntroCutsceneAudio03
       value: 
       objectReference: {fileID: 8300000, guid: 5c2bd280867067b4e84bed79b9d09c0c, type: 3}
+    - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: OutroCutsceneAudio01
+      value: 
+      objectReference: {fileID: 8300000, guid: 4fd51d1ae8bda714a8e04557f7e5cc7b, type: 3}
     - target: {fileID: 5322306637341527261, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_IsActive
       value: 1

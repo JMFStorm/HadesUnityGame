@@ -257,7 +257,8 @@ public class GameState : MonoBehaviour
         if (!skipCutscene)
         {
             SetGameState(GameStateType.Cutscene);
-            yield return StartCoroutine(_gameUI.PlayIntroCutscene());
+            yield return StartCoroutine(_gameUI.PlayOutroCutscene());
+            // yield return StartCoroutine(_gameUI.PlayIntroCutscene());
         }
 
         SetGameState(GameStateType.MainGame);
