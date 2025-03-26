@@ -25,6 +25,7 @@ public class GameUI : MonoBehaviour
     private Material _deathScreenMaterial;
     private Material _cutsceneMaterial;
     private Image _cutsceneImage;
+    private Animator _animator;
 
     private bool _cutsceneCancelled = false;
 
@@ -102,6 +103,11 @@ public class GameUI : MonoBehaviour
             Debug.LogError($"{nameof(TextMeshProUGUI)} not found on {nameof(GameUI)} CutsceneText child");
         }
 
+        if (!TryGetComponent(out _animator))
+        {
+            Debug.LogError($"{nameof(Animator)} not found on {nameof(GameUI)} CutsceneText child");
+        }
+
         CutsceneText.SetActive(false);
         CutsceneCanvas.SetActive(false);
         IntroTitle.SetActive(false);
@@ -120,10 +126,63 @@ public class GameUI : MonoBehaviour
         HideMainMenu(true);
     }
 
+    IEnumerator PlayIntroCutsceneAnim()
+    {
+        CutsceneCanvas.SetActive(true);
+
+        _animator.Play("IntroCutscene01");
+
+        while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
+        {
+            if (_cutsceneCancelled)
+            {
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        if (_cutsceneCancelled)
+        {
+            yield break;
+        }
+
+        _animator.Play("IntroCutscene02", 0, 0f);
+
+        yield return new WaitForSeconds(0.1f);
+
+        while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
+        {
+            if (_cutsceneCancelled)
+            {
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        _animator.Play("IntroCutscene03", 0, 0f);
+
+        yield return new WaitForSeconds(0.1f);
+
+        while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
+        {
+            if (_cutsceneCancelled)
+            {
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        CutsceneCanvas.SetActive(false);
+    }
+
     public IEnumerator PlayIntroCutscene()
     {
         _cutsceneCancelled = false;
-        _cutsceneCoroutine = StartCoroutine(PlayCutsceneFromData(IntroCutscene));
+        // _cutsceneCoroutine = StartCoroutine(PlayCutsceneFromData(IntroCutscene));
+        _cutsceneCoroutine = StartCoroutine(PlayIntroCutsceneAnim());
 
         yield return _cutsceneCoroutine;
 
