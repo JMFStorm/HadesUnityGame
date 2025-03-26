@@ -10,6 +10,7 @@ public class GameUI : MonoBehaviour
 
     public AudioClip IntroCutsceneAudio01;
     public AudioClip IntroCutsceneAudio02;
+    public AudioClip IntroCutsceneAudio03;
 
     public GameObject IntroTitle;
     public GameObject MainMenuPanel;
@@ -169,6 +170,8 @@ public class GameUI : MonoBehaviour
         }
 
         _animator.Play("IntroCutscene03", 0, 0f);
+
+        _globalAudio.PlaySoundEffect(IntroCutsceneAudio03, 0.8f, true);
 
         yield return new WaitForSeconds(0.1f);
 
