@@ -6,8 +6,7 @@ public enum LevelSoundscapeType
 {
     Tunnel = 0,
     Arena,
-    Ghastly,
-    Ghastly2,
+    Ghastly
 }
 
 public enum GlobalMusic
@@ -108,8 +107,13 @@ public class GlobalAudio : MonoBehaviour
         PlayAnnouncerVoiceClip(usedClip);
     }
 
-    public void PlaySoundEffect(AudioClip clip, float volume)
+    public void PlaySoundEffect(AudioClip clip, float volume, bool overrideSound = false)
     {
+        if (overrideSound)
+        {
+            _globaSoundEffectAudioSource.Stop();
+        }
+
         if (clip != null && (_globaSoundEffectAudioSource.clip != clip || !_globaSoundEffectAudioSource.isPlaying))
         {
             _globaSoundEffectAudioSource.loop = false;
@@ -145,6 +149,11 @@ public class GlobalAudio : MonoBehaviour
     public void StopAmbience()
     {
         _levelAmbienceAudioSource.Stop();
+    }
+
+    public void StopSoundEffect()
+    {
+        _globaSoundEffectAudioSource.Stop();
     }
 
     public void StopMusic(float fadeTime)

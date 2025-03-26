@@ -8,6 +8,9 @@ public class GameUI : MonoBehaviour
 {
     public List<CutsceneData> IntroCutscene = new();
 
+    public AudioClip IntroCutsceneAudio01;
+    public AudioClip IntroCutsceneAudio02;
+
     public GameObject IntroTitle;
     public GameObject MainMenuPanel;
     public GameObject PauseMenuPanel;
@@ -132,6 +135,8 @@ public class GameUI : MonoBehaviour
 
         _animator.Play("IntroCutscene01");
 
+        _globalAudio.PlaySoundEffect(IntroCutsceneAudio01, 0.6f, true);
+
         while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
         {
             if (_cutsceneCancelled)
@@ -148,6 +153,8 @@ public class GameUI : MonoBehaviour
         }
 
         _animator.Play("IntroCutscene02", 0, 0f);
+
+        _globalAudio.PlaySoundEffect(IntroCutsceneAudio02, 0.8f, true);
 
         yield return new WaitForSeconds(0.1f);
 
@@ -181,12 +188,40 @@ public class GameUI : MonoBehaviour
     public IEnumerator PlayIntroCutscene()
     {
         _cutsceneCancelled = false;
-        // _cutsceneCoroutine = StartCoroutine(PlayCutsceneFromData(IntroCutscene));
         _cutsceneCoroutine = StartCoroutine(PlayIntroCutsceneAnim());
 
         yield return _cutsceneCoroutine;
 
         _cutsceneCoroutine = null;
+    }
+
+    public IEnumerator PlayOutroCutscene()
+    {
+        _cutsceneCancelled = false;
+        _cutsceneCoroutine = StartCoroutine(PlayOutroCutsceneAnim());
+
+        yield return _cutsceneCoroutine;
+
+        _cutsceneCoroutine = null;
+    }
+
+    IEnumerator PlayOutroCutsceneAnim()
+    {
+        CutsceneCanvas.SetActive(true);
+
+        _animator.Play("OutroCutscene01");
+
+        while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
+        {
+            if (_cutsceneCancelled)
+            {
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        CutsceneCanvas.SetActive(false);
     }
 
     public void SkipCutscene()
@@ -198,6 +233,8 @@ public class GameUI : MonoBehaviour
 
             _cutsceneCoroutine = null;
             _cutsceneCancelled = true;
+
+            _globalAudio.StopSoundEffect();
         }
     }
 
