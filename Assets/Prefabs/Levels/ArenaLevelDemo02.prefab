@@ -209,6 +209,7 @@ Transform:
   - {fileID: 247193252593870011}
   - {fileID: 8398393572792593100}
   - {fileID: 5686058071412845843}
+  - {fileID: 5240529086148246439}
   m_Father: {fileID: 5372922456223589104}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3721033628951790488
@@ -803,6 +804,97 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8998583742325644585, guid: ecd7d06f1f9866e42b0c52074f7b06db, type: 3}
   m_PrefabInstance: {fileID: 606985709874919397}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &786359481697071536
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3527668573673121659}
+    m_Modifications:
+    - target: {fileID: 2692567826591978175, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+      propertyPath: m_Name
+      value: HadesAnnounceTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094111687253222828, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+      propertyPath: m_Size.y
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094111687253222828, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+      propertyPath: m_Offset.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4779353537767770647, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4779353537767770647, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4779353537767770647, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4779353537767770647, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4779353537767770647, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4779353537767770647, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4779353537767770647, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4779353537767770647, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4779353537767770647, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4779353537767770647, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2692567826591978175, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6703984489124746753}
+  m_SourcePrefab: {fileID: 100100000, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+--- !u!1 &3437471253021680399 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2692567826591978175, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+  m_PrefabInstance: {fileID: 786359481697071536}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6703984489124746753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3437471253021680399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13f9df89794e8b446b6de2713a89a290, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HadesVoiceline: {fileID: 8300000, guid: 5952a0aad88e09f40af6f6a43bbbe925, type: 3}
+--- !u!4 &5240529086148246439 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4779353537767770647, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
+  m_PrefabInstance: {fileID: 786359481697071536}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1064740577503321534
 PrefabInstance:
