@@ -487,7 +487,9 @@ public class PlayerCharacter : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        PlayVoiceSource(FallDeathVoiceClip, 1f);
+        _globalAudio.PlaySoundEffect(FallDeathVoiceClip, 0.25f);
+
+        // PlayVoiceSource(FallDeathVoiceClip, 1f);
 
         yield return new WaitForSeconds(0.5f);
 
@@ -539,11 +541,6 @@ public class PlayerCharacter : MonoBehaviour
             _isAtDoorwayExit = false;
             HideText();
         }
-    }
-
-    public void StopCoroutines()
-    {
-        StopAllCoroutines();
     }
 
     private IEnumerator ActivateDamageTakenTime(float duration)
@@ -601,6 +598,8 @@ public class PlayerCharacter : MonoBehaviour
 
         _currentDashes = MaxDashes;
         _gameUI.SetStamina(_currentDashes);
+
+        _spriteRenderer.color = Color.white;
 
         HideText();
     }
@@ -701,7 +700,10 @@ public class PlayerCharacter : MonoBehaviour
 
     private void StopPlayerAttack()
     {
-        StopCoroutine(_playerAttackCoroutine);
+        if (_playerAttackCoroutine != null)
+        {
+            StopCoroutine(_playerAttackCoroutine);
+        }
 
         _isAttacking = false;
         _hasAttackDamageInvulnerability = false;

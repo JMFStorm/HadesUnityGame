@@ -1033,6 +1033,7 @@ MonoBehaviour:
   IntroCutsceneAudio02: {fileID: 8300000, guid: 2cf8f734583ee8249aa8780f3610dc32, type: 3}
   IntroCutsceneAudio03: {fileID: 8300000, guid: 5c2bd280867067b4e84bed79b9d09c0c, type: 3}
   OutroCutsceneAudio01: {fileID: 8300000, guid: 4fd51d1ae8bda714a8e04557f7e5cc7b, type: 3}
+  OutroCutsceneMusic01: {fileID: 8300000, guid: a9001d6f012054441825eba14c066ee1, type: 3}
   IntroTitle: {fileID: 4775787539996582423}
   MainMenuPanel: {fileID: 8903893813461544670}
   PauseMenuPanel: {fileID: 8617912460676330399}
@@ -1129,6 +1130,7 @@ MonoBehaviour:
   - {fileID: 3014003171651010040, guid: 4669513fb0853df44a6156bce1edfcec, type: 3}
   - {fileID: 4657302896168997985, guid: 111643304bee7ed4186e14b5da44e463, type: 3}
   - {fileID: 1514047593086382533, guid: c02045f98f152bd4b936cf55f8335280, type: 3}
+  - {fileID: 1038704009504597646, guid: f9928bbf302003d4ca1631c993c8a632, type: 3}
   PlayerPrefab: {fileID: 2218871938792346492, guid: 5733a604297294142a58f667cdab2a01, type: 3}
   MainCameraPrefab: {fileID: 3018883555529649252, guid: f02c88d847cab044da2a038dfd0c60b1, type: 3}
   GlobalLight: {fileID: 4863655271805905191}

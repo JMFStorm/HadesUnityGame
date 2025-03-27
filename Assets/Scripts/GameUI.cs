@@ -137,7 +137,8 @@ public class GameUI : MonoBehaviour
     {
         CutsceneCanvas.SetActive(true);
 
-        _animator.Play("IntroCutscene01");
+        _animator.enabled = true;
+        _animator.Play("IntroCutscene01", 0, 0f);
 
         _globalAudio.PlaySoundEffect(IntroCutsceneAudio01, 0.6f, true);
 
@@ -145,6 +146,7 @@ public class GameUI : MonoBehaviour
         {
             if (_cutsceneCancelled)
             {
+                _animator.enabled = false;
                 yield break;
             }
 
@@ -153,6 +155,7 @@ public class GameUI : MonoBehaviour
 
         if (_cutsceneCancelled)
         {
+            _animator.enabled = false;
             yield break;
         }
 
@@ -166,6 +169,7 @@ public class GameUI : MonoBehaviour
         {
             if (_cutsceneCancelled)
             {
+                _animator.enabled = false;
                 yield break;
             }
 
@@ -182,6 +186,7 @@ public class GameUI : MonoBehaviour
         {
             if (_cutsceneCancelled)
             {
+                _animator.enabled = false;
                 yield break;
             }
 

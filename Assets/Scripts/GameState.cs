@@ -37,6 +37,7 @@ public class GameState : MonoBehaviour
     private Sprite _currentLevelBg = null;
     private Material _levelBGMaterial;
     private Vector2 _bgOffset = new();
+    // private Coroutine _startNewGameCoroutine;
 
     private float _bgUVMultiplier = new();
 
@@ -129,17 +130,16 @@ public class GameState : MonoBehaviour
             {
                 _gameUI.SkipIntroSequence();
             }
-            else if (gameState == GameStateType.MainGame)
+            else if (gameState == GameStateType.MainGame && !_player.IsDead())
             {
                 _gameUI.ActivatePauseMenu(true);
             }
-            else if (gameState == GameStateType.PauseMenu)
+            else if (gameState == GameStateType.PauseMenu && !_player.IsDead())
             {
                 _gameUI.ActivatePauseMenu(false);
             }
             else if (gameState == GameStateType.Cutscene)
             {
-                Debug.Log("_playCutsceneCoroutine");
                 _gameUI.SkipCutscene();
             }
         }
@@ -377,6 +377,7 @@ public class GameState : MonoBehaviour
 
     public void RestartLevel()
     {
+        _player.StopAllCoroutines();
         _gameUI.GameOverScreen(false);
         _gameUI.ActivatePauseMenu(false);
         LoadLevelIndex(_currentLevelIndex, true);
