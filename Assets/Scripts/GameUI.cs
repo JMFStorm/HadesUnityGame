@@ -11,7 +11,9 @@ public class GameUI : MonoBehaviour
     public AudioClip IntroCutsceneAudio01;
     public AudioClip IntroCutsceneAudio02;
     public AudioClip IntroCutsceneAudio03;
+
     public AudioClip OutroCutsceneAudio01;
+    public AudioClip OutroCutsceneMusic01;
 
     public GameObject IntroTitle;
     public GameObject MainMenuPanel;
@@ -214,7 +216,7 @@ public class GameUI : MonoBehaviour
         CutsceneCanvas.SetActive(true);
 
         _animator.Play("OutroCutscene01");
-
+        _globalAudio.PlayGlobalMusicClip(OutroCutsceneMusic01, false, 1.0f);
         _globalAudio.PlaySoundEffect(OutroCutsceneAudio01, 0.8f, true);
 
         while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)

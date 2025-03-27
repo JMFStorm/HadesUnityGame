@@ -161,6 +161,21 @@ public class GlobalAudio : MonoBehaviour
         StartFade(ref _fadeMusicCoroutine, _globalMusicAudioSource, 0f, fadeTime, true, _globalMusicAudioSource.volume);
     }
 
+    public void PlayGlobalMusicClip(AudioClip clip, bool loop, float? volume = null)
+    {
+        if (clip != null && (_globalMusicAudioSource.clip != clip || !_globalMusicAudioSource.isPlaying))
+        {
+            var usedVol = volume ?? 1.0f;
+
+            _globalMusicAudioSource.clip = clip;
+            _globalMusicAudioSource.loop = loop;
+            _globalMusicAudioSource.volume = usedVol;
+            _globalMusicAudioSource.Play();
+
+            StartFade(ref _fadeMusicCoroutine, _globalMusicAudioSource, usedVol, 3f, false, 0f);
+        }
+    }
+
     public void PlayGlobalMusic(GlobalMusic music, bool loop, float? volume = null)
     {
         if (music == GlobalMusic.None)
@@ -170,18 +185,7 @@ public class GlobalAudio : MonoBehaviour
         }
 
         AudioClip clip = GlobalMusicAudios[(int)(music - 1)];
-
-        if (clip != null && (_globalMusicAudioSource.clip != clip || !_globalMusicAudioSource.isPlaying))
-        {
-            var usedVol  = volume ?? 1.0f;
-
-            _globalMusicAudioSource.clip = clip;
-            _globalMusicAudioSource.loop = loop;
-            _globalMusicAudioSource.volume = usedVol;
-            _globalMusicAudioSource.Play();
-
-            StartFade(ref _fadeMusicCoroutine, _globalMusicAudioSource, usedVol, 3f, false, 0f);
-        }
+        PlayGlobalMusicClip(clip, loop, volume);
     }
 
     private void StartFade(ref Coroutine coroutine, AudioSource source, float targetVolume, float duration, bool stopAfterFade, float startVolume)

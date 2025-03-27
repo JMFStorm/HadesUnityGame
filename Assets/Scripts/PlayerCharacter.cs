@@ -139,7 +139,7 @@ public class PlayerCharacter : MonoBehaviour
 
     void Awake()
     {
-        if (!TryGetComponent(out _animator))
+        if (!transform.Find("Sprite").TryGetComponent(out _animator))
         {
             Debug.LogError($"{nameof(Animator)} not found on {nameof(PlayerCharacter)}");
         }
@@ -149,7 +149,7 @@ public class PlayerCharacter : MonoBehaviour
             Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(PlayerCharacter)}");
         }
 
-        if (!TryGetComponent(out _spriteRenderer))
+        if (!transform.Find("Sprite").TryGetComponent(out _spriteRenderer))
         {
             Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(PlayerCharacter)}");
         }
