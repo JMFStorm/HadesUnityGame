@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Audio;
 
 public enum EnemySoundGroups
 {
@@ -7,7 +6,8 @@ public enum EnemySoundGroups
     DamageTaken,
     AttackMiss,
     AttackCharge,
-    Walk
+    Walk,
+    Fly
 }
 
 public enum EnemyVoiceGroups
@@ -24,8 +24,10 @@ public class EnemySounds : MonoBehaviour
 {
     private static float _lastVoiceTime = 0;
 
-    AudioSource _enemySoundSource;
-    AudioSource _enemyVoiceSource;
+    private AudioSource[] _enemySoundSources = new AudioSource[2];
+    private AudioSource _enemyVoiceSource;
+
+    private int _lastSoundSourceIndex = 0;
 
     public AudioClip[] AlertVoiceClips;
     public AudioClip[] DamageTakenVoiceClips;
@@ -37,6 +39,7 @@ public class EnemySounds : MonoBehaviour
     public AudioClip[] AttackSoundClips;
     public AudioClip[] DamageTakenSoundClips;
     public AudioClip[] WalkSoundClips;
+    public AudioClip[] FlySoundClips;
     public AudioClip[] AttackMissSoundClips;
     public AudioClip[] AttackChargeSoundClips;
 
@@ -44,7 +47,12 @@ public class EnemySounds : MonoBehaviour
 
     private void Awake()
     {
-        _enemySoundSource = gameObject.AddComponent<AudioSource>();
+        var soundSource1 = gameObject.AddComponent<AudioSource>();
+        var soundSource2 = gameObject.AddComponent<AudioSource>();
+
+        _enemySoundSources[0] = soundSource1;
+        _enemySoundSources[1] = soundSource2;
+
         _enemyVoiceSource = gameObject.AddComponent<AudioSource>();
 
         _mainCamera = FindFirstObjectByType<MainCamera>();
@@ -57,19 +65,24 @@ public class EnemySounds : MonoBehaviour
 
     void Start()
     {
-        _enemySoundSource.playOnAwake = false;
+        _enemySoundSources[0].playOnAwake = false;
+        _enemySoundSources[1].playOnAwake = false;
         _enemyVoiceSource.playOnAwake = false;
 
-        _enemySoundSource.spatialBlend = 1.0f;
+        _enemySoundSources[0].spatialBlend = 1.0f;
+        _enemySoundSources[1].spatialBlend = 1.0f;
         _enemyVoiceSource.spatialBlend = 1.0f;
 
-        _enemySoundSource.minDistance = 1.0f;
+        _enemySoundSources[0].minDistance = 1.0f;
+        _enemySoundSources[1].minDistance = 1.0f;
         _enemyVoiceSource.minDistance = 1.0f;
 
-        _enemySoundSource.maxDistance = 10.0f;
+        _enemySoundSources[0].maxDistance = 10.0f;
+        _enemySoundSources[1].maxDistance = 10.0f;
         _enemyVoiceSource.maxDistance = 10.0f;
 
-        _enemySoundSource.rolloffMode = AudioRolloffMode.Linear;
+        _enemySoundSources[0].rolloffMode = AudioRolloffMode.Linear;
+        _enemySoundSources[1].rolloffMode = AudioRolloffMode.Linear;
         _enemyVoiceSource.rolloffMode = AudioRolloffMode.Linear;
     }
 
@@ -82,10 +95,11 @@ public class EnemySounds : MonoBehaviour
             EnemySoundGroups.Walk => WalkSoundClips,
             EnemySoundGroups.AttackCharge => AttackChargeSoundClips,
             EnemySoundGroups.AttackMiss => AttackMissSoundClips,
+            EnemySoundGroups.Fly => FlySoundClips,
             _ => new AudioClip[] { },
         };
 
-        if (!_mainCamera.IsWorldPositionVisible(_enemySoundSource.transform.position))
+        if (!_mainCamera.IsWorldPositionVisible(_enemySoundSources[0].transform.position))
         {
             return;
         }
@@ -94,9 +108,12 @@ public class EnemySounds : MonoBehaviour
         {
             AudioClip usedClip = clips[Random.Range(0, clips.Length)];
 
-            _enemySoundSource.clip = usedClip;
-            _enemySoundSource.volume = soundType == EnemySoundGroups.Walk ? 0.35f : 1.0f;
-            _enemySoundSource.Play();
+            var usedIndex = _lastSoundSourceIndex++ % _enemySoundSources.Length;
+
+            _enemySoundSources[usedIndex].loop = false;
+            _enemySoundSources[usedIndex].volume = soundType == EnemySoundGroups.Walk ? 0.35f : 1.0f;
+            _enemySoundSources[usedIndex].clip = usedClip;
+            _enemySoundSources[usedIndex].Play();
         }
     }
 
@@ -109,7 +126,7 @@ public class EnemySounds : MonoBehaviour
             return;
         }
 
-        if (!_mainCamera.IsWorldPositionVisible(_enemySoundSource.transform.position))
+        if (!_mainCamera.IsWorldPositionVisible(_enemyVoiceSource.transform.position))
         {
             return;
         }

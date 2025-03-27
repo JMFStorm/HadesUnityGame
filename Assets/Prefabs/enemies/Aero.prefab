@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8555710142796696427}
   - component: {fileID: 5176929850465969991}
   - component: {fileID: 6502157152874197245}
+  - component: {fileID: 565418117257543445}
   m_Layer: 11
   m_Name: Aero
   m_TagString: Untagged
@@ -311,6 +312,44 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.35}
   m_Size: {x: 0.9, y: 1.2}
   m_Direction: 0
+--- !u!114 &565418117257543445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4364403561124163838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24a8f97a72d8dc740a9f6107288cba3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AlertVoiceClips:
+  - {fileID: 8300000, guid: 622c604411412f841a42b01267c264ca, type: 3}
+  DamageTakenVoiceClips:
+  - {fileID: 8300000, guid: 884d030703fab0541aabba6b69e810be, type: 3}
+  - {fileID: 8300000, guid: f03f4be15203a07498d77b4eeca49222, type: 3}
+  DeathVoiceClips:
+  - {fileID: 8300000, guid: 18d5ff69cb906ae49ac691ec015ee990, type: 3}
+  - {fileID: 8300000, guid: 5ed52b9fb21c53044adcf5f059df0e27, type: 3}
+  IdleVoiceClips:
+  - {fileID: 8300000, guid: 7b12abee946b3274ab6488ed3bf3b126, type: 3}
+  - {fileID: 8300000, guid: 73a492d50f87a454793177d30f658f3f, type: 3}
+  AttackVoiceClips: []
+  AttackChargeVoiceClips:
+  - {fileID: 8300000, guid: 128f690657c4ae14799f16403f42c5b4, type: 3}
+  AttackSoundClips:
+  - {fileID: 8300000, guid: 3c63aa3915fdbaf44a8ae71e11b4fc00, type: 3}
+  DamageTakenSoundClips:
+  - {fileID: 8300000, guid: 3bc63bd12ae9b914e804a7ec47a283ee, type: 3}
+  WalkSoundClips: []
+  FlySoundClips:
+  - {fileID: 8300000, guid: 7642f0ef4acc8464d9fc8d21392f2642, type: 3}
+  - {fileID: 8300000, guid: f3d0f718d6e69cf4c8894d3808045ae9, type: 3}
+  - {fileID: 8300000, guid: 10ea8870e7a26ac4d9016c436c8958c0, type: 3}
+  - {fileID: 8300000, guid: 45989b500b3fc124cb9f9bcbbcba60bd, type: 3}
+  AttackMissSoundClips: []
+  AttackChargeSoundClips: []
 --- !u!1 &7541917772692835313
 GameObject:
   m_ObjectHideFlags: 0

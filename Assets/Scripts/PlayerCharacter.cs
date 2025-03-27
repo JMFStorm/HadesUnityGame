@@ -473,7 +473,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         StopPlayerAttack();
         PlaySoundSource(DamageTakenSoundClip);
-        PlayPlayerVoice(PlayerGetHitVoice, 0.25f);
+        PlayVoiceSource(PlayerGetHitVoice, 0.5f);
         ControlsEnabled(false);
 
         _globalAudio.StopMusic(4f);
@@ -483,7 +483,7 @@ public class PlayerCharacter : MonoBehaviour
 
         yield return new WaitForSeconds(0.8f);
 
-        PlayPlayerVoice(PlayerDeathVoice, 0.8f);
+        PlayVoiceSource(PlayerDeathVoice, 1f);
         _isDead = true;
 
         yield return new WaitForSeconds(2.0f);
@@ -515,7 +515,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         StopPlayerAttack();
         PlaySoundSource(DamageTakenSoundClip);
-        PlayPlayerVoice(PlayerGetHitVoice, 0.25f);
+        PlayVoiceSource(PlayerGetHitVoice, 0.5f);
         ControlsEnabled(false);
         _inDamageState = true;
         _hasDamageInvulnerability = true;
@@ -832,8 +832,6 @@ public class PlayerCharacter : MonoBehaviour
     {
         var usedIndex = _lastSoundSourceIndex++ % _playerSoundAudioSources.Length;
 
-        Debug.Log("usedIndex " + usedIndex);
-
         _playerSoundAudioSources[usedIndex].loop = false;
         _playerSoundAudioSources[usedIndex].volume = volume;
         _playerSoundAudioSources[usedIndex].clip = sound;
@@ -862,17 +860,6 @@ public class PlayerCharacter : MonoBehaviour
     public bool IsDead()
     {
         return _isDead;
-    }
-
-    public void PlayPlayerVoice(AudioClip clip, float volume)
-    {
-        if (clip != null && (_playerVoiceAudioSource.clip != clip || !_playerVoiceAudioSource.isPlaying))
-        {
-            _playerVoiceAudioSource.loop = false;
-            _playerVoiceAudioSource.volume = volume;
-            _playerVoiceAudioSource.clip = clip;
-            _playerVoiceAudioSource.Play();
-        }
     }
 
     void StopRunCycleAudio()

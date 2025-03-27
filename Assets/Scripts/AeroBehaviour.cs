@@ -45,6 +45,7 @@ public class AeroBehaviour : EnemyBase
     private AudioSource _audioSource;
     private MainCamera _mainCamera;
     private PlayerCharacter _player;
+    private EnemySounds _soundEmitter;
 
     private Material _material;
 
@@ -85,6 +86,11 @@ public class AeroBehaviour : EnemyBase
     protected override void Awake()
     {
         base.Awake();
+
+        if (!TryGetComponent(out _soundEmitter))
+        {
+            Debug.LogError($"{nameof(EnemySounds)} not found on {nameof(AeroBehaviour)}");
+        }
 
         if (!TryGetComponent(out _spriteRenderer))
         {
@@ -342,7 +348,9 @@ public class AeroBehaviour : EnemyBase
 
     private IEnumerator ActivateDamageTakenTime(float duration)
     {
-        PlaySound(AeroSounds.Hit);
+        _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Damage);
+        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
+
         _hasDamageInvulnerability = true;
         SetDamageColor(true);
 
@@ -372,7 +380,7 @@ public class AeroBehaviour : EnemyBase
         _isDead = true;
 
         StopWingsFlap();
-        PlaySound(AeroSounds.Death);
+        _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death);
 
         _spriteRenderer.enabled = false;
         _enemyDamageZone.gameObject.SetActive(false);
@@ -456,7 +464,7 @@ public class AeroBehaviour : EnemyBase
     {
         _animatior.SetBool("_IsAttacking", true);
 
-        PlaySound(AeroSounds.Preattack);
+        _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
 
         _attackInterrupted = false;
 
@@ -495,7 +503,7 @@ public class AeroBehaviour : EnemyBase
 
         ResetShotLoadTime();
 
-        PlaySound(AeroSounds.ProjectileLaunch);
+        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Attack);
 
         projectileScript.SetProjectileColor(!IsShadowVariant ? _projectileColor1 : _projectileColor2);
         projectileScript.Launch(direction);
@@ -513,21 +521,6 @@ public class AeroBehaviour : EnemyBase
     {
         var timeOffset = shootingCooldown - (shootingCooldown * (percentage / 100));
         _lastShotTime = Time.time - timeOffset;
-    }
-
-    void PlaySound(AeroSounds soundIndex)
-    {
-        var index = (int)soundIndex;
-
-        if (_audioSource != null && index < AudioClips.Length && AudioClips[index] != null)
-        {
-            _audioSource.clip = AudioClips[index];
-            _audioSource.Play();
-        }
-        else
-        {
-            Debug.LogWarning($"Error playing Player sound index {index}. {nameof(AudioSource)}, {nameof(AudioClip)}, or the specified sound is not assigned.");
-        }
     }
 
     void StopAttackMove()
@@ -589,7 +582,7 @@ public class AeroBehaviour : EnemyBase
                 yield break;
             }
 
-            PlaySound(AeroSounds.Wings);
+            _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Fly);
         }
     }
 }
