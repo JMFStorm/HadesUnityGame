@@ -644,11 +644,6 @@ public class PlayerCharacter : MonoBehaviour
             }
 
             _swordBoxCollider.gameObject.SetActive(false);
-
-            // yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
-
-            // Debug.Log("_animator.GetCurrentAnimatorStateInfo(0).length " + _animator.GetCurrentAnimatorStateInfo(0).length);
-
         }
 
         _isAttacking = false;
@@ -663,6 +658,16 @@ public class PlayerCharacter : MonoBehaviour
         yield return new WaitForSeconds(time);
 
         Physics2D.IgnoreCollision(_physicsCollider, platformCollider, false);
+    }
+
+    public void GetHealthFromPickup(int health)
+    {
+        if (health <= _currentHealth)
+        {
+            return;
+        }
+
+        SetPlayerHealth(health);
     }
 
     public void SetPlayerHealth(int health)
