@@ -11,6 +11,7 @@ TagManager:
   - Mook
   - ArenaEventStart
   - ArenaEvent
+  - PlayerFallDeath
   layers:
   - Default
   - TransparentFX

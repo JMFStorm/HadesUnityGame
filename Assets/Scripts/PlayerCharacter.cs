@@ -64,8 +64,6 @@ public class PlayerCharacter : MonoBehaviour
     public AudioClip JumpSoundClip;
     public AudioClip JumpLandSoundClip;
 
-    public AudioClip PlayerGetHitVoice;
-    public AudioClip PlayerDeathVoice;
     public Transform GroundCheck;
 
     public LayerMask GroundLayer;
@@ -422,6 +420,10 @@ public class PlayerCharacter : MonoBehaviour
             _isAtDoorwayExit = true;
             ShowText("Exit Level", Color.white);
         }
+        else if (other.CompareTag("PlayerFallDeath"))
+        {
+            TriggerPlayerFallDeath();
+        }
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -436,6 +438,11 @@ public class PlayerCharacter : MonoBehaviour
             Vector2 collisionDirection = (transform.position - other.transform.position).normalized;
             TryRecieveDamage(collisionDirection);
         }
+    }
+
+    private void TriggerPlayerFallDeath()
+    {
+        StartCoroutine(PlayerFallingDieAndLevelRestart());
     }
 
     public void SetPlayerColor(Color color)
@@ -469,11 +476,34 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
+    IEnumerator PlayerFallingDieAndLevelRestart()
+    {
+        StopPlayerAttack();
+        ControlsEnabled(false);
+
+        _globalAudio.StopMusic(4f);
+
+        _isDead = true;
+
+        yield return new WaitForSeconds(0.1f);
+
+        PlayVoiceSource(FallDeathVoiceClip, 1f);
+
+        yield return new WaitForSeconds(0.5f);
+
+        _gameUI.HidePlayerStats(true);
+        _gameUI.FadeOut(1.5f);
+
+        yield return new WaitForSeconds(2.5f);
+
+        _gameState.GameOverScreen();
+    }
+
     IEnumerator PlayerDieAndLevelRestart()
     {
         StopPlayerAttack();
         PlaySoundSource(DamageTakenSoundClip);
-        PlayVoiceSource(PlayerGetHitVoice, 0.5f);
+        PlayVoiceSource(DamageTakenVoiceClip, 0.5f);
         ControlsEnabled(false);
 
         _globalAudio.StopMusic(4f);
@@ -483,7 +513,7 @@ public class PlayerCharacter : MonoBehaviour
 
         yield return new WaitForSeconds(0.8f);
 
-        PlayVoiceSource(PlayerDeathVoice, 1f);
+        PlayVoiceSource(DeathVoiceClip, 1f);
         _isDead = true;
 
         yield return new WaitForSeconds(2.0f);
@@ -511,11 +541,16 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
+    public void StopCoroutines()
+    {
+        StopAllCoroutines();
+    }
+
     private IEnumerator ActivateDamageTakenTime(float duration)
     {
         StopPlayerAttack();
         PlaySoundSource(DamageTakenSoundClip);
-        PlayVoiceSource(PlayerGetHitVoice, 0.5f);
+        PlayVoiceSource(DamageTakenVoiceClip, 0.5f);
         ControlsEnabled(false);
         _inDamageState = true;
         _hasDamageInvulnerability = true;
