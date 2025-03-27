@@ -187,7 +187,6 @@ GameObject:
   - component: {fileID: 8747672932157108684}
   - component: {fileID: 6700743367801170400}
   - component: {fileID: 2218871938792346492}
-  - component: {fileID: 118842731618917201}
   - component: {fileID: 5308850675433133617}
   - component: {fileID: 7139696101262272539}
   m_Layer: 7
@@ -255,11 +254,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e85b37325828bcf4198f2f0349bef8d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioClips:
-  - {fileID: 8300000, guid: 04e9130b1ba2ce64d9c96234a7768891, type: 3}
-  - {fileID: 8300000, guid: 4408d5e5b0f82534992b4ceae4b12e72, type: 3}
-  - {fileID: 8300000, guid: e5e65f9a1405a4c46af11601c1fb2501, type: 3}
-  - {fileID: 8300000, guid: 0b4a5574ee4722f4abb56112ea122050, type: 3}
+  DamageTakenVoiceClip: {fileID: 8300000, guid: 5c54ff1724e2e844b8f0d50f01a777b5, type: 3}
+  DeathVoiceClip: {fileID: 8300000, guid: cf4fcb3948a6797409bc2e80be29e73f, type: 3}
+  FallDeathVoiceClip: {fileID: 8300000, guid: 156f684085ba7754aafbd5d73fcc089c, type: 3}
+  WalkSoundClips:
+  - {fileID: 8300000, guid: 3aad6b08ee741af45bdc6615bb80099b, type: 3}
+  - {fileID: 8300000, guid: 294f791773cef9e48ba3a02b437ea7c3, type: 3}
+  AttackSoundClip: {fileID: 8300000, guid: 04e9130b1ba2ce64d9c96234a7768891, type: 3}
+  AttackMissSoundClip: {fileID: 8300000, guid: ef4784608f9ddf94ba8e9673b13ac771, type: 3}
+  DashsoundClip: {fileID: 8300000, guid: 4408d5e5b0f82534992b4ceae4b12e72, type: 3}
+  DamageTakenSoundClip: {fileID: 8300000, guid: 0b4a5574ee4722f4abb56112ea122050, type: 3}
+  JumpSoundClip: {fileID: 8300000, guid: e5e65f9a1405a4c46af11601c1fb2501, type: 3}
+  JumpLandSoundClip: {fileID: 8300000, guid: 8f26f4552b941fb40b7f78b2869b81c8, type: 3}
   PlayerGetHitVoice: {fileID: 8300000, guid: 5c54ff1724e2e844b8f0d50f01a777b5, type: 3}
   PlayerDeathVoice: {fileID: 8300000, guid: cf4fcb3948a6797409bc2e80be29e73f, type: 3}
   GroundCheck: {fileID: 8886047964763647662}
@@ -290,103 +296,6 @@ MonoBehaviour:
   DebugLogging: 0
   MaxDashes: 2
   _lastAttackTime: 0
---- !u!82 &118842731618917201
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1504642369529134822}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 0.4
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 0.87353516
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &5308850675433133617
 MonoBehaviour:
   m_ObjectHideFlags: 0

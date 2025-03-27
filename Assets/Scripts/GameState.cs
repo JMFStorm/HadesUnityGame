@@ -363,7 +363,7 @@ public class GameState : MonoBehaviour
 
         _currentLevel.MakeLevelArenaEvents();
 
-        _player.ResetPlayerInnerState();
+        _player.ResetPlayerInnerState(isRetry);
         SetPlayerColor(_playerColor);
 
         Time.timeScale = 1f;

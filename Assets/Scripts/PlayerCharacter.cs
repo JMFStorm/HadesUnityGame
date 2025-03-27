@@ -2,14 +2,6 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public enum PlayerSounds
-{
-    Attack = 0,
-    Dash,
-    Jump,
-    Hit,
-}
-
 public static class PlayerColors
 {
     public static Color BloodstoneRedColor = new(0.61f, 0.13f, 0.09f);
@@ -56,7 +48,22 @@ public static class PlayerColors
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerCharacter : MonoBehaviour
 {
-    public AudioClip[] _audioClips;
+    private AudioSource[] _playerSoundAudioSources = new AudioSource[2];
+    private AudioSource _playerVoiceAudioSource;
+
+    public AudioClip DamageTakenVoiceClip;
+    public AudioClip DeathVoiceClip;
+    public AudioClip FallDeathVoiceClip;
+
+    public AudioClip[] WalkSoundClips;
+
+    public AudioClip AttackSoundClip;
+    public AudioClip AttackMissSoundClip;
+    public AudioClip DashsoundClip;
+    public AudioClip DamageTakenSoundClip;
+    public AudioClip JumpSoundClip;
+    public AudioClip JumpLandSoundClip;
+
     public AudioClip PlayerGetHitVoice;
     public AudioClip PlayerDeathVoice;
     public Transform GroundCheck;
@@ -87,7 +94,6 @@ public class PlayerCharacter : MonoBehaviour
 
     private Animator _animator;
 
-    private AudioSource _audioSource;
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
     private CapsuleCollider2D _physicsCollider;
@@ -98,7 +104,9 @@ public class PlayerCharacter : MonoBehaviour
     private GameUI _gameUI;
     private GameState _gameState;
     private GlobalAudio _globalAudio;
-    private AudioSource _playerVoiceAudioSource;
+
+    private Coroutine _currentRunCycleCoroutine;
+    private Coroutine _playerAttackCoroutine;
 
     private Vector2 _groundCheckSize = new(0.5f, 0.25f);
     private Vector2 _originalSize;
@@ -106,6 +114,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private int _currentDashes = 0;
     private int _currentHealth = 3;
+    private int _lastSoundSourceIndex = 0;
 
     private bool _controlsAreActive = true;
     private bool _isAtDoorwayExit = false;
@@ -117,6 +126,7 @@ public class PlayerCharacter : MonoBehaviour
     private bool _isCrouching = false;
     private bool _isAttacking = false;
     private bool _hasDamageInvulnerability = false;
+    private bool _hasAttackDamageInvulnerability = false;
     private bool _inDamageState = false;
     private bool _isDead = false;
 
@@ -139,6 +149,34 @@ public class PlayerCharacter : MonoBehaviour
 
     void Awake()
     {
+        var soundSource1 = gameObject.AddComponent<AudioSource>();
+        var soundSource2 = gameObject.AddComponent<AudioSource>();
+
+        _playerSoundAudioSources[0] = soundSource1;
+        _playerSoundAudioSources[1] = soundSource2;
+
+        _playerVoiceAudioSource = gameObject.AddComponent<AudioSource>();
+
+        _playerSoundAudioSources[1].playOnAwake = false;
+        _playerSoundAudioSources[0].playOnAwake = false;
+        _playerVoiceAudioSource.playOnAwake = false;
+
+        _playerSoundAudioSources[1].spatialBlend = 1.0f;
+        _playerSoundAudioSources[0].spatialBlend = 1.0f;
+        _playerVoiceAudioSource.spatialBlend = 1.0f;
+
+        _playerSoundAudioSources[1].minDistance = 1.0f;
+        _playerSoundAudioSources[0].minDistance = 1.0f;
+        _playerVoiceAudioSource.minDistance = 1.0f;
+
+        _playerSoundAudioSources[1].maxDistance = 10.0f;
+        _playerSoundAudioSources[0].maxDistance = 10.0f;
+        _playerVoiceAudioSource.maxDistance = 10.0f;
+
+        _playerSoundAudioSources[1].rolloffMode = AudioRolloffMode.Linear;
+        _playerSoundAudioSources[0].rolloffMode = AudioRolloffMode.Linear;
+        _playerVoiceAudioSource.rolloffMode = AudioRolloffMode.Linear;
+
         if (!transform.Find("Sprite").TryGetComponent(out _animator))
         {
             Debug.LogError($"{nameof(Animator)} not found on {nameof(PlayerCharacter)}");
@@ -157,11 +195,6 @@ public class PlayerCharacter : MonoBehaviour
         if (!TryGetComponent(out _physicsCollider))
         {
             Debug.LogError($"{nameof(CapsuleCollider2D)} not found on {nameof(PlayerCharacter)}");
-        }
-
-        if (!TryGetComponent(out _audioSource))
-        {
-            Debug.LogError($"{nameof(AudioSource)} not found on {nameof(PlayerCharacter)}");
         }
 
         if (GroundCheck == null)
@@ -231,7 +264,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Start()
     {
-        ResetPlayerInnerState();
+        ResetPlayerInnerState(false);
 
         SetPlayerHealth(_gameUI.DefaultPlayerHealth);
     }
@@ -240,6 +273,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         if (_gameState.GetGameState() != GameStateType.MainGame)
         {
+            StopRunCycleAudio();
             return;
         }
 
@@ -284,6 +318,17 @@ public class PlayerCharacter : MonoBehaviour
             _spriteRenderer.flipX = _facingDirX < 0.0f;
         }
 
+        bool moving = _hasGroundedFeet && 0.01f < Mathf.Abs(_rigidBody.linearVelocity.x);
+
+        if (moving)
+        {
+            // TryInitRunCycleAudio();
+        }
+        else
+        {
+            StopRunCycleAudio();
+        }
+
         // ---------------
         // Get animation
 
@@ -314,7 +359,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             usedAnim = "PlayerAir";
         }
-        else if (_hasGroundedFeet && 0.01f < Mathf.Abs(_rigidBody.linearVelocity.x))
+        else if (moving)
         {
             usedAnim = "PlayerMove";
         }
@@ -332,7 +377,17 @@ public class PlayerCharacter : MonoBehaviour
         _isGroundGrounded = Physics2D.OverlapBox(GroundCheck.position, _groundCheckSize, 0, DamageEnvLayer);
         _isDamageEnvGrounded = Physics2D.OverlapBox(GroundCheck.position, _groundCheckSize, 0, GroundLayer);
 
+        bool previousFrameGrounded = _hasGroundedFeet;
+
         _hasGroundedFeet = _isPlatformGrounded || _isGroundGrounded || _isDamageEnvGrounded;
+
+        const float stompSoundTreshold = -3f;
+
+        if (!previousFrameGrounded && _hasGroundedFeet && _rigidBody.linearVelocityY < stompSoundTreshold)
+        {
+            Debug.Log("_rigidBody.linearVelocityY " + _rigidBody.linearVelocityY);
+            PlaySoundSource(JumpLandSoundClip, 0.5f);
+        }
 
         if (_hasGroundedFeet)
         {
@@ -371,7 +426,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("PlayerSword") || _isAttacking)
+        if (other.gameObject.CompareTag("PlayerSword") || _hasAttackDamageInvulnerability)
         {
             return; // NOTE: Ignore damage recieve when attacking
         }
@@ -416,7 +471,8 @@ public class PlayerCharacter : MonoBehaviour
 
     IEnumerator PlayerDieAndLevelRestart()
     {
-        PlaySound(PlayerSounds.Hit);
+        StopPlayerAttack();
+        PlaySoundSource(DamageTakenSoundClip);
         PlayPlayerVoice(PlayerGetHitVoice, 0.25f);
         ControlsEnabled(false);
 
@@ -457,7 +513,8 @@ public class PlayerCharacter : MonoBehaviour
 
     private IEnumerator ActivateDamageTakenTime(float duration)
     {
-        PlaySound(PlayerSounds.Hit);
+        StopPlayerAttack();
+        PlaySoundSource(DamageTakenSoundClip);
         PlayPlayerVoice(PlayerGetHitVoice, 0.25f);
         ControlsEnabled(false);
         _inDamageState = true;
@@ -482,7 +539,7 @@ public class PlayerCharacter : MonoBehaviour
     }
 
 
-    public void ResetPlayerInnerState()
+    public void ResetPlayerInnerState(bool restartLevel)
     {
         _isAtDoorwayExit = false;
         _hasGroundedFeet = false;
@@ -490,6 +547,7 @@ public class PlayerCharacter : MonoBehaviour
         _isCrouching = false;
         _isAttacking = false;
         _hasDamageInvulnerability = false;
+        _hasAttackDamageInvulnerability = false;
         _isDead = false;
         _inDamageState = false;
 
@@ -500,8 +558,11 @@ public class PlayerCharacter : MonoBehaviour
         _dashTimer = 0f;
         _dashRegenTimer = 0f;
 
-        _currentHealth = 3;
-        _gameUI.SetHealth(_currentHealth);
+        if (_currentHealth < 3 || restartLevel)
+        {
+            _currentHealth = 3;
+            _gameUI.SetHealth(_currentHealth);
+        }
 
         _currentDashes = MaxDashes;
         _gameUI.SetStamina(_currentDashes);
@@ -567,7 +628,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             if (IsReadyToJumpAgain())
             {
-                PlaySound(PlayerSounds.Jump);
+                PlaySoundSource(JumpSoundClip);
                 _rigidBody.linearVelocity = new Vector2(_rigidBody.linearVelocity.x, JumpForce);
                 _groundedTime = 0.0f;
             }
@@ -588,7 +649,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             if (!_isAttacking)
             {
-                StartCoroutine(PlayerAttack(0f < _facingDirX));
+                _playerAttackCoroutine = StartCoroutine(PlayerAttack(0f < _facingDirX));
             }
         }
 
@@ -603,6 +664,15 @@ public class PlayerCharacter : MonoBehaviour
         return _rigidBody.linearVelocityY <= _newJumpVelocityThreshold && _newJumpTimeCooldown < _groundedTime;
     }
 
+    private void StopPlayerAttack()
+    {
+        StopCoroutine(_playerAttackCoroutine);
+
+        _isAttacking = false;
+        _hasAttackDamageInvulnerability = false;
+        _swordBoxCollider.gameObject.SetActive(false);
+    }
+
     private IEnumerator PlayerAttack(bool rightSideAttack)
     {
         _isAttacking = true;
@@ -611,19 +681,20 @@ public class PlayerCharacter : MonoBehaviour
         {
             _animator.Play("PlayerAttack", -1, 0f);
 
-            const float attackPreSwingTime = 0.125f;
-
             _lastAttackTime = Time.time;
 
+            const float attackPreSwingTime = 0.125f;
             yield return new WaitForSeconds(attackPreSwingTime);
+
+            PlaySoundSource(AttackSoundClip);
 
             if (_isDashing)
             {
-                _isAttacking = false;
-                _swordBoxCollider.gameObject.SetActive(false);
+                StopPlayerAttack();
                 yield break;
             }
 
+            _hasAttackDamageInvulnerability = true;
             _swordBoxCollider.gameObject.SetActive(true);
 
             float swordAreaXOffset = Mathf.Abs(_swordBoxCollider.offset.x);
@@ -631,18 +702,23 @@ public class PlayerCharacter : MonoBehaviour
             _swordBoxCollider.offset = new Vector2(attackSwordXOffset, _swordBoxCollider.offset.y);
 
             const float attackVisibleTime = 0.35f;
+            const float part01 = attackVisibleTime - 0.15f;
+            yield return new WaitForSeconds(part01);
 
-            PlaySound(PlayerSounds.Attack);
+            if (_hasGroundedFeet)
+            {
+                PlaySoundSource(AttackMissSoundClip);
+            }
 
-            yield return new WaitForSeconds(attackVisibleTime);
+            yield return new WaitForSeconds(attackVisibleTime - part01);
 
             if (_isDashing)
             {
-                _isAttacking = false;
-                _swordBoxCollider.gameObject.SetActive(false);
+                StopPlayerAttack();
                 yield break;
             }
 
+            _hasAttackDamageInvulnerability = false;
             _swordBoxCollider.gameObject.SetActive(false);
         }
 
@@ -698,7 +774,7 @@ public class PlayerCharacter : MonoBehaviour
 
     void StartDash()
     {
-        PlaySound(PlayerSounds.Dash);
+        PlaySoundSource(DashsoundClip);
 
         _rigidBody.constraints = _dashingRigidbodyConstraints;
 
@@ -744,15 +820,24 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
-    void PlaySound(PlayerSounds soundIndex)
+    public void PlayVoiceSource(AudioClip sound, float volume = 1f)
     {
-        var index = (int)soundIndex;
+        _playerVoiceAudioSource.loop = false;
+        _playerVoiceAudioSource.volume = volume;
+        _playerVoiceAudioSource.clip = sound;
+        _playerVoiceAudioSource.Play();
+    }
 
-        if (_audioSource != null && index < _audioClips.Length && _audioClips[index] != null)
-        {
-            _audioSource.clip = _audioClips[index];
-            _audioSource.Play();
-        }
+    public void PlaySoundSource(AudioClip sound, float volume = 1f)
+    {
+        var usedIndex = _lastSoundSourceIndex++ % _playerSoundAudioSources.Length;
+
+        Debug.Log("usedIndex " + usedIndex);
+
+        _playerSoundAudioSources[usedIndex].loop = false;
+        _playerSoundAudioSources[usedIndex].volume = volume;
+        _playerSoundAudioSources[usedIndex].clip = sound;
+        _playerSoundAudioSources[usedIndex].Play();
     }
 
     void DebugLog(string message)
@@ -787,6 +872,36 @@ public class PlayerCharacter : MonoBehaviour
             _playerVoiceAudioSource.volume = volume;
             _playerVoiceAudioSource.clip = clip;
             _playerVoiceAudioSource.Play();
+        }
+    }
+
+    void StopRunCycleAudio()
+    {
+        if (_currentRunCycleCoroutine != null)
+        {
+            StopCoroutine(_currentRunCycleCoroutine);
+            _currentRunCycleCoroutine = null;
+        }
+    }
+
+    void TryInitRunCycleAudio()
+    {
+        if (_currentRunCycleCoroutine == null)
+        {
+            _currentRunCycleCoroutine = StartCoroutine(RunCycleAudio());
+        }
+    }
+
+    IEnumerator RunCycleAudio()
+    {
+        yield return new WaitForSeconds(2f / 10f);
+
+        while (true)
+        {
+            yield return new WaitForSeconds(4f / 10f);
+
+            AudioClip usedClip = WalkSoundClips[Random.Range(0, WalkSoundClips.Length)];
+            PlaySoundSource(usedClip);
         }
     }
 }
