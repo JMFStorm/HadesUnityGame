@@ -122,6 +122,9 @@ public class Projectile : MonoBehaviour
         var collider = _damageZone.GetComponent<CircleCollider2D>();
         collider.enabled = false;
 
+        var audio = GetComponent<AudioSource>();
+        audio.enabled = false;
+
         _spriteRenderer.enabled = false;
         _rb.simulated = false;
         _spriteTransform.localScale *= scale;
