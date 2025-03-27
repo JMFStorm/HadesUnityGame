@@ -4,16 +4,18 @@ using UnityEngine;
 [RequireComponent(typeof(CircleCollider2D))]
 public class Projectile : MonoBehaviour
 {
-    public float speed = 5f; // Speed of the projectile
-    public float lifetime = 3f; // Lifetime of the projectile in seconds
+    public float speed = 5f;
+    public float lifetime = 3f;
 
     private Rigidbody2D _rb;
-    private SpriteRenderer _spriteRenderer; // Reference to the SpriteRenderer component
-    private Transform _spriteTransform; // Reference to the SpriteRenderer component
+    private SpriteRenderer _spriteRenderer;
+    private Transform _spriteTransform;
+    private ParticleSystem _particleSystem;
 
-    private Color _targetColor; // The target color to fade to
+    private Color _targetColor;
     private bool _isFading = false; // Flag to track if fading is active
     private float _fadeStartTime; // Time when fading started
+    private float _launchTime = 0; 
 
     private Transform _damageZone;
 
@@ -24,6 +26,11 @@ public class Projectile : MonoBehaviour
         if (!TryGetComponent(out _rb))
         {
             Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(Rigidbody2D)}");
+        }
+
+        if (!TryGetComponent(out _particleSystem))
+        {
+            Debug.LogError($"{nameof(ParticleSystem)} not found on {nameof(Rigidbody2D)}");
         }
 
         _spriteTransform = transform.Find("Sprite");
@@ -65,7 +72,7 @@ public class Projectile : MonoBehaviour
             Debug.Log("Player sword hit!");
 
             Implode(Color.black, 1.25f);
-            Destroy(gameObject, 2.0f);
+            Destroy(gameObject, 3.0f);
         }
     }
 
@@ -81,29 +88,53 @@ public class Projectile : MonoBehaviour
 
             if (1f <= t)
             {
-                gameObject.SetActive(false);
+                // gameObject.SetActive(false);
             }
+        }
+        else
+        {
+            _launchTime += Time.deltaTime;
+        }
+
+        if (3f < _launchTime)
+        {
+            Implode(Color.black, 1f);
         }
     }
 
     public void SetProjectileColor(Color color)
     {
         _spriteRenderer.material.SetColor("_BaseColour", color);
+        var main = _particleSystem.main;
+        main.startColor = color;
     }
 
     public void Launch(Vector2 direction)
     {
+        _launchTime = 0f;
         _rb.linearVelocity = direction.normalized * speed;
-        Destroy(gameObject, lifetime);
     }
 
     private void Implode(Color color, float scale)
     {
-        _damageZone.gameObject.SetActive(false);
+        Debug.Log("Implode");
+
+        var collider = _damageZone.GetComponent<CircleCollider2D>();
+        collider.enabled = false;
+
+        _spriteRenderer.enabled = false;
         _rb.simulated = false;
-        _targetColor = color;
         _spriteTransform.localScale *= scale;
+        _targetColor = color;
+
         _isFading = true;
         _fadeStartTime = Time.time;
+
+        Invoke(nameof(DeleteObject), 1f);
+    }
+
+    void DeleteObject()
+    {
+        Destroy(gameObject);
     }
 }
