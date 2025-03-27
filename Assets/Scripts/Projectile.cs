@@ -41,12 +41,6 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void Launch(Vector2 direction)
-    {
-        _rb.linearVelocity = direction.normalized * speed;
-        Destroy(gameObject, lifetime);
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("FlyingEnemy"))
@@ -90,6 +84,17 @@ public class Projectile : MonoBehaviour
                 gameObject.SetActive(false);
             }
         }
+    }
+
+    public void SetProjectileColor(Color color)
+    {
+        _spriteRenderer.material.SetColor("_BaseColour", color);
+    }
+
+    public void Launch(Vector2 direction)
+    {
+        _rb.linearVelocity = direction.normalized * speed;
+        Destroy(gameObject, lifetime);
     }
 
     private void Implode(Color color, float scale)

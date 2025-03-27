@@ -257,8 +257,8 @@ public class GameState : MonoBehaviour
         if (!skipCutscene)
         {
             SetGameState(GameStateType.Cutscene);
-            yield return StartCoroutine(_gameUI.PlayOutroCutscene());
-            // yield return StartCoroutine(_gameUI.PlayIntroCutscene());
+            // yield return StartCoroutine(_gameUI.PlayOutroCutscene());
+            yield return StartCoroutine(_gameUI.PlayIntroCutscene());
         }
 
         SetGameState(GameStateType.MainGame);
@@ -342,7 +342,9 @@ public class GameState : MonoBehaviour
 
         if (!isRetry && _currentLevel.AnnouncerIntro != null)
         {
-            _globalAudio.PlayAnnouncerVoiceClip(_currentLevel.AnnouncerIntro);
+            // _globalAudio.PlayAnnouncerVoiceClip(_currentLevel.AnnouncerIntro);
+
+            // NOTE: Cut this feature, use trigger areas instead
         }
 
         var levelEnter = _currentLevel.GetLevelEntrance();

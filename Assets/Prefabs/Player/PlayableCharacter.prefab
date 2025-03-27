@@ -257,10 +257,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioClips:
-  - {fileID: 8300000, guid: 616410fd98b84db489742c3389b6a283, type: 3}
-  - {fileID: 8300000, guid: b38ddca8ae3207b43991bcc1879a2585, type: 3}
-  - {fileID: 8300000, guid: c7bee8536862cd74594cd4232d27826e, type: 3}
-  - {fileID: 8300000, guid: 0fce7e4723ab6ff43aa729ce14021fd5, type: 3}
+  - {fileID: 8300000, guid: 04e9130b1ba2ce64d9c96234a7768891, type: 3}
+  - {fileID: 8300000, guid: 4408d5e5b0f82534992b4ceae4b12e72, type: 3}
+  - {fileID: 8300000, guid: e5e65f9a1405a4c46af11601c1fb2501, type: 3}
+  - {fileID: 8300000, guid: 0b4a5574ee4722f4abb56112ea122050, type: 3}
   PlayerGetHitVoice: {fileID: 8300000, guid: 5c54ff1724e2e844b8f0d50f01a777b5, type: 3}
   PlayerDeathVoice: {fileID: 8300000, guid: cf4fcb3948a6797409bc2e80be29e73f, type: 3}
   GroundCheck: {fileID: 8886047964763647662}

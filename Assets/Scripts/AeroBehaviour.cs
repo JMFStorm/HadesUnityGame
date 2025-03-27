@@ -72,6 +72,9 @@ public class AeroBehaviour : EnemyBase
     private float _targetDistanceX = 0;
     private float _usedSpeed = 0;
 
+    private readonly Color _projectileColor1 = new(0.55f, 0.75f, 0f, 1f);
+    private readonly Color _projectileColor2 = new(0.5f, 0.0f, 0.0f, 1f);
+
     private LayerMask _seesTargetLayerMask;
 
     private int _currentHealth = 3;
@@ -493,6 +496,8 @@ public class AeroBehaviour : EnemyBase
         ResetShotLoadTime();
 
         PlaySound(AeroSounds.ProjectileLaunch);
+
+        projectileScript.SetProjectileColor(!IsShadowVariant ? _projectileColor1 : _projectileColor2);
         projectileScript.Launch(direction);
 
         // NOTE: Set animation state beck a bit "prematurely" to avoid extra loop
