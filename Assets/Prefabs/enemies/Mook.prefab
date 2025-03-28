@@ -267,11 +267,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Id: 
-  MovementSpeed: 1.5
-  AggroSpeed: 2.5
+  MovementSpeed: 1
+  AggroSpeed: 2
   AttackRange: 1.5
   DamageStunTime: 0.75
-  ShadowOutlineThreshold: 0.015
   NormalWalkFrequency: 0.65
   AggroWalkFrequency: 0.45
   DamageColor: {r: 0.49019608, g: 0.078431375, b: 0.078431375, a: 1}
@@ -364,6 +363,9 @@ MonoBehaviour:
   WalkSoundClips:
   - {fileID: 8300000, guid: ae6d4cd1c095b4342820d48a195eb987, type: 3}
   - {fileID: 8300000, guid: 7a1ae42f588ec4348baeccf84049d472, type: 3}
+  DragSoundClips:
+  - {fileID: 8300000, guid: 1801e04f251ac8b4d8131140641a778c, type: 3}
+  - {fileID: 8300000, guid: 3cee9502ee76def469e35c23ce3fb0d4, type: 3}
   FlySoundClips: []
   AttackMissSoundClips: []
   AttackChargeSoundClips: []

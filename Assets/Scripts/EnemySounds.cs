@@ -7,7 +7,8 @@ public enum EnemySoundGroups
     AttackMiss,
     AttackCharge,
     Walk,
-    Fly
+    Fly,
+    Drag
 }
 
 public enum EnemyVoiceGroups
@@ -39,6 +40,7 @@ public class EnemySounds : MonoBehaviour
     public AudioClip[] AttackSoundClips;
     public AudioClip[] DamageTakenSoundClips;
     public AudioClip[] WalkSoundClips;
+    public AudioClip[] DragSoundClips;
     public AudioClip[] FlySoundClips;
     public AudioClip[] AttackMissSoundClips;
     public AudioClip[] AttackChargeSoundClips;
@@ -96,6 +98,7 @@ public class EnemySounds : MonoBehaviour
             EnemySoundGroups.AttackCharge => AttackChargeSoundClips,
             EnemySoundGroups.AttackMiss => AttackMissSoundClips,
             EnemySoundGroups.Fly => FlySoundClips,
+            EnemySoundGroups.Drag => DragSoundClips,
             _ => new AudioClip[] { },
         };
 
@@ -110,8 +113,10 @@ public class EnemySounds : MonoBehaviour
 
             var usedIndex = _lastSoundSourceIndex++ % _enemySoundSources.Length;
 
+            var lowerVolume = soundType is EnemySoundGroups.Walk or EnemySoundGroups.Drag;
+
             _enemySoundSources[usedIndex].loop = false;
-            _enemySoundSources[usedIndex].volume = soundType == EnemySoundGroups.Walk ? 0.35f : 1.0f;
+            _enemySoundSources[usedIndex].volume = lowerVolume ? 0.35f : 1.0f;
             _enemySoundSources[usedIndex].clip = usedClip;
             _enemySoundSources[usedIndex].Play();
         }
