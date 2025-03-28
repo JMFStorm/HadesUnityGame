@@ -270,7 +270,7 @@ MonoBehaviour:
   MovementSpeed: 1
   AggroSpeed: 2
   AttackRange: 1.5
-  DamageStunTime: 0.5
+  DamageStunTime: 0.45
   DamageColor: {r: 0.49019608, g: 0.078431375, b: 0.078431375, a: 1}
   MaxHealth: 4
 --- !u!212 &2275585569708316583
@@ -383,7 +383,7 @@ CapsuleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

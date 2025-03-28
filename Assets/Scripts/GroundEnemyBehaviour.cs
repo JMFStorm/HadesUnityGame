@@ -151,14 +151,17 @@ public class GroundEnemyBehaviour : EnemyBase
 
     void Update()
     {
-        if (!_isAggroed && !_isDead)
+        if (!_isInDamageMode || !_isDead)
         {
-            TryNormalMovement();
-            TryDetectPlayerAndAggro();
-        }
-        else if (_isAggroed && !_isDead)
-        {
-            TryAggroMovement();
+            if (!_isAggroed)
+            {
+                TryNormalMovement();
+                TryDetectPlayerAndAggro();
+            }
+            else if (_isAggroed)
+            {
+                TryAggroMovement();
+            }
         }
 
         _spriteRenderer.flipX = _facingLeft;
@@ -166,29 +169,21 @@ public class GroundEnemyBehaviour : EnemyBase
         if (_state == EnemyState.Passive)
         {
             _animator.Play("MookIdle");
-
             StopWalkCycle();
-
-            _spriteRenderer.color = Color.cyan;
         }
         else if (_state == EnemyState.NormalMoving)
         {
             _animator.Play("MookMove");
-            _spriteRenderer.color = Color.white;
         }
         else if (_state == EnemyState.AttackMoving)
         {
             _animator.Play("MookMove");
-
-            _spriteRenderer.color = Color.yellow;
         }
         else if (_state == EnemyState.Attacking)
         {
             _animator.Play("MookAttack");
 
             StopWalkCycle();
-
-            _spriteRenderer.color = Color.red;
         }
 
         if (_state == EnemyState.Passive || _state == EnemyState.NormalMoving)
@@ -305,8 +300,6 @@ public class GroundEnemyBehaviour : EnemyBase
         {
             var yDist = Mathf.Abs(transform.position.y - _aggroTarget.position.y);
 
-            Debug.Log("yDist" + yDist);
-
             if (yDist < 1.75f)
             {
                 DeactivateMaxAggroTimer();
@@ -420,6 +413,7 @@ public class GroundEnemyBehaviour : EnemyBase
 
     void EndAttack()
     {
+        _attackDamageZone.gameObject.SetActive(false);
         _state = EnemyState.NormalMoving;
         _isAggroed = false;
         _attackCoroutine = null;
@@ -433,6 +427,7 @@ public class GroundEnemyBehaviour : EnemyBase
         }
 
         ApplyDamageKnockback(damageDir);
+        StopAttackCoroutine();
 
         _currentHealth -= 1;
 
@@ -440,7 +435,7 @@ public class GroundEnemyBehaviour : EnemyBase
         {
             _isDead = true;
             StopAllCoroutines();
-            ActivateDeathAndDestroy();
+            StartCoroutine(ActivateDeathAndDestroy());
         }
         else
         {
@@ -470,7 +465,7 @@ public class GroundEnemyBehaviour : EnemyBase
         _isInDamageMode = false;
     }
 
-    void ActivateDeathAndDestroy()
+    IEnumerator ActivateDeathAndDestroy()
     {
         _isDead = true;
         _spriteRenderer.enabled = false;
@@ -479,9 +474,9 @@ public class GroundEnemyBehaviour : EnemyBase
 
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
 
-        SignalDieEvent();
+        yield return new WaitForSeconds(3f);
 
-        Destroy(gameObject, 2.5f);
+        SignalDieEvent();
     }
 
     private void ApplyDamageKnockback(Vector2 knockbackDir)
@@ -633,8 +628,6 @@ public class GroundEnemyBehaviour : EnemyBase
 
                 yield return null;
             }
-
-            // yield return new WaitForSeconds(singleLegCycle);
         }
     }
 

@@ -492,7 +492,9 @@ public class AeroBehaviour : EnemyBase
         }
 
         GameObject projectile = Instantiate(projectilePrefab, _projectileStart.transform.position, Quaternion.identity);
-        Vector2 direction = (_attackTarget.position - _projectileStart.position).normalized;
+
+        var target = (Vector2)_attackTarget.position + new Vector2(0f, 0.5f);
+        Vector2 direction = (target - (Vector2)_projectileStart.position).normalized;
 
         if (!projectile.TryGetComponent<Projectile>(out var projectileScript))
         {
