@@ -1,7 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Audio;
-using UnityEngine.Rendering;
 
 public enum EnemyState
 {
@@ -213,50 +211,6 @@ public class GroundEnemyBehaviour : EnemyBase
             var boxCollider = _attackDamageZone.GetComponent<BoxCollider2D>();
             DebugUtil.DrawRectangle((Vector2)boxCollider.transform.position, boxCollider.size, Color.red);
         }
-
-
-        /*
-
-        if (!_isDead)
-        {
-            TryNormalMovement();
-            TryAggroMovement();
-            DetectPlayerAndAggro();
-
-            if (_state == EnemyState.Passive)
-            {
-                _animator.Play("MookIdle");
-                StopWalkCycleAudio();
-            }
-            else if (_state == EnemyState.NormalMoving)
-            {
-                _animator.Play("MookMove");
-                TryInitWalkCycleAudio(NormalWalkFrequency);
-            }
-            else if (_state == EnemyState.AttackMoving)
-            {
-                _animator.Play("MookMove");
-                TryInitWalkCycleAudio(AggroWalkFrequency);
-            }
-            else if (_state == EnemyState.Attacking)
-            {
-                _animator.Play("MookAttack");
-                StopWalkCycleAudio();
-            }
-
-            if (_state == EnemyState.Passive || _state == EnemyState.NormalMoving)
-            {
-                TryInitIdleVoiceLoop();
-            }
-            else
-            {
-                StopIdleVoiceLoop();
-            }
-        }
-
-        _spriteRenderer.flipX = _facingLeft;
-        _spriteRenderer.color = GetEnemyStateColor(_state);
-        */
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -690,8 +644,6 @@ public class GroundEnemyBehaviour : EnemyBase
             float moveElapsed = 0f;
             float moveTime = Random.Range(4.5f, 6.5f);
 
-            Debug.Log("moveTime " + moveTime);
-
             _state = EnemyState.NormalMoving;
 
             while (moveElapsed < moveTime)
@@ -707,8 +659,6 @@ public class GroundEnemyBehaviour : EnemyBase
 
             float idleElapsed = 0f;
             float idleTime = Random.Range(1.5f, 3.0f);
-
-            Debug.Log("idleTime " + idleTime);
 
             _state = EnemyState.Passive;
 
@@ -786,16 +736,12 @@ public class GroundEnemyBehaviour : EnemyBase
 
     IEnumerator AttackMoveMaxTimer()
     {
-        Debug.Log("AttackMoveMaxTimer init" + Time.time);
-
         yield return new WaitForSeconds(5.0f);
 
         if (_isAggroed && _state == EnemyState.AttackMoving && !_isDead)
         {
             _isAggroed = false;
             _state = EnemyState.NormalMoving;
-
-            Debug.Log("AttackMoveMaxTimer TRIGGERED" + Time.time);
         }
     }
 
