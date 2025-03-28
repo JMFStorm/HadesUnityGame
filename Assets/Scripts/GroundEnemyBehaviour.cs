@@ -12,7 +12,7 @@ public enum EnemyState
     HitTaken
 }
 
-[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(CapsuleCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class GroundEnemyBehaviour : EnemyBase
 {
@@ -30,11 +30,12 @@ public class GroundEnemyBehaviour : EnemyBase
 
     public const float MaxSoundDistance = 14f;
 
+    private Animator _animator;
     private Material _material;
     private Transform _groundCheck;
     private Transform _attackDamageZone;
     private Transform _enemyDamageZone;
-    private BoxCollider2D _enemyCollider;
+    private CapsuleCollider2D _enemyCollider;
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
     private PlayerCharacter _playerCharacter;
@@ -53,13 +54,15 @@ public class GroundEnemyBehaviour : EnemyBase
     private bool _facingLeft = false;
     private bool _isDead = false;
     private bool _attackHitPlayer = false;
+    private bool _isAggroed = false;
 
     private float _previousAlert = float.MinValue;
     private float _lastAttackTime = float.MinValue;
 
     private readonly float _attackCooldown = 1.5f;
 
-    private Coroutine _currentWalkCycleCoroutine = null;
+    private Coroutine _moveCoroutine = null;
+    private Coroutine _walkCycleAudioCoroutine = null;
     private Coroutine _currentIdleVoiceCoroutine = null;
 
     private enum CollisionTypes
@@ -72,6 +75,11 @@ public class GroundEnemyBehaviour : EnemyBase
     protected override void Awake()
     {
         base.Awake();
+
+        if (!TryGetComponent(out _animator))
+        {
+            Debug.LogError($"{nameof(Animator)} not found on {nameof(GroundEnemyBehaviour)}");
+        }
 
         if (!TryGetComponent(out _enemyCollider))
         {
@@ -140,27 +148,65 @@ public class GroundEnemyBehaviour : EnemyBase
         _currentHealth = MaxHealth;
         _attackDamageZone.gameObject.SetActive(false);
         _state = EnemyState.NormalMoving;
+
         SetDamageColor(false);
     }
 
     void Update()
     {
+        if (!_isAggroed && !_isDead)
+        {
+            TryNormalMovement();
+        }
+
+        _spriteRenderer.flipX = _facingLeft;
+
+        if (_state == EnemyState.Passive)
+        {
+            _animator.Play("MookIdle");
+            StopWalkCycleAudio();
+        }
+        else if (_state == EnemyState.NormalMoving)
+        {
+            _animator.Play("MookMove");
+            TryInitWalkCycleAudio(NormalWalkFrequency);
+        }
+
+        if (_state == EnemyState.Passive || _state == EnemyState.NormalMoving)
+        {
+            TryInitIdleVoiceLoop();
+        }
+        else
+        {
+            StopIdleVoiceLoop();
+        }
+
+        /*
+
         if (!_isDead)
         {
             TryNormalMovement();
             TryAggroMovement();
             DetectPlayerAndAggro();
 
-            if (_state == EnemyState.NormalMoving)
+            if (_state == EnemyState.Passive)
             {
+                _animator.Play("MookIdle");
+                StopWalkCycleAudio();
+            }
+            else if (_state == EnemyState.NormalMoving)
+            {
+                _animator.Play("MookMove");
                 TryInitWalkCycleAudio(NormalWalkFrequency);
             }
             else if (_state == EnemyState.AttackMoving)
             {
+                _animator.Play("MookMove");
                 TryInitWalkCycleAudio(AggroWalkFrequency);
             }
-            else
+            else if (_state == EnemyState.Attacking)
             {
+                _animator.Play("MookAttack");
                 StopWalkCycleAudio();
             }
 
@@ -174,8 +220,9 @@ public class GroundEnemyBehaviour : EnemyBase
             }
         }
 
-        _spriteRenderer.flipX = !_facingLeft;
+        _spriteRenderer.flipX = _facingLeft;
         _spriteRenderer.color = GetEnemyStateColor(_state);
+        */
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -237,7 +284,11 @@ public class GroundEnemyBehaviour : EnemyBase
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(3f, 7f));
+            var time = Random.Range(3f, 7f);
+
+            Debug.Log("Idle voice time " + time);
+
+            yield return new WaitForSeconds(time);
 
             if (0.50f < Random.Range(0f, 1f))
             {
@@ -248,18 +299,18 @@ public class GroundEnemyBehaviour : EnemyBase
 
     void StopWalkCycleAudio()
     {
-        if (_currentWalkCycleCoroutine != null)
+        if (_walkCycleAudioCoroutine != null)
         {
-            StopCoroutine(_currentWalkCycleCoroutine);
-            _currentWalkCycleCoroutine = null;
+            StopCoroutine(_walkCycleAudioCoroutine);
+            _walkCycleAudioCoroutine = null;
         }
     }
 
     void TryInitWalkCycleAudio(float walkFrequency)
     {
-        if (_currentWalkCycleCoroutine == null)
+        if (_walkCycleAudioCoroutine == null)
         {
-            _currentWalkCycleCoroutine = StartCoroutine(WalkCycleAudio(walkFrequency));
+            _walkCycleAudioCoroutine = StartCoroutine(WalkCycleAudio(walkFrequency));
         }
     }
 
@@ -283,7 +334,7 @@ public class GroundEnemyBehaviour : EnemyBase
             if (collisions == CollisionTypes.GroundEdge || collisions == CollisionTypes.WallHit)
             {
                 // NOTE: End aggro on collisions
-                StartCoroutine(ResetAndTurnAround(1.5f));
+                StartCoroutine(ResetAndTurnAround(1.5f, collisions == CollisionTypes.WallHit));
                 return;
             }
 
@@ -292,31 +343,42 @@ public class GroundEnemyBehaviour : EnemyBase
         }
     }
 
-    IEnumerator ResetAndTurnAround(float passiveLength)
+    void TryStopMoveCoroutine()
     {
-        Debug.Log("Set to passive, ResetAndTurnAround()");
-        _state = EnemyState.Passive;
+        if (_moveCoroutine != null)
+        {
+            StopCoroutine(_moveCoroutine);
+            _moveCoroutine = null;
+        }
+    }
 
-        StopWalkCycleAudio();
+    IEnumerator ResetAndTurnAround(float passiveLength, bool turnAroundFirst)
+    {
+        if (turnAroundFirst)
+        {
+            TurnAround();
+        }
+
+        Debug.Log("Set to passive, ResetAndTurnAround()");
+
+        _state = EnemyState.Passive;
 
         yield return new WaitForSeconds(passiveLength);
 
-        if (_state != EnemyState.Passive)
+        if (!turnAroundFirst)
         {
-            yield return null;
+            TurnAround();
         }
-
-        TurnAround();
 
         _state = EnemyState.NormalMoving;
     }
 
     IEnumerator Attack()
     {
-        _state = EnemyState.Attacking;
-        _attackHitPlayer = false;
+        _state = EnemyState.Passive;
 
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.AttackCharge);
+        _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
 
         yield return new WaitForSeconds(0.5f);
 
@@ -325,15 +387,7 @@ public class GroundEnemyBehaviour : EnemyBase
             yield return null;
         }
 
-        _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
-
-        yield return new WaitForSeconds(1.0f);
-
-        if (_isDead)
-        {
-            yield return null;
-        }
-
+        _state = EnemyState.Attacking;
         _attackDamageZone.gameObject.SetActive(true);
 
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Attack);
@@ -346,16 +400,15 @@ public class GroundEnemyBehaviour : EnemyBase
             yield return null;
         }
 
-        if (!_attackHitPlayer)
-        {
-            _soundEmitter.TryPlaySoundSource(EnemySoundGroups.AttackMiss);
-        }
-
         _spriteRenderer.color = Color.white;
-        _state = EnemyState.NormalMoving;
+        _state = EnemyState.Passive;
         _attackDamageZone.gameObject.SetActive(false);
 
         _lastAttackTime = Time.time;
+
+        yield return new WaitForSeconds(0.50f);
+
+        _state = EnemyState.NormalMoving;
     }
 
     void RecieveDamage(Vector2 damageDir)
@@ -496,12 +549,60 @@ public class GroundEnemyBehaviour : EnemyBase
 
         if (collisions == CollisionTypes.GroundEdge || collisions == CollisionTypes.WallHit)
         {
-            StartCoroutine(ResetAndTurnAround(1.0f));
+            TryStopNormalMovement();
+            StartCoroutine(ResetAndTurnAround(1.5f, collisions == CollisionTypes.WallHit));
         }
+        else if (_moveCoroutine == null)
+        {
+            _moveCoroutine = StartCoroutine(NormalMovementCoroutine());
+        }
+    }
 
-        float newMovement = _facingLeft ? -MovementSpeed : MovementSpeed;
-        Debug.DrawRay(_groundCheck.position, Vector2.right * GetXDirection(), _facingLeft ? Color.green : Color.red);
-        _rigidBody.linearVelocity = new Vector2(newMovement, _rigidBody.linearVelocity.y);
+    void TryStopNormalMovement()
+    {
+        if (_moveCoroutine != null)
+        {
+            StopCoroutine(_moveCoroutine);
+            _moveCoroutine = null;
+        }
+    }
+
+    IEnumerator NormalMovementCoroutine()
+    {
+        while (true)
+        {
+            float moveElapsed = 0f;
+            float moveTime = Random.Range(3.5f, 5.5f);
+
+            Debug.Log("moveTime " + moveTime);
+
+            _state = EnemyState.NormalMoving;
+
+            while (moveElapsed < moveTime)
+            {
+                float newMovement = _facingLeft ? -MovementSpeed : MovementSpeed;
+                Debug.DrawRay(_groundCheck.position, Vector2.right * GetXDirection(), _facingLeft ? Color.green : Color.red);
+                _rigidBody.linearVelocity = new Vector2(newMovement, _rigidBody.linearVelocity.y);
+
+                moveElapsed += Time.deltaTime;
+
+                yield return null;
+            }
+
+            float idleElapsed = 0f;
+            float idleTime = Random.Range(1.5f, 3.0f);
+
+            Debug.Log("idleTime " + idleTime);
+
+            _state = EnemyState.Passive;
+
+            while (idleElapsed < idleTime)
+            {
+                idleElapsed += Time.deltaTime;
+
+                yield return null;
+            }
+        }
     }
 
     IEnumerator WalkCycleAudio(float frequency)
