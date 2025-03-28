@@ -42,7 +42,7 @@ public class GroundEnemyBehaviour : EnemyBase
     private MainCamera _mainCamera;
     private EnemySounds _soundEmitter;
 
-    private Vector2 _aggroTarget;
+    private Transform _aggroTarget;
 
     private LayerMask _groundFloorLayer;
     private LayerMask _wallLayer;
@@ -385,9 +385,9 @@ public class GroundEnemyBehaviour : EnemyBase
             return;
         }
 
-        var distanceFromTarget = Mathf.Abs(transform.position.x - _aggroTarget.x);
+        var distanceFromTarget = Mathf.Abs(transform.position.x - _aggroTarget.position.x);
 
-        DebugUtil.DrawCircle(new Vector3(_aggroTarget.x, transform.position.y + 0.5f, 0f), 0.25f, Color.red);
+        DebugUtil.DrawCircle(new Vector3(_aggroTarget.position.x, transform.position.y + 0.5f, 0f), 0.25f, Color.red);
 
         var startLine = new Vector3(transform.position.x, transform.position.y + 0.5f, 0f);
         var endLine = new Vector3(transform.position.x + (_facingLeft ? -AttackRange : AttackRange), transform.position.y + 0.5f, 0f);
@@ -396,7 +396,21 @@ public class GroundEnemyBehaviour : EnemyBase
 
         if (distanceFromTarget <= AttackRange)
         {
-            TryStartAttackCoroutine();
+            var yDist = Mathf.Abs(transform.position.y - _aggroTarget.position.y);
+
+            Debug.Log("yDist" + yDist);
+
+            if (yDist < 1.5f)
+            {
+                DeactivateMaxAggroTimer();
+                TryStartAttackCoroutine();
+            }
+            else
+            {
+                StartCoroutine(ResetAndTurnAround(1.5f, false));
+                _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Idle);
+                return;
+            }
         }
         else
         {
@@ -408,6 +422,16 @@ public class GroundEnemyBehaviour : EnemyBase
                 StartCoroutine(ResetAndTurnAround(1.5f, collisions == CollisionTypes.WallHit));
                 _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Idle);
                 return;
+            }
+
+            var targetDir = transform.position.x - _aggroTarget.position.x;
+
+            var targetDirRight = targetDir < 0f;
+            var facingXdir = GetXDirection();
+
+            if (targetDirRight && facingXdir < 0f || !targetDirRight && 0f < facingXdir)
+            {
+                TurnAround();
             }
 
             float newMovement = _facingLeft ? -AggroSpeed : AggroSpeed;
@@ -426,6 +450,8 @@ public class GroundEnemyBehaviour : EnemyBase
 
     IEnumerator ResetAndTurnAround(float passiveLength, bool turnAroundFirst)
     {
+        DeactivateMaxAggroTimer();
+
         if (turnAroundFirst)
         {
             TurnAround();
@@ -447,8 +473,6 @@ public class GroundEnemyBehaviour : EnemyBase
 
     IEnumerator Attack()
     {
-        Debug.Log("Attack init" + Time.time);
-
         _state = EnemyState.Passive;
 
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.AttackCharge);
@@ -492,8 +516,6 @@ public class GroundEnemyBehaviour : EnemyBase
         yield return new WaitForSeconds(0.50f);
 
         EndAttack();
-
-        Debug.Log("Attack end" + Time.time);
     }
 
     void EndAttack()
@@ -622,7 +644,7 @@ public class GroundEnemyBehaviour : EnemyBase
 
         if (hit != null && hit.CompareTag("Player"))
         {
-            _aggroTarget = hit.gameObject.transform.position;
+            _aggroTarget = hit.gameObject.transform;
             StartCoroutine(ActivateAggro());
             DebugUtil.DrawRectangle(boxPosition, detectionBoxSize, Color.red);
         }
@@ -716,7 +738,7 @@ public class GroundEnemyBehaviour : EnemyBase
 
         TryStopNormalMovement();
 
-        var targetDir = transform.position.x - _aggroTarget.x;
+        var targetDir = transform.position.x - _aggroTarget.position.x;
 
         var targetDirRight = targetDir < 0f;
         var facingXdir = GetXDirection();
@@ -747,14 +769,18 @@ public class GroundEnemyBehaviour : EnemyBase
         ActivateMaxAggroTimer();
     }
 
-    void ActivateMaxAggroTimer()
+    void DeactivateMaxAggroTimer()
     {
         if (_maxAttackTimerCoroutine != null)
         {
             StopCoroutine(_maxAttackTimerCoroutine);
             _maxAttackTimerCoroutine = null;
         }
+    }
 
+    void ActivateMaxAggroTimer()
+    {
+        DeactivateMaxAggroTimer();
         _maxAttackTimerCoroutine = StartCoroutine(AttackMoveMaxTimer());
     }
 
@@ -762,7 +788,7 @@ public class GroundEnemyBehaviour : EnemyBase
     {
         Debug.Log("AttackMoveMaxTimer init" + Time.time);
 
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(5.0f);
 
         if (_isAggroed && _state == EnemyState.AttackMoving && !_isDead)
         {
