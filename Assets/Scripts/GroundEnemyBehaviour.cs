@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Rendering;
 
 public enum EnemyState
 {
@@ -19,8 +20,7 @@ public class GroundEnemyBehaviour : EnemyBase
     public float MovementSpeed = 1.5f;
     public float AggroSpeed = 3.0f;
     public float AttackRange = 2.0f;
-    public float DamageStunTime = 0.5f;
-    public float ShadowOutlineThreshold = 0.1f;
+    public float DamageStunTime = 0.75f;
     public float NormalWalkFrequency = 0.65f;
     public float AggroWalkFrequency = 0.45f;
 
@@ -55,12 +55,15 @@ public class GroundEnemyBehaviour : EnemyBase
     private bool _isDead = false;
     private bool _attackHitPlayer = false;
     private bool _isAggroed = false;
+    private bool _isInDamageMode = false;
 
     private float _previousAlert = float.MinValue;
     private float _lastAttackTime = float.MinValue;
 
     private readonly float _attackCooldown = 1.5f;
 
+    private Coroutine _maxAttackTimerCoroutine = null;
+    private Coroutine _attackCoroutine = null;
     private Coroutine _moveCoroutine = null;
     private Coroutine _walkCycleAudioCoroutine = null;
     private Coroutine _aggroWalkCycleAudioCoroutine = null;
@@ -149,8 +152,6 @@ public class GroundEnemyBehaviour : EnemyBase
         _currentHealth = MaxHealth;
         _attackDamageZone.gameObject.SetActive(false);
         _state = EnemyState.NormalMoving;
-
-        SetDamageColor(false);
     }
 
     void Update()
@@ -204,6 +205,8 @@ public class GroundEnemyBehaviour : EnemyBase
         {
             StopIdleVoiceLoop();
         }
+
+        SetDamageColor(_isInDamageMode);
 
         if (_attackDamageZone.gameObject.activeSelf)
         {
@@ -268,7 +271,7 @@ public class GroundEnemyBehaviour : EnemyBase
         if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") && other.gameObject.CompareTag("PlayerSword")
             || other.gameObject.layer == LayerMask.NameToLayer("EnvDamageZone"))
         {
-            RecieveDamage(collisionDirection);
+            TryRecieveDamage(collisionDirection);
         }
 
         if (_attackDamageZone.gameObject.activeSelf && other.gameObject.CompareTag("Player") && !_attackHitPlayer)
@@ -358,6 +361,23 @@ public class GroundEnemyBehaviour : EnemyBase
         }
     }
 
+    void TryStartAttackCoroutine()
+    {
+        if (_attackCoroutine == null)
+        {
+            _attackCoroutine = StartCoroutine(Attack());
+        }
+    }
+
+    void StopAttackCoroutine()
+    {
+        if (_attackCoroutine != null)
+        {
+            StopCoroutine(_attackCoroutine);
+            _attackCoroutine = null;
+        }
+    }
+
     void TryAggroMovement()
     {
         if (_state != EnemyState.AttackMoving)
@@ -376,7 +396,7 @@ public class GroundEnemyBehaviour : EnemyBase
 
         if (distanceFromTarget <= AttackRange)
         {
-            StartCoroutine(Attack());
+            TryStartAttackCoroutine();
         }
         else
         {
@@ -384,11 +404,9 @@ public class GroundEnemyBehaviour : EnemyBase
 
             if (collisions == CollisionTypes.GroundEdge || collisions == CollisionTypes.WallHit)
             {
-                _isAggroed = false;
-                Debug.Log("End aggro on collisions " + Time.time);
-
                 // NOTE: End aggro on collisions
                 StartCoroutine(ResetAndTurnAround(1.5f, collisions == CollisionTypes.WallHit));
+                _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Idle);
                 return;
             }
 
@@ -423,10 +441,14 @@ public class GroundEnemyBehaviour : EnemyBase
         }
 
         _state = EnemyState.NormalMoving;
+
+        _isAggroed = false;
     }
 
     IEnumerator Attack()
     {
+        Debug.Log("Attack init" + Time.time);
+
         _state = EnemyState.Passive;
 
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.AttackCharge);
@@ -434,9 +456,10 @@ public class GroundEnemyBehaviour : EnemyBase
 
         yield return new WaitForSeconds(0.35f);
 
-        if (_isDead)
+        if (_isDead || _isInDamageMode)
         {
-            yield return null;
+            EndAttack();
+            yield break;
         }
 
         _state = EnemyState.Attacking;
@@ -446,29 +469,43 @@ public class GroundEnemyBehaviour : EnemyBase
 
         yield return new WaitForSeconds(0.25f);
 
-        _attackDamageZone.gameObject.SetActive(true);
-
-        if (_state != EnemyState.Attacking || _isDead)
+        if (_isDead || _isInDamageMode)
         {
-            yield return null;
+            EndAttack();
+            yield break;
         }
 
+        _lastAttackTime = Time.time;
+        _attackDamageZone.gameObject.SetActive(true);
+
         yield return new WaitForSeconds(0.25f);
+
+        if (_isDead || _isInDamageMode)
+        {
+            EndAttack();
+            yield break;
+        }
 
         _state = EnemyState.Passive;
         _attackDamageZone.gameObject.SetActive(false);
 
-        _lastAttackTime = Time.time;
-
         yield return new WaitForSeconds(0.50f);
 
-        _state = EnemyState.NormalMoving;
-        _isAggroed = false;
+        EndAttack();
+
+        Debug.Log("Attack end" + Time.time);
     }
 
-    void RecieveDamage(Vector2 damageDir)
+    void EndAttack()
     {
-        if (_state == EnemyState.HitTaken)
+        _state = EnemyState.NormalMoving;
+        _isAggroed = false;
+        _attackCoroutine = null;
+    }
+
+    void TryRecieveDamage(Vector2 damageDir)
+    {
+        if (_isInDamageMode)
         {
             return;
         }
@@ -496,17 +533,19 @@ public class GroundEnemyBehaviour : EnemyBase
 
     private IEnumerator ActivateDamageTakenTime(float duration)
     {
+        _isInDamageMode = true;
+
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Damage, true);
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
-        _state = EnemyState.HitTaken;
 
-        SetDamageColor(true);
+        _state = EnemyState.Passive;
 
         yield return new WaitForSeconds(duration);
 
         _state = EnemyState.NormalMoving;
 
-        SetDamageColor(false);
+        _isAggroed = false;
+        _isInDamageMode = false;
     }
 
     void ActivateDeathAndDestroy()
@@ -705,17 +744,32 @@ public class GroundEnemyBehaviour : EnemyBase
 
         _state = EnemyState.AttackMoving;
 
-        StartCoroutine(AttackMoveMaxTimer());
+        ActivateMaxAggroTimer();
+    }
+
+    void ActivateMaxAggroTimer()
+    {
+        if (_maxAttackTimerCoroutine != null)
+        {
+            StopCoroutine(_maxAttackTimerCoroutine);
+            _maxAttackTimerCoroutine = null;
+        }
+
+        _maxAttackTimerCoroutine = StartCoroutine(AttackMoveMaxTimer());
     }
 
     IEnumerator AttackMoveMaxTimer()
     {
+        Debug.Log("AttackMoveMaxTimer init" + Time.time);
+
         yield return new WaitForSeconds(3.5f);
 
-        if (_state == EnemyState.AttackMoving && !_isDead)
+        if (_isAggroed && _state == EnemyState.AttackMoving && !_isDead)
         {
             _isAggroed = false;
             _state = EnemyState.NormalMoving;
+
+            Debug.Log("AttackMoveMaxTimer TRIGGERED" + Time.time);
         }
     }
 
