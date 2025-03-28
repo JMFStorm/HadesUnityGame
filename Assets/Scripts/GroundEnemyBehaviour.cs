@@ -205,6 +205,13 @@ public class GroundEnemyBehaviour : EnemyBase
             StopIdleVoiceLoop();
         }
 
+        if (_attackDamageZone.gameObject.activeSelf)
+        {
+            var boxCollider = _attackDamageZone.GetComponent<BoxCollider2D>();
+            DebugUtil.DrawRectangle((Vector2)boxCollider.transform.position, boxCollider.size, Color.red);
+        }
+
+
         /*
 
         if (!_isDead)
@@ -420,14 +427,12 @@ public class GroundEnemyBehaviour : EnemyBase
 
     IEnumerator Attack()
     {
-        Debug.Log("Attack start " + Time.time);
-
         _state = EnemyState.Passive;
 
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.AttackCharge);
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.35f);
 
         if (_isDead)
         {
@@ -435,17 +440,20 @@ public class GroundEnemyBehaviour : EnemyBase
         }
 
         _state = EnemyState.Attacking;
-        _attackDamageZone.gameObject.SetActive(true);
 
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Attack);
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Attack);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.25f);
+
+        _attackDamageZone.gameObject.SetActive(true);
 
         if (_state != EnemyState.Attacking || _isDead)
         {
             yield return null;
         }
+
+        yield return new WaitForSeconds(0.25f);
 
         _state = EnemyState.Passive;
         _attackDamageZone.gameObject.SetActive(false);
@@ -456,8 +464,6 @@ public class GroundEnemyBehaviour : EnemyBase
 
         _state = EnemyState.NormalMoving;
         _isAggroed = false;
-
-        Debug.Log("Attack end " + Time.time);
     }
 
     void RecieveDamage(Vector2 damageDir)
