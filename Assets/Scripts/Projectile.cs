@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -15,7 +16,9 @@ public class Projectile : MonoBehaviour
     private Color _targetColor;
     private bool _isFading = false; // Flag to track if fading is active
     private float _fadeStartTime; // Time when fading started
-    private float _launchTime = 0; 
+    private float _launchTime = 0;
+
+    private Coroutine _implodeCoroutine = null;
 
     private Transform _damageZone;
 
@@ -57,11 +60,11 @@ public class Projectile : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            Implode(Color.red, 2.0f);
+            StartImplode(Color.red, 2.0f);
         }
         else
         {
-            Implode(Color.black, 1.1f);
+            StartImplode(Color.black, 1.1f);
         }
     }
 
@@ -71,8 +74,7 @@ public class Projectile : MonoBehaviour
         {
             Debug.Log("Player sword hit!");
 
-            Implode(Color.black, 1.25f);
-            Destroy(gameObject, 3.0f);
+            StartImplode(Color.black, 1.25f);
         }
     }
 
@@ -98,7 +100,7 @@ public class Projectile : MonoBehaviour
 
         if (3f < _launchTime)
         {
-            Implode(Color.black, 1f);
+            StartImplode(Color.black, 1f);
         }
     }
 
@@ -115,10 +117,16 @@ public class Projectile : MonoBehaviour
         _rb.linearVelocity = direction.normalized * speed;
     }
 
-    private void Implode(Color color, float scale)
+    void StartImplode(Color color, float scale)
     {
-        Debug.Log("Implode");
+        if (_implodeCoroutine == null)
+        {
+            _implodeCoroutine = StartCoroutine(Implode(color, scale));
+        }
+    }
 
+    IEnumerator Implode(Color color, float scale)
+    {
         var collider = _damageZone.GetComponent<CircleCollider2D>();
         collider.enabled = false;
 
@@ -134,6 +142,10 @@ public class Projectile : MonoBehaviour
         _fadeStartTime = Time.time;
 
         Invoke(nameof(DeleteObject), 1f);
+
+        yield return new WaitForSeconds(1f);
+
+        DeleteObject();
     }
 
     void DeleteObject()

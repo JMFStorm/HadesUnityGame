@@ -50,6 +50,7 @@ public class AeroBehaviour : EnemyBase
     private Material _material;
 
     private Coroutine _flapWings = null;
+    private Coroutine _attackWingsAudioCoroutine = null;
     private Coroutine _attackMove = null;
 
     private bool _attackInterrupted = false;
@@ -381,6 +382,7 @@ public class AeroBehaviour : EnemyBase
         _isDead = true;
 
         StopWingsFlap();
+        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
 
         _spriteRenderer.enabled = false;
@@ -468,6 +470,11 @@ public class AeroBehaviour : EnemyBase
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
 
         _attackInterrupted = false;
+
+        if (_attackWingsAudioCoroutine == null)
+        {
+            _attackWingsAudioCoroutine = StartCoroutine(AttackFlapWingsAudio());
+        }
 
         yield return new WaitForSeconds(4.0f / _animationFPS); // NOTE: Padding time?
 
@@ -587,5 +594,22 @@ public class AeroBehaviour : EnemyBase
 
             _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Fly);
         }
+    }
+
+    IEnumerator AttackFlapWingsAudio()
+    {
+        yield return new WaitForSeconds(8.0f / _animationFPS);
+
+        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Fly);
+
+        yield return new WaitForSeconds(8.0f / _animationFPS);
+
+        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Fly);
+
+        yield return new WaitForSeconds(8.0f / _animationFPS);
+
+        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Fly);
+
+        _attackWingsAudioCoroutine = null;
     }
 }

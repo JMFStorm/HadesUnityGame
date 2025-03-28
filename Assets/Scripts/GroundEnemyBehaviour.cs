@@ -24,6 +24,8 @@ public class GroundEnemyBehaviour : EnemyBase
 
     public int MaxHealth = 4;
 
+    public bool StartFacingLeft = false;
+
     public const float MaxSoundDistance = 14f;
 
     private Animator _animator;
@@ -147,6 +149,11 @@ public class GroundEnemyBehaviour : EnemyBase
         _currentHealth = MaxHealth;
         _attackDamageZone.gameObject.SetActive(false);
         _state = EnemyState.NormalMoving;
+
+        if (StartFacingLeft)
+        {
+            TurnAround();
+        }
     }
 
     void Update()
@@ -475,6 +482,7 @@ public class GroundEnemyBehaviour : EnemyBase
         _enemyDamageZone.gameObject.SetActive(false);
 
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
+        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
 
         yield return new WaitForSeconds(2f);
 
@@ -643,8 +651,6 @@ public class GroundEnemyBehaviour : EnemyBase
             TryStartWalkCycle(8f);
             _state = EnemyState.NormalMoving;
 
-            Debug.Log("Move Time" + moveTime);
-
             while (moveElapsed < moveTime)
             {
                 moveElapsed += Time.deltaTime;
@@ -654,21 +660,14 @@ public class GroundEnemyBehaviour : EnemyBase
             float idleElapsed = 0f;
             float idleTime = Random.Range(1.5f, 3.0f);
 
-            Debug.Log("Ide time" + idleTime);
-
             _state = EnemyState.Passive;
             StopWalkCycle();
 
             while (idleElapsed < idleTime)
             {
                 idleElapsed += Time.deltaTime;
-
-                Debug.Log("Ide time playing" + idleTime);
-
                 yield return null;
             }
-
-            Debug.Log("Ide time ENDED" + Time.time);
         }
     }
 
