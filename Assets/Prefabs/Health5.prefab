@@ -24,6 +24,14 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6349806557952946431, guid: e45ade1591620af4696387f477cde52b, type: 3}
+      propertyPath: m_Radius
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 6349806557952946431, guid: e45ade1591620af4696387f477cde52b, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.9
+      objectReference: {fileID: 0}
     - target: {fileID: 6663176973714505876, guid: e45ade1591620af4696387f477cde52b, type: 3}
       propertyPath: AddedHealth
       value: 5
@@ -42,11 +50,11 @@ PrefabInstance:
       objectReference: {fileID: 1150907877628102484, guid: 18665e52254c74444bd34054c3008625, type: 3}
     - target: {fileID: 8746085643095181573, guid: e45ade1591620af4696387f477cde52b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 8746085643095181573, guid: e45ade1591620af4696387f477cde52b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 8746085643095181573, guid: e45ade1591620af4696387f477cde52b, type: 3}
       propertyPath: m_LocalPosition.z

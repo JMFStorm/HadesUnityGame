@@ -181,7 +181,7 @@ public class GroundEnemyBehaviour : EnemyBase
         }
         else if (_state == EnemyState.Attacking)
         {
-            _animator.Play("MookAttack");
+            // _animator.Play("MookAttack");
 
             StopWalkCycle();
         }
@@ -381,6 +381,8 @@ public class GroundEnemyBehaviour : EnemyBase
 
         _state = EnemyState.Attacking;
 
+        _animator.Play("MookAttack", 0, 0f);
+
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Attack);
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Attack);
 
@@ -474,7 +476,7 @@ public class GroundEnemyBehaviour : EnemyBase
 
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
 
         SignalDieEvent();
     }

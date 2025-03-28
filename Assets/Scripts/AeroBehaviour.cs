@@ -257,6 +257,7 @@ public class AeroBehaviour : EnemyBase
         if ((_hasGivenUp || !isChasing) && _currentDistanceToTarget <= chaseRadius && SeesPlayer())
         {
             isChasing = true;
+            _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Alert, true);
         }
 
         _usedSpeed = speed;
@@ -338,7 +339,7 @@ public class AeroBehaviour : EnemyBase
         {
             _isDead = true;
             StopAllCoroutines();
-            ActivateDeathAndDestroy();
+            StartCoroutine(ActivateDeathAndDestroy());
         }
         else
         {
@@ -375,18 +376,19 @@ public class AeroBehaviour : EnemyBase
         return false;
     }
 
-    void ActivateDeathAndDestroy()
+    IEnumerator ActivateDeathAndDestroy()
     {
         _isDead = true;
 
         StopWingsFlap();
-        _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death);
+        _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
 
         _spriteRenderer.enabled = false;
         _enemyDamageZone.gameObject.SetActive(false);
 
+        yield return new WaitForSeconds(2f);
+
         SignalDieEvent();
-        Destroy(gameObject, 1.5f);
     }
 
     private void ApplyDamageKnockback(Vector2 knockbackDir)
@@ -399,7 +401,7 @@ public class AeroBehaviour : EnemyBase
     {
         _waveOffset = Mathf.Sin(Time.time * waveFrequency) * waveAmplitude * 0.01f;
 
-        if (isChasing)
+        if (isChasing && !_player.IsDead())
         {
             _waveOffset *= 50.0f; // NOTE: isChasing = more multiplication needed, but WHY???
         }
@@ -463,7 +465,6 @@ public class AeroBehaviour : EnemyBase
     private IEnumerator AttackMove()
     {
         _animatior.SetBool("_IsAttacking", true);
-
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
 
         _attackInterrupted = false;

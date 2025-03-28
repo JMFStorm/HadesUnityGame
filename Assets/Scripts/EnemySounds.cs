@@ -131,7 +131,7 @@ public class EnemySounds : MonoBehaviour
             return;
         }
 
-        if (!_mainCamera.IsWorldPositionVisible(_enemyVoiceSource.transform.position))
+        if (!forceSound && !_mainCamera.IsWorldPositionVisible(_enemyVoiceSource.transform.position))
         {
             return;
         }
