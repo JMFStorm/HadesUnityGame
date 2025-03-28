@@ -18,9 +18,7 @@ public class GroundEnemyBehaviour : EnemyBase
     public float MovementSpeed = 1.5f;
     public float AggroSpeed = 3.0f;
     public float AttackRange = 2.0f;
-    public float DamageStunTime = 0.75f;
-    public float NormalWalkFrequency = 0.65f;
-    public float AggroWalkFrequency = 0.45f;
+    public float DamageStunTime = 0.5f;
 
     public Color DamageColor = new(0.8f, 0.1f, 0.1f, 1f);
 

@@ -270,11 +270,9 @@ MonoBehaviour:
   MovementSpeed: 1
   AggroSpeed: 2
   AttackRange: 1.5
-  DamageStunTime: 0.75
-  NormalWalkFrequency: 0.65
-  AggroWalkFrequency: 0.45
+  DamageStunTime: 0.5
   DamageColor: {r: 0.49019608, g: 0.078431375, b: 0.078431375, a: 1}
-  MaxHealth: 5
+  MaxHealth: 4
 --- !u!212 &2275585569708316583
 SpriteRenderer:
   m_ObjectHideFlags: 0
