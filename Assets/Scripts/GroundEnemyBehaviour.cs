@@ -607,10 +607,36 @@ public class GroundEnemyBehaviour : EnemyBase
         while (true)
         {
             _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Drag);
+
             yield return new WaitForSeconds(singleLegCycle);
 
             _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Walk);
-            yield return new WaitForSeconds(singleLegCycle);
+
+            float elapsed = 0f;
+
+            while (elapsed < singleLegCycle)
+            {
+                var collisions = GetRaycastCollisions();
+
+                if (collisions == CollisionTypes.GroundEdge || collisions == CollisionTypes.WallHit)
+                {
+                    Debug.Log("Collision " + collisions);
+
+                    StartCoroutine(ResetAndTurnAround(1.5f, collisions == CollisionTypes.WallHit));
+                    TryStopNormalMovement();
+                    yield break;
+                }
+
+                float newMovement = _facingLeft ? -MovementSpeed : MovementSpeed;
+                Debug.DrawRay(_groundCheck.position, Vector2.right * GetXDirection(), _facingLeft ? Color.green : Color.red);
+                _rigidBody.linearVelocity = new Vector2(newMovement, _rigidBody.linearVelocity.y);
+
+                elapsed += Time.deltaTime;
+
+                yield return null;
+            }
+
+            // yield return new WaitForSeconds(singleLegCycle);
         }
     }
 
@@ -628,23 +654,7 @@ public class GroundEnemyBehaviour : EnemyBase
 
             while (moveElapsed < moveTime)
             {
-                var collisions = GetRaycastCollisions();
-
-                if (collisions == CollisionTypes.GroundEdge || collisions == CollisionTypes.WallHit)
-                {
-                    Debug.Log("Collision " + collisions);
-
-                    StartCoroutine(ResetAndTurnAround(1.5f, collisions == CollisionTypes.WallHit));
-                    TryStopNormalMovement();
-                    yield break;
-                }
-
-                float newMovement = _facingLeft ? -MovementSpeed : MovementSpeed;
-                Debug.DrawRay(_groundCheck.position, Vector2.right * GetXDirection(), _facingLeft ? Color.green : Color.red);
-                _rigidBody.linearVelocity = new Vector2(newMovement, _rigidBody.linearVelocity.y);
-
                 moveElapsed += Time.deltaTime;
-
                 yield return null;
             }
 
