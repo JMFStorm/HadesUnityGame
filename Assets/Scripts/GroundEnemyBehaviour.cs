@@ -63,6 +63,7 @@ public class GroundEnemyBehaviour : EnemyBase
 
     private Coroutine _moveCoroutine = null;
     private Coroutine _walkCycleAudioCoroutine = null;
+    private Coroutine _aggroWalkCycleAudioCoroutine = null;
     private Coroutine _currentIdleVoiceCoroutine = null;
 
     private enum CollisionTypes
@@ -157,6 +158,11 @@ public class GroundEnemyBehaviour : EnemyBase
         if (!_isAggroed && !_isDead)
         {
             TryNormalMovement();
+            TryDetectPlayerAndAggro();
+        }
+        else if (_isAggroed && !_isDead)
+        {
+            TryAggroMovement();
         }
 
         _spriteRenderer.flipX = _facingLeft;
@@ -165,11 +171,29 @@ public class GroundEnemyBehaviour : EnemyBase
         {
             _animator.Play("MookIdle");
             StopWalkCycleAudio();
+
+            _spriteRenderer.color = Color.cyan;
         }
         else if (_state == EnemyState.NormalMoving)
         {
             _animator.Play("MookMove");
             TryInitWalkCycleAudio(NormalWalkFrequency);
+
+            _spriteRenderer.color = Color.white;
+        }
+        else if (_state == EnemyState.AttackMoving)
+        {
+            _animator.Play("MookMove");
+            TryInitAggroWalkCycleAudio(AggroWalkFrequency);
+
+            _spriteRenderer.color = Color.yellow;
+        }
+        else if (_state == EnemyState.Attacking)
+        {
+            _animator.Play("MookAttack");
+            StopWalkCycleAudio();
+
+            _spriteRenderer.color = Color.red;
         }
 
         if (_state == EnemyState.Passive || _state == EnemyState.NormalMoving)
@@ -252,17 +276,6 @@ public class GroundEnemyBehaviour : EnemyBase
         _material.SetColor("_DamageColor", inDamage ? DamageColor : new(0, 0, 0));
     }
 
-    Color GetEnemyStateColor(EnemyState state)
-    {
-        return state switch
-        {
-            EnemyState.Alert => Color.yellow,
-            EnemyState.AttackMoving => Color.yellow,
-            EnemyState.HitTaken => new Color(1f, 0.8f, 0.8f),
-            _ => Color.white,
-        };
-    }
-
     void StopIdleVoiceLoop()
     {
         if (_currentIdleVoiceCoroutine != null)
@@ -286,14 +299,26 @@ public class GroundEnemyBehaviour : EnemyBase
         {
             var time = Random.Range(3f, 7f);
 
-            Debug.Log("Idle voice time " + time);
-
             yield return new WaitForSeconds(time);
 
             if (0.50f < Random.Range(0f, 1f))
             {
                 _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Idle);
             }
+        }
+    }
+
+    void TryInitAggroWalkCycleAudio(float walkFrequency)
+    {
+        if (_walkCycleAudioCoroutine != null)
+        {
+            StopCoroutine(_walkCycleAudioCoroutine);
+            _walkCycleAudioCoroutine = null;
+        }
+
+        if (_aggroWalkCycleAudioCoroutine == null)
+        {
+            _aggroWalkCycleAudioCoroutine = StartCoroutine(WalkCycleAudio(walkFrequency));
         }
     }
 
@@ -304,10 +329,22 @@ public class GroundEnemyBehaviour : EnemyBase
             StopCoroutine(_walkCycleAudioCoroutine);
             _walkCycleAudioCoroutine = null;
         }
+
+        if (_aggroWalkCycleAudioCoroutine != null)
+        {
+            StopCoroutine(_aggroWalkCycleAudioCoroutine);
+            _aggroWalkCycleAudioCoroutine = null;
+        }
     }
 
     void TryInitWalkCycleAudio(float walkFrequency)
     {
+        if (_aggroWalkCycleAudioCoroutine != null)
+        {
+            StopCoroutine(_aggroWalkCycleAudioCoroutine);
+            _aggroWalkCycleAudioCoroutine = null;
+        }
+
         if (_walkCycleAudioCoroutine == null)
         {
             _walkCycleAudioCoroutine = StartCoroutine(WalkCycleAudio(walkFrequency));
@@ -323,6 +360,13 @@ public class GroundEnemyBehaviour : EnemyBase
 
         var distanceFromTarget = Mathf.Abs(transform.position.x - _aggroTarget.x);
 
+        DebugUtil.DrawCircle(new Vector3(_aggroTarget.x, transform.position.y + 0.5f, 0f), 0.25f, Color.red);
+
+        var startLine = new Vector3(transform.position.x, transform.position.y + 0.5f, 0f);
+        var endLine = new Vector3(transform.position.x + (_facingLeft ? -AttackRange : AttackRange), transform.position.y + 0.5f, 0f);
+
+        Debug.DrawLine(startLine, endLine, Color.yellow);
+
         if (distanceFromTarget <= AttackRange)
         {
             StartCoroutine(Attack());
@@ -333,6 +377,9 @@ public class GroundEnemyBehaviour : EnemyBase
 
             if (collisions == CollisionTypes.GroundEdge || collisions == CollisionTypes.WallHit)
             {
+                _isAggroed = false;
+                Debug.Log("End aggro on collisions " + Time.time);
+
                 // NOTE: End aggro on collisions
                 StartCoroutine(ResetAndTurnAround(1.5f, collisions == CollisionTypes.WallHit));
                 return;
@@ -359,8 +406,6 @@ public class GroundEnemyBehaviour : EnemyBase
             TurnAround();
         }
 
-        Debug.Log("Set to passive, ResetAndTurnAround()");
-
         _state = EnemyState.Passive;
 
         yield return new WaitForSeconds(passiveLength);
@@ -375,6 +420,8 @@ public class GroundEnemyBehaviour : EnemyBase
 
     IEnumerator Attack()
     {
+        Debug.Log("Attack start " + Time.time);
+
         _state = EnemyState.Passive;
 
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.AttackCharge);
@@ -393,14 +440,13 @@ public class GroundEnemyBehaviour : EnemyBase
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Attack);
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Attack);
 
-        yield return new WaitForSeconds(0.30f);
+        yield return new WaitForSeconds(0.5f);
 
         if (_state != EnemyState.Attacking || _isDead)
         {
             yield return null;
         }
 
-        _spriteRenderer.color = Color.white;
         _state = EnemyState.Passive;
         _attackDamageZone.gameObject.SetActive(false);
 
@@ -409,6 +455,9 @@ public class GroundEnemyBehaviour : EnemyBase
         yield return new WaitForSeconds(0.50f);
 
         _state = EnemyState.NormalMoving;
+        _isAggroed = false;
+
+        Debug.Log("Attack end " + Time.time);
     }
 
     void RecieveDamage(Vector2 damageDir)
@@ -506,9 +555,9 @@ public class GroundEnemyBehaviour : EnemyBase
         return _facingLeft ? -1f : 1f;
     }
 
-    void DetectPlayerAndAggro()
+    void TryDetectPlayerAndAggro()
     {
-        if (_state != EnemyState.NormalMoving || _playerCharacter.IsDead())
+        if (!(_state == EnemyState.Passive || _state == EnemyState.NormalMoving) || _playerCharacter.IsDead())
         {
             return;
         }
@@ -572,7 +621,7 @@ public class GroundEnemyBehaviour : EnemyBase
         while (true)
         {
             float moveElapsed = 0f;
-            float moveTime = Random.Range(3.5f, 5.5f);
+            float moveTime = Random.Range(4.5f, 6.5f);
 
             Debug.Log("moveTime " + moveTime);
 
@@ -617,6 +666,11 @@ public class GroundEnemyBehaviour : EnemyBase
 
     IEnumerator ActivateAggro()
     {
+        _isAggroed = true;
+        _state = EnemyState.Passive;
+
+        TryStopNormalMovement();
+
         var targetDir = transform.position.x - _aggroTarget.x;
 
         var targetDirRight = targetDir < 0f;
@@ -626,9 +680,6 @@ public class GroundEnemyBehaviour : EnemyBase
         {
             TurnAround();
         }
-
-        _spriteRenderer.color = Color.yellow;
-        _state = EnemyState.Alert;
 
         const float alertTimeBetween = 12f;
         var newTime = Time.time;
@@ -641,13 +692,13 @@ public class GroundEnemyBehaviour : EnemyBase
 
         yield return new WaitForSeconds(0.5f);
 
-        if (_state != EnemyState.Alert || _isDead)
+        if (_isDead)
         {
             yield return null;
         }
 
-        _spriteRenderer.color = Color.red;
         _state = EnemyState.AttackMoving;
+
         StartCoroutine(AttackMoveMaxTimer());
     }
 
@@ -657,6 +708,7 @@ public class GroundEnemyBehaviour : EnemyBase
 
         if (_state == EnemyState.AttackMoving && !_isDead)
         {
+            _isAggroed = false;
             _state = EnemyState.NormalMoving;
         }
     }

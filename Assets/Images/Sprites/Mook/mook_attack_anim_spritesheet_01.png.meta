@@ -118,12 +118,12 @@ TextureImporter:
       name: mook_attack_anim_spritesheet_01_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1
         y: 0
         width: 675
         height: 512
       alignment: 9
-      pivot: {x: 0.5, y: 0.04296875}
+      pivot: {x: 0.31851852, y: 0.04296875}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -140,12 +140,12 @@ TextureImporter:
       name: mook_attack_anim_spritesheet_01_1
       rect:
         serializedVersion: 2
-        x: 675
+        x: 676
         y: 0
         width: 675
         height: 512
       alignment: 9
-      pivot: {x: 0.5, y: 0.04296875}
+      pivot: {x: 0.31851852, y: 0.04296875}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -167,7 +167,7 @@ TextureImporter:
         width: 675
         height: 512
       alignment: 9
-      pivot: {x: 0.5, y: 0.04296875}
+      pivot: {x: 0.31851852, y: 0.04296875}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -189,7 +189,7 @@ TextureImporter:
         width: 675
         height: 512
       alignment: 9
-      pivot: {x: 0.5, y: 0.04296875}
+      pivot: {x: 0.31851852, y: 0.04296875}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -211,7 +211,7 @@ TextureImporter:
         width: 675
         height: 512
       alignment: 9
-      pivot: {x: 0.5, y: 0.04296875}
+      pivot: {x: 0.31851852, y: 0.04296875}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -233,7 +233,7 @@ TextureImporter:
         width: 675
         height: 512
       alignment: 9
-      pivot: {x: 0.5, y: 0.04296875}
+      pivot: {x: 0.31851852, y: 0.04296875}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
