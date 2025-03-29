@@ -268,6 +268,11 @@ public class PlayerCharacter : MonoBehaviour
 
     void Update()
     {
+        if (_gameState.GetGameState() == GameStateType.PauseMenu)
+        {
+            return;
+        }
+        
         PlayerMovementControls();
 
         if (_isDashing)
