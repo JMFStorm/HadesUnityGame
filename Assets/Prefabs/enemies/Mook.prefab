@@ -273,6 +273,7 @@ MonoBehaviour:
   DamageStunTime: 0.45
   DamageColor: {r: 0.49019608, g: 0.078431375, b: 0.078431375, a: 1}
   MaxHealth: 4
+  StartFacingLeft: 0
 --- !u!212 &2275585569708316583
 SpriteRenderer:
   m_ObjectHideFlags: 0
