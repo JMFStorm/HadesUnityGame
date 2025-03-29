@@ -143,6 +143,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private readonly RigidbodyConstraints2D _defaultRigidbodyConstraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
     private readonly RigidbodyConstraints2D _dashingRigidbodyConstraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+    private readonly RigidbodyConstraints2D _crouchingRigidbodyConstraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
 
     void Awake()
     {
@@ -628,6 +629,19 @@ public class PlayerCharacter : MonoBehaviour
             _facingDirX = Mathf.Ceil(moveInput);
         }
 
+        if (_isCrouching)
+        {
+            _rigidBody.constraints = _crouchingRigidbodyConstraints;
+        }
+        else if (_isDashing)
+        {
+            _rigidBody.constraints = _dashingRigidbodyConstraints;
+        }
+        else
+        {
+            _rigidBody.constraints = _defaultRigidbodyConstraints;
+        }
+
         // --------------------
         // Get action buttons
 
@@ -802,8 +816,6 @@ public class PlayerCharacter : MonoBehaviour
     {
         PlaySoundSource(DashsoundClip);
 
-        _rigidBody.constraints = _dashingRigidbodyConstraints;
-
         _isDashing = true;
         _dashTimer = 0f;
         _dashDirX = _facingDirX;
@@ -821,8 +833,6 @@ public class PlayerCharacter : MonoBehaviour
 
     void StopDash()
     {
-        _rigidBody.constraints = _defaultRigidbodyConstraints;
-
         _isDashing = false;
         _rigidBody.linearVelocity = Vector2.zero;
     }
