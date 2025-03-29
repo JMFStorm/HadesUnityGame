@@ -10,13 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1932861011804941013}
   - component: {fileID: 2705247940872239639}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: DamageZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1932861011804941013
 Transform:
   m_ObjectHideFlags: 0

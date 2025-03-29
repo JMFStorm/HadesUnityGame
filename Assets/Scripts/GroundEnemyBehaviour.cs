@@ -184,8 +184,6 @@ public class GroundEnemyBehaviour : EnemyBase
         }
         else if (_state == EnemyState.Attacking)
         {
-            // _animator.Play("MookAttack");
-
             StopWalkCycle();
         }
 
@@ -427,7 +425,11 @@ public class GroundEnemyBehaviour : EnemyBase
         }
 
         ApplyDamageKnockback(damageDir);
-        StopAttackCoroutine();
+
+        if (!IsShadowVariant)
+        {
+            StopAttackCoroutine();
+        }
 
         _currentHealth -= 1;
 
@@ -455,7 +457,10 @@ public class GroundEnemyBehaviour : EnemyBase
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Damage, true);
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
 
-        _state = EnemyState.Passive;
+        if (!IsShadowVariant)
+        {
+            _state = EnemyState.Passive;
+        }
 
         yield return new WaitForSeconds(duration);
 

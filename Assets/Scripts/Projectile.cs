@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using static Codice.Client.Common.EventTracking.TrackFeatureUseEvent.Features.DesktopGUI.Filters;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CircleCollider2D))]
@@ -12,6 +14,7 @@ public class Projectile : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private Transform _spriteTransform;
     private ParticleSystem _particleSystem;
+    private PlayerCharacter _player;
 
     private AudioSource _audio;
 
@@ -30,6 +33,8 @@ public class Projectile : MonoBehaviour
 
     private void Awake()
     {
+        _player = FindFirstObjectByType<PlayerCharacter>();
+
         _gameState = FindFirstObjectByType<GameState>();
 
         if (!TryGetComponent(out _audio))
@@ -69,8 +74,14 @@ public class Projectile : MonoBehaviour
             return; // NOTE: Ignore "self"
         }
 
+        Debug.Log($"collision: {collision.collider.name}, {collision.gameObject.tag}, {collision.gameObject.CompareTag("Player")}");
+
         if (collision.gameObject.CompareTag("Player"))
         {
+            Vector2 collisionDirection = (transform.position - collision.transform.position).normalized;
+
+            _player.TryRecieveDamage(collisionDirection);
+
             StartImplode(Color.red, 2.0f);
         }
         else
@@ -83,8 +94,6 @@ public class Projectile : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") && other.gameObject.CompareTag("PlayerSword"))
         {
-            Debug.Log("Player sword hit!");
-
             StartImplode(Color.black, 1.25f);
         }
     }

@@ -440,7 +440,7 @@ public class PlayerCharacter : MonoBehaviour
         _material.SetColor("_NewColor", color);
     }
 
-    void TryRecieveDamage(Vector2 damageDir)
+    public void TryRecieveDamage(Vector2 damageDir)
     {
         if (_hasDamageInvulnerability)
         {
@@ -479,8 +479,6 @@ public class PlayerCharacter : MonoBehaviour
 
         _globalAudio.PlaySoundEffect(FallDeathVoiceClip, 0.25f);
 
-        // PlayVoiceSource(FallDeathVoiceClip, 1f);
-
         yield return new WaitForSeconds(0.5f);
 
         _gameUI.HidePlayerStats(true);
@@ -493,6 +491,8 @@ public class PlayerCharacter : MonoBehaviour
 
     IEnumerator PlayerDieAndLevelRestart()
     {
+        _rigidBody.constraints = _defaultRigidbodyConstraints;
+
         StopPlayerAttack();
         PlaySoundSource(DamageTakenSoundClip);
         PlayVoiceSource(DamageTakenVoiceClip, 0.5f);
