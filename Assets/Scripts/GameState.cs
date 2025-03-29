@@ -357,7 +357,7 @@ public class GameState : MonoBehaviour
 
         if (levelEnter != null)
         {
-            var newPlayerStart = levelEnter - new Vector3(0, 1.15f, 0);
+            var newPlayerStart = levelEnter;
             _player.transform.position = new Vector3(newPlayerStart.x, newPlayerStart.y, 0);
             _mainCamera.transform.position = new Vector3(newPlayerStart.x, newPlayerStart.y, _cameraZOffset);
             _prevCameraPosition = _mainCamera.transform.position;
