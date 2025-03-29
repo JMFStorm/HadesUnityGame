@@ -103,7 +103,6 @@ public class PlayerCharacter : MonoBehaviour
     private GameState _gameState;
     private GlobalAudio _globalAudio;
 
-    private Coroutine _currentRunCycleCoroutine;
     private Coroutine _playerAttackCoroutine;
 
     private Vector2 _groundCheckSize = new(0.5f, 0.25f);
@@ -175,7 +174,7 @@ public class PlayerCharacter : MonoBehaviour
         _playerSoundAudioSources[0].rolloffMode = AudioRolloffMode.Linear;
         _playerVoiceAudioSource.rolloffMode = AudioRolloffMode.Linear;
 
-        if (!transform.Find("Sprite").TryGetComponent(out _animator))
+        if (!TryGetComponent(out _animator))
         {
             Debug.LogError($"{nameof(Animator)} not found on {nameof(PlayerCharacter)}");
         }
@@ -269,12 +268,6 @@ public class PlayerCharacter : MonoBehaviour
 
     void Update()
     {
-        if (_gameState.GetGameState() != GameStateType.MainGame)
-        {
-            StopRunCycleAudio();
-            return;
-        }
-
         PlayerMovementControls();
 
         if (_isDashing)
@@ -318,15 +311,6 @@ public class PlayerCharacter : MonoBehaviour
 
         bool moving = _hasGroundedFeet && 0.01f < Mathf.Abs(_rigidBody.linearVelocity.x);
 
-        if (moving)
-        {
-            // TryInitRunCycleAudio();
-        }
-        else
-        {
-            StopRunCycleAudio();
-        }
-
         // ---------------
         // Get animation
 
@@ -334,36 +318,36 @@ public class PlayerCharacter : MonoBehaviour
 
         if (_isDead)
         {
-            usedAnim = "PlayerDeath";
+            usedAnim = "PlayerDeath1";
         }
         else if (_inDamageState)
         {
-            usedAnim = "PlayerHit";
+            usedAnim = "PlayerHit1";
         }
         else if (_isAttacking)
         {
-            usedAnim = "PlayerAttack";
+            usedAnim = "PlayerAttack1";
         }
         else if (_isDashing)
         {
-            usedAnim = "PlayerDash";
+            usedAnim = "PlayerDash1";
         }
         else if (_isCrouching)
         {
-            usedAnim = "PlayerCrouch";
+            usedAnim = "PlayerCrouch1";
         }
         else if (!IsReadyToJumpAgain() 
             && !(_isPlatformGrounded && _rigidBody.linearVelocityY < 1.0f)) // NOTE: Case to ignore when clipping at platform edges
         {
-            usedAnim = "PlayerAir";
+            usedAnim = "PlayerAir1";
         }
         else if (moving)
         {
-            usedAnim = "PlayerMove";
+            usedAnim = "PlayerMove1";
         }
         else
         {
-            usedAnim = "PlayerIdle";
+            usedAnim = "PlayerIdle1";
         }
 
         _animator.Play(usedAnim);
@@ -716,7 +700,7 @@ public class PlayerCharacter : MonoBehaviour
 
         while (Input.GetButton("Attack") && _isAttacking)
         {
-            _animator.Play("PlayerAttack", -1, 0f);
+            _animator.Play("PlayerAttack1", -1, 0f);
 
             _lastAttackTime = Time.time;
 
@@ -899,33 +883,9 @@ public class PlayerCharacter : MonoBehaviour
         return _isDead;
     }
 
-    void StopRunCycleAudio()
+    void PlayFootstep()
     {
-        if (_currentRunCycleCoroutine != null)
-        {
-            StopCoroutine(_currentRunCycleCoroutine);
-            _currentRunCycleCoroutine = null;
-        }
-    }
-
-    void TryInitRunCycleAudio()
-    {
-        if (_currentRunCycleCoroutine == null)
-        {
-            _currentRunCycleCoroutine = StartCoroutine(RunCycleAudio());
-        }
-    }
-
-    IEnumerator RunCycleAudio()
-    {
-        yield return new WaitForSeconds(2f / 10f);
-
-        while (true)
-        {
-            yield return new WaitForSeconds(4f / 10f);
-
-            AudioClip usedClip = WalkSoundClips[Random.Range(0, WalkSoundClips.Length)];
-            PlaySoundSource(usedClip);
-        }
+        AudioClip usedClip = WalkSoundClips[Random.Range(0, WalkSoundClips.Length)];
+        PlaySoundSource(usedClip, 0.2f);
     }
 }
