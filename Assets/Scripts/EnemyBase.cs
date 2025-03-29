@@ -11,6 +11,8 @@ public abstract class EnemyBase : MonoBehaviour
     public Material ShadowShaderMaterial;
     public Material TeleporterShaderMaterial;
 
+    protected Rigidbody2D _rigidBody;
+
     public string Id;
 
     public bool IsShadowVariant = false;
@@ -22,6 +24,11 @@ public abstract class EnemyBase : MonoBehaviour
 
     protected virtual void Awake()
     {
+        if (!TryGetComponent(out _rigidBody))
+        {
+            Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(AeroBehaviour)}");
+        }
+
         if (!TryGetComponent(out _spriteRenderer))
         {
             Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(ShadowEnemyEffects)}");
@@ -37,10 +44,7 @@ public abstract class EnemyBase : MonoBehaviour
             IsShadowVariant = true;
         }
 
-        if (IsShadowVariant)
-        {
-            SetShadowVariantMaterial();
-        }
+        SetEnemyMaterial();
     }
 
     public virtual void SignalDieEvent(float destroyTimer = 2f)
@@ -50,21 +54,20 @@ public abstract class EnemyBase : MonoBehaviour
         StartCoroutine(DestroyTimer(destroyTimer));
     }
 
-    public void SetShadowVariantMaterial()
+    public void SetEnemyMaterial()
     {
-        if (!TryGetComponent<ShadowEnemyEffects>(out var shadowEffect))
-        {
-            Debug.LogError($"{nameof(ShadowEnemyEffects)} not found on  {nameof(EnemyBase)}");
-        }
-
         _spriteRenderer.material = ShadowShaderMaterial;
         _material = _spriteRenderer.material;
 
-        _material.SetFloat("_IsShadowVariant", 1f);
-        _material.SetFloat("_OutlineThickness", shadowEffect.OutlineThickness);
-        _material.SetColor("_InlineColor", shadowEffect.InlineColor);
-        _material.SetColor("_OutlineColor", shadowEffect.OutlineColor);
-        _material.SetColor("_DamageColor", new(0, 0, 0));
+        if (TryGetComponent<ShadowEnemyEffects>(out var shadowEffect))
+        {
+            _material.SetFloat("_OutlineThickness", shadowEffect.OutlineThickness);
+            _material.SetColor("_InlineColor", shadowEffect.InlineColor);
+            _material.SetColor("_OutlineColor", shadowEffect.OutlineColor);
+            _material.SetColor("_DamageColor", new(0, 0, 0));
+        }
+
+        _material.SetFloat("_IsShadowVariant", IsShadowVariant ? 1f : 0f);
     }
 
     public void SetTeleportMaterial()
@@ -80,9 +83,10 @@ public abstract class EnemyBase : MonoBehaviour
         _material.SetFloat("_Strength", strength);
     }
 
-    public void SetPassive(bool isPassive)
+    public void SetTeleportPassive(bool isPassive)
     {
         _isPassive = isPassive;
+        _rigidBody.simulated = !isPassive;
     }
 
     public void SetDamageColor(bool inDamage)

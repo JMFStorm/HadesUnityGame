@@ -34,7 +34,6 @@ public class AeroBehaviour : EnemyBase
     public GameObject projectilePrefab; // Reference to the projectile prefab
 
     private Animator _animatior;
-    private Rigidbody2D _rigidBody;
     private Transform _attackTarget; // Reference to the player's transform
     private Transform _enemyDamageZone;
     private Transform _projectileStart;
@@ -97,11 +96,6 @@ public class AeroBehaviour : EnemyBase
         if (!TryGetComponent(out _animatior))
         {
             Debug.LogError($"{nameof(Animator)} not found on {nameof(AeroBehaviour)}");
-        }
-
-        if (!TryGetComponent(out _rigidBody))
-        {
-            Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(AeroBehaviour)}");
         }
 
         if (!TryGetComponent(out _physicsCollider))

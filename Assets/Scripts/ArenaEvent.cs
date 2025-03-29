@@ -145,7 +145,6 @@ public class ArenaEvent : MonoBehaviour
                 var enemyPrefab = GetEnemyByType(current.EnemyType);
 
                 GameObject newEnemy = Instantiate(enemyPrefab, spawnpoint.transform.position, Quaternion.identity);
-                newEnemy.SetActive(false);
                 newEnemy.transform.SetParent(this.transform);
 
                 var enemy = newEnemy.GetComponent<EnemyBase>();
@@ -169,22 +168,34 @@ public class ArenaEvent : MonoBehaviour
 
     IEnumerator SpawnEnemyFromTeleport(EnemyBase enemy, ArenaEventSpawn spawn)
     {
-        var spriteRenderer = spawn.GetComponent<SpriteRenderer>();
         var audioSource = spawn.GetComponent<AudioSource>();
+
+        enemy.SetTeleportMaterial();
+        enemy.gameObject.SetActive(true);
 
         audioSource.clip = TeleporterStartSound;
         audioSource.loop = false;
         audioSource.volume = 0.75f;
         audioSource.Play();
 
-        spriteRenderer.enabled = true;
-        spriteRenderer.sprite = TeleporterSprite;
+        float elapsed = 0f;
+        const float teleportTime = 3.0f;
 
-        yield return new WaitForSeconds(2.0f);
+        enemy.SetTeleportPassive(true);
 
-        enemy.gameObject.SetActive(true);
+        while (elapsed < teleportTime)
+        {
+            var progress = elapsed / teleportTime;
+            //var usedValue = Mathf.Max(0.8f - progress, 0f);
 
-        spriteRenderer.enabled = false;
+            enemy.UpdateTeleportShaderEffect(0.5f - (progress / 2f));
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        enemy.SetTeleportPassive(false);
+        enemy.SetEnemyMaterial();
     }
 
     public List<GameObject> GetBlockersAndDeactivate()

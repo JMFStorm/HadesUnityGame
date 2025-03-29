@@ -31,7 +31,6 @@ public class GroundEnemyBehaviour : EnemyBase
     private Transform _attackDamageZone;
     private Transform _enemyDamageZone;
     private CapsuleCollider2D _enemyCollider;
-    private Rigidbody2D _rigidBody;
     private PlayerCharacter _playerCharacter;
     private MainCamera _mainCamera;
     private EnemySounds _soundEmitter;
@@ -81,11 +80,6 @@ public class GroundEnemyBehaviour : EnemyBase
         if (!TryGetComponent(out _enemyCollider))
         {
             Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(GroundEnemyBehaviour)}");
-        }
-
-        if (!TryGetComponent(out _rigidBody))
-        {
-            Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(GroundEnemyBehaviour)}");
         }
 
         if (!TryGetComponent(out _soundEmitter))
