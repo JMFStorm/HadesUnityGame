@@ -481,7 +481,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5691554422309045658}
   - component: {fileID: 1378513314695168210}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LightLarge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -565,7 +565,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4049941715515884049}
   - component: {fileID: 2341430397419151616}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -652,7 +652,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5382005851361770492}
   - component: {fileID: 1483931842660070737}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LightSmall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
