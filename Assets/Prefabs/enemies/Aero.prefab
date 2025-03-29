@@ -134,7 +134,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ea75002fc3105942b61ef90cb723ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DamageColor: {r: 0.49019608, g: 0.078431375, b: 0.078431375, a: 1}
+  ShadowShaderMaterial: {fileID: 2100000, guid: be62342babaa6d04192dc20eea87e439, type: 2}
   Id: 
+  IsShadowVariant: 0
   AudioClips:
   - {fileID: 8300000, guid: 3bc63bd12ae9b914e804a7ec47a283ee, type: 3}
   - {fileID: 8300000, guid: 18d5ff69cb906ae49ac691ec015ee990, type: 3}
@@ -153,7 +156,6 @@ MonoBehaviour:
   shootingCooldown: 3
   waveAmplitude: 1
   waveFrequency: 2
-  DamageColor: {r: 0.49019608, g: 0.078431375, b: 0.078431375, a: 1}
   EnemyHealth: 3
   projectilePrefab: {fileID: 6511049569049512373, guid: 228912b296a387c44b211139c74a8888, type: 3}
 --- !u!82 &8555710142796696427

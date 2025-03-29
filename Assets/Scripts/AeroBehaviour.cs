@@ -29,15 +29,12 @@ public class AeroBehaviour : EnemyBase
     public float waveAmplitude = 5f; // Height of the wave
     public float waveFrequency = 2f; // Speed of the wave movement
 
-    public Color DamageColor = new(0.8f, 0.1f, 0.1f, 1f);
-
     public int EnemyHealth = 3;
 
     public GameObject projectilePrefab; // Reference to the projectile prefab
 
     private Animator _animatior;
     private Rigidbody2D _rigidBody;
-    private SpriteRenderer _spriteRenderer;
     private Transform _attackTarget; // Reference to the player's transform
     private Transform _enemyDamageZone;
     private Transform _projectileStart;
@@ -46,8 +43,6 @@ public class AeroBehaviour : EnemyBase
     private MainCamera _mainCamera;
     private PlayerCharacter _player;
     private EnemySounds _soundEmitter;
-
-    private Material _material;
 
     private Coroutine _flapWings = null;
     private Coroutine _attackMove = null;
@@ -187,11 +182,6 @@ public class AeroBehaviour : EnemyBase
 
         Gizmos.color = Color.gray;
         Gizmos.DrawWireSphere(transform.position, GiveUpRadius);
-    }
-
-    void SetDamageColor(bool inDamage)
-    {
-        _material.SetColor("_DamageColor", inDamage ? DamageColor : new(0, 0, 0));
     }
 
     void TeleportToSpwanPosition()
@@ -501,7 +491,7 @@ public class AeroBehaviour : EnemyBase
             Debug.LogError($"Did not find {nameof(Projectile)} in {nameof(Projectile)}");
         }
 
-        // projectile.transform.SetParent(this.transform);
+        projectile.transform.SetParent(this.transform);
 
         ResetShotLoadTime();
 

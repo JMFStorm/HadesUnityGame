@@ -266,12 +266,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 637a5983c1029e249ad280687a179ef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DamageColor: {r: 0.49019608, g: 0.078431375, b: 0.078431375, a: 1}
+  ShadowShaderMaterial: {fileID: 2100000, guid: be62342babaa6d04192dc20eea87e439, type: 2}
   Id: 
+  IsShadowVariant: 0
   MovementSpeed: 1
   AggroSpeed: 2
   AttackRange: 1.5
   DamageStunTime: 0.45
-  DamageColor: {r: 0.49019608, g: 0.078431375, b: 0.078431375, a: 1}
   MaxHealth: 4
   StartFacingLeft: 0
 --- !u!212 &2275585569708316583

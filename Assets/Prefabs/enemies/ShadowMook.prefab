@@ -89,3 +89,4 @@ MonoBehaviour:
   OutlineThickness: 0.65
   InlineColor: {r: 0.050980393, g: 0.050980393, b: 0.050980393, a: 1}
   OutlineColor: {r: 0.29803923, g: 0.29803923, b: 0.29803923, a: 1}
+  ShadowShaderMaterial: {fileID: 2100000, guid: be62342babaa6d04192dc20eea87e439, type: 2}

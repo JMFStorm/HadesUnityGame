@@ -20,8 +20,6 @@ public class GroundEnemyBehaviour : EnemyBase
     public float AttackRange = 2.0f;
     public float DamageStunTime = 0.5f;
 
-    public Color DamageColor = new(0.8f, 0.1f, 0.1f, 1f);
-
     public int MaxHealth = 4;
 
     public bool StartFacingLeft = false;
@@ -29,13 +27,11 @@ public class GroundEnemyBehaviour : EnemyBase
     public const float MaxSoundDistance = 14f;
 
     private Animator _animator;
-    private Material _material;
     private Transform _groundCheck;
     private Transform _attackDamageZone;
     private Transform _enemyDamageZone;
     private CapsuleCollider2D _enemyCollider;
     private Rigidbody2D _rigidBody;
-    private SpriteRenderer _spriteRenderer;
     private PlayerCharacter _playerCharacter;
     private MainCamera _mainCamera;
     private EnemySounds _soundEmitter;
@@ -231,11 +227,6 @@ public class GroundEnemyBehaviour : EnemyBase
             Debug.Log("Hit player!");
             _attackHitPlayer = true;
         }
-    }
-
-    void SetDamageColor(bool inDamage)
-    {
-        _material.SetColor("_DamageColor", inDamage ? DamageColor : new(0, 0, 0));
     }
 
     void StopIdleVoiceLoop()
