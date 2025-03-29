@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d164d8566ec6ae246893d36250a2a213
+guid: 605f8fca768eb494ea7b735bb2cfa274
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8166979237434899162
-    second: seamless_flagstone_dark_01_0
+      213: 9156798839351923679
+    second: seamless_ghostcaves_dark_02_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,9 +40,9 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 35
+  spritePixelsToUnits: 15
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: seamless_flagstone_dark_01_0
+      name: seamless_ghostcaves_dark_02_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 900
-        height: 848
+        height: 626
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 625c3b077af09ae80800000000000000
-      internalID: -8166979237434899162
+      spriteID: fd3d743970c731f70800000000000000
+      internalID: 9156798839351923679
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      seamless_flagstone_dark_01_0: -8166979237434899162
+      seamless_ghostcaves_dark_02_0: 9156798839351923679
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

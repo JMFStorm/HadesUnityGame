@@ -5,6 +5,7 @@ Shader "Custom/ScrollingSprite"
         _MainTex ("Texture", 2D) = "white" {}
         _UVOffset ("UV Offset", Vector) = (0, 0, 0, 0)
         _UVScale ("UV Scale", Vector) = (1, 1, 0, 0) // Add UV scaling property
+         _Color ("Color Multiplier", Color) = (1,1,1,1) 
     }
     SubShader
     {
@@ -32,6 +33,7 @@ Shader "Custom/ScrollingSprite"
             sampler2D _MainTex;
             float4 _UVOffset; // Custom offset
             float4 _UVScale;  // Custom UV scale
+            float4 _Color;
 
             v2f vert (appdata_t v)
             {
@@ -45,7 +47,8 @@ Shader "Custom/ScrollingSprite"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                return tex2D(_MainTex, i.uv);
+                fixed4 texColor = tex2D(_MainTex, i.uv);
+                return texColor * _Color;
             }
             ENDCG
         }

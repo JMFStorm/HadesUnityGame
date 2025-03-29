@@ -328,6 +328,12 @@ public class GameState : MonoBehaviour
         var lightIntensity = GetLightLevelValue(_currentLevel.LightLevel);
         GlobalLight.intensity = lightIntensity;
 
+        var bgCol = 1f * lightIntensity;
+        bgCol = Mathf.Min(bgCol, 1f);
+        bgCol = Mathf.Max(bgCol, 0.1f);
+        var bgColor = new Color(bgCol, bgCol, bgCol, 1f);
+        _backgroundRenderer.material.SetColor("_Color", bgColor);
+
         Debug.Log($"GlobalLight.intensity set = {GlobalLight.intensity}");
 
         _mainCamera.SetCameraBoundaries(bl, tr);
