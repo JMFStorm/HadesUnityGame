@@ -271,6 +271,7 @@ public class AeroBehaviour : EnemyBase
             {
                 isChasing = false;
                 _hasGivenUp = true;
+                ResetInnerState();
                 StartCoroutine(CheckRespawnLocation());
             }
             else

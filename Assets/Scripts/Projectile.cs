@@ -13,6 +13,8 @@ public class Projectile : MonoBehaviour
     private Transform _spriteTransform;
     private ParticleSystem _particleSystem;
 
+    private AudioSource _audio;
+
     private Color _targetColor;
     private bool _isFading = false; // Flag to track if fading is active
     private float _fadeStartTime; // Time when fading started
@@ -22,10 +24,19 @@ public class Projectile : MonoBehaviour
 
     private Transform _damageZone;
 
+    private GameState _gameState;
+
     private readonly float fadeDuration = 0.04f; // Duration for fading effect
 
     private void Awake()
     {
+        _gameState = FindFirstObjectByType<GameState>();
+
+        if (!TryGetComponent(out _audio))
+        {
+            Debug.LogError($"{nameof(AudioSource)} not found on {nameof(Rigidbody2D)}");
+        }
+
         if (!TryGetComponent(out _rb))
         {
             Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(Rigidbody2D)}");
@@ -87,11 +98,6 @@ public class Projectile : MonoBehaviour
 
             // Interpolate between the current color and target color
             _spriteRenderer.color = Color.Lerp(_spriteRenderer.color, _targetColor, t);
-
-            if (1f <= t)
-            {
-                // gameObject.SetActive(false);
-            }
         }
         else
         {
@@ -101,6 +107,16 @@ public class Projectile : MonoBehaviour
         if (3f < _launchTime)
         {
             StartImplode(Color.black, 1f);
+        }
+
+        if (_audio.isPlaying)
+        {
+            var gameState = _gameState.GetGameState();
+
+            if (gameState is GameStateType.PauseMenu)
+            {
+                _audio.Pause();
+            }
         }
     }
 
@@ -129,9 +145,7 @@ public class Projectile : MonoBehaviour
     {
         var collider = _damageZone.GetComponent<CircleCollider2D>();
         collider.enabled = false;
-
-        var audio = GetComponent<AudioSource>();
-        audio.enabled = false;
+        _audio.enabled = false;
 
         _spriteRenderer.enabled = false;
         _rb.simulated = false;

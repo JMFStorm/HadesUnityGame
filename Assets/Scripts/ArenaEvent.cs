@@ -186,8 +186,6 @@ public class ArenaEvent : MonoBehaviour
         while (elapsed < teleportTime)
         {
             var progress = elapsed / teleportTime;
-            //var usedValue = Mathf.Max(0.8f - progress, 0f);
-
             enemy.UpdateTeleportShaderEffect(0.5f - (progress / 2f));
             elapsed += Time.deltaTime;
 
