@@ -9,10 +9,13 @@ public abstract class EnemyBase : MonoBehaviour
     public Color DamageColor = new(0.8f, 0.1f, 0.1f, 1f);
 
     public Material ShadowShaderMaterial;
+    public Material TeleporterShaderMaterial;
 
     public string Id;
 
     public bool IsShadowVariant = false;
+
+    protected bool _isPassive = false;
 
     protected SpriteRenderer _spriteRenderer;
     protected Material _material;
@@ -62,6 +65,24 @@ public abstract class EnemyBase : MonoBehaviour
         _material.SetColor("_InlineColor", shadowEffect.InlineColor);
         _material.SetColor("_OutlineColor", shadowEffect.OutlineColor);
         _material.SetColor("_DamageColor", new(0, 0, 0));
+    }
+
+    public void SetTeleportMaterial()
+    {
+        _spriteRenderer.material = TeleporterShaderMaterial;
+        _material = _spriteRenderer.material;
+
+        _material.SetFloat("_Strength", 1f);
+    }
+
+    public void UpdateTeleportShaderEffect(float strength)
+    {
+        _material.SetFloat("_Strength", strength);
+    }
+
+    public void SetPassive(bool isPassive)
+    {
+        _isPassive = isPassive;
     }
 
     public void SetDamageColor(bool inDamage)

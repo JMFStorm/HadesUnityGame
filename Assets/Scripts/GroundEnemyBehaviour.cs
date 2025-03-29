@@ -154,6 +154,12 @@ public class GroundEnemyBehaviour : EnemyBase
 
     void Update()
     {
+        if (_isPassive)
+        {
+            _animator.Play("MookIdle");
+            return;
+        }
+
         if (!_isInDamageMode || !_isDead)
         {
             if (!_isAggroed)

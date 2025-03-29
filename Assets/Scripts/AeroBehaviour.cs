@@ -142,6 +142,12 @@ public class AeroBehaviour : EnemyBase
 
     private void FixedUpdate()
     {
+        if (_isPassive)
+        {
+            _animatior.SetBool("_IsAttacking", false);
+            return;
+        }
+
         _flyTarget = transform.position;
         _targetDir = GetTargetDirection();
 

@@ -189,6 +189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DamageColor: {r: 0.49019608, g: 0.078431375, b: 0.078431375, a: 1}
   ShadowShaderMaterial: {fileID: 2100000, guid: be62342babaa6d04192dc20eea87e439, type: 2}
+  TeleporterShaderMaterial: {fileID: 2100000, guid: 334b3e66ed7ac8a4e9fd9f8c6875b108, type: 2}
   Id: 
   IsShadowVariant: 0
   MovementSpeed: 1.5
