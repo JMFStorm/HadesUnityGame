@@ -444,7 +444,7 @@ public class GroundEnemyBehaviour : EnemyBase
         {
             _isDead = true;
             StopAllCoroutines();
-            StartCoroutine(ActivateDeathAndDestroy());
+            ActivateDeathAndDestroy();
         }
         else
         {
@@ -474,7 +474,7 @@ public class GroundEnemyBehaviour : EnemyBase
         _isInDamageMode = false;
     }
 
-    IEnumerator ActivateDeathAndDestroy()
+    void ActivateDeathAndDestroy()
     {
         _isDead = true;
         _spriteRenderer.enabled = false;
@@ -483,8 +483,6 @@ public class GroundEnemyBehaviour : EnemyBase
 
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
-
-        yield return new WaitForSeconds(2f);
 
         SignalDieEvent();
     }

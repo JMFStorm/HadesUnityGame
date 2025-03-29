@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour
@@ -22,9 +23,20 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
 
-    public virtual void SignalDieEvent()
+    public virtual void SignalDieEvent(float destroyTimer = 2f)
     {
         OnEnemyDied?.Invoke(this); // Notify listeners that an enemy died
-        Destroy(gameObject);
+
+        StartCoroutine(DestroyTimer(destroyTimer));
+    }
+
+    IEnumerator DestroyTimer(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        if (this.gameObject != null)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }

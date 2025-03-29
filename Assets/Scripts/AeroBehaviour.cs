@@ -339,7 +339,7 @@ public class AeroBehaviour : EnemyBase
         {
             _isDead = true;
             StopAllCoroutines();
-            StartCoroutine(ActivateDeathAndDestroy());
+            ActivateDeathAndDestroy();
         }
         else
         {
@@ -376,7 +376,7 @@ public class AeroBehaviour : EnemyBase
         return false;
     }
 
-    IEnumerator ActivateDeathAndDestroy()
+    void ActivateDeathAndDestroy()
     {
         _isDead = true;
 
@@ -386,8 +386,6 @@ public class AeroBehaviour : EnemyBase
 
         _spriteRenderer.enabled = false;
         _enemyDamageZone.gameObject.SetActive(false);
-
-        yield return new WaitForSeconds(2f);
 
         SignalDieEvent();
     }
