@@ -471,13 +471,15 @@ public class PlayerCharacter : MonoBehaviour
         StopPlayerAttack();
         ControlsEnabled(false);
 
-        _globalAudio.StopMusic(4f);
+        _globalAudio.StopMusic(0f);
+
+        _globalAudio.PlayFallFailureSoundFX();
 
         _isDead = true;
 
         yield return new WaitForSeconds(0.1f);
 
-        _globalAudio.PlaySoundEffect(FallDeathVoiceClip, 0.25f);
+        _globalAudio.PlaySoundEffect(FallDeathVoiceClip, 0.3f);
 
         yield return new WaitForSeconds(0.5f);
 
@@ -505,6 +507,7 @@ public class PlayerCharacter : MonoBehaviour
 
         yield return new WaitForSeconds(0.8f);
 
+        _globalAudio.PlayFallFailureSoundFX();
         PlayVoiceSource(DeathVoiceClip, 1f);
         _isDead = true;
 

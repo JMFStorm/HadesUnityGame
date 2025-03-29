@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public enum LevelSoundscapeType
 {
@@ -32,6 +34,9 @@ public class GlobalAudio : MonoBehaviour
     public AudioClip[] LevelAmbienceAudios;
     public AudioClip[] GlobalMusicAudios;
 
+    public AudioClip[] DeathFailureMusics;
+    public AudioClip[] FallFailureMusics;
+
     public List<AudioClip> AnnouncerIntroTitleVoices = new();
     public List<AudioClip> AnnouncerGameOverVoices = new();
 
@@ -42,8 +47,10 @@ public class GlobalAudio : MonoBehaviour
     private AudioSource _levelAmbienceAudioSource;
     private AudioSource _hadesAnnouncerAudioSource;
     private AudioSource _globalMusicAudioSource;
-    private AudioSource _globaSoundEffectAudioSource;
+    private AudioSource[] _globaSoundEffectAudioSources = new AudioSource[2];
     private AudioSource _globaUIAudioSource;
+
+    private int _lastSoundFXSourceIndex = 0;
 
     private Coroutine _fadeMusicCoroutine;
 
@@ -58,8 +65,11 @@ public class GlobalAudio : MonoBehaviour
         _globalMusicAudioSource = gameObject.AddComponent<AudioSource>();
         _globalMusicAudioSource.spatialBlend = 0; // 2D global sound
 
-        _globaSoundEffectAudioSource = gameObject.AddComponent<AudioSource>();
-        _globaSoundEffectAudioSource.spatialBlend = 0; // 2D global sound
+        _globaSoundEffectAudioSources[0] = gameObject.AddComponent<AudioSource>();
+        _globaSoundEffectAudioSources[0].spatialBlend = 0; // 2D global sound
+
+        _globaSoundEffectAudioSources[1] = gameObject.AddComponent<AudioSource>();
+        _globaSoundEffectAudioSources[1].spatialBlend = 0; // 2D global sound
 
         _globaUIAudioSource = gameObject.AddComponent<AudioSource>();
         _globaUIAudioSource.spatialBlend = 0; // 2D global sound
@@ -107,19 +117,33 @@ public class GlobalAudio : MonoBehaviour
         PlayAnnouncerVoiceClip(usedClip);
     }
 
+    public void PlayFallFailureSoundFX()
+    {
+        AudioClip usedClip = FallFailureMusics[Random.Range(0, FallFailureMusics.Length)];
+        PlaySoundEffect(usedClip, 0.25f, true);
+    }
+
+    public void PlayDeathFailureSoundFX()
+    {
+        AudioClip usedClip = DeathFailureMusics[Random.Range(0, DeathFailureMusics.Length)];
+        PlaySoundEffect(usedClip, 0.25f, true);
+    }
+
     public void PlaySoundEffect(AudioClip clip, float volume, bool overrideSound = false)
     {
+        var newIndex = (_lastSoundFXSourceIndex++) % _globaSoundEffectAudioSources.Length;
+
         if (overrideSound)
         {
-            _globaSoundEffectAudioSource.Stop();
+            _globaSoundEffectAudioSources[newIndex].Stop();
         }
 
-        if (clip != null && (_globaSoundEffectAudioSource.clip != clip || !_globaSoundEffectAudioSource.isPlaying))
+        if (clip != null)
         {
-            _globaSoundEffectAudioSource.loop = false;
-            _globaSoundEffectAudioSource.volume = volume;
-            _globaSoundEffectAudioSource.clip = clip;
-            _globaSoundEffectAudioSource.Play();
+            _globaSoundEffectAudioSources[newIndex].loop = false;
+            _globaSoundEffectAudioSources[newIndex].volume = volume;
+            _globaSoundEffectAudioSources[newIndex].clip = clip;
+            _globaSoundEffectAudioSources[newIndex].Play();
         }
     }
 
@@ -151,9 +175,10 @@ public class GlobalAudio : MonoBehaviour
         _levelAmbienceAudioSource.Stop();
     }
 
-    public void StopSoundEffect()
+    public void StopSoundEffects()
     {
-        _globaSoundEffectAudioSource.Stop();
+        _globaSoundEffectAudioSources[0].Stop();
+        _globaSoundEffectAudioSources[1].Stop();
     }
 
     public void StopMusic(float fadeTime)

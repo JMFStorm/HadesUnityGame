@@ -247,7 +247,7 @@ public class GameUI : MonoBehaviour
             _cutsceneCoroutine = null;
             _cutsceneCancelled = true;
 
-            _globalAudio.StopSoundEffect();
+            _globalAudio.StopSoundEffects();
         }
     }
 

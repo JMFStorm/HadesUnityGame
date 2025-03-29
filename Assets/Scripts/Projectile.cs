@@ -24,9 +24,6 @@ public class Projectile : MonoBehaviour
     private float _launchTime = 0;
 
     private Coroutine _implodeCoroutine = null;
-
-    private Transform _damageZone;
-
     private GameState _gameState;
 
     private readonly float fadeDuration = 0.04f; // Duration for fading effect
@@ -57,13 +54,6 @@ public class Projectile : MonoBehaviour
         if (!_spriteTransform.TryGetComponent(out _spriteRenderer))
         {
             Debug.LogError($"{nameof(SpriteRenderer)} not found on child Sprite of {nameof(Projectile)}");
-        }
-
-        _damageZone = transform.Find("DamageZone");
-
-        if (_damageZone == null)
-        {
-            Debug.LogError($"DamageZone not found on child of {nameof(Projectile)}");
         }
     }
 
@@ -152,8 +142,6 @@ public class Projectile : MonoBehaviour
 
     IEnumerator Implode(Color color, float scale)
     {
-        var collider = _damageZone.GetComponent<CircleCollider2D>();
-        collider.enabled = false;
         _audio.enabled = false;
 
         _spriteRenderer.enabled = false;

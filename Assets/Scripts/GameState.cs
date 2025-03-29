@@ -402,6 +402,7 @@ public class GameState : MonoBehaviour
         _gameUI.HidePlayerStats(true);
         _gameUI.HideFadeEffectRect(true);
         _gameUI.GameOverScreen(true);
+
         _globalAudio.PlayAnnouncerVoiceType(AnnouncerVoiceGroup.GameOver);
 
         SetGameState(GameStateType.GameOverMenu);

@@ -250,6 +250,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: GlobalGameState
       objectReference: {fileID: 0}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: FallFailureMusics.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: DeathFailureMusics.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'FallFailureMusics.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: d7e00c85c5cc67d40aac92a036d8a186, type: 3}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'DeathFailureMusics.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 87aec467f90d85545a1e0e6702e715cb, type: 3}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'DeathFailureMusics.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 53592413b0ebadb4cbfac768a59c711a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
