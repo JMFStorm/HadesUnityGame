@@ -22,6 +22,7 @@ public class Level : MonoBehaviour
     public LevelLightLevels LightLevel = 0;
     public LevelSoundscapeType LevelSoundscape = 0;
     public GlobalMusic LevelMusic;
+    public float BackgroundBrightness = 1f;
 
     public bool HeavyFog = false;
     public Color FogColorMultiplier = new(1, 1, 1, 1);

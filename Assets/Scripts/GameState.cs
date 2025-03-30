@@ -328,9 +328,7 @@ public class GameState : MonoBehaviour
         var lightIntensity = GetLightLevelValue(_currentLevel.LightLevel);
         GlobalLight.intensity = lightIntensity;
 
-        var bgCol = 1f * lightIntensity;
-        bgCol = Mathf.Min(bgCol, 1f);
-        bgCol = Mathf.Max(bgCol, 0.1f);
+        var bgCol = Mathf.Max(Mathf.Min(_currentLevel.BackgroundBrightness, 1f), 0f);
         var bgColor = new Color(bgCol, bgCol, bgCol, 1f);
         _backgroundRenderer.material.SetColor("_Color", bgColor);
 
@@ -507,12 +505,12 @@ public class GameState : MonoBehaviour
         return level switch
         {
             LevelLightLevels.PitchBlack => 0f,
-            LevelLightLevels.VeryDark => 0.025f,
-            LevelLightLevels.Dark => 0.1f,
-            LevelLightLevels.Dim => 0.25f,
-            LevelLightLevels.Normal => 0.35f,
-            LevelLightLevels.Bright => 0.5f,
-            LevelLightLevels.VeryBright => 0.65f,
+            LevelLightLevels.VeryDark => 0.1f,
+            LevelLightLevels.Dark => 0.25f,
+            LevelLightLevels.Dim => 0.35f,
+            LevelLightLevels.Normal => 0.5f,
+            LevelLightLevels.Bright => 0.7f,
+            LevelLightLevels.VeryBright => 0.9f,
             _ => 0f
         };
     }

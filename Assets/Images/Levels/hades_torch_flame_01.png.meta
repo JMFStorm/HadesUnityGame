@@ -1,0 +1,288 @@
+fileFormatVersion: 2
+guid: 86b2ae865870d844c8eacada860ee6a0
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5895590344256018063
+    second: hades_torch_flame_01_0
+  - first:
+      213: 2908042249018970377
+    second: hades_torch_flame_01_1
+  - first:
+      213: -8495009795802235625
+    second: hades_torch_flame_01_2
+  - first:
+      213: -1435156877556223338
+    second: hades_torch_flame_01_3
+  - first:
+      213: 9056344213692425383
+    second: hades_torch_flame_01_4
+  - first:
+      213: 3525145088651054507
+    second: hades_torch_flame_01_5
+  - first:
+      213: 1685340390528645387
+    second: hades_torch_flame_01_6
+  - first:
+      213: 8077900662143489741
+    second: hades_torch_flame_01_7
+  - first:
+      213: -416430271791697655
+    second: hades_torch_flame_01_8
+  - first:
+      213: 8666312951883080402
+    second: hades_torch_flame_01_9
+  - first:
+      213: 3174923888567419934
+    second: hades_torch_flame_01_10
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: hades_torch_flame_01_2
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 274
+        width: 89
+        height: 240
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71d7eb56999ab1a80800000000000000
+      internalID: -8495009795802235625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hades_torch_flame_01_3
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 273
+        width: 83
+        height: 196
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6927d447c6c451ce0800000000000000
+      internalID: -1435156877556223338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hades_torch_flame_01_4
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 274
+        width: 99
+        height: 218
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a42dcc64199ead70800000000000000
+      internalID: 9056344213692425383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hades_torch_flame_01_7
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 9
+        width: 103
+        height: 218
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc694f98ad77a1070800000000000000
+      internalID: 8077900662143489741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hades_torch_flame_01_8
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 5
+        width: 90
+        height: 222
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 901f228cfda883af0800000000000000
+      internalID: -416430271791697655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hades_torch_flame_01_10
+      rect:
+        serializedVersion: 2
+        x: 394
+        y: 5
+        width: 94
+        height: 196
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1486f684789f0c20800000000000000
+      internalID: 3174923888567419934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: ff9e1bb58df83dd428baaf3dfae223d7
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      hades_torch_flame_01_10: 3174923888567419934
+      hades_torch_flame_01_2: -8495009795802235625
+      hades_torch_flame_01_3: -1435156877556223338
+      hades_torch_flame_01_4: 9056344213692425383
+      hades_torch_flame_01_7: 8077900662143489741
+      hades_torch_flame_01_8: -416430271791697655
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
