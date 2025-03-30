@@ -29,7 +29,7 @@ public class Health : MonoBehaviour
         {
             if (PickupSound != null)
             {
-                AudioSource.PlayClipAtPoint(PickupSound, transform.position);
+                AudioSource.PlayClipAtPoint(PickupSound, transform.position, 0.25f);
             }
 
             _playerCharacter.GetHealthFromPickup(AddedHealth);

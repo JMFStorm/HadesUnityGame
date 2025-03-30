@@ -86,6 +86,10 @@ public class EnemySounds : MonoBehaviour
         _enemySoundSources[0].rolloffMode = AudioRolloffMode.Linear;
         _enemySoundSources[1].rolloffMode = AudioRolloffMode.Linear;
         _enemyVoiceSource.rolloffMode = AudioRolloffMode.Linear;
+
+        _enemySoundSources[0].dopplerLevel = 0.0f;
+        _enemySoundSources[1].dopplerLevel = 0.0f;
+        _enemyVoiceSource.dopplerLevel = 0.0f;
     }
 
     public void TryPlaySoundSource(EnemySoundGroups soundType)

@@ -668,7 +668,8 @@ public class PlayerCharacter : MonoBehaviour
         {
             if (IsReadyToJumpAgain())
             {
-                PlaySoundSource(JumpSoundClip);
+                var pitch = Random.Range(0.95f, 1.1f);
+                PlaySoundSource(JumpSoundClip, pitch: pitch);
                 _rigidBody.linearVelocity = new Vector2(_rigidBody.linearVelocity.x, JumpForce);
                 _groundedTime = 0.0f;
             }
@@ -729,7 +730,8 @@ public class PlayerCharacter : MonoBehaviour
             const float attackPreSwingTime = 0.125f;
             yield return new WaitForSeconds(attackPreSwingTime);
 
-            PlaySoundSource(AttackSoundClip);
+            var attackPitch = Random.Range(0.95f, 1.15f);
+            PlaySoundSource(AttackSoundClip, pitch: attackPitch);
 
             if (_isDashing)
             {
@@ -750,7 +752,8 @@ public class PlayerCharacter : MonoBehaviour
 
             if (_hasGroundedFeet)
             {
-                PlaySoundSource(AttackMissSoundClip);
+                var pitch = Random.Range(0.95f, 1.1f);
+                PlaySoundSource(AttackMissSoundClip, pitch);
             }
 
             yield return new WaitForSeconds(attackVisibleTime - part01);
@@ -817,7 +820,8 @@ public class PlayerCharacter : MonoBehaviour
 
     void StartDash()
     {
-        PlaySoundSource(DashsoundClip);
+        var pitch = Random.Range(0.9f, 1.15f);
+        PlaySoundSource(DashsoundClip, pitch: pitch);
 
         _isDashing = true;
         _dashTimer = 0f;
@@ -867,10 +871,11 @@ public class PlayerCharacter : MonoBehaviour
         _playerVoiceAudioSource.Play();
     }
 
-    public void PlaySoundSource(AudioClip sound, float volume = 1f)
+    public void PlaySoundSource(AudioClip sound, float volume = 1f, float pitch = 1f)
     {
         var usedIndex = _lastSoundSourceIndex++ % _playerSoundAudioSources.Length;
 
+        _playerSoundAudioSources[usedIndex].pitch = pitch;
         _playerSoundAudioSources[usedIndex].loop = false;
         _playerSoundAudioSources[usedIndex].volume = volume;
         _playerSoundAudioSources[usedIndex].clip = sound;
@@ -904,6 +909,10 @@ public class PlayerCharacter : MonoBehaviour
     void PlayFootstep()
     {
         AudioClip usedClip = WalkSoundClips[Random.Range(0, WalkSoundClips.Length)];
-        PlaySoundSource(usedClip, 0.2f);
+
+        var pitch = Random.Range(0.85f, 1.15f);
+        var volume = Random.Range(0.17f, 0.23f);
+
+        PlaySoundSource(usedClip, volume, pitch);
     }
 }
