@@ -22,6 +22,7 @@ public class GameState : MonoBehaviour
     public MainCamera MainCameraPrefab;
     public Light2D GlobalLight;
     public bool SkipIntro = false;
+    public int DebugStartLevelIndex = 0;
 
     private GameStateType _gameState;
 
@@ -37,7 +38,6 @@ public class GameState : MonoBehaviour
     private Sprite _currentLevelBg = null;
     private Material _levelBGMaterial;
     private Vector2 _bgOffset = new();
-    // private Coroutine _startNewGameCoroutine;
 
     private float _bgUVMultiplier = new();
 
@@ -265,6 +265,19 @@ public class GameState : MonoBehaviour
         InstantiateGlobalGamePrefabs();
 
         _currentLevelIndex = 0;
+
+        if (Debug.isDebugBuild)
+        {
+            if (DebugStartLevelIndex < GameLevels.Count)
+            {
+                _currentLevelIndex = DebugStartLevelIndex;
+            }
+            else
+            {
+                Debug.LogWarning($"Invalid DebugStartLevelIndex {DebugStartLevelIndex}");
+            }
+
+        }
 
         LoadLevelIndex(_currentLevelIndex, false);
 
