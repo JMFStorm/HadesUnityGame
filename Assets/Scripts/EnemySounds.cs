@@ -119,6 +119,7 @@ public class EnemySounds : MonoBehaviour
 
             var lowerVolume = soundType is EnemySoundGroups.Walk or EnemySoundGroups.Drag;
 
+            _enemySoundSources[usedIndex].pitch = Random.Range(0.95f, 1.05f);
             _enemySoundSources[usedIndex].loop = false;
             _enemySoundSources[usedIndex].volume = lowerVolume ? 0.35f : 1.0f;
             _enemySoundSources[usedIndex].clip = usedClip;
@@ -155,6 +156,7 @@ public class EnemySounds : MonoBehaviour
         {
             AudioClip usedClip = clips[Random.Range(0, clips.Length)];
 
+            _enemyVoiceSource.pitch = Random.Range(0.95f, 1.05f);
             _enemyVoiceSource.clip = usedClip;
             _enemyVoiceSource.Play();
 
