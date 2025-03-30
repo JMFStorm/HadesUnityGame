@@ -2,19 +2,36 @@ using UnityEngine;
 
 public class BreakablePlatform : MonoBehaviour
 {
+    public AudioClip[] InitBreakAudios;
+    public AudioClip[] EndBreakAudios;
+
     public Color BrokenColor = Color.red; 
     public Color DefaultColor = Color.yellow; 
 
-    public float DestroyTime = 0.5f;
+    public float DestroyTimeMin = 0.75f;
+    public float DestroyTimeMax = 0.95f;
+
     public float RespawnTime = 3f;
 
+    private BoxCollider2D _boxCollider;
     private SpriteRenderer _spriteLeft;
     private SpriteRenderer _spriteRight;
+    private AudioSource _audioSource;
 
     private Vector3 _collisionPosition;
 
     private void Awake()
     {
+        if (!TryGetComponent(out _boxCollider))
+        {
+            Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(BreakablePlatform)}.");
+        }
+
+        if (!TryGetComponent(out _audioSource))
+        {
+            Debug.LogError($"{nameof(AudioSource)} not found on {nameof(BreakablePlatform)}.");
+        }
+
         var left = transform.Find("SpriteLeft");
 
         if (left != null)
@@ -23,7 +40,7 @@ public class BreakablePlatform : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"Child object 'SpriteLeft' not found on {nameof(SpriteRenderer)}.");
+            Debug.LogError($"Child object 'SpriteLeft' not found on {nameof(BreakablePlatform)}.");
         }
 
         var right = transform.Find("SpriteRight");
@@ -34,7 +51,7 @@ public class BreakablePlatform : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"Child object 'SpriteRight' not found on {nameof(SpriteRenderer)}.");
+            Debug.LogError($"Child object 'SpriteRight' not found on {nameof(BreakablePlatform)}.");
         }
     }
 
@@ -51,24 +68,40 @@ public class BreakablePlatform : MonoBehaviour
 
             if (collisionNormal.y < 0f && Mathf.Abs(collisionNormal.x) < Mathf.Abs(collisionNormal.y))
             {
-                Debug.Log("DestroyPlatform");
+                _audioSource.clip = InitBreakAudios[Random.Range(0, InitBreakAudios.Length)];
+                _audioSource.pitch = Random.Range(0.8f, 1.15f);
+                _audioSource.loop = false;
+                _audioSource.volume = 0.15f;
+                _audioSource.Play();
 
                 SetColor(BrokenColor);
 
-                Invoke(nameof(DestroyPlatform), DestroyTime);
+                Invoke(nameof(DestroyPlatform), Random.Range(DestroyTimeMin, DestroyTimeMax));
             }
         }
     }
 
     private void DestroyPlatform()
     {
-        transform.gameObject.SetActive(false);
+        _spriteLeft.enabled = false;
+        _spriteRight.enabled = false;
+        _boxCollider.enabled = false;
+
+        _audioSource.clip = EndBreakAudios[Random.Range(0, InitBreakAudios.Length)];
+        _audioSource.pitch = Random.Range(0.8f, 1.15f);
+        _audioSource.loop = false;
+        _audioSource.volume = 0.15f;
+        _audioSource.Play();
+
         Invoke(nameof(RespawnPlatform), RespawnTime);
     }
 
     private void RespawnPlatform()
     {
-        transform.gameObject.SetActive(true);
+        _spriteLeft.enabled = true;
+        _spriteRight.enabled = true;
+        _boxCollider.enabled = true;
+
         SetColor(DefaultColor);
     }
 
