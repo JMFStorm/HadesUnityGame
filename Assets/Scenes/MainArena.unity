@@ -256,7 +256,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: DebugStartLevelIndex
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: GameLevels.Array.size
@@ -314,6 +314,22 @@ PrefabInstance:
       propertyPath: 'DeathFailureMusics.Array.data[1]'
       value: 
       objectReference: {fileID: 8300000, guid: 53592413b0ebadb4cbfac768a59c711a, type: 3}
+    - target: {fileID: 5322306637341527261, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6760562465114215050, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: 35ba2524fa2b3ef48b96e0f247b0468f, type: 2}
+    - target: {fileID: 9020513724550653505, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -7644639688887709346, guid: 79a37eca288eafd469bcae872e235339, type: 3}
+    - target: {fileID: 9020513724550653505, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: 35ba2524fa2b3ef48b96e0f247b0468f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
