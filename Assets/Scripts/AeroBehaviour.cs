@@ -329,7 +329,7 @@ public class AeroBehaviour : EnemyBase
         ResetShotLoadTime(66.6f);
         ApplyDamageKnockback(damageDir);
 
-        _currentHealth -= 1;
+        _currentHealth -= _player.HasShadowPowers ? 2 : 1;
 
         if (_currentHealth <= 0)
         {

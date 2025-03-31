@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public class ShadowPowerup : MonoBehaviour
 {
     public AudioClip PickupSound;
 
     public float hoverHeight = 0.5f;
     public float hoverSpeed = 2f;
-    public int AddedHealth;
+    public float PowerupTime = 6.5f;
 
     private PlayerCharacter _playerCharacter;
     private Vector3 _startPos;
@@ -35,7 +35,7 @@ public class Health : MonoBehaviour
                 _globalAudio.PlaySoundEffect(PickupSound, 0.25f);
             }
 
-            _playerCharacter.GetHealthFromPickup(AddedHealth);
+            _playerCharacter.StartGodmode(PowerupTime);
             gameObject.SetActive(false);
             Destroy(gameObject, 3f);
         }

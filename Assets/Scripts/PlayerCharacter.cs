@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public static class PlayerColors
 {
@@ -484,7 +485,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void TryRecieveDamage(Vector2 damageDir)
     {
-        if (_hasDamageInvulnerability)
+        if (_hasDamageInvulnerability || HasShadowPowers)
         {
             return;
         }
@@ -608,8 +609,6 @@ public class PlayerCharacter : MonoBehaviour
 
     public void ResetPlayerInnerState(bool restartLevel)
     {
-        SetNormalVisuals();
-
         HasShadowPowers = false;
         _isAtDoorwayExit = false;
         _hasGroundedFeet = false;
@@ -639,6 +638,8 @@ public class PlayerCharacter : MonoBehaviour
 
         _spriteRenderer.color = Color.white;
 
+        SetNormalVisuals();
+
         HideText();
     }
 
@@ -653,7 +654,10 @@ public class PlayerCharacter : MonoBehaviour
         // Get horizontal movement and slide
 
         float moveInput = Input.GetAxisRaw("Horizontal");
-        var newMovement = new Vector2(moveInput * MoveSpeed, _rigidBody.linearVelocity.y);
+
+        var speed = MoveSpeed * (HasShadowPowers ? 1.5f : 1f);
+
+        var newMovement = new Vector2(moveInput * speed, _rigidBody.linearVelocity.y);
 
         if (Input.GetButton("Crouch") && _hasGroundedFeet && !_isDashing)
         {
@@ -879,7 +883,8 @@ public class PlayerCharacter : MonoBehaviour
 
     void Dash()
     {
-        _rigidBody.linearVelocity = new Vector2(_dashDirX * DashSpeed, 0f);
+        var speed = _dashDirX * DashSpeed * (HasShadowPowers ? 1.5f : 1f);
+        _rigidBody.linearVelocity = new Vector2(speed, 0f);
         _dashRegenTimer = 0.0f; // NOTE: Reset dash timer when using dash
     }
 
@@ -959,5 +964,25 @@ public class PlayerCharacter : MonoBehaviour
         var volume = Random.Range(0.17f, 0.23f);
 
         PlaySoundSource(usedClip, volume, pitch);
+    }
+
+    public void StartGodmode(float time)
+    {
+        StartCoroutine(GodModeTimer(time));
+    }
+
+    IEnumerator GodModeTimer(float time)
+    {
+        HasShadowPowers = true;
+
+        SetShadowVisuals();
+
+        yield return new WaitForSeconds(time);
+
+        SetNormalVisuals();
+
+        yield return new WaitForSeconds(1f);
+
+        HasShadowPowers = false;
     }
 }

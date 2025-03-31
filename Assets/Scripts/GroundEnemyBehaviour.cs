@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public enum EnemyState
 {
@@ -431,7 +432,7 @@ public class GroundEnemyBehaviour : EnemyBase
             StopAttackCoroutine();
         }
 
-        _currentHealth -= 1;
+        _currentHealth -= _playerCharacter.HasShadowPowers ? 2 : 1;
 
         if (_currentHealth <= 0)
         {
