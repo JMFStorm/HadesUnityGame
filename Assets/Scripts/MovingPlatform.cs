@@ -29,20 +29,6 @@ public class MovingPlatforms : MonoBehaviour
         _targetPoint = _platformPoints[_currentPointIndex];
     }
 
-    private void Start()
-    {
-    }
-
-    void TryAddPoint(string name)
-    {
-        var point = transform.Find(name);
-
-        if (point != null)
-        {
-            _platformPoints.Add(point.transform.position);
-        }
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -75,9 +61,9 @@ public class MovingPlatforms : MonoBehaviour
 
     void PlatformMovement()
     {
-        gameObject.transform.position = Vector3.MoveTowards(transform.position, _targetPoint, PlatformSpeed * Time.deltaTime);
+        gameObject.transform.position = Vector2.MoveTowards(transform.position, _targetPoint, PlatformSpeed * Time.fixedDeltaTime);
 
-        if (Vector3.Distance(transform.position, _targetPoint) < 0.01f)
+        if (Vector2.Distance(transform.position, _targetPoint) < 0.01f)
         {
             if (LoopAround)
             {
@@ -112,6 +98,16 @@ public class MovingPlatforms : MonoBehaviour
             }
 
             _targetPoint = _platformPoints[_currentPointIndex];
+        }
+    }
+
+    void TryAddPoint(string name)
+    {
+        var point = transform.Find(name);
+
+        if (point != null)
+        {
+            _platformPoints.Add(point.transform.position);
         }
     }
 }

@@ -47,8 +47,6 @@ public class GameState : MonoBehaviour
     private int _savedLevelIndex = -1;
     private string _savedLevelName = string.Empty;
 
-    private float _crouchingCameraOffset = 0f;
-
     private readonly Color _playerDefaultColor = PlayerColors.BloodstoneRedColor;
 
     private void Awake()
@@ -145,22 +143,23 @@ public class GameState : MonoBehaviour
                 _gameUI.SkipCutscene();
             }
         }
+    }
 
+    private void FixedUpdate()
+    {
         if (_player != null)
         {
             _mainCamera.SetFollowTargetXOffset(_player.FacingDirX);
 
             if (_player.IsCrouching)
             {
-                _crouchingCameraOffset -= 2f * Time.deltaTime;
-                _crouchingCameraOffset = Mathf.Max(-1.5f, _crouchingCameraOffset);
-
-                _mainCamera.SetFollowTargetYOffset(_crouchingCameraOffset);
+                _mainCamera.SetFollowTargetYOffset(-1.0f);
+                _mainCamera.SetCameraSpeedMultiplier(0.33f);
             }
             else
             {
-                _crouchingCameraOffset = 0f;
                 _mainCamera.SetFollowTargetYOffset(0f);
+                _mainCamera.SetCameraSpeedMultiplier(1f);
             }
         }
     }

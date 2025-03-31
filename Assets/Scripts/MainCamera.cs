@@ -23,6 +23,7 @@ public class MainCamera : MonoBehaviour
     private float _followXOffset = 0f;
     private float _followYOffset = 0f;
 
+    private float _cameraSpeedMultiplier = 1f;
     private Vignette _vignetteFX;
 
     private void Awake()
@@ -118,9 +119,7 @@ public class MainCamera : MonoBehaviour
 
         FollowTargetDeadzones();
 
-        var dist = Vector2.Distance((Vector2)transform.position, _cameraPositionTarget);
-
-        Vector2 lerpedPosition = Vector2.MoveTowards(transform.position, _cameraPositionTarget, CameraFollowSpeed * Time.fixedDeltaTime);
+        Vector2 lerpedPosition = Vector2.MoveTowards(transform.position, _cameraPositionTarget, CameraFollowSpeed * Time.fixedDeltaTime * _cameraSpeedMultiplier);
         transform.position = new Vector3(lerpedPosition.x, lerpedPosition.y, -1f);
 
         CameraBoundaries();
@@ -128,6 +127,11 @@ public class MainCamera : MonoBehaviour
         DebugUtil.DrawCircle(_cameraTarget, 0.75f, Color.magenta);
         DebugUtil.DrawCircle(_cameraPositionTarget, 0.5f, Color.cyan);
         DebugUtil.DrawRectangle(transform.position, new Vector2(HorizontalFollowDeadzone * 2, VerticalFollowDeadzpone * 2), Color.green);
+    }
+
+    public void SetCameraSpeedMultiplier(float multiplier)
+    {
+        _cameraSpeedMultiplier = multiplier;
     }
 
     public void SnapToPosition(Vector2 position)
@@ -150,19 +154,6 @@ public class MainCamera : MonoBehaviour
         // --------------------------------
         // Follow target on deadzone exit
 
-
-
-        /*
-        float diffx = _cameraTarget.x - transform.position.x;
-        float diffxAbs = Mathf.Abs(diffx);
-
-        if (HorizontalFollowDeadzone < diffxAbs)
-        {
-            var newX = diffx < 0.0f ? diffx + HorizontalFollowDeadzone : diffx - HorizontalFollowDeadzone;
-            _cameraPositionTarget = new Vector3(transform.position.x + newX, transform.position.y, transform.position.z);
-        }
-        */
-
         float diffy = _cameraPositionTarget.y - transform.position.y;
         float diffyAbs = Mathf.Abs(diffy);
 
@@ -170,10 +161,6 @@ public class MainCamera : MonoBehaviour
         {
             var newY = diffy < 0.0f ? diffy + VerticalFollowDeadzpone : diffy - VerticalFollowDeadzpone;
             _cameraPositionTarget = new Vector2(_cameraPositionTarget.x, _cameraPositionTarget.y + newY);
-        }
-        else
-        {
-            _cameraPositionTarget = new Vector2(_cameraPositionTarget.x, transform.position.y);
         }
     }
 
