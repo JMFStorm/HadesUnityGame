@@ -208,6 +208,8 @@ public class GameState : MonoBehaviour
         SetGameState(GameStateType.MainMenu);
 
         LoadPersistentStorage();
+
+        _mainCamera.SetFogFXLevel(false, new Color(0, 0, 0, 0));
     }
 
     public void ClickReturnToMainMenuFromPauseMenu()
@@ -232,6 +234,8 @@ public class GameState : MonoBehaviour
         SetGameState(GameStateType.MainMenu);
 
         LoadPersistentStorage();
+
+        _mainCamera.SetFogFXLevel(false, new Color(0, 0, 0, 0));
     }
 
     public void ClickContinueGameMenuOption()

@@ -189,6 +189,7 @@ GameObject:
   - component: {fileID: 2218871938792346492}
   - component: {fileID: 7139696101262272539}
   - component: {fileID: 7680849771306773132}
+  - component: {fileID: 1904345236765448331}
   m_Layer: 7
   m_Name: PlayableCharacter
   m_TagString: Player
@@ -278,6 +279,8 @@ MonoBehaviour:
   PlatformLayer:
     serializedVersion: 2
     m_Bits: 256
+  NormalMaterial: {fileID: 2100000, guid: ce050ae110886a3429771a5ca6876b6f, type: 2}
+  ShadowMaterial: {fileID: 2100000, guid: be62342babaa6d04192dc20eea87e439, type: 2}
   AttackSprite: {fileID: -852248050498708689, guid: 481a2bcda97e0e04e883ce9b2100fb96, type: 3}
   IdleSprite: {fileID: -7484798057092346830, guid: 481a2bcda97e0e04e883ce9b2100fb96, type: 3}
   AirSprite: {fileID: -7520911404637286169, guid: 481a2bcda97e0e04e883ce9b2100fb96, type: 3}
@@ -295,7 +298,9 @@ MonoBehaviour:
   DamageInvulnerabilityTime: 2.5
   DebugLogging: 0
   MaxDashes: 2
+  IsCrouching: 0
   _lastAttackTime: 0
+  FacingDirX: 0
 --- !u!70 &7139696101262272539
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -355,6 +360,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1904345236765448331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504642369529134822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82f54fcf973927d409e05fcab27e7655, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShadowFXPrefab: {fileID: 1384114421223530757, guid: ae7c3c39ce1ebcd428ad9356cdea90f4, type: 3}
+  OutlineThickness: 1
+  InlineColor: {r: 0.047169805, g: 0.046947304, b: 0.046947304, a: 1}
+  OutlineColor: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 1}
 --- !u!1 &4041143229832574921
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,7 +652,7 @@ SpriteRenderer:
   m_SortingLayerID: 1218168167
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7484798057092346830, guid: 481a2bcda97e0e04e883ce9b2100fb96, type: 3}
+  m_Sprite: {fileID: -8708911119248047108, guid: 6c87b3194ebaa3c41a2e35bbf9a9a834, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

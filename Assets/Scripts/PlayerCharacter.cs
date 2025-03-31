@@ -70,6 +70,9 @@ public class PlayerCharacter : MonoBehaviour
     public LayerMask DamageEnvLayer;
     public LayerMask PlatformLayer;
 
+    public Material NormalMaterial;
+    public Material ShadowMaterial;
+
     public Sprite AttackSprite;
     public Sprite IdleSprite;
     public Sprite AirSprite;
@@ -102,6 +105,7 @@ public class PlayerCharacter : MonoBehaviour
     private GameUI _gameUI;
     private GameState _gameState;
     private GlobalAudio _globalAudio;
+    private ShadowEnemyEffects _shadowEnemyEffects;
 
     private Coroutine _playerAttackCoroutine;
 
@@ -136,6 +140,8 @@ public class PlayerCharacter : MonoBehaviour
     private float _inAirTime = 0f;
 
     private int _damageZoneLayer;
+
+    private Color _playerColor;
 
     private readonly float _platformFallthroughRaycastDistance = 1.0f;
     private readonly float _newJumpVelocityThreshold = 0.05f;
@@ -175,6 +181,11 @@ public class PlayerCharacter : MonoBehaviour
         _playerSoundAudioSources[0].rolloffMode = AudioRolloffMode.Linear;
         _playerVoiceAudioSource.rolloffMode = AudioRolloffMode.Linear;
 
+        if (!TryGetComponent(out _shadowEnemyEffects))
+        {
+            Debug.LogError($"{nameof(ShadowEnemyEffects)} not found on {nameof(PlayerCharacter)}");
+        }
+        
         if (!TryGetComponent(out _animator))
         {
             Debug.LogError($"{nameof(Animator)} not found on {nameof(PlayerCharacter)}");
@@ -427,6 +438,37 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
+    public void SetNormalVisuals()
+    {
+        _spriteRenderer.material = NormalMaterial;
+        _material = _spriteRenderer.material;
+
+        SetPlayerColor(_playerColor);
+        _shadowEnemyEffects.EnableShadowEffects(false);
+    }
+
+    public void SetShadowVisuals()
+    {
+        _spriteRenderer.material = ShadowMaterial;
+        _material = _spriteRenderer.material;
+
+        if (TryGetComponent<ShadowEnemyEffects>(out var shadowEffect))
+        {
+            _material.SetFloat("_OutlineThickness", shadowEffect.OutlineThickness);
+            _material.SetColor("_InlineColor", shadowEffect.InlineColor);
+            _material.SetColor("_OutlineColor", shadowEffect.OutlineColor);
+            _material.SetColor("_DamageColor", new(0, 0, 0));
+        }
+        else
+        {
+            Debug.LogError($"{nameof(ShadowEnemyEffects)} not found on {nameof(PlayerCharacter)}");
+        }
+
+        _material.SetFloat("_IsShadowVariant", 1f);
+
+        _shadowEnemyEffects.EnableShadowEffects(true);
+    }
+
     private void TriggerPlayerFallDeath()
     {
         StartCoroutine(PlayerFallingDieAndLevelRestart());
@@ -434,7 +476,8 @@ public class PlayerCharacter : MonoBehaviour
 
     public void SetPlayerColor(Color color)
     {
-        _material.SetColor("_NewColor", color);
+        _playerColor = color;
+        _material.SetColor("_NewColor", _playerColor);
     }
 
     public void TryRecieveDamage(Vector2 damageDir)
@@ -563,6 +606,8 @@ public class PlayerCharacter : MonoBehaviour
 
     public void ResetPlayerInnerState(bool restartLevel)
     {
+        SetNormalVisuals();
+
         _isAtDoorwayExit = false;
         _hasGroundedFeet = false;
         _isDashing = false;
@@ -669,6 +714,8 @@ public class PlayerCharacter : MonoBehaviour
                 PlaySoundSource(JumpSoundClip, pitch: pitch);
                 _rigidBody.linearVelocity = new Vector2(_rigidBody.linearVelocity.x, JumpForce);
                 _groundedTime = 0.0f;
+
+                SetNormalVisuals();
             }
         }
         else if (Input.GetButtonDown("Dash") && !_isDashing && !_isAttacking)
@@ -681,6 +728,8 @@ public class PlayerCharacter : MonoBehaviour
             {
                 DebugLog("No dash available");
             }
+
+            SetShadowVisuals();
         }
 
         if (Input.GetButton("Attack") && !IsCrouching && !_isDashing)

@@ -15,6 +15,13 @@ public class ShadowEnemyEffects : MonoBehaviour
     {
         _shadowFXInstanciated = Instantiate(ShadowFXPrefab, transform.position, Quaternion.identity);
         _shadowFXInstanciated.transform.SetParent(transform);
+
+        _shadowFXInstanciated.transform.localPosition += new Vector3(0f, 0.5f, 0f);
+    }
+
+    public void EnableShadowEffects(bool enable)
+    {
+        _shadowFXInstanciated.SetActive(enable);
     }
 
     private void OnDestroy()

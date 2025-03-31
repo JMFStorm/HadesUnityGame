@@ -120,6 +120,12 @@ Shader "Custom/PlayerCharacter"
             {
                 half4 main = i.color * SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
 
+                // Red eyes to white
+                if (0.05 < main.r && main.g < 0.01 && main.b < 0.01)
+                {
+                    main = half4(main.r, main.r, main.r, main.a);
+                }
+
                 // Fänne: replace color function
                 {
                     half brightness = main.b;
