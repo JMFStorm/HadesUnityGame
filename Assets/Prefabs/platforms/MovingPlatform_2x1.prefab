@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7a16a4021777064b943399556660727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlatformSpeed: 3
+  PlatformSpeed: 2.5
   LoopAround: 1
   InitStatic: 0
 --- !u!61 &6224614894837422150
