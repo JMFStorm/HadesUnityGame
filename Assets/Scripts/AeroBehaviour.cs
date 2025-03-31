@@ -33,7 +33,7 @@ public class AeroBehaviour : EnemyBase
 
     public GameObject projectilePrefab; // Reference to the projectile prefab
 
-    private Animator _animatior;
+    private Animator _animator;
     private Transform _attackTarget; // Reference to the player's transform
     private Transform _enemyDamageZone;
     private Transform _projectileStart;
@@ -93,7 +93,7 @@ public class AeroBehaviour : EnemyBase
 
         _material = _spriteRenderer.material;
 
-        if (!TryGetComponent(out _animatior))
+        if (!TryGetComponent(out _animator))
         {
             Debug.LogError($"{nameof(Animator)} not found on {nameof(AeroBehaviour)}");
         }
@@ -136,9 +136,14 @@ public class AeroBehaviour : EnemyBase
 
     private void FixedUpdate()
     {
+        if (_isDead)
+        {
+            return;
+        }
+
         if (_isPassive)
         {
-            _animatior.SetBool("_IsAttacking", false);
+            _animator.SetBool("_IsAttacking", false);
             return;
         }
 
@@ -202,7 +207,7 @@ public class AeroBehaviour : EnemyBase
 
         _rigidBody.linearVelocity = new();
 
-        _animatior.SetBool("_IsAttacking", false);
+        _animator.SetBool("_IsAttacking", false);
         SetDamageColor(false);
 
         StopWingsFlap();
@@ -371,10 +376,15 @@ public class AeroBehaviour : EnemyBase
     {
         _isDead = true;
 
+        _animator.Play("AeroDeath", 0, 0f);
+
         StopWingsFlap();
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
+    }
 
+    public void OnDeathAnimationEnd()
+    {
         _spriteRenderer.enabled = false;
         _enemyDamageZone.gameObject.SetActive(false);
 
@@ -454,7 +464,7 @@ public class AeroBehaviour : EnemyBase
 
     private IEnumerator AttackMove()
     {
-        _animatior.SetBool("_IsAttacking", true);
+        _animator.SetBool("_IsAttacking", true);
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
 
         _attackInterrupted = false;
@@ -468,7 +478,7 @@ public class AeroBehaviour : EnemyBase
             Debug.Log("Attack interrupted from death!");
 
             _isAttacking = false;
-            _animatior.SetBool("_IsAttacking", false);
+            _animator.SetBool("_IsAttacking", false);
             yield break;
         }
 
@@ -477,7 +487,7 @@ public class AeroBehaviour : EnemyBase
             Debug.Log("Attack interrupted from damage!");
 
             _isAttacking = false;
-            _animatior.SetBool("_IsAttacking", false);
+            _animator.SetBool("_IsAttacking", false);
             StartWingsFlap();
             yield break;
         }
@@ -502,7 +512,7 @@ public class AeroBehaviour : EnemyBase
         projectileScript.Launch(direction);
 
         // NOTE: Set animation state beck a bit "prematurely" to avoid extra loop
-        _animatior.SetBool("_IsAttacking", false);
+        _animator.SetBool("_IsAttacking", false);
 
         yield return new WaitForSeconds(6.0f / _animationFPS);
 

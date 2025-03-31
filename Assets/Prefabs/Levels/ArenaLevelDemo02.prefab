@@ -450,6 +450,7 @@ MonoBehaviour:
   LightLevel: 4
   LevelSoundscape: 2
   LevelMusic: 0
+  BackgroundBrightness: 1
   HeavyFog: 1
   FogColorMultiplier: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
 --- !u!1001 &279310382473593395
@@ -958,11 +959,23 @@ PrefabInstance:
       value: ArenaEvent
       objectReference: {fileID: 0}
     - target: {fileID: 6459010020515987263, guid: f4f8a129a91192d4ca9d3d47c057fa18, type: 3}
+      propertyPath: SpawnData.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6459010020515987263, guid: f4f8a129a91192d4ca9d3d47c057fa18, type: 3}
       propertyPath: SpawnData.Array.data[0].EnemyType
-      value: 5
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6459010020515987263, guid: f4f8a129a91192d4ca9d3d47c057fa18, type: 3}
+      propertyPath: SpawnData.Array.data[1].EnemyType
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6459010020515987263, guid: f4f8a129a91192d4ca9d3d47c057fa18, type: 3}
       propertyPath: SpawnData.Array.data[0].SpawnCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6459010020515987263, guid: f4f8a129a91192d4ca9d3d47c057fa18, type: 3}
+      propertyPath: SpawnData.Array.data[1].SpawnCount
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

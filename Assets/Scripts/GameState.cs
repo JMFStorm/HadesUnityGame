@@ -149,7 +149,7 @@ public class GameState : MonoBehaviour
     {
         if (_player != null)
         {
-            _mainCamera.SetFollowTargetXOffset(_player.FacingDirX);
+            _mainCamera.SetFollowTargetXOffset(_player.FacingDirX * 0.75f);
 
             if (_player.IsCrouching)
             {

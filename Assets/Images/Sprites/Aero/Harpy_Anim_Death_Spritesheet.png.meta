@@ -1,0 +1,353 @@
+fileFormatVersion: 2
+guid: 8b1edf5dc01e69242871b2be6e8f7d4e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5345745211460223264
+    second: Harpy_Anim_Death_Spritesheet_0
+  - first:
+      213: 1385692971020586911
+    second: Harpy_Anim_Death_Spritesheet_1
+  - first:
+      213: -4805230615516239597
+    second: Harpy_Anim_Death_Spritesheet_2
+  - first:
+      213: 771201914374188935
+    second: Harpy_Anim_Death_Spritesheet_3
+  - first:
+      213: -3886562817701411611
+    second: Harpy_Anim_Death_Spritesheet_4
+  - first:
+      213: -1616383417930912315
+    second: Harpy_Anim_Death_Spritesheet_5
+  - first:
+      213: 836828361717654345
+    second: Harpy_Anim_Death_Spritesheet_6
+  - first:
+      213: -4252713965644705475
+    second: Harpy_Anim_Death_Spritesheet_7
+  - first:
+      213: -628562287945613643
+    second: Harpy_Anim_Death_Spritesheet_8
+  - first:
+      213: 355952686080429454
+    second: Harpy_Anim_Death_Spritesheet_9
+  - first:
+      213: 3081663718291694274
+    second: Harpy_Anim_Death_Spritesheet_10
+  - first:
+      213: -2404865816114163426
+    second: Harpy_Anim_Death_Spritesheet_11
+  - first:
+      213: 6291193852432900756
+    second: Harpy_Anim_Death_Spritesheet_12
+  - first:
+      213: -1159118791310388622
+    second: Harpy_Anim_Death_Spritesheet_13
+  - first:
+      213: -8483406990458110997
+    second: Harpy_Anim_Death_Spritesheet_14
+  - first:
+      213: -1266420968225996700
+    second: Harpy_Anim_Death_Spritesheet_15
+  - first:
+      213: -1929655900957845859
+    second: Harpy_Anim_Death_Spritesheet_16
+  - first:
+      213: 4433665062125080414
+    second: Harpy_Anim_Death_Spritesheet_17
+  - first:
+      213: 3716340053138326315
+    second: Harpy_Anim_Death_Spritesheet_18
+  - first:
+      213: 8943089253529795165
+    second: Harpy_Anim_Death_Spritesheet_19
+  - first:
+      213: -8090777402684598986
+    second: Harpy_Anim_Death_Spritesheet_20
+  - first:
+      213: 7902874227181305394
+    second: Harpy_Anim_Death_Spritesheet_21
+  - first:
+      213: 9129526866274948358
+    second: Harpy_Anim_Death_Spritesheet_22
+  - first:
+      213: 2213123492553337214
+    second: Harpy_Anim_Death_Spritesheet_23
+  - first:
+      213: -7211770397716414737
+    second: Harpy_Anim_Death_Spritesheet_24
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 256
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Harpy_Anim_Death_Spritesheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 512
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5621b9849ee5334d95bb63af43c519e
+      internalID: 853688321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Harpy_Anim_Death_Spritesheet_1
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 512
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cddd86ac055d6a7418e83089fc05fe45
+      internalID: 2065500710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Harpy_Anim_Death_Spritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 0
+        width: 512
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0137dc0cca4d71e43a46badaa25bd2a5
+      internalID: -112483191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Harpy_Anim_Death_Spritesheet_3
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 0
+        width: 512
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd7a3e43424e9fe418d29acd15136283
+      internalID: 1669202259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Harpy_Anim_Death_Spritesheet_4
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 0
+        width: 512
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 809421f45c0231b4695f38f9e84e6d7f
+      internalID: -1531932323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Harpy_Anim_Death_Spritesheet_5
+      rect:
+        serializedVersion: 2
+        x: 2560
+        y: 0
+        width: 512
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9842e51ba1f96334ab9177d6d86b0cc0
+      internalID: 1446294984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Harpy_Anim_Death_Spritesheet_6
+      rect:
+        serializedVersion: 2
+        x: 3072
+        y: 0
+        width: 512
+        height: 512
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8eb945f02555bf3449013ab58200a6de
+      internalID: 2026593702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 3a482ed8a39a5db4585d5edf8032ae45
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Harpy_Anim_Death_Spritesheet_0: 853688321
+      Harpy_Anim_Death_Spritesheet_1: 2065500710
+      Harpy_Anim_Death_Spritesheet_2: -112483191
+      Harpy_Anim_Death_Spritesheet_3: 1669202259
+      Harpy_Anim_Death_Spritesheet_4: -1531932323
+      Harpy_Anim_Death_Spritesheet_5: 1446294984
+      Harpy_Anim_Death_Spritesheet_6: 2026593702
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
