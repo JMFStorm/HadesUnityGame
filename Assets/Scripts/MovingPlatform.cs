@@ -9,6 +9,7 @@ public class MovingPlatforms : MonoBehaviour
 
 	private readonly List<Vector3> _platformPoints = new();
 	private Vector3 _targetPoint;
+	private AudioSource _audioSource;
 
     private bool moveInitiated = false;
     private bool stepsIncrease = true;
@@ -16,6 +17,11 @@ public class MovingPlatforms : MonoBehaviour
 
     private void Awake()
     {
+        if (!TryGetComponent(out _audioSource))
+        {
+            Debug.LogError($"Did not find {nameof(AudioSource)} on {nameof(MovingPlatforms)}");
+        }
+
         TryAddPoint("point0");
         TryAddPoint("point1");
         TryAddPoint("point2");
@@ -27,6 +33,17 @@ public class MovingPlatforms : MonoBehaviour
         }
 
         _targetPoint = _platformPoints[_currentPointIndex];
+
+        var usedPitch = NormalizePitch(PlatformSpeed, 1.5f, 4.0f, 0.75f, 1.50f);
+        _audioSource.pitch = usedPitch;
+    }
+
+    private void Start()
+    {
+        if (!InitStatic)
+        {
+            _audioSource.Play();
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -39,6 +56,11 @@ public class MovingPlatforms : MonoBehaviour
             {
                 collision.transform.SetParent(transform);
                 moveInitiated = true;
+            }
+
+            if (InitStatic)
+            {
+                _audioSource.Play();
             }
         }
     }
@@ -109,5 +131,10 @@ public class MovingPlatforms : MonoBehaviour
         {
             _platformPoints.Add(point.transform.position);
         }
+    }
+
+    float NormalizePitch(float value, float minSpeed, float maxSpeed, float minTarget, float maxTarget)
+    {
+        return minTarget + (value - minSpeed) / (maxSpeed - minSpeed) * (maxTarget - minTarget);
     }
 }
