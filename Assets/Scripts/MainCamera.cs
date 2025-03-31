@@ -10,12 +10,18 @@ public class MainCamera : MonoBehaviour
     public float HorizontalFollowDeadzone = 1.0f;
     public float VerticalFollowDeadzpone = 0.5f;
 
+    public float CameraFollowSpeed = 2.0f;
+
     private Vector2 _botLeftBoundary = new(float.MinValue, float.MinValue);
     private Vector2 _topRightBoundary = new(float.MaxValue, float.MaxValue);
 
     private ParticleSystem _dustParticleSystem;
     private SpriteRenderer _fogFXSpriteRenderer;
     private Camera _camera;
+    private Vector2 _cameraTarget = new();
+    private Vector2 _cameraPositionTarget = new();
+    private float _followXOffset = 0f;
+    private float _followYOffset = 0f;
 
     private Vignette _vignetteFX;
 
@@ -54,14 +60,12 @@ public class MainCamera : MonoBehaviour
         _dustParticleSystem.Stop();
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {
-        if (FollowTarget == null)
+        if (FollowTarget != null)
         {
-            return;
+            FollowTheTarget();
         }
-
-        FollowTheTarget();
     }
 
     public void SetVignetteIntensity(float intensity)
@@ -109,32 +113,68 @@ public class MainCamera : MonoBehaviour
 
     void FollowTheTarget()
     {
+        _cameraTarget = new Vector2(FollowTarget.position.x + _followXOffset, FollowTarget.position.y + 0.5f + _followYOffset) + (Vector2)CameraOffset;
+        _cameraPositionTarget = _cameraTarget;
+
+        FollowTargetDeadzones();
+
+        var dist = Vector2.Distance((Vector2)transform.position, _cameraPositionTarget);
+
+        Vector2 lerpedPosition = Vector2.MoveTowards(transform.position, _cameraPositionTarget, CameraFollowSpeed * Time.fixedDeltaTime);
+        transform.position = new Vector3(lerpedPosition.x, lerpedPosition.y, -1f);
+
+        CameraBoundaries();
+
+        DebugUtil.DrawCircle(_cameraTarget, 0.75f, Color.magenta);
+        DebugUtil.DrawCircle(_cameraPositionTarget, 0.5f, Color.cyan);
+        DebugUtil.DrawRectangle(transform.position, new Vector2(HorizontalFollowDeadzone * 2, VerticalFollowDeadzpone * 2), Color.green);
+    }
+
+    public void SnapToPosition(Vector2 position)
+    {
+        transform.position = position;
+    }
+
+    public void SetFollowTargetXOffset(float offset)
+    {
+        _followXOffset = offset;
+    }
+
+    public void SetFollowTargetYOffset(float offset)
+    {
+        _followYOffset = offset;
+    }
+
+    void FollowTargetDeadzones()
+    {
         // --------------------------------
         // Follow target on deadzone exit
 
-        Vector3 targetPosition = FollowTarget.position + CameraOffset;
 
-        float diffx = targetPosition.x - transform.position.x;
+
+        /*
+        float diffx = _cameraTarget.x - transform.position.x;
         float diffxAbs = Mathf.Abs(diffx);
 
         if (HorizontalFollowDeadzone < diffxAbs)
         {
             var newX = diffx < 0.0f ? diffx + HorizontalFollowDeadzone : diffx - HorizontalFollowDeadzone;
-            transform.position = new Vector3(transform.position.x + newX, transform.position.y, transform.position.z);
+            _cameraPositionTarget = new Vector3(transform.position.x + newX, transform.position.y, transform.position.z);
         }
+        */
 
-        float diffy = targetPosition.y - transform.position.y;
+        float diffy = _cameraPositionTarget.y - transform.position.y;
         float diffyAbs = Mathf.Abs(diffy);
 
         if (VerticalFollowDeadzpone < diffyAbs)
         {
             var newY = diffy < 0.0f ? diffy + VerticalFollowDeadzpone : diffy - VerticalFollowDeadzpone;
-            transform.position = new Vector3(transform.position.x, transform.position.y + newY, transform.position.z);
+            _cameraPositionTarget = new Vector2(_cameraPositionTarget.x, _cameraPositionTarget.y + newY);
         }
-
-        CameraBoundaries();
-
-        DebugUtil.DrawRectangle(transform.position, new Vector2(HorizontalFollowDeadzone * 2, VerticalFollowDeadzpone * 2), Color.green);
+        else
+        {
+            _cameraPositionTarget = new Vector2(_cameraPositionTarget.x, transform.position.y);
+        }
     }
 
     void CameraBoundaries()

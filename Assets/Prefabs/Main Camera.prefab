@@ -5125,4 +5125,5 @@ MonoBehaviour:
   FollowTarget: {fileID: 0}
   CameraOffset: {x: 0, y: 0, z: 0}
   HorizontalFollowDeadzone: 1
-  VerticalFollowDeadzpone: 0.25
+  VerticalFollowDeadzpone: 0.5
+  CameraFollowSpeed: 8

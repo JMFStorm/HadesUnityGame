@@ -120,7 +120,7 @@ public class PlayerCharacter : MonoBehaviour
     private bool _isGroundGrounded = false;
     private bool _isDamageEnvGrounded = false;
     private bool _isDashing = false;
-    private bool _isCrouching = false;
+    public bool IsCrouching = false;
     private bool _isAttacking = false;
     private bool _hasDamageInvulnerability = false;
     private bool _hasAttackDamageInvulnerability = false;
@@ -128,7 +128,7 @@ public class PlayerCharacter : MonoBehaviour
     private bool _isDead = false;
 
     public float _lastAttackTime = 0f;
-    private float _facingDirX = 0f;
+    public float FacingDirX = 0f;
     private float _dashDirX = 0f;
     private float _dashTimer = 0f;
     private float _dashRegenTimer = 0f;
@@ -263,7 +263,6 @@ public class PlayerCharacter : MonoBehaviour
     private void Start()
     {
         ResetPlayerInnerState(false);
-
         SetPlayerHealth(_gameUI.DefaultPlayerHealth);
     }
 
@@ -292,7 +291,7 @@ public class PlayerCharacter : MonoBehaviour
 
         DashRegen();
 
-        if (_isCrouching || _isDashing)
+        if (IsCrouching || _isDashing)
         {
             _physicsCollider.size = new Vector2(_originalSize.x, 0.33f);
             _physicsCollider.offset = new Vector2(_originalOffset.x, _originalOffset.y - 0.17f);
@@ -312,7 +311,7 @@ public class PlayerCharacter : MonoBehaviour
 
         if (!_isAttacking && !_isDashing)
         {
-            _spriteRenderer.flipX = _facingDirX < 0.0f;
+            _spriteRenderer.flipX = FacingDirX < 0.0f;
         }
 
         bool moving = _hasGroundedFeet && 0.01f < Mathf.Abs(_rigidBody.linearVelocity.x);
@@ -338,7 +337,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             usedAnim = "PlayerDash1";
         }
-        else if (_isCrouching)
+        else if (IsCrouching)
         {
             usedAnim = "PlayerCrouch1";
         }
@@ -569,7 +568,7 @@ public class PlayerCharacter : MonoBehaviour
         _isAtDoorwayExit = false;
         _hasGroundedFeet = false;
         _isDashing = false;
-        _isCrouching = false;
+        IsCrouching = false;
         _isAttacking = false;
         _hasDamageInvulnerability = false;
         _hasAttackDamageInvulnerability = false;
@@ -578,7 +577,7 @@ public class PlayerCharacter : MonoBehaviour
 
         ControlsEnabled(true);
 
-        _facingDirX = 1f; // NOTE: Facing right
+        FacingDirX = 1f; // NOTE: Facing right
         _dashDirX = 0f;
         _dashTimer = 0f;
         _dashRegenTimer = 0f;
@@ -612,27 +611,27 @@ public class PlayerCharacter : MonoBehaviour
 
         if (Input.GetButton("Crouch") && _hasGroundedFeet && !_isDashing)
         {
-            var crouchInit = !_isCrouching;
+            var crouchInit = !IsCrouching;
 
             if (crouchInit)
             {
                 _rigidBody.linearVelocity = new();
             }
 
-            _isCrouching = true;
+            IsCrouching = true;
         }
         else
         {
-            _isCrouching = false;
+            IsCrouching = false;
             _rigidBody.linearVelocity = newMovement;
         }
 
         if (0f < Mathf.Abs(moveInput))
         {
-            _facingDirX = Mathf.Ceil(moveInput);
+            FacingDirX = Mathf.Ceil(moveInput);
         }
 
-        if (_isCrouching)
+        if (IsCrouching)
         {
             _rigidBody.constraints = _crouchingRigidbodyConstraints;
         }
@@ -648,7 +647,7 @@ public class PlayerCharacter : MonoBehaviour
         // --------------------
         // Get action buttons
 
-        if (_isCrouching && Input.GetButtonDown("Jump") && _hasGroundedFeet && !_isDashing && _isCrouching)
+        if (IsCrouching && Input.GetButtonDown("Jump") && _hasGroundedFeet && !_isDashing && IsCrouching)
         {
             RaycastHit2D hit = Physics2D.Raycast(
                 transform.position,
@@ -664,7 +663,7 @@ public class PlayerCharacter : MonoBehaviour
                 StartCoroutine(DisablePlatformCollisionForTime(_platformFallthrough, fallthroughCollisionDisableTime));
             }
         }
-        else if (Input.GetButtonDown("Jump") && _hasGroundedFeet && !_isDashing && !_isCrouching)
+        else if (Input.GetButtonDown("Jump") && _hasGroundedFeet && !_isDashing && !IsCrouching)
         {
             if (IsReadyToJumpAgain())
             {
@@ -686,15 +685,15 @@ public class PlayerCharacter : MonoBehaviour
             }
         }
 
-        if (Input.GetButton("Attack") && !_isCrouching && !_isDashing)
+        if (Input.GetButton("Attack") && !IsCrouching && !_isDashing)
         {
             if (!_isAttacking)
             {
-                _playerAttackCoroutine = StartCoroutine(PlayerAttack(0f < _facingDirX));
+                _playerAttackCoroutine = StartCoroutine(PlayerAttack(0f < FacingDirX));
             }
         }
 
-        if (_isAtDoorwayExit && !_isCrouching && _hasGroundedFeet && Input.GetButtonDown("Up"))
+        if (_isAtDoorwayExit && !IsCrouching && _hasGroundedFeet && Input.GetButtonDown("Up"))
         {
             _gameState.LoadNextLevel();
         }
@@ -825,7 +824,7 @@ public class PlayerCharacter : MonoBehaviour
 
         _isDashing = true;
         _dashTimer = 0f;
-        _dashDirX = _facingDirX;
+        _dashDirX = FacingDirX;
         _currentDashes--;
         _gameUI.SetStamina(_currentDashes);
 
