@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class PlayerColors
 {
-    public static Color BloodstoneRedColor = new(0.61f, 0.13f, 0.09f);
+    public static Color BloodstoneRedColor = new(0.61f, 0.13f, 0.12f);
     public static Color DarkRustColor = new(0.4f, 0.14f, 0.14f);
     public static Color RoyalPlumColor = new(0.29f, 0.16f, 0.42f);
     public static Color ForestGreenColor = new(0.24f, 0.44f, 0.22f);
@@ -130,6 +130,8 @@ public class PlayerCharacter : MonoBehaviour
     private bool _hasAttackDamageInvulnerability = false;
     private bool _inDamageState = false;
     private bool _isDead = false;
+
+    public bool HasShadowPowers = false;
 
     public float _lastAttackTime = 0f;
     public float FacingDirX = 0f;
@@ -608,6 +610,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         SetNormalVisuals();
 
+        HasShadowPowers = false;
         _isAtDoorwayExit = false;
         _hasGroundedFeet = false;
         _isDashing = false;
@@ -714,8 +717,6 @@ public class PlayerCharacter : MonoBehaviour
                 PlaySoundSource(JumpSoundClip, pitch: pitch);
                 _rigidBody.linearVelocity = new Vector2(_rigidBody.linearVelocity.x, JumpForce);
                 _groundedTime = 0.0f;
-
-                SetNormalVisuals();
             }
         }
         else if (Input.GetButtonDown("Dash") && !_isDashing && !_isAttacking)
@@ -728,8 +729,6 @@ public class PlayerCharacter : MonoBehaviour
             {
                 DebugLog("No dash available");
             }
-
-            SetShadowVisuals();
         }
 
         if (Input.GetButton("Attack") && !IsCrouching && !_isDashing)
