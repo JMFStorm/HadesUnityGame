@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9c8e06e1b4d639419cb5dfc7402e801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PickupSound: {fileID: 0}
+  PickupSound: {fileID: 8300000, guid: 4b402e0317ef5254992f85112bffbddc, type: 3}
   hoverHeight: 0.5
   hoverSpeed: 2
   PowerupTime: 6.5

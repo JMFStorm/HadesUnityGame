@@ -1,13 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public enum LevelSoundscapeType
 {
-    Tunnel = 0,
-    Arena,
+    WindyTunnel = 0,
+    QuietTunnel,
     Ghastly
 }
 
@@ -18,6 +16,8 @@ public enum GlobalMusic
     ReverberedAudio1,
     MysticTexture1,
     MysticTexture2,
+    DarkRitual1,
+    DarkRitual2,
 }
 
 public enum AnnouncerVoiceGroup

@@ -124,8 +124,8 @@ MonoBehaviour:
   SeamlessBackgrounds:
   - {fileID: 21300000, guid: 00a5047afa2dd924aa2d1b1e82e8fdb6, type: 3}
   LightLevel: 3
-  LevelSoundscape: 0
-  LevelMusic: 0
+  LevelSoundscape: 1
+  LevelMusic: 5
   BackgroundBrightness: 0.25
   HeavyFog: 0
   FogColorMultiplier: {r: 1, g: 1, b: 1, a: 1}
