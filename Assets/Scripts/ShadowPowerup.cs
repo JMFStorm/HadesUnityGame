@@ -32,7 +32,7 @@ public class ShadowPowerup : MonoBehaviour
         {
             if (PickupSound != null)
             {
-                _globalAudio.PlaySoundEffect(PickupSound, 0.25f);
+                _globalAudio.PlaySoundEffect(PickupSound, 0.65f);
             }
 
             _playerCharacter.StartGodmode(PowerupTime);
