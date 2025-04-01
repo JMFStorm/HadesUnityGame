@@ -56,11 +56,11 @@ public class MovingPlatforms : MonoBehaviour
             {
                 collision.transform.SetParent(transform);
                 moveInitiated = true;
-            }
 
-            if (InitStatic)
-            {
-                _audioSource.Play();
+                if (InitStatic)
+                {
+                    _audioSource.Play();
+                }
             }
         }
     }

@@ -394,7 +394,7 @@ public class GroundEnemyBehaviour : EnemyBase
         _lastAttackTime = Time.time;
         _attackDamageZone.gameObject.SetActive(true);
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.15f);
 
         if (_isDead || _isInDamageMode)
         {
@@ -405,7 +405,7 @@ public class GroundEnemyBehaviour : EnemyBase
         _state = EnemyState.Passive;
         _attackDamageZone.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(0.50f);
+        yield return new WaitForSeconds(0.60f);
 
         EndAttack();
     }
