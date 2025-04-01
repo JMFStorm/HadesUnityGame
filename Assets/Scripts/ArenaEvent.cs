@@ -29,7 +29,7 @@ public class ArenaEvent : MonoBehaviour
 
     public bool BlockingEvent = false;
     public bool UseHadesVoice = false;
-    public AnnouncerVoiceGroup AnnouncesVoiceGroup;
+    public AudioClip AnnouncesVoiceClip;
 
     private GlobalAudio _globalAudio;
 
@@ -94,9 +94,9 @@ public class ArenaEvent : MonoBehaviour
             }
         }
 
-        if (UseHadesVoice)
+        if (UseHadesVoice && AnnouncesVoiceClip != null)
         {
-            _globalAudio.PlayAnnouncerVoiceType(AnnouncesVoiceGroup);
+            _globalAudio.PlayAnnouncerVoiceClip(AnnouncesVoiceClip);
         }
     }
 
