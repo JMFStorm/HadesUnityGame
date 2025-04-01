@@ -271,8 +271,8 @@ MonoBehaviour:
   TeleporterShaderMaterial: {fileID: 2100000, guid: 334b3e66ed7ac8a4e9fd9f8c6875b108, type: 2}
   Id: 
   IsShadowVariant: 0
-  MovementSpeed: 1
-  AggroSpeed: 2
+  MovementSpeed: 1.15
+  AggroSpeed: 1.8
   AttackRange: 1.5
   DamageStunTime: 0.45
   MaxHealth: 4
