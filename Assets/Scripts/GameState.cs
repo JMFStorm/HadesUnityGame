@@ -23,6 +23,7 @@ public class GameState : MonoBehaviour
     public Light2D GlobalLight;
     public bool SkipIntro = false;
     public int DebugStartLevelIndex = 0;
+    public Texture2D CursorIcon;
 
     private GameStateType _gameState;
 
@@ -79,6 +80,8 @@ public class GameState : MonoBehaviour
         _levelBGMaterial = _backgroundRenderer.material;
 
         LoadPersistentStorage();
+
+        Cursor.SetCursor(CursorIcon, Vector2.zero, CursorMode.Auto);
     }
 
     private void Start()
