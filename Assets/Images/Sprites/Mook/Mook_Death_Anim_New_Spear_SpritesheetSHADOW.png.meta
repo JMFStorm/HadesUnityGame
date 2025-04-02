@@ -1,0 +1,533 @@
+fileFormatVersion: 2
+guid: 27695b9235bddcf48bc54c9402eb7429
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8611956574705041885
+    second: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_0
+  - first:
+      213: -9164296457970582953
+    second: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_1
+  - first:
+      213: 481698446022859014
+    second: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_2
+  - first:
+      213: -5391810549214938860
+    second: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_3
+  - first:
+      213: 3967358871168308436
+    second: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_4
+  - first:
+      213: 8765911181575724906
+    second: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_5
+  - first:
+      213: -297059854264504534
+    second: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_6
+  - first:
+      213: -3253108154832172950
+    second: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_7
+  - first:
+      213: 5841308477829368786
+    second: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_8
+  - first:
+      213: 76626371951810980
+    second: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_9
+  - first:
+      213: 2917850916954076441
+    second: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_10
+  - first:
+      213: -5776979327708026043
+    second: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_11
+  - first:
+      213: 3310134593946915633
+    second: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_12
+  - first:
+      213: -1023493500475469344
+    second: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_13
+  - first:
+      213: 1979907411467218036
+    second: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_14
+  - first:
+      213: 1591148406558663876
+    second: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 260
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_0
+      rect:
+        serializedVersion: 2
+        x: 1347
+        y: 0
+        width: 585
+        height: 512
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd1426860e0d38770800000000000000
+      internalID: 8611956574705041885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_1
+      rect:
+        serializedVersion: 2
+        x: 2026
+        y: 0
+        width: 580
+        height: 508
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75afa4e0de0e1d080800000000000000
+      internalID: -9164296457970582953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_2
+      rect:
+        serializedVersion: 2
+        x: 2141
+        y: 457
+        width: 57
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 609dc0c3f265fa600800000000000000
+      internalID: 481698446022859014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_3
+      rect:
+        serializedVersion: 2
+        x: 2719
+        y: 436
+        width: 51
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 419f6dd5fd07c25b0800000000000000
+      internalID: -5391810549214938860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_4
+      rect:
+        serializedVersion: 2
+        x: 2724
+        y: 0
+        width: 539
+        height: 508
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d45b749fd3ee0730800000000000000
+      internalID: 3967358871168308436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_5
+      rect:
+        serializedVersion: 2
+        x: 2847
+        y: 461
+        width: 55
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6f127e96c5c6a970800000000000000
+      internalID: 8765911181575724906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_6
+      rect:
+        serializedVersion: 2
+        x: 3577
+        y: 436
+        width: 43
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2fe88de2a1a0ebf0800000000000000
+      internalID: -297059854264504534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_7
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 481
+        width: 44
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a684d4f6e53aad2d0800000000000000
+      internalID: -3253108154832172950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_8
+      rect:
+        serializedVersion: 2
+        x: 2713
+        y: 367
+        width: 52
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2db4f7cac1f701150800000000000000
+      internalID: 5841308477829368786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_9
+      rect:
+        serializedVersion: 2
+        x: 3385
+        y: 0
+        width: 550
+        height: 433
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a95d90874b301100800000000000000
+      internalID: 76626371951810980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_10
+      rect:
+        serializedVersion: 2
+        x: 3448
+        y: 407
+        width: 64
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 915789413f94e7820800000000000000
+      internalID: 2917850916954076441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_11
+      rect:
+        serializedVersion: 2
+        x: 4037
+        y: 0
+        width: 577
+        height: 443
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54b2031c8eb04dfa0800000000000000
+      internalID: -5776979327708026043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_12
+      rect:
+        serializedVersion: 2
+        x: 4347
+        y: 391
+        width: 56
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13310f610e5ffed20800000000000000
+      internalID: 3310134593946915633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_13
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 0
+        width: 615
+        height: 378
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e11d328512dbc1f0800000000000000
+      internalID: -1023493500475469344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_14
+      rect:
+        serializedVersion: 2
+        x: 666
+        y: 0
+        width: 614
+        height: 380
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47caaacfc4b0a7b10800000000000000
+      internalID: 1979907411467218036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mook_Death_Anim_New_Spear_SpritesheetSHADOW_15
+      rect:
+        serializedVersion: 2
+        x: 4712
+        y: 0
+        width: 577
+        height: 254
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c4abd5ab05e41610800000000000000
+      internalID: 1591148406558663876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Mook_Death_Anim_New_Spear_SpritesheetSHADOW_0: 8611956574705041885
+      Mook_Death_Anim_New_Spear_SpritesheetSHADOW_1: -9164296457970582953
+      Mook_Death_Anim_New_Spear_SpritesheetSHADOW_10: 2917850916954076441
+      Mook_Death_Anim_New_Spear_SpritesheetSHADOW_11: -5776979327708026043
+      Mook_Death_Anim_New_Spear_SpritesheetSHADOW_12: 3310134593946915633
+      Mook_Death_Anim_New_Spear_SpritesheetSHADOW_13: -1023493500475469344
+      Mook_Death_Anim_New_Spear_SpritesheetSHADOW_14: 1979907411467218036
+      Mook_Death_Anim_New_Spear_SpritesheetSHADOW_15: 1591148406558663876
+      Mook_Death_Anim_New_Spear_SpritesheetSHADOW_2: 481698446022859014
+      Mook_Death_Anim_New_Spear_SpritesheetSHADOW_3: -5391810549214938860
+      Mook_Death_Anim_New_Spear_SpritesheetSHADOW_4: 3967358871168308436
+      Mook_Death_Anim_New_Spear_SpritesheetSHADOW_5: 8765911181575724906
+      Mook_Death_Anim_New_Spear_SpritesheetSHADOW_6: -297059854264504534
+      Mook_Death_Anim_New_Spear_SpritesheetSHADOW_7: -3253108154832172950
+      Mook_Death_Anim_New_Spear_SpritesheetSHADOW_8: 5841308477829368786
+      Mook_Death_Anim_New_Spear_SpritesheetSHADOW_9: 76626371951810980
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
