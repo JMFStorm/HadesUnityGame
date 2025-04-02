@@ -273,7 +273,7 @@ MonoBehaviour:
   IsShadowVariant: 0
   MovementSpeed: 1.15
   AggroSpeed: 1.8
-  AttackRange: 1.5
+  AttackRange: 1.75
   DamageStunTime: 0.45
   MaxHealth: 4
   StartFacingLeft: 0
@@ -321,7 +321,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1525231597, guid: 1abc02a3ca8cee04badb9707b887276c, type: 3}
+  m_Sprite: {fileID: 3295171026954039751, guid: d59d0bd723924754393e14d0c9501157, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

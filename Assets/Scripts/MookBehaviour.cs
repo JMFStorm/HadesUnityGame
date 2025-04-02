@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public enum EnemyState
 {
@@ -533,10 +532,10 @@ public class GroundEnemyBehaviour : EnemyBase
             return;
         }
 
-        const float detectionDistance = 6.0f;
+        const float detectionDistance = 8.0f;
         Vector2 detectionBoxSize = new(detectionDistance, 1.5f);
 
-        var detectionOffset = (detectionDistance * 0.25f) * Vector2.right;
+        var detectionOffset = (detectionDistance * 0.22f) * Vector2.right;
         Vector2 boxPosition = (Vector2)_enemyCollider.bounds.center + (_facingLeft ? -detectionOffset : detectionOffset);
 
         Collider2D hit = Physics2D.OverlapBox(boxPosition, detectionBoxSize, 0f, _playerLayer);
