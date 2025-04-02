@@ -8,7 +8,8 @@ public enum EnemyState
     AttackMoving,
     Attacking,
     NormalMoving,
-    HitTaken
+    HitTaken,
+    Dead,
 }
 
 [RequireComponent(typeof(CapsuleCollider2D))]
@@ -34,6 +35,7 @@ public class GroundEnemyBehaviour : EnemyBase
     private PlayerCharacter _playerCharacter;
     private MainCamera _mainCamera;
     private EnemySounds _soundEmitter;
+    private GameObject _deadHead;
 
     private Transform _aggroTarget;
 
@@ -98,6 +100,13 @@ public class GroundEnemyBehaviour : EnemyBase
             Debug.LogError($"GroundCheck not found on {nameof(GroundEnemyBehaviour)}");
         }
 
+        _deadHead = transform.Find("DeadHead").gameObject;
+
+        if (_deadHead == null)
+        {
+            Debug.LogError($"DeadHead not found on {nameof(GroundEnemyBehaviour)}");
+        }
+
         _attackDamageZone = transform.Find("AttackDamageZone");
 
         if (_attackDamageZone == null)
@@ -151,6 +160,12 @@ public class GroundEnemyBehaviour : EnemyBase
         if (_isPassive)
         {
             _animator.Play("MookIdle");
+            return;
+        }
+
+        if (_isDead)
+        {
+            EndAttack();
             return;
         }
 
@@ -419,7 +434,7 @@ public class GroundEnemyBehaviour : EnemyBase
 
     void TryRecieveDamage(Vector2 damageDir)
     {
-        if (_isInDamageMode)
+        if (_isInDamageMode || _state == EnemyState.Dead || _isDead)
         {
             return;
         }
@@ -435,9 +450,8 @@ public class GroundEnemyBehaviour : EnemyBase
 
         if (_currentHealth <= 0)
         {
-            _isDead = true;
             StopAllCoroutines();
-            ActivateDeathAndDestroy();
+            ActivateDeathAndDestroy(damageDir);
         }
         else
         {
@@ -470,17 +484,38 @@ public class GroundEnemyBehaviour : EnemyBase
         _isInDamageMode = false;
     }
 
-    void ActivateDeathAndDestroy()
+    void ActivateDeathAndDestroy(Vector2 damageDir)
     {
-        _isDead = true;
-        _spriteRenderer.enabled = false;
-
         _enemyDamageZone.gameObject.SetActive(false);
 
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
 
-        SignalDieEvent();
+        _state = EnemyState.Dead;
+        _animator.Play("MookDeath", 0, 0f);
+
+        _deadHead.SetActive(true);
+
+        var sr = _deadHead.GetComponent<SpriteRenderer>();
+        var rb = _deadHead.GetComponent<Rigidbody2D>();
+
+        sr.flipX = _facingLeft;
+
+        var forced = Random.Range(8f, 12f);
+
+        Vector2 launchDirection = damageDir.normalized;
+        rb.AddForce(new Vector2(launchDirection.x, 1.2f) * forced, ForceMode2D.Impulse);
+
+        var spinned = Random.Range(2f, 5f);
+        var spin = !_facingLeft ? -spinned : spinned;
+        rb.AddTorque(spin, ForceMode2D.Impulse);
+    }
+
+    void SetDead()
+    {
+        _animator.Play("MookDead");
+        _isDead = true;
+        SignalDieEvent(null);
     }
 
     private void ApplyDamageKnockback(Vector2 knockbackDir)

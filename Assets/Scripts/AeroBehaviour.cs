@@ -387,7 +387,7 @@ public class AeroBehaviour : EnemyBase
     public void OnDeathAnimationEnd()
     {
         _spriteRenderer.enabled = false;
-        SignalDieEvent();
+        SignalDieEvent(3f);
     }
 
     private void ApplyDamageKnockback(Vector2 knockbackDir)

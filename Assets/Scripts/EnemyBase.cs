@@ -47,11 +47,14 @@ public abstract class EnemyBase : MonoBehaviour
         SetEnemyMaterial();
     }
 
-    public virtual void SignalDieEvent(float destroyTimer = 2f)
+    public virtual void SignalDieEvent(float? destroyTimer)
     {
         OnEnemyDied?.Invoke(this); // Notify listeners that an enemy died
 
-        StartCoroutine(DestroyTimer(destroyTimer));
+        if (destroyTimer != null)
+        {
+            StartCoroutine(DestroyTimer(destroyTimer.Value));
+        }
     }
 
     public void SetEnemyMaterial()
