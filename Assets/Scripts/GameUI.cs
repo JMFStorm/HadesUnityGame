@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class GameUI : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class GameUI : MonoBehaviour
     public AudioClip OutroCutsceneAudio01;
     public AudioClip OutroCutsceneMusic01;
 
+    public VideoClip IntroCutsceneMovie;
+
     public GameObject IntroTitle;
     public GameObject MainMenuPanel;
     public GameObject PauseMenuPanel;
@@ -22,6 +25,7 @@ public class GameUI : MonoBehaviour
     public GameObject PlayerColorPanel;
     public GameObject CutsceneCanvas;
     public GameObject CutsceneText;
+    public GameObject CutsceneMovie;
 
     public GameObject ContinueMenuButton;
 
@@ -33,6 +37,7 @@ public class GameUI : MonoBehaviour
     private Material _cutsceneMaterial;
     private Image _cutsceneImage;
     private Animator _animator;
+    private VideoPlayer _videoPlayer;
 
     private bool _cutsceneCancelled = false;
 
@@ -70,6 +75,11 @@ public class GameUI : MonoBehaviour
         if (_gameState == null)
         {
             Debug.LogError($"{nameof(GameState)} not found on {nameof(GameUI)}");
+        }
+
+        if (!TryGetComponent(out _videoPlayer))
+        {
+            Debug.LogError($"{nameof(VideoPlayer)} not found on {nameof(GameUI)}");
         }
 
         if (!IntroTitle.TryGetComponent(out _introTitleText))
@@ -117,6 +127,7 @@ public class GameUI : MonoBehaviour
 
         CutsceneText.SetActive(false);
         CutsceneCanvas.SetActive(false);
+        CutsceneMovie.SetActive(false);
         IntroTitle.SetActive(false);
         PauseMenuPanel.SetActive(false);
         GameOverPanel.SetActive(false);
@@ -199,11 +210,49 @@ public class GameUI : MonoBehaviour
     public IEnumerator PlayIntroCutscene()
     {
         _cutsceneCancelled = false;
-        _cutsceneCoroutine = StartCoroutine(PlayIntroCutsceneAnim());
+        _cutsceneCoroutine = StartCoroutine(PlayIntroCutsceneMovie());
+        // _cutsceneCoroutine = StartCoroutine(PlayIntroCutsceneAnim());
 
         yield return _cutsceneCoroutine;
 
         _cutsceneCoroutine = null;
+    }
+
+    IEnumerator PlayIntroCutsceneMovie()
+    {
+        CutsceneMovie.SetActive(true);
+        _videoPlayer.clip = IntroCutsceneMovie;
+        _videoPlayer.Play();
+
+        const float waitMax = 4f;
+        float elapsed = 0f;
+
+        while (!_videoPlayer.isPlaying && elapsed < waitMax)
+        {
+            elapsed += Time.deltaTime;
+            yield return null; 
+        }
+
+        if (waitMax < elapsed)
+        {
+            Debug.LogError($"Video player max wait time reached. Video skipped.");
+            yield break;
+        }
+
+        while (_videoPlayer.isPlaying)
+        {
+            if (_cutsceneCancelled)
+            {
+                CutsceneMovie.SetActive(false);
+                _videoPlayer.Stop();
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        _videoPlayer.Stop();
+        CutsceneMovie.SetActive(false);
     }
 
     public IEnumerator PlayOutroCutscene()
