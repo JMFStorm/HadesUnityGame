@@ -270,9 +270,9 @@ MonoBehaviour:
   LightLevel: 3
   LevelSoundscape: 1
   LevelMusic: 5
-  BackgroundBrightness: 0.25
+  BackgroundBrightness: 0.3
   HeavyFog: 0
-  FogColorMultiplier: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
+  FogColorMultiplier: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &108974800728276244
 PrefabInstance:
   m_ObjectHideFlags: 0
