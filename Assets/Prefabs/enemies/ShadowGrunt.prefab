@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6065012175317897319, guid: 1c18e695883718b458b44a6050e583ae, type: 3}
       propertyPath: MaxHealth
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6065012175317897319, guid: 1c18e695883718b458b44a6050e583ae, type: 3}
       propertyPath: IsShadowVariant
@@ -89,4 +89,3 @@ MonoBehaviour:
   OutlineThickness: 0.3
   InlineColor: {r: 0.12, g: 0.12, b: 0.12, a: 1}
   OutlineColor: {r: 0.22, g: 0.22, b: 0.22, a: 1}
-  ShadowShaderMaterial: {fileID: 2100000, guid: be62342babaa6d04192dc20eea87e439, type: 2}
