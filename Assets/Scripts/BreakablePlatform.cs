@@ -51,7 +51,7 @@ public class BreakablePlatform : MonoBehaviour
                 _audioSource.clip = InitBreakAudios[Random.Range(0, InitBreakAudios.Length)];
                 _audioSource.pitch = Random.Range(0.8f, 1.15f);
                 _audioSource.loop = false;
-                _audioSource.volume = 0.25f;
+                _audioSource.volume = 0.35f;
                 _audioSource.Play();
 
                 Invoke(nameof(DestroyPlatform), Random.Range(DestroyTimeMin, DestroyTimeMax));
@@ -67,7 +67,7 @@ public class BreakablePlatform : MonoBehaviour
         _audioSource.clip = EndBreakAudios[Random.Range(0, InitBreakAudios.Length)];
         _audioSource.pitch = Random.Range(0.8f, 1.15f);
         _audioSource.loop = false;
-        _audioSource.volume = 0.25f;
+        _audioSource.volume = 0.35f;
         _audioSource.Play();
 
         Invoke(nameof(RespawnPlatform), RespawnTime);

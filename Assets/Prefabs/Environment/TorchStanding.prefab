@@ -70,7 +70,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4573065420501557834, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
       propertyPath: MaxOuterRadius
-      value: 5.5
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: 4573065420501557834, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
       propertyPath: MinOuterRadius
@@ -107,6 +107,18 @@ PrefabInstance:
     - target: {fileID: 6651900875969315558, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
       propertyPath: rolloffMode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7942698519581878399, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7942698519581878399, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
+      propertyPath: m_Color.g
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7942698519581878399, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 8988720842781504608, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
       propertyPath: m_PointLightOuterRadius

@@ -50,12 +50,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TorchLight: {fileID: 8739371715661918690}
   minIntensity: 1.4
-  maxIntensity: 2
+  maxIntensity: 2.5
   intensitySpeed: 1.5
   color1: {r: 0.83137256, g: 0.83137256, b: 0.83137256, a: 1}
   color2: {r: 0.7019608, g: 0.99607843, b: 1, a: 1}
   MinOuterRadius: 3.5
-  MaxOuterRadius: 7
+  MaxOuterRadius: 7.5
 --- !u!1 &4610496912706179064
 GameObject:
   m_ObjectHideFlags: 0
@@ -4987,7 +4987,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 2fb097ef5a560854f9ebfe2fcf48ce4a, type: 3}
   m_Resource: {fileID: 8300000, guid: 2fb097ef5a560854f9ebfe2fcf48ce4a, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.05
+  m_Volume: 0.15
   m_Pitch: 1
   Loop: 1
   Mute: 0

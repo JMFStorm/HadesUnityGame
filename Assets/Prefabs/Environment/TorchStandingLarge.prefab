@@ -50,12 +50,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TorchLight: {fileID: 8988720842781504608}
   minIntensity: 1.4
-  maxIntensity: 2
+  maxIntensity: 2.5
   intensitySpeed: 1.5
   color1: {r: 0.83137256, g: 0.83137256, b: 0.83137256, a: 1}
   color2: {r: 0.7019608, g: 0.99607843, b: 1, a: 1}
   MinOuterRadius: 3.5
-  MaxOuterRadius: 7
+  MaxOuterRadius: 8
 --- !u!1 &4183249482124151418
 GameObject:
   m_ObjectHideFlags: 0
@@ -5148,7 +5148,7 @@ SpriteRenderer:
   m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: -6412508145218520368, guid: aac3d9ed2214b6b4a8b1847c8fea5810, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
