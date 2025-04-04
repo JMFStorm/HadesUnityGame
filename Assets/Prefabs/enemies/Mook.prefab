@@ -537,7 +537,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 3
   m_LinearDamping: 0
-  m_AngularDamping: 4
+  m_AngularDamping: 2
   m_GravityScale: 2
   m_Material: {fileID: 6200000, guid: b12b657cc55acd14cb3c12814c588015, type: 2}
   m_IncludeLayers:
@@ -585,7 +585,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.28
+  m_Radius: 0.24
 --- !u!114 &836538340970147943
 MonoBehaviour:
   m_ObjectHideFlags: 0
