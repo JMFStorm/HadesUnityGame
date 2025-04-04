@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class BreakablePlatform : MonoBehaviour
@@ -13,11 +14,17 @@ public class BreakablePlatform : MonoBehaviour
     private BoxCollider2D _boxCollider;
     private SpriteRenderer _spriteLeft;
     private AudioSource _audioSource;
+    private Animator _animator;
 
     private Vector3 _collisionPosition;
 
     private void Awake()
     {
+        if (!TryGetComponent(out _animator))
+        {
+            Debug.LogError($"{nameof(Animator)} not found on {nameof(BreakablePlatform)}.");
+        }
+
         if (!TryGetComponent(out _boxCollider))
         {
             Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(BreakablePlatform)}.");
@@ -40,6 +47,11 @@ public class BreakablePlatform : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        _animator.Play("BreakablePlatform_Idle");
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -54,14 +66,17 @@ public class BreakablePlatform : MonoBehaviour
                 _audioSource.volume = 0.35f;
                 _audioSource.Play();
 
-                Invoke(nameof(DestroyPlatform), Random.Range(DestroyTimeMin, DestroyTimeMax));
+                _animator.Play("BreakablePlatform_Breaks");
+
+                StartCoroutine(DestroyPlatform());
             }
         }
     }
 
-    private void DestroyPlatform()
+    IEnumerator DestroyPlatform()
     {
-        _spriteLeft.enabled = false;
+        yield return new WaitForSeconds(Random.Range(DestroyTimeMin, DestroyTimeMax));
+
         _boxCollider.enabled = false;
 
         _audioSource.clip = EndBreakAudios[Random.Range(0, InitBreakAudios.Length)];
@@ -70,13 +85,23 @@ public class BreakablePlatform : MonoBehaviour
         _audioSource.volume = 0.35f;
         _audioSource.Play();
 
-        Invoke(nameof(RespawnPlatform), RespawnTime);
+        _animator.Play("BreakablePlatform_Shatters", 0, 0f);
+
+        yield return new WaitForSeconds(4f / 10f);
+
+        _spriteLeft.enabled = false;
+
+        yield return new WaitForSeconds(RespawnTime);
+
+        RespawnPlatform();
     }
 
     private void RespawnPlatform()
     {
         _spriteLeft.enabled = true;
         _boxCollider.enabled = true;
+
+        _animator.Play("BreakablePlatform_Idle");
     }
 
     private void SetColor(Color color)

@@ -26,8 +26,8 @@ Transform:
   m_GameObject: {fileID: 1275621152084882427}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.12, z: 0}
-  m_LocalScale: {x: 0.8, y: 1.4, z: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 803520794115535475}
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 1212269259
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1812781367428976537, guid: 1f93d8ca94f60cd4bb2249a987083561, type: 3}
+  m_Sprite: {fileID: 6774213993502264251, guid: 9722cabfba50c5b479a2692edba60f07, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 4643056311006177614}
   - component: {fileID: 4655537421658149529}
   - component: {fileID: 8056781476656139929}
+  - component: {fileID: 1092531476600807926}
   m_Layer: 8
   m_Name: BreakablePlatform_2x1
   m_TagString: Untagged
@@ -161,10 +162,10 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.5, y: 0.26}
-    newSize: {x: 2, y: 0.15}
+    oldSize: {x: 2, y: 2.0039062}
+    newSize: {x: 2, y: 2.0039062}
     adaptiveTilingThreshold: 0.5
-    drawMode: 2
+    drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 2.05, y: 0.225}
@@ -306,3 +307,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &1092531476600807926
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3136947404207768634}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 74d31362a5b1dfa44a86eb436b067ffd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

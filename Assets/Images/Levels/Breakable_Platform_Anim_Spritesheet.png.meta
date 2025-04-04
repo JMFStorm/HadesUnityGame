@@ -1,0 +1,417 @@
+fileFormatVersion: 2
+guid: 9722cabfba50c5b479a2692edba60f07
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6774213993502264251
+    second: Breakable_Platform_Anim_Spritesheet_0
+  - first:
+      213: -6623253646693367905
+    second: Breakable_Platform_Anim_Spritesheet_1
+  - first:
+      213: -7201893593567428952
+    second: Breakable_Platform_Anim_Spritesheet_2
+  - first:
+      213: 5573116665087305771
+    second: Breakable_Platform_Anim_Spritesheet_3
+  - first:
+      213: 6754349143423129276
+    second: Breakable_Platform_Anim_Spritesheet_4
+  - first:
+      213: -1653345532518186530
+    second: Breakable_Platform_Anim_Spritesheet_5
+  - first:
+      213: -7293457908288189128
+    second: Breakable_Platform_Anim_Spritesheet_6
+  - first:
+      213: 1968711787752285954
+    second: Breakable_Platform_Anim_Spritesheet_7
+  - first:
+      213: 7020713380678202508
+    second: Breakable_Platform_Anim_Spritesheet_8
+  - first:
+      213: 1350742976602674131
+    second: Breakable_Platform_Anim_Spritesheet_9
+  - first:
+      213: -6658185937154949240
+    second: Breakable_Platform_Anim_Spritesheet_10
+  - first:
+      213: -7227775066435156693
+    second: Breakable_Platform_Anim_Spritesheet_11
+  - first:
+      213: -7211608705529681001
+    second: Breakable_Platform_Anim_Spritesheet_12
+  - first:
+      213: 1978748365076934289
+    second: Breakable_Platform_Anim_Spritesheet_13
+  - first:
+      213: -7961445320882468799
+    second: Breakable_Platform_Anim_Spritesheet_14
+  - first:
+      213: 6334531731703248059
+    second: Breakable_Platform_Anim_Spritesheet_15
+  - first:
+      213: -2480532511267129809
+    second: Breakable_Platform_Anim_Spritesheet_16
+  - first:
+      213: -8696256746117505238
+    second: Breakable_Platform_Anim_Spritesheet_17
+  - first:
+      213: -9098154725162401549
+    second: Breakable_Platform_Anim_Spritesheet_18
+  - first:
+      213: -6937068928748535900
+    second: Breakable_Platform_Anim_Spritesheet_19
+  - first:
+      213: -4107739704975066789
+    second: Breakable_Platform_Anim_Spritesheet_20
+  - first:
+      213: 316970340011488311
+    second: Breakable_Platform_Anim_Spritesheet_21
+  - first:
+      213: -6401333743334459762
+    second: Breakable_Platform_Anim_Spritesheet_22
+  - first:
+      213: -3193727319169827756
+    second: Breakable_Platform_Anim_Spritesheet_23
+  - first:
+      213: 2327106887438781205
+    second: Breakable_Platform_Anim_Spritesheet_24
+  - first:
+      213: 4251769228864210836
+    second: Breakable_Platform_Anim_Spritesheet_25
+  - first:
+      213: -9165586823586431756
+    second: Breakable_Platform_Anim_Spritesheet_26
+  - first:
+      213: 3779784046236107184
+    second: Breakable_Platform_Anim_Spritesheet_27
+  - first:
+      213: -3190366222683516004
+    second: Breakable_Platform_Anim_Spritesheet_28
+  - first:
+      213: 2887114107368035677
+    second: Breakable_Platform_Anim_Spritesheet_29
+  - first:
+      213: 6537079059122664786
+    second: Breakable_Platform_Anim_Spritesheet_30
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 128
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Breakable_Platform_Anim_Spritesheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbbce2b5cb7d20e50800000000000000
+      internalID: 6774213993502264251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Breakable_Platform_Anim_Spritesheet_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9ff78b56e97514a0800000000000000
+      internalID: -6623253646693367905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Breakable_Platform_Anim_Spritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ae70451febbd0c90800000000000000
+      internalID: -7201893593567428952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Breakable_Platform_Anim_Spritesheet_3
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b28a65a4410b75d40800000000000000
+      internalID: 5573116665087305771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Breakable_Platform_Anim_Spritesheet_4
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb613b682c44cbd50800000000000000
+      internalID: 6754349143423129276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Breakable_Platform_Anim_Spritesheet_5
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed1464b7ff22e09e0800000000000000
+      internalID: -1653345532518186530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Breakable_Platform_Anim_Spritesheet_6
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83d0830ccae68ca90800000000000000
+      internalID: -7293457908288189128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Breakable_Platform_Anim_Spritesheet_7
+      rect:
+        serializedVersion: 2
+        x: 1792
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2076916b0f4425b10800000000000000
+      internalID: 1968711787752285954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Breakable_Platform_Anim_Spritesheet_8
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c84f7255f959e6160800000000000000
+      internalID: 7020713380678202508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: ad82e858dd704df4eaee5279a1dba91b
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Breakable_Platform_Anim_Spritesheet_0: 6774213993502264251
+      Breakable_Platform_Anim_Spritesheet_1: -6623253646693367905
+      Breakable_Platform_Anim_Spritesheet_2: -7201893593567428952
+      Breakable_Platform_Anim_Spritesheet_3: 5573116665087305771
+      Breakable_Platform_Anim_Spritesheet_4: 6754349143423129276
+      Breakable_Platform_Anim_Spritesheet_5: -1653345532518186530
+      Breakable_Platform_Anim_Spritesheet_6: -7293457908288189128
+      Breakable_Platform_Anim_Spritesheet_7: 1968711787752285954
+      Breakable_Platform_Anim_Spritesheet_8: 7020713380678202508
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

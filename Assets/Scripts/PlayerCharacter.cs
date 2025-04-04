@@ -384,7 +384,6 @@ public class PlayerCharacter : MonoBehaviour
 
         if (!previousFrameGrounded && _hasGroundedFeet && _rigidBody.linearVelocityY < stompSoundTreshold)
         {
-            Debug.Log("_rigidBody.linearVelocityY " + _rigidBody.linearVelocityY);
             PlaySoundSource(JumpLandSoundClip, 0.5f);
         }
 
