@@ -397,7 +397,7 @@ public class GameState : MonoBehaviour
             var newPlayerStart = levelEnter;
             _player.transform.position = new Vector3(newPlayerStart.x, newPlayerStart.y, 0);
             _mainCamera.transform.position = new Vector3(newPlayerStart.x, newPlayerStart.y, _cameraZOffset);
-            _prevCameraPosition = _mainCamera.transform.position;
+            Camera.main.transform.position = _mainCamera.transform.position;
         }
         else
         {
@@ -408,6 +408,8 @@ public class GameState : MonoBehaviour
 
         _player.ResetPlayerInnerState(isRetry);
         SetPlayerColor(_playerColor);
+
+        _prevCameraPosition = _mainCamera.transform.position;
 
         Time.timeScale = 1f;
 

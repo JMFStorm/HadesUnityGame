@@ -22,6 +22,7 @@ public class MainCamera : MonoBehaviour
     private Vector2 _cameraPositionTarget = new();
     private float _followXOffset = 0f;
     private float _followYOffset = 0f;
+    private bool _useBoundaries = true;
 
     private float _cameraSpeedMultiplier = 1f;
     private Vignette _vignetteFX;
@@ -112,6 +113,11 @@ public class MainCamera : MonoBehaviour
         _topRightBoundary = topRight;
     }
 
+    public void UseBoundaries(bool use)
+    {
+        _useBoundaries = use;
+    }
+
     void FollowTheTarget()
     {
         _cameraTarget = new Vector2(FollowTarget.position.x + _followXOffset, FollowTarget.position.y + 0.5f + _followYOffset) + (Vector2)CameraOffset;
@@ -122,7 +128,10 @@ public class MainCamera : MonoBehaviour
         Vector2 lerpedPosition = Vector2.MoveTowards(transform.position, _cameraPositionTarget, CameraFollowSpeed * Time.fixedDeltaTime * _cameraSpeedMultiplier);
         transform.position = new Vector3(lerpedPosition.x, lerpedPosition.y, -1f);
 
-        CameraBoundaries();
+        if (_useBoundaries)
+        {
+            CameraBoundaries();
+        }
 
         DebugUtil.DrawCircle(_cameraTarget, 0.75f, Color.magenta);
         DebugUtil.DrawCircle(_cameraPositionTarget, 0.5f, Color.cyan);
@@ -177,9 +186,8 @@ public class MainCamera : MonoBehaviour
 
         if (_botLeftBoundary.y != float.MinValue && cameraBottomY < _botLeftBoundary.y)
         {
-            float offsetY = Mathf.Abs(cameraBottomY);
-            float newY = transform.position.y + offsetY + _botLeftBoundary.y;
-            transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+            float offsetY = Mathf.Abs(cameraBottomY - _botLeftBoundary.y);
+            transform.position += new Vector3(0, offsetY, 0);
 
             Vector2 lineStart = new(transform.position.x - (Camera.main.orthographicSize / 2), cameraBottomY);
             Vector2 lineEnd = new(transform.position.x + (Camera.main.orthographicSize / 2), cameraBottomY);
@@ -197,9 +205,8 @@ public class MainCamera : MonoBehaviour
 
         if (_topRightBoundary.y != float.MaxValue && _topRightBoundary.y < cameraTopY)
         {
-            float offsetY = Mathf.Abs(cameraTopY);
-            float newY = transform.position.y - offsetY + _topRightBoundary.y;
-            transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+            float offsetY = Mathf.Abs(_topRightBoundary.y - cameraTopY);
+            transform.position -= new Vector3(0, offsetY, 0);
 
             Vector2 lineStart = new(transform.position.x - (Camera.main.orthographicSize / 2), cameraTopY);
             Vector2 lineEnd = new(transform.position.x + (Camera.main.orthographicSize / 2), cameraTopY);
@@ -217,9 +224,8 @@ public class MainCamera : MonoBehaviour
 
         if (_botLeftBoundary.x != float.MinValue && cameraBottomX < _botLeftBoundary.x)
         {
-            float offsetX = Mathf.Abs(cameraBottomX);
-            float newX = transform.position.x + offsetX + _botLeftBoundary.x;
-            transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+            float offsetX = Mathf.Abs(cameraBottomX - _botLeftBoundary.x);
+            transform.position += new Vector3(offsetX, 0, 0);
 
             Vector2 lineStart = new(cameraBottomX, transform.position.y - (Camera.main.orthographicSize / 2));
             Vector2 lineEnd = new(cameraBottomX, transform.position.y + (Camera.main.orthographicSize / 2));
@@ -237,9 +243,8 @@ public class MainCamera : MonoBehaviour
 
         if (_topRightBoundary.x != float.MaxValue && _topRightBoundary.x < cameraTopX)
         {
-            float offsetX = Mathf.Abs(cameraTopX);
-            float newX = transform.position.x - offsetX + _topRightBoundary.x;
-            transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+            float offsetX = Mathf.Abs(_topRightBoundary.x - cameraTopX);
+            transform.position -= new Vector3(offsetX, 0, 0);
 
             Vector2 lineStart = new(cameraTopX, transform.position.y - (Camera.main.orthographicSize / 2));
             Vector2 lineEnd = new(cameraTopX, transform.position.y + (Camera.main.orthographicSize / 2));
