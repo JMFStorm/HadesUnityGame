@@ -487,6 +487,7 @@ public class GroundEnemyBehaviour : EnemyBase
     void ActivateDeathAndDestroy(Vector2 damageDir)
     {
         _enemyDamageZone.gameObject.SetActive(false);
+        _attackDamageZone.gameObject.SetActive(false);
 
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
