@@ -365,6 +365,10 @@ public class PlayerCharacter : MonoBehaviour
         {
             usedAnim = "PlayerLand1";
         }
+        else if (!_isPlatformGrounded && _rigidBody.linearVelocityY < -0.5f)
+        {
+            usedAnim = "PlayerFall1";
+        }
         else if (!IsReadyToJumpAgain() 
             && !(_isPlatformGrounded && _rigidBody.linearVelocityY < 1.0f)) // NOTE: Case to ignore when clipping at platform edges
         {
