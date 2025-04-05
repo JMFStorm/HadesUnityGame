@@ -1,7 +1,6 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public static class PlayerColors
 {
@@ -49,7 +48,7 @@ public static class PlayerColors
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerCharacter : MonoBehaviour
 {
-    private AudioSource[] _playerSoundAudioSources = new AudioSource[2];
+    private AudioSource[] _playerSoundAudioSources = new AudioSource[3];
     private AudioSource _playerVoiceAudioSource;
 
     public AudioClip DamageTakenVoiceClip;
@@ -64,6 +63,7 @@ public class PlayerCharacter : MonoBehaviour
     public AudioClip DamageTakenSoundClip;
     public AudioClip JumpSoundClip;
     public AudioClip JumpLandSoundClip;
+    public AudioClip PowerAttackSound;
 
     public Transform GroundCheck;
 
@@ -163,27 +163,33 @@ public class PlayerCharacter : MonoBehaviour
 
         _playerSoundAudioSources[0] = soundSource1;
         _playerSoundAudioSources[1] = soundSource2;
+        _playerSoundAudioSources[2] = soundSource2;
 
         _playerVoiceAudioSource = gameObject.AddComponent<AudioSource>();
 
-        _playerSoundAudioSources[1].playOnAwake = false;
         _playerSoundAudioSources[0].playOnAwake = false;
+        _playerSoundAudioSources[1].playOnAwake = false;
+        _playerSoundAudioSources[2].playOnAwake = false;
         _playerVoiceAudioSource.playOnAwake = false;
 
-        _playerSoundAudioSources[1].spatialBlend = 1.0f;
         _playerSoundAudioSources[0].spatialBlend = 1.0f;
+        _playerSoundAudioSources[1].spatialBlend = 1.0f;
+        _playerSoundAudioSources[2].spatialBlend = 1.0f;
         _playerVoiceAudioSource.spatialBlend = 1.0f;
 
-        _playerSoundAudioSources[1].minDistance = 1.0f;
         _playerSoundAudioSources[0].minDistance = 1.0f;
+        _playerSoundAudioSources[1].minDistance = 1.0f;
+        _playerSoundAudioSources[2].minDistance = 1.0f;
         _playerVoiceAudioSource.minDistance = 1.0f;
 
-        _playerSoundAudioSources[1].maxDistance = 10.0f;
         _playerSoundAudioSources[0].maxDistance = 10.0f;
+        _playerSoundAudioSources[1].maxDistance = 10.0f;
+        _playerSoundAudioSources[2].maxDistance = 10.0f;
         _playerVoiceAudioSource.maxDistance = 10.0f;
 
-        _playerSoundAudioSources[1].rolloffMode = AudioRolloffMode.Linear;
         _playerSoundAudioSources[0].rolloffMode = AudioRolloffMode.Linear;
+        _playerSoundAudioSources[1].rolloffMode = AudioRolloffMode.Linear;
+        _playerSoundAudioSources[2].rolloffMode = AudioRolloffMode.Linear;
         _playerVoiceAudioSource.rolloffMode = AudioRolloffMode.Linear;
 
         if (!TryGetComponent(out _shadowEnemyEffects))
@@ -796,6 +802,11 @@ public class PlayerCharacter : MonoBehaviour
 
             var attackPitch = Random.Range(0.95f, 1.15f);
             PlaySoundSource(AttackSoundClip, pitch: attackPitch);
+
+            if (HasShadowPowers)
+            {
+                PlaySoundSource(PowerAttackSound, 0.25f, attackPitch);
+            }
 
             if (_isDashing)
             {

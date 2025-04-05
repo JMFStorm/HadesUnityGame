@@ -47,7 +47,7 @@ public class GlobalAudio : MonoBehaviour
     private AudioSource _levelAmbienceAudioSource;
     private AudioSource _hadesAnnouncerAudioSource;
     private AudioSource _globalMusicAudioSource;
-    private AudioSource[] _globaSoundEffectAudioSources = new AudioSource[2];
+    private AudioSource[] _globaSoundEffectAudioSources = new AudioSource[3];
     private AudioSource _globaUIAudioSource;
 
     private int _lastSoundFXSourceIndex = 0;
@@ -70,6 +70,9 @@ public class GlobalAudio : MonoBehaviour
 
         _globaSoundEffectAudioSources[1] = gameObject.AddComponent<AudioSource>();
         _globaSoundEffectAudioSources[1].spatialBlend = 0; // 2D global sound
+
+        _globaSoundEffectAudioSources[2] = gameObject.AddComponent<AudioSource>();
+        _globaSoundEffectAudioSources[2].spatialBlend = 0; // 2D global sound
 
         _globaUIAudioSource = gameObject.AddComponent<AudioSource>();
         _globaUIAudioSource.spatialBlend = 0; // 2D global sound

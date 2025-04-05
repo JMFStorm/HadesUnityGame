@@ -208,6 +208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   lifetime: 3
+  SplashSound: {fileID: 8300000, guid: 017563d307cf56e4da54db5795a35ef2, type: 3}
 --- !u!58 &1211597837316657889
 CircleCollider2D:
   m_ObjectHideFlags: 0

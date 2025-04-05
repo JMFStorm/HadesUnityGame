@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour
     public float speed = 5f;
     public float lifetime = 3f;
 
+    public AudioClip SplashSound;
     private Rigidbody2D _rb;
     private SpriteRenderer _spriteRenderer;
     private Transform _spriteTransform;
@@ -61,8 +62,6 @@ public class Projectile : MonoBehaviour
         {
             return; // NOTE: Ignore "self"
         }
-
-        Debug.Log($"collision: {collision.collider.name}, {collision.gameObject.tag}, {collision.gameObject.CompareTag("Player")}");
 
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -140,7 +139,10 @@ public class Projectile : MonoBehaviour
 
     IEnumerator Implode(Color color, float scale)
     {
-        _audio.enabled = false;
+        _audio.clip = SplashSound;
+        _audio.volume = 0.65f;
+        _audio.loop = false;
+        _audio.Play();
 
         _spriteRenderer.enabled = false;
         _rb.simulated = false;

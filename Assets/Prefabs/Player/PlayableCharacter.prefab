@@ -269,6 +269,7 @@ MonoBehaviour:
   DamageTakenSoundClip: {fileID: 8300000, guid: 0b4a5574ee4722f4abb56112ea122050, type: 3}
   JumpSoundClip: {fileID: 8300000, guid: e5e65f9a1405a4c46af11601c1fb2501, type: 3}
   JumpLandSoundClip: {fileID: 8300000, guid: 8f26f4552b941fb40b7f78b2869b81c8, type: 3}
+  PowerAttackSound: {fileID: 8300000, guid: 4e7dd2e3d2a75754e8f894d6977a47df, type: 3}
   GroundCheck: {fileID: 8886047964763647662}
   GroundLayer:
     serializedVersion: 2
@@ -299,6 +300,7 @@ MonoBehaviour:
   DebugLogging: 0
   MaxDashes: 2
   IsCrouching: 0
+  HasShadowPowers: 0
   _lastAttackTime: 0
   FacingDirX: 0
 --- !u!70 &7139696101262272539
