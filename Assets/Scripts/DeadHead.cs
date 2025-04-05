@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class DeadHead : MonoBehaviour
 {
     private Rigidbody2D _rb;
@@ -12,6 +13,21 @@ public class DeadHead : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _as = GetComponent<AudioSource>();
+
+        var spriteRenderer = GetComponent<SpriteRenderer>();
+
+        var material = spriteRenderer.material;
+
+        if (transform.parent.TryGetComponent<ShadowEnemyEffects>(out var shadowEffect))
+        {
+            material.SetFloat("_OutlineThickness", shadowEffect.OutlineThickness);
+            material.SetColor("_InlineColor", shadowEffect.InlineColor);
+            material.SetColor("_OutlineColor", shadowEffect.OutlineColor);
+            material.SetColor("_DamageColor", new(0, 0, 0));
+        }
+
+        material.SetFloat("_IsShadowVariant", 1f);
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
