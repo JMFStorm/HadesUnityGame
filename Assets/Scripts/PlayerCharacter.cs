@@ -131,12 +131,14 @@ public class PlayerCharacter : MonoBehaviour
     private bool _hasAttackDamageInvulnerability = false;
     private bool _inDamageState = false;
     private bool _isDead = false;
+    private bool _isLanding = false;
 
     public bool HasShadowPowers = false;
 
     public float _lastAttackTime = 0f;
     public float FacingDirX = 0f;
     private float _dashDirX = 0f;
+    private float _landedTime = 0f;
     private float _dashTimer = 0f;
     private float _dashRegenTimer = 0f;
     private float _groundedTime = 0f;
@@ -353,6 +355,10 @@ public class PlayerCharacter : MonoBehaviour
         {
             usedAnim = "PlayerCrouch1";
         }
+        else if (_isLanding)
+        {
+            usedAnim = "PlayerLand1";
+        }
         else if (!IsReadyToJumpAgain() 
             && !(_isPlatformGrounded && _rigidBody.linearVelocityY < 1.0f)) // NOTE: Case to ignore when clipping at platform edges
         {
@@ -384,7 +390,16 @@ public class PlayerCharacter : MonoBehaviour
 
         if (!previousFrameGrounded && _hasGroundedFeet && _rigidBody.linearVelocityY < stompSoundTreshold)
         {
+            _isLanding = true;
+            _landedTime = Time.time;
             PlaySoundSource(JumpLandSoundClip, 0.5f);
+        }
+
+        const float landingTime = 0.12f;
+
+        if (_isLanding && landingTime < Mathf.Abs(_landedTime - Time.time))
+        {
+            _isLanding = false;
         }
 
         if (_hasGroundedFeet)
@@ -608,6 +623,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void ResetPlayerInnerState(bool restartLevel)
     {
+        _isLanding = false;
         HasShadowPowers = false;
         _isAtDoorwayExit = false;
         _hasGroundedFeet = false;
