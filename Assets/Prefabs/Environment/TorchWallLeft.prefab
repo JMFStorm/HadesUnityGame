@@ -54,8 +54,8 @@ MonoBehaviour:
   intensitySpeed: 1.5
   color1: {r: 0.83137256, g: 0.83137256, b: 0.83137256, a: 1}
   color2: {r: 0.7019608, g: 0.99607843, b: 1, a: 1}
-  MinOuterRadius: 3.5
-  MaxOuterRadius: 7.5
+  MinOuterRadius: 6.5
+  MaxOuterRadius: 7
 --- !u!1 &4610496912706179064
 GameObject:
   m_ObjectHideFlags: 0

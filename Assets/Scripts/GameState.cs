@@ -545,7 +545,7 @@ public class GameState : MonoBehaviour
     {
         return level switch
         {
-            LevelLightLevels.PitchBlack => 0f,
+            LevelLightLevels.PitchBlack => 0.04f,
             LevelLightLevels.VeryDark => 0.1f,
             LevelLightLevels.Dark => 0.25f,
             LevelLightLevels.Dim => 0.35f,

@@ -70,11 +70,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4573065420501557834, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
       propertyPath: MaxOuterRadius
-      value: 6.5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4573065420501557834, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
       propertyPath: MinOuterRadius
-      value: 2.5
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: 4825471183204496341, guid: e318a6e1a7109054c92a38334b4baa18, type: 3}
       propertyPath: m_LocalScale.x

@@ -27,9 +27,6 @@ public class TorchFlicker : MonoBehaviour
         }
 
         _randomFlickerOffset = Random.Range(0f, 100f);
-
-        MaxOuterRadius = TorchLight.pointLightOuterRadius;
-        MinOuterRadius = TorchLight.pointLightOuterRadius * 0.9f;
     }
 
     void Start()
