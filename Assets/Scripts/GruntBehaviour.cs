@@ -19,12 +19,12 @@ public class GruntBehaviour : EnemyBase
     private Animator _animator;
     private Transform _groundCheck;
     private Transform _attackDamageZone;
+    private Transform _attackDamageZoneRight;
     private Transform _enemyDamageZone;
     private CapsuleCollider2D _enemyCollider;
     private PlayerCharacter _playerCharacter;
     private MainCamera _mainCamera;
     private EnemySounds _soundEmitter;
-    private GameObject _deadHead;
 
     private Transform _aggroTarget;
 
@@ -37,7 +37,6 @@ public class GruntBehaviour : EnemyBase
     private int _currentHealth = 4;
     private bool _facingLeft = false;
     private bool _isDead = false;
-    private bool _attackHitPlayer = false;
     private bool _isAggroed = false;
     private bool _isInDamageMode = false;
 
@@ -48,7 +47,6 @@ public class GruntBehaviour : EnemyBase
 
     private Coroutine _currentIdleVoiceCoroutine = null;
     private Coroutine _moveCoroutine = null;
-    private Coroutine _walkCycleCoroutine = null;
     private Coroutine _attackCoroutine = null;
     private Coroutine _maxAttackTimerCoroutine = null;
 
@@ -89,18 +87,18 @@ public class GruntBehaviour : EnemyBase
             Debug.LogError($"GroundCheck not found on {nameof(GroundEnemyBehaviour)}");
         }
 
-        _deadHead = transform.Find("DeadHead").gameObject;
-
-        if (_deadHead == null)
-        {
-            Debug.LogError($"DeadHead not found on {nameof(GroundEnemyBehaviour)}");
-        }
-
         _attackDamageZone = transform.Find("AttackDamageZone");
 
         if (_attackDamageZone == null)
         {
             Debug.LogError($"_damageZoneTransform not found on {nameof(GroundEnemyBehaviour)}");
+        }
+
+        _attackDamageZoneRight = transform.Find("AttackDamageZoneRight");
+
+        if (_attackDamageZoneRight == null)
+        {
+            Debug.LogError($"_damageZoneRigth not found on {nameof(GroundEnemyBehaviour)}");
         }
 
         _enemyDamageZone = transform.Find("EnemyDamageZone");
@@ -136,6 +134,7 @@ public class GruntBehaviour : EnemyBase
     {
         _currentHealth = MaxHealth;
         _attackDamageZone.gameObject.SetActive(false);
+        _attackDamageZoneRight.gameObject.SetActive(false);
         _state = EnemyState.NormalMoving;
 
         if (StartFacingLeft)
@@ -148,7 +147,7 @@ public class GruntBehaviour : EnemyBase
     {
         if (_isPassive)
         {
-            _animator.Play("MookIdle");
+            _animator.Play("GruntIdle1");
             return;
         }
 
@@ -171,24 +170,21 @@ public class GruntBehaviour : EnemyBase
             }
         }
 
-        _spriteRenderer.flipX = _facingLeft;
+        _spriteRenderer.flipX = !_facingLeft;
 
         if (_state == EnemyState.Passive)
         {
-            _animator.Play("MookIdle");
-            StopWalkCycle();
+            _animator.Play("GruntIdle1");
         }
         else if (_state == EnemyState.NormalMoving)
         {
-            _animator.Play("MookMove");
+            // _animator.Play("GruntMove");
+            _animator.Play("GruntIdle1");
         }
         else if (_state == EnemyState.AttackMoving)
         {
-            _animator.Play("MookMove");
-        }
-        else if (_state == EnemyState.Attacking)
-        {
-            StopWalkCycle();
+            // _animator.Play("GruntMove");
+            _animator.Play("GruntIdle1");
         }
 
         if (_state == EnemyState.Passive || _state == EnemyState.NormalMoving)
@@ -222,12 +218,6 @@ public class GruntBehaviour : EnemyBase
             || other.gameObject.layer == LayerMask.NameToLayer("EnvDamageZone"))
         {
             TryRecieveDamage(collisionDirection);
-        }
-
-        if (_attackDamageZone.gameObject.activeSelf && other.gameObject.CompareTag("Player") && !_attackHitPlayer)
-        {
-            Debug.Log("Hit player!");
-            _attackHitPlayer = true;
         }
     }
 
@@ -360,55 +350,62 @@ public class GruntBehaviour : EnemyBase
         _state = EnemyState.NormalMoving;
 
         _isAggroed = false;
-
-        TryStartWalkCycle(8f);
     }
 
     IEnumerator Attack()
     {
         _state = EnemyState.Passive;
 
+        _animator.Play("GruntCharge1", 0, 0f);
+
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.AttackCharge);
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
 
-        yield return new WaitForSeconds(0.35f);
+        yield return new WaitForSeconds(5f / 8f);
 
-        if (_isDead || _isInDamageMode)
+        if (_isDead)
         {
             EndAttack();
             yield break;
         }
 
         _state = EnemyState.Attacking;
+        _lastAttackTime = Time.time;
 
-        _animator.Play("MookAttack", 0, 0f);
+        yield return new WaitForSeconds(0.5f);
+
+        if (_isDead)
+        {
+            EndAttack();
+            yield break;
+        }
+
+        if (_facingLeft)
+        {
+            _attackDamageZone.gameObject.SetActive(true);
+        }
+        else
+        {
+            _attackDamageZoneRight.gameObject.SetActive(true);
+        }
+
+        _animator.Play("GruntAttack1", 0, 0f);
 
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Attack);
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Attack);
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(1.0f);
 
-        if (_isDead || _isInDamageMode)
+        if (_isDead)
         {
             EndAttack();
             yield break;
         }
 
-        _lastAttackTime = Time.time;
-        _attackDamageZone.gameObject.SetActive(true);
-
-        yield return new WaitForSeconds(0.15f);
-
-        if (_isDead || _isInDamageMode)
-        {
-            EndAttack();
-            yield break;
-        }
-
-        _state = EnemyState.Passive;
         _attackDamageZone.gameObject.SetActive(false);
+        _attackDamageZoneRight.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(0.60f);
+        yield return new WaitForSeconds(1.5f);
 
         EndAttack();
     }
@@ -416,6 +413,7 @@ public class GruntBehaviour : EnemyBase
     void EndAttack()
     {
         _attackDamageZone.gameObject.SetActive(false);
+        _attackDamageZoneRight.gameObject.SetActive(false);
         _state = EnemyState.NormalMoving;
         _isAggroed = false;
         _attackCoroutine = null;
@@ -477,33 +475,18 @@ public class GruntBehaviour : EnemyBase
     {
         _enemyDamageZone.gameObject.SetActive(false);
         _attackDamageZone.gameObject.SetActive(false);
+        _attackDamageZoneRight.gameObject.SetActive(false);
 
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
 
         _state = EnemyState.Dead;
-        _animator.Play("MookDeath", 0, 0f);
-
-        _deadHead.SetActive(true);
-
-        var sr = _deadHead.GetComponent<SpriteRenderer>();
-        var rb = _deadHead.GetComponent<Rigidbody2D>();
-
-        sr.flipX = _facingLeft;
-
-        var forced = Random.Range(8f, 12f);
-
-        Vector2 launchDirection = damageDir.normalized;
-        rb.AddForce(new Vector2(launchDirection.x, 1.2f) * forced, ForceMode2D.Impulse);
-
-        var spinned = Random.Range(2f, 5f);
-        var spin = !_facingLeft ? -spinned : spinned;
-        rb.AddTorque(spin, ForceMode2D.Impulse);
+        // _animator.Play("GruntDeath", 0, 0f);
     }
 
     void SetDead()
     {
-        _animator.Play("MookDead");
+        // _animator.Play("MookDead");
         _isDead = true;
         SignalDieEvent(null);
     }
@@ -597,46 +580,18 @@ public class GruntBehaviour : EnemyBase
             StopCoroutine(_moveCoroutine);
             _moveCoroutine = null;
         }
-
-        if (_walkCycleCoroutine != null)
-        {
-            StopCoroutine(_walkCycleCoroutine);
-            _walkCycleCoroutine = null;
-        }
     }
 
-    void StopWalkCycle()
+    IEnumerator NormalMovementCoroutine()
     {
-        if (_walkCycleCoroutine != null)
-        {
-            StopCoroutine(_walkCycleCoroutine);
-            _walkCycleCoroutine = null;
-        }
-    }
-
-    void TryStartWalkCycle(float frameRate)
-    {
-        if (_walkCycleCoroutine == null)
-        {
-            _walkCycleCoroutine = StartCoroutine(WalkCycle(frameRate));
-        }
-    }
-
-    IEnumerator WalkCycle(float frameRate)
-    {
-        float singleLegCycle = 4f / frameRate;
-
         while (true)
         {
-            _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Drag);
+            float moveElapsed = 0f;
+            float moveTime = Random.Range(4.5f, 6.5f);
 
-            yield return new WaitForSeconds(singleLegCycle);
+            _state = EnemyState.NormalMoving;
 
-            _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Walk);
-
-            float elapsed = 0f;
-
-            while (elapsed < singleLegCycle)
+            while (moveElapsed < moveTime)
             {
                 var collisions = GetRaycastCollisions();
 
@@ -653,25 +608,6 @@ public class GruntBehaviour : EnemyBase
                 Debug.DrawRay(_groundCheck.position, Vector2.right * GetXDirection(), _facingLeft ? Color.green : Color.red);
                 _rigidBody.linearVelocity = new Vector2(newMovement, _rigidBody.linearVelocity.y);
 
-                elapsed += Time.deltaTime;
-
-                yield return null;
-            }
-        }
-    }
-
-    IEnumerator NormalMovementCoroutine()
-    {
-        while (true)
-        {
-            float moveElapsed = 0f;
-            float moveTime = Random.Range(4.5f, 6.5f);
-
-            TryStartWalkCycle(8f);
-            _state = EnemyState.NormalMoving;
-
-            while (moveElapsed < moveTime)
-            {
                 moveElapsed += Time.deltaTime;
                 yield return null;
             }
@@ -680,23 +616,12 @@ public class GruntBehaviour : EnemyBase
             float idleTime = Random.Range(1.5f, 3.0f);
 
             _state = EnemyState.Passive;
-            StopWalkCycle();
 
             while (idleElapsed < idleTime)
             {
                 idleElapsed += Time.deltaTime;
                 yield return null;
             }
-        }
-    }
-
-    IEnumerator WalkCycleAudio(float frequency)
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(frequency);
-
-            _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Walk);
         }
     }
 
@@ -771,7 +696,7 @@ public class GruntBehaviour : EnemyBase
         var newCheckerX = _groundCheck.localPosition.x * -1;
         _groundCheck.localPosition = new(newCheckerX, _groundCheck.localPosition.y, _groundCheck.localPosition.z);
 
-        var newDamageZoneX = _attackDamageZone.localPosition.x * -1;
-        _attackDamageZone.localPosition = new(newDamageZoneX, _attackDamageZone.localPosition.y, _attackDamageZone.localPosition.z);
+        // var newDamageZoneX = _attackDamageZone.localPosition.x * -1;
+        // _attackDamageZone.localPosition = new(newDamageZoneX, _attackDamageZone.localPosition.y, _attackDamageZone.localPosition.z);
     }
 }
