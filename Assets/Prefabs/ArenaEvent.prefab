@@ -212,7 +212,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1504621060939155814}
   - component: {fileID: 3033461270507382463}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -393,7 +393,7 @@ GameObject:
   - component: {fileID: 5575800958950569828}
   - component: {fileID: 3851529325260490494}
   - component: {fileID: 6552825567634846158}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BlockFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -644,4 +644,4 @@ MonoBehaviour:
   BlockingEventEndClip: {fileID: 8300000, guid: d9974be851f6d4348b9cec5b5e723370, type: 3}
   BlockingEvent: 0
   UseHadesVoice: 0
-  AnnouncesVoiceGroup: 1
+  AnnouncesVoiceClip: {fileID: 0}

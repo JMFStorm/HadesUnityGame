@@ -49,13 +49,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TorchLight: {fileID: 8739371715661918690}
-  minIntensity: 1.4
+  minIntensity: 2
   maxIntensity: 2.5
   intensitySpeed: 1.5
   color1: {r: 0.83137256, g: 0.83137256, b: 0.83137256, a: 1}
   color2: {r: 0.7019608, g: 0.99607843, b: 1, a: 1}
-  MinOuterRadius: 6.5
-  MaxOuterRadius: 7
+  MinOuterRadius: 7.5
+  MaxOuterRadius: 8
 --- !u!1 &4610496912706179064
 GameObject:
   m_ObjectHideFlags: 0
