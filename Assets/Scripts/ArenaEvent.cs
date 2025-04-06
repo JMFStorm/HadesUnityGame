@@ -148,6 +148,7 @@ public class ArenaEvent : MonoBehaviour
                 newEnemy.transform.SetParent(this.transform);
 
                 var enemy = newEnemy.GetComponent<EnemyBase>();
+                enemy.StartFacingLeft = current.FaceLeft;
 
                 _currentEnemies.Add(enemy);
                 _spawnPointDict.Add(spawnpoint.Id, enemy);

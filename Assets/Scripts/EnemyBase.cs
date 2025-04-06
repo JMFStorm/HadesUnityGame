@@ -11,6 +11,8 @@ public abstract class EnemyBase : MonoBehaviour
     public Material ShadowShaderMaterial;
     public Material TeleporterShaderMaterial;
 
+    public bool StartFacingLeft = false;
+
     protected Rigidbody2D _rigidBody;
 
     public string Id;
@@ -81,8 +83,9 @@ public abstract class EnemyBase : MonoBehaviour
         _material.SetFloat("_Strength", 1f);
     }
 
-    public void UpdateTeleportShaderEffect(float strength)
+    public virtual void UpdateTeleportShaderEffect(float strength)
     {
+        _spriteRenderer.flipX = !StartFacingLeft;
         _material.SetFloat("_Strength", strength);
     }
 

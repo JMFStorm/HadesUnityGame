@@ -7,6 +7,7 @@ public class EnemySpawnData
 {
     public EnemyType EnemyType;
     public int SpawnCount;
+    public bool FaceLeft = true;
 }
 
 [RequireComponent(typeof(SpriteRenderer))]

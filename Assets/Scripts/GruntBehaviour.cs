@@ -12,8 +12,6 @@ public class GruntBehaviour : EnemyBase
 
     public int MaxHealth = 4;
 
-    public bool StartFacingLeft = false;
-
     public const float MaxSoundDistance = 14f;
 
     private Animator _animator;
@@ -221,6 +219,12 @@ public class GruntBehaviour : EnemyBase
         }
     }
 
+    public override void UpdateTeleportShaderEffect(float strength)
+    {
+        _spriteRenderer.flipX = !StartFacingLeft;
+        _material.SetFloat("_Strength", strength);
+    }
+
     void StopIdleVoiceLoop()
     {
         if (_currentIdleVoiceCoroutine != null)
@@ -352,6 +356,16 @@ public class GruntBehaviour : EnemyBase
         _isAggroed = false;
     }
 
+    void PlaySoundAttackSwing()
+    {
+        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Attack);
+    }
+
+    void PlaySoundAttackHit()
+    {
+        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.AttackMiss);
+    }
+
     IEnumerator Attack()
     {
         _state = EnemyState.Passive;
@@ -390,9 +404,6 @@ public class GruntBehaviour : EnemyBase
         }
 
         _animator.Play("GruntAttack1", 0, 0f);
-
-        _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Attack);
-        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Attack);
 
         yield return new WaitForSeconds(1.0f);
 
@@ -458,11 +469,6 @@ public class GruntBehaviour : EnemyBase
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Damage, true);
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
 
-        if (!IsShadowVariant)
-        {
-            _state = EnemyState.Passive;
-        }
-
         yield return new WaitForSeconds(duration);
 
         _state = EnemyState.NormalMoving;
@@ -473,6 +479,7 @@ public class GruntBehaviour : EnemyBase
 
     void ActivateDeathAndDestroy(Vector2 damageDir)
     {
+        _spriteRenderer.enabled = false;
         _enemyDamageZone.gameObject.SetActive(false);
         _attackDamageZone.gameObject.SetActive(false);
         _attackDamageZoneRight.gameObject.SetActive(false);
@@ -494,7 +501,7 @@ public class GruntBehaviour : EnemyBase
     private void ApplyDamageKnockback(Vector2 knockbackDir)
     {
         var knockbackDirForce = new Vector2(knockbackDir.normalized.x, 6.5f);
-        _rigidBody.linearVelocity = knockbackDirForce;
+        _rigidBody.linearVelocity = knockbackDirForce * 0.5f;
     }
 
     CollisionTypes GetRaycastCollisions()

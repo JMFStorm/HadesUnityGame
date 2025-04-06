@@ -23,8 +23,6 @@ public class GroundEnemyBehaviour : EnemyBase
 
     public int MaxHealth = 4;
 
-    public bool StartFacingLeft = false;
-
     public const float MaxSoundDistance = 14f;
 
     private Animator _animator;
@@ -240,6 +238,12 @@ public class GroundEnemyBehaviour : EnemyBase
             Debug.Log("Hit player!");
             _attackHitPlayer = true;
         }
+    }
+
+    public override void UpdateTeleportShaderEffect(float strength)
+    {
+        _spriteRenderer.flipX = StartFacingLeft;
+        _material.SetFloat("_Strength", strength);
     }
 
     void StopIdleVoiceLoop()
