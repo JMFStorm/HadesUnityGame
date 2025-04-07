@@ -10,6 +10,7 @@ public class MovingPlatforms : MonoBehaviour
 	private readonly List<Vector3> _platformPoints = new();
 	private Vector3 _targetPoint;
 	private AudioSource _audioSource;
+	private Animator _animator;
 
     private bool moveInitiated = false;
     private bool stepsIncrease = true;
@@ -17,6 +18,11 @@ public class MovingPlatforms : MonoBehaviour
 
     private void Awake()
     {
+        if (!TryGetComponent(out _animator))
+        {
+            Debug.LogError($"Did not find {nameof(Animator)} on {nameof(MovingPlatforms)}");
+        }
+
         if (!TryGetComponent(out _audioSource))
         {
             Debug.LogError($"Did not find {nameof(AudioSource)} on {nameof(MovingPlatforms)}");
@@ -43,6 +49,11 @@ public class MovingPlatforms : MonoBehaviour
         if (!InitStatic)
         {
             _audioSource.Play();
+            _animator.Play("MovingPlatformMove");
+        }
+        else
+        {
+            _animator.Play("MovingPlatformMIdle");
         }
     }
 
@@ -60,6 +71,7 @@ public class MovingPlatforms : MonoBehaviour
                 if (InitStatic)
                 {
                     _audioSource.Play();
+                    _animator.Play("MovingPlatformMove");
                 }
             }
         }
