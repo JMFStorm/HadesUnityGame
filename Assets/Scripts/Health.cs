@@ -4,12 +4,15 @@ public class Health : MonoBehaviour
 {
     public AudioClip PickupSound;
 
-    public float hoverHeight = 0.5f;
-    public float hoverSpeed = 2f;
     public int AddedHealth;
+
+    // Heartbeat scaling variables
+    public float largeScaleFactor = 1.2f; // Scale factor for larger heartbeat
+    public float scaleSpeed = 0.25f; // Speed of scaling effect
 
     private PlayerCharacter _playerCharacter;
     private Vector3 _startPos;
+    private Vector3 _initialScale;
 
     private GlobalAudio _globalAudio;
 
@@ -18,12 +21,18 @@ public class Health : MonoBehaviour
         _globalAudio = FindFirstObjectByType<GlobalAudio>();
         _playerCharacter = FindFirstObjectByType<PlayerCharacter>();
         _startPos = transform.position;
+        _initialScale = transform.localScale; // Store the initial scale
     }
 
     void Update()
     {
-        float newY = _startPos.y + Mathf.Sin(Time.time * hoverSpeed) * hoverHeight;
-        transform.position = new Vector3(_startPos.x, newY, _startPos.z);
+        // Hover effect
+        //float newY = _startPos.y + Mathf.Sin(Time.time * hoverSpeed) * hoverHeight;
+        // transform.position = new Vector3(_startPos.x, newY, _startPos.z);
+
+        // Scaling effect using PingPong
+        float scale = Mathf.PingPong(Time.time * scaleSpeed, largeScaleFactor - .9f) + .9f;
+        transform.localScale = new Vector3(scale, scale, scale);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -36,8 +45,7 @@ public class Health : MonoBehaviour
             }
 
             _playerCharacter.GetHealthFromPickup(AddedHealth);
-            gameObject.SetActive(false);
-            Destroy(gameObject, 3f);
+            Destroy(gameObject); // Destroy immediately on pickup
         }
     }
 }
