@@ -42,6 +42,7 @@ public class GruntBehaviour : EnemyBase
     private float _previousAlert = float.MinValue;
     private float _lastAttackTime = float.MinValue;
 
+    private readonly float DetectionDistance = 8.0f;
     private readonly float _attackCooldown = 1.5f;
 
     private Coroutine _currentIdleVoiceCoroutine = null;
@@ -533,6 +534,22 @@ public class GruntBehaviour : EnemyBase
         return _facingLeft ? -1f : 1f;
     }
 
+    bool SeesPlayer(Vector2 direction)
+    {
+        var origin = (Vector2)transform.position + new Vector2(0f, 0.5f);
+        var length = DetectionDistance * 1.5f;
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, length, _seesTargetLayerMask);
+
+        Debug.DrawRay(origin, length * direction, Color.blue);
+
+        if (hit.collider != null)
+        {
+            return hit.collider.CompareTag("Player");
+        }
+
+        return false;
+    }
+
     void TryDetectPlayerAndAggro()
     {
         if (!(_state == EnemyState.Passive || _state == EnemyState.NormalMoving) || _playerCharacter.IsDead())
@@ -553,7 +570,8 @@ public class GruntBehaviour : EnemyBase
 
         Collider2D hit = Physics2D.OverlapBox(boxPosition, detectionBoxSize, 0f, _playerLayer);
 
-        if (hit != null && hit.CompareTag("Player"))
+        if (hit != null && hit.CompareTag("Player")
+            && (SeesPlayer(new Vector2(1f, 0f)) || SeesPlayer(new Vector2(-1f, 0f))))
         {
             _aggroTarget = hit.gameObject.transform;
             StartCoroutine(ActivateAggro());

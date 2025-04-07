@@ -24,8 +24,12 @@ public abstract class EnemyBase : MonoBehaviour
     protected SpriteRenderer _spriteRenderer;
     protected Material _material;
 
+    protected LayerMask _seesTargetLayerMask;
+
     protected virtual void Awake()
     {
+        _seesTargetLayerMask = LayerMask.GetMask("Ground", "Character");
+
         if (!TryGetComponent(out _rigidBody))
         {
             Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(AeroBehaviour)}");

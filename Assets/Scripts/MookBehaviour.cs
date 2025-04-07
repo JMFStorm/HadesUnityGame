@@ -60,6 +60,7 @@ public class GroundEnemyBehaviour : EnemyBase
     private Coroutine _walkCycleCoroutine = null;
     private Coroutine _attackCoroutine = null;
     private Coroutine _maxAttackTimerCoroutine = null;
+    private readonly float DetectionDistance = 8.0f;
 
     private enum CollisionTypes
     {
@@ -238,6 +239,22 @@ public class GroundEnemyBehaviour : EnemyBase
             Debug.Log("Hit player!");
             _attackHitPlayer = true;
         }
+    }
+
+    bool SeesPlayer(Vector2 direction)
+    {
+        var origin = (Vector2)transform.position + new Vector2(0f, 0.5f);
+        var length = DetectionDistance * 1.5f;
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, length, _seesTargetLayerMask);
+
+        Debug.DrawRay(origin, length * direction, Color.blue);
+
+        if (hit.collider != null)
+        {
+            return hit.collider.CompareTag("Player");
+        }
+
+        return false;
     }
 
     public override void UpdateTeleportShaderEffect(float strength)
@@ -572,15 +589,16 @@ public class GroundEnemyBehaviour : EnemyBase
             return;
         }
 
-        const float detectionDistance = 8.0f;
-        Vector2 detectionBoxSize = new(detectionDistance, 1.5f);
 
-        var detectionOffset = (detectionDistance * 0.22f) * Vector2.right;
+        Vector2 detectionBoxSize = new(DetectionDistance, 1.5f);
+
+        var detectionOffset = (DetectionDistance * 0.22f) * Vector2.right;
         Vector2 boxPosition = (Vector2)_enemyCollider.bounds.center + (_facingLeft ? -detectionOffset : detectionOffset);
 
         Collider2D hit = Physics2D.OverlapBox(boxPosition, detectionBoxSize, 0f, _playerLayer);
 
-        if (hit != null && hit.CompareTag("Player"))
+        if (hit != null && hit.CompareTag("Player")
+            && (SeesPlayer(new Vector2(1f, 0f)) || SeesPlayer(new Vector2(-1f, 0f))))
         {
             _aggroTarget = hit.gameObject.transform;
             StartCoroutine(ActivateAggro());

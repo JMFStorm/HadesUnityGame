@@ -70,8 +70,6 @@ public class AeroBehaviour : EnemyBase
     private readonly Color _projectileColor1 = new(0.55f, 0.75f, 0f, 1f);
     private readonly Color _projectileColor2 = new(0.5f, 0.0f, 0.0f, 1f);
 
-    private LayerMask _seesTargetLayerMask;
-
     private int _currentHealth = 3;
     private int _groundLayerMask;
 
@@ -117,7 +115,6 @@ public class AeroBehaviour : EnemyBase
 
         _projectileStart = transform.Find("ProjectileOffset");
 
-        _seesTargetLayerMask = LayerMask.GetMask("Ground", "Character");
         _groundLayerMask = LayerMask.GetMask("Ground");
         _targetDistance = Mathf.Sqrt(Mathf.Pow(KeepXDistanceFromTarget, 2) + Mathf.Pow(KeepXDistanceFromTarget, 2));
     }
