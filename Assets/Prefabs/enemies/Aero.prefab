@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayerID: 1880951291
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: -2221194587738731766, guid: 8b8c5a0435f87bc479e0471583e18226, type: 3}
+  m_Sprite: {fileID: 2945100047156087245, guid: 8b8c5a0435f87bc479e0471583e18226, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -137,6 +137,7 @@ MonoBehaviour:
   DamageColor: {r: 0.49019608, g: 0.078431375, b: 0.078431375, a: 1}
   ShadowShaderMaterial: {fileID: 2100000, guid: be62342babaa6d04192dc20eea87e439, type: 2}
   TeleporterShaderMaterial: {fileID: 2100000, guid: 334b3e66ed7ac8a4e9fd9f8c6875b108, type: 2}
+  StartFacingLeft: 0
   Id: 
   IsShadowVariant: 0
   AudioClips:

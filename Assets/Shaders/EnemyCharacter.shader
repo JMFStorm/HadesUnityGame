@@ -146,7 +146,7 @@ Shader "Custom/EnemyCharacter"
                 transparentCount += IsTransparent(i.uv + float2(texelSize.x, texelSize.y));   // Top-right
 
                 // Check if the pixel is pure red (or close to pure red)
-                if (0.05 < main.r && main.g < 0.01 && main.b < 0.01)
+                if (0.05 < main.r && main.g < 1.0 / 256.0 && main.b < 1.0 / 256.0)
                 {
                     // Sample the mask texture
                     const half4 mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
