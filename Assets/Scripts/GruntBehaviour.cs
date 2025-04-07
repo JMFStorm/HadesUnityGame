@@ -488,13 +488,8 @@ public class GruntBehaviour : EnemyBase
 
         _state = EnemyState.Dead;
         // _animator.Play("GruntDeath", 0, 0f);
-    }
 
-    void SetDead()
-    {
-        // _animator.Play("MookDead");
-        _isDead = true;
-        SignalDieEvent(null);
+        SetDead();
     }
 
     private void ApplyDamageKnockback(Vector2 knockbackDir)

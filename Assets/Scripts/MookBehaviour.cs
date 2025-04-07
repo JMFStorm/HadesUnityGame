@@ -45,7 +45,6 @@ public class GroundEnemyBehaviour : EnemyBase
 
     private int _currentHealth = 4;
     private bool _facingLeft = false;
-    private bool _isDead = false;
     private bool _attackHitPlayer = false;
     private bool _isAggroed = false;
     private bool _isInDamageMode = false;
@@ -164,6 +163,7 @@ public class GroundEnemyBehaviour : EnemyBase
 
         if (_isDead)
         {
+            _animator.Play("MookDead");
             EndAttack();
             return;
         }
@@ -531,13 +531,6 @@ public class GroundEnemyBehaviour : EnemyBase
         var spinned = Random.Range(2f, 5f);
         var spin = !_facingLeft ? -spinned : spinned;
         rb.AddTorque(spin, ForceMode2D.Impulse);
-    }
-
-    void SetDead()
-    {
-        _animator.Play("MookDead");
-        _isDead = true;
-        SignalDieEvent(null);
     }
 
     private void ApplyDamageKnockback(Vector2 knockbackDir)

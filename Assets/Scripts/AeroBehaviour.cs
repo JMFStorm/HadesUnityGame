@@ -54,7 +54,6 @@ public class AeroBehaviour : EnemyBase
     private bool _hasDamageInvulnerability = false;
     private float _lastShotTime; // Time of the last shot
     private float _notSeeingPlayerTime = 0;
-    private bool _isDead = false;
 
     private Vector2 _flyTarget = new();
     private Vector2 _initialSpawnPosition = new();

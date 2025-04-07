@@ -279,7 +279,7 @@ public class ArenaEvent : MonoBehaviour
 
         if (BlockingEvent && BlockingEventEndClip != null)
         {
-            _globalAudio.PlaySoundEffect(BlockingEventEndClip, 0.2f);
+            _globalAudio.PlaySoundEffect(BlockingEventEndClip, 0.75f);
         }
 
         DeactivateBlockers();

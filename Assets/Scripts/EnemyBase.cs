@@ -20,6 +20,7 @@ public abstract class EnemyBase : MonoBehaviour
     public bool IsShadowVariant = false;
 
     protected bool _isPassive = false;
+    protected bool _isDead = false;
 
     protected SpriteRenderer _spriteRenderer;
     protected Material _material;
@@ -61,6 +62,15 @@ public abstract class EnemyBase : MonoBehaviour
         {
             StartCoroutine(DestroyTimer(destroyTimer.Value));
         }
+    }
+
+    /// <summary>
+    /// Call from animation
+    /// </summary>
+    protected void SetDead()
+    {
+        _isDead = true;
+        SignalDieEvent(null);
     }
 
     public void SetEnemyMaterial()
