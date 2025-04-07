@@ -26,6 +26,7 @@ public class GameUI : MonoBehaviour
     public GameObject CutsceneCanvas;
     public GameObject CutsceneText;
     public GameObject CutsceneMovie;
+    public GameObject StartMenu;
 
     public GameObject ContinueMenuButton;
 
@@ -133,6 +134,7 @@ public class GameUI : MonoBehaviour
         GameOverPanel.SetActive(false);
         MainMenuPanel.SetActive(false);
         PlayerColorPanel.SetActive(false);
+        StartMenu.SetActive(false);
     }
 
     void Start()
@@ -205,6 +207,11 @@ public class GameUI : MonoBehaviour
         }
 
         CutsceneCanvas.SetActive(false);
+    }
+
+    public void DisplayTitleMenu(bool visible)
+    {
+        StartMenu.SetActive(visible);
     }
 
     public IEnumerator PlayIntroCutscene()
@@ -477,15 +484,34 @@ public class GameUI : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1f);
 
         IntroTitle.SetActive(false);
-        MainMenuPanel.SetActive(true);
+        DisplayTitleMenu(true);
+        Cursor.visible = true;
 
+        yield return new WaitUntil(() => IsAnyKeyboardKeyDown());
+
+        DisplayTitleMenu(false);
+        MainMenuPanel.SetActive(true);
         HideFadeEffectRect(true);
 
-        Cursor.visible = true;
         _gameState.SetGameState(GameStateType.MainMenu);
+    }
+
+    bool IsAnyKeyboardKeyDown()
+    {
+        foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode)))
+        {
+            if (key >= KeyCode.Mouse0 && key <= KeyCode.Mouse6) continue;
+            if (key >= KeyCode.JoystickButton0 && key <= KeyCode.Joystick8Button19) continue;
+
+            if (Input.GetKeyDown(key))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void HidePlayerStats(bool hide)
