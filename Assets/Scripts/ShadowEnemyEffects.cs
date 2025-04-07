@@ -9,6 +9,8 @@ public class ShadowEnemyEffects : MonoBehaviour
     public Color InlineColor = new(0.12f, 0.12f, 0.12f, 1f);
     public Color OutlineColor = new(0.22f, 0.22f, 0.22f, 1f);
 
+    public Vector2 EffectOffset = new(0f, 0.5f);
+
     private GameObject _shadowFXInstanciated;
 
     private void Awake()
@@ -16,7 +18,7 @@ public class ShadowEnemyEffects : MonoBehaviour
         _shadowFXInstanciated = Instantiate(ShadowFXPrefab, transform.position, Quaternion.identity);
         _shadowFXInstanciated.transform.SetParent(transform);
 
-        _shadowFXInstanciated.transform.localPosition += new Vector3(0f, 0.5f, 0f);
+        _shadowFXInstanciated.transform.localPosition += (Vector3)EffectOffset;
     }
 
     public void EnableShadowEffects(bool enable)
