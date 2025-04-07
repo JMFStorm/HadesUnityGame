@@ -37,6 +37,7 @@ public class GruntBehaviour : EnemyBase
     private bool _isDead = false;
     private bool _isAggroed = false;
     private bool _isInDamageMode = false;
+    private bool _attacking = false;
 
     private float _previousAlert = float.MinValue;
     private float _lastAttackTime = float.MinValue;
@@ -368,6 +369,7 @@ public class GruntBehaviour : EnemyBase
 
     IEnumerator Attack()
     {
+        _attacking = true;
         _state = EnemyState.Passive;
 
         _animator.Play("GruntCharge1", 0, 0f);
@@ -423,6 +425,7 @@ public class GruntBehaviour : EnemyBase
 
     void EndAttack()
     {
+        _attacking = false;
         _attackDamageZone.gameObject.SetActive(false);
         _attackDamageZoneRight.gameObject.SetActive(false);
         _state = EnemyState.NormalMoving;
@@ -437,11 +440,9 @@ public class GruntBehaviour : EnemyBase
             return;
         }
 
-        ApplyDamageKnockback(damageDir);
-
-        if (!IsShadowVariant)
+        if (!_attacking)
         {
-            StopAttackCoroutine();
+            ApplyDamageKnockback(damageDir);
         }
 
         _currentHealth -= _playerCharacter.HasShadowPowers ? 2 : 1;
@@ -471,9 +472,6 @@ public class GruntBehaviour : EnemyBase
 
         yield return new WaitForSeconds(duration);
 
-        _state = EnemyState.NormalMoving;
-
-        _isAggroed = false;
         _isInDamageMode = false;
     }
 
