@@ -221,11 +221,11 @@ MonoBehaviour:
   - {fileID: 0}
   SeamlessBackgrounds:
   - {fileID: 21300000, guid: 84871f60f2f3dd74b917aa30035e5b5f, type: 3}
-  LightLevel: 1
+  LightLevel: 3
   LevelSoundscape: 2
   LevelMusic: 0
   BackgroundBrightness: 0.4
-  HeavyFog: 0
+  HeavyFog: 1
   FogColorMultiplier: {r: 0.8254717, g: 0.93911135, b: 1, a: 1}
 --- !u!1 &6975235097300656884
 GameObject:

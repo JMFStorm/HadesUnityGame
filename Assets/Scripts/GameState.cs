@@ -428,9 +428,31 @@ public class GameState : MonoBehaviour
         LoadLevelIndex(_currentLevelIndex, true);
     }
 
+    public void LoadPreviousLevel()
+    {
+        _currentLevelIndex = _currentLevelIndex - 1;
+
+        if (_currentLevelIndex < 0)
+        {
+            _currentLevelIndex = 0;
+        }
+
+        _gameUI.ActivatePauseMenu(false);
+
+        LoadLevelIndex(_currentLevelIndex, false);
+    }
+
     public void LoadNextLevel()
     {
-        _currentLevelIndex = (_currentLevelIndex + 1) % GameLevels.Count;
+        _currentLevelIndex = _currentLevelIndex + 1;
+
+        if (GameLevels.Count <= _currentLevelIndex)
+        {
+            _currentLevelIndex = GameLevels.Count - 1;
+        }
+
+        _gameUI.ActivatePauseMenu(false);
+
         LoadLevelIndex(_currentLevelIndex, false);
     }
 

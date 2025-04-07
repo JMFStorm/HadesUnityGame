@@ -34,7 +34,6 @@ public class GruntBehaviour : EnemyBase
 
     private int _currentHealth = 4;
     private bool _facingLeft = false;
-    private bool _isDead = false;
     private bool _isAggroed = false;
     private bool _isInDamageMode = false;
     private bool _attacking = false;
