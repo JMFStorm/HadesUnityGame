@@ -40,7 +40,7 @@ public class MovingPlatforms : MonoBehaviour
 
         _targetPoint = _platformPoints[_currentPointIndex];
 
-        var usedPitch = NormalizePitch(PlatformSpeed, 1.5f, 4.0f, 0.75f, 1.50f);
+        var usedPitch = NormalizePitch(PlatformSpeed, 1.5f, 3.0f, 0.9f, 1.50f);
         _audioSource.pitch = usedPitch;
     }
 
@@ -53,7 +53,7 @@ public class MovingPlatforms : MonoBehaviour
         }
         else
         {
-            _animator.Play("MovingPlatformMIdle");
+            _animator.Play("MovingPlatformIdle");
         }
     }
 
