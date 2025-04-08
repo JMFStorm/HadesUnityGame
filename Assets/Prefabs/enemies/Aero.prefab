@@ -155,7 +155,7 @@ MonoBehaviour:
   KeepYDistanceFromTarget: 1
   DamageInvulnerabilityTime: 0.4
   ProjectileLoadTime: 0.75
-  shootingCooldown: 3
+  shootingCooldown: 2
   waveAmplitude: 1
   waveFrequency: 2
   EnemyHealth: 3

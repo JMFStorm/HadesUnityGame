@@ -72,7 +72,7 @@ public class AeroBehaviour : EnemyBase
     private int _currentHealth = 3;
     private int _groundLayerMask;
 
-    private readonly int _animationFPS = 10;
+    private readonly int _animationFPS = 14;
 
     protected override void Awake()
     {
