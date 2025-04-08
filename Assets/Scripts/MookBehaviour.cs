@@ -495,10 +495,7 @@ public class GroundEnemyBehaviour : EnemyBase
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Damage, true);
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
 
-        if (!IsShadowVariant)
-        {
-            _state = EnemyState.Passive;
-        }
+        _state = EnemyState.Passive;
 
         yield return new WaitForSeconds(duration);
 
