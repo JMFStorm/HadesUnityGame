@@ -471,6 +471,7 @@ public class GroundEnemyBehaviour : EnemyBase
         _isAttacking = false;
         _isAggroed = false;
         _attackCoroutine = null;
+        StopAttackCoroutine();
     }
 
     void TryRecieveDamage(Vector2 damageDir)
