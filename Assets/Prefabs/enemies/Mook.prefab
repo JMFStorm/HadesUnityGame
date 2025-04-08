@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3597292844046712071
 Transform:
   m_ObjectHideFlags: 0
@@ -270,6 +270,7 @@ MonoBehaviour:
   DamageColor: {r: 0.49019608, g: 0.078431375, b: 0.078431375, a: 1}
   ShadowShaderMaterial: {fileID: 2100000, guid: be62342babaa6d04192dc20eea87e439, type: 2}
   TeleporterShaderMaterial: {fileID: 2100000, guid: 334b3e66ed7ac8a4e9fd9f8c6875b108, type: 2}
+  StartFacingLeft: 0
   Id: 
   IsShadowVariant: 0
   MovementSpeed: 1.15
@@ -277,7 +278,7 @@ MonoBehaviour:
   AttackRange: 1.75
   DamageStunTime: 0.4
   MaxHealth: 4
-  StartFacingLeft: 0
+  AttackCooldown: 1
 --- !u!212 &2275585569708316583
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -46,13 +46,14 @@ public class GroundEnemyBehaviour : EnemyBase
     private int _currentHealth = 4;
     private bool _facingLeft = false;
     private bool _attackHitPlayer = false;
+    private bool _isAttacking = false;
     private bool _isAggroed = false;
     private bool _isInDamageMode = false;
 
     private float _previousAlert = float.MinValue;
     private float _lastAttackTime = float.MinValue;
 
-    private readonly float _attackCooldown = 1.5f;
+    public float AttackCooldown = 1.5f;
 
     private Coroutine _currentIdleVoiceCoroutine = null;
     private Coroutine _moveCoroutine = null;
@@ -183,31 +184,34 @@ public class GroundEnemyBehaviour : EnemyBase
 
         _spriteRenderer.flipX = _facingLeft;
 
-        if (_state == EnemyState.Passive)
+        if (!_isAttacking)
         {
-            _animator.Play("MookIdle");
-            StopWalkCycle();
-        }
-        else if (_state == EnemyState.NormalMoving)
-        {
-            _animator.Play("MookMove");
-        }
-        else if (_state == EnemyState.AttackMoving)
-        {
-            _animator.Play("MookMove");
-        }
-        else if (_state == EnemyState.Attacking)
-        {
-            StopWalkCycle();
-        }
+            if (_state == EnemyState.Passive)
+            {
+                _animator.Play("MookIdle");
+                StopWalkCycle();
+            }
+            else if (_state == EnemyState.NormalMoving)
+            {
+                _animator.Play("MookMove");
+            }
+            else if (_state == EnemyState.AttackMoving)
+            {
+                _animator.Play("MookMove");
+            }
+            else if (_state == EnemyState.Attacking)
+            {
+                StopWalkCycle();
+            }
 
-        if (_state == EnemyState.Passive || _state == EnemyState.NormalMoving)
-        {
-            TryInitIdleVoiceLoop();
-        }
-        else
-        {
-            StopIdleVoiceLoop();
+            if (_state == EnemyState.Passive || _state == EnemyState.NormalMoving)
+            {
+                TryInitIdleVoiceLoop();
+            }
+            else
+            {
+                StopIdleVoiceLoop();
+            }
         }
 
         SetDamageColor(_isInDamageMode);
@@ -398,12 +402,13 @@ public class GroundEnemyBehaviour : EnemyBase
 
     IEnumerator Attack()
     {
+        _isAttacking = true;
         _state = EnemyState.Passive;
 
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.AttackCharge);
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
 
-        yield return new WaitForSeconds(0.35f);
+        yield return new WaitForSeconds(0.15f);
 
         if (_isDead || _isInDamageMode)
         {
@@ -440,7 +445,7 @@ public class GroundEnemyBehaviour : EnemyBase
         _state = EnemyState.Passive;
         _attackDamageZone.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(0.60f);
+        yield return new WaitForSeconds(0.40f);
 
         EndAttack();
     }
@@ -449,6 +454,7 @@ public class GroundEnemyBehaviour : EnemyBase
     {
         _attackDamageZone.gameObject.SetActive(false);
         _state = EnemyState.NormalMoving;
+        _isAttacking = false;
         _isAggroed = false;
         _attackCoroutine = null;
     }
@@ -460,6 +466,7 @@ public class GroundEnemyBehaviour : EnemyBase
             return;
         }
 
+        EndAttack();
         ApplyDamageKnockback(damageDir);
 
         if (!IsShadowVariant)
@@ -577,7 +584,7 @@ public class GroundEnemyBehaviour : EnemyBase
             return;
         }
 
-        if (Mathf.Abs(Time.time - _lastAttackTime) < _attackCooldown)
+        if (Mathf.Abs(Time.time - _lastAttackTime) < AttackCooldown)
         {
             return;
         }
@@ -752,7 +759,7 @@ public class GroundEnemyBehaviour : EnemyBase
             _previousAlert = newTime;
         }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.25f);
 
         if (_isDead)
         {
