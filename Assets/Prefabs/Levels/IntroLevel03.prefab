@@ -64494,6 +64494,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1159806427347860961}
     m_Modifications:
+    - target: {fileID: 4661598611344584094, guid: 19259c61bf921bf43942bc8ee63c0548, type: 3}
+      propertyPath: MaxHealth
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5052291549821688438, guid: 19259c61bf921bf43942bc8ee63c0548, type: 3}
       propertyPath: m_Name
       value: Mook

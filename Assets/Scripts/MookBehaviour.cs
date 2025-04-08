@@ -332,7 +332,7 @@ public class GroundEnemyBehaviour : EnemyBase
 
     void TryAggroMovement()
     {
-        if (_state != EnemyState.AttackMoving)
+        if (_state != EnemyState.AttackMoving || _isAttacking || _isInDamageMode)
         {
             return;
         }
@@ -598,7 +598,6 @@ public class GroundEnemyBehaviour : EnemyBase
         {
             return;
         }
-
 
         Vector2 detectionBoxSize = new(DetectionDistance, 1.5f);
 
