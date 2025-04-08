@@ -689,8 +689,6 @@ public class PlayerCharacter : MonoBehaviour
             moveInput = 1f;
         }
 
-        Debug.Log("moveInput " + moveInput);
-
         var speed = MoveSpeed * (HasShadowPowers ? 1.5f : 1f);
 
         var newMovement = new Vector2(moveInput * speed, _rigidBody.linearVelocity.y);
@@ -779,7 +777,9 @@ public class PlayerCharacter : MonoBehaviour
             }
         }
 
-        if (_isAtDoorwayExit && !IsCrouching && _hasGroundedFeet && Input.GetButtonDown("Up"))
+        float crouchAxis = Input.GetAxisRaw("Crouch");
+
+        if (_isAtDoorwayExit && !IsCrouching && _hasGroundedFeet && (Input.GetButtonDown("Up") || 0.01f < crouchAxis))
         {
             _gameState.LoadNextLevel();
         }
