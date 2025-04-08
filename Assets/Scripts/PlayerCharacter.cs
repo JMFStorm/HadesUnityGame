@@ -680,6 +680,17 @@ public class PlayerCharacter : MonoBehaviour
 
         float moveInput = Input.GetAxisRaw("Horizontal");
 
+        if (moveInput < -0.001f)
+        {
+            moveInput = -1f;
+        }
+        else if (0.001f < moveInput)
+        {
+            moveInput = 1f;
+        }
+
+        Debug.Log("moveInput " + moveInput);
+
         var speed = MoveSpeed * (HasShadowPowers ? 1.5f : 1f);
 
         var newMovement = new Vector2(moveInput * speed, _rigidBody.linearVelocity.y);

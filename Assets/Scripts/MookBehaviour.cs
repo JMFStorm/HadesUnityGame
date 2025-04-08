@@ -232,8 +232,7 @@ public class GroundEnemyBehaviour : EnemyBase
 
         Vector2 collisionDirection = (transform.position - other.transform.position);
 
-        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") && other.gameObject.CompareTag("PlayerSword")
-            || other.gameObject.layer == LayerMask.NameToLayer("EnvDamageZone"))
+        if ((other.gameObject.layer == LayerMask.NameToLayer("DamageZone") && other.gameObject.CompareTag("PlayerSword")))
         {
             TryRecieveDamage(collisionDirection);
         }
@@ -242,6 +241,21 @@ public class GroundEnemyBehaviour : EnemyBase
         {
             Debug.Log("Hit player!");
             _attackHitPlayer = true;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (_isDead)
+        {
+            return;
+        }
+
+        Vector2 collisionDirection = (transform.position - other.transform.position);
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("EnvDamageZone"))
+        {
+            TryRecieveDamage(collisionDirection);
         }
     }
 

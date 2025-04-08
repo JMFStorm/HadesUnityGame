@@ -213,8 +213,22 @@ public class GruntBehaviour : EnemyBase
 
         Vector2 collisionDirection = (transform.position - other.transform.position);
 
-        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") && other.gameObject.CompareTag("PlayerSword")
-            || other.gameObject.layer == LayerMask.NameToLayer("EnvDamageZone"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") && other.gameObject.CompareTag("PlayerSword"))
+        {
+            TryRecieveDamage(collisionDirection);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (_isDead)
+        {
+            return;
+        }
+
+        Vector2 collisionDirection = (transform.position - other.transform.position);
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("EnvDamageZone"))
         {
             TryRecieveDamage(collisionDirection);
         }
