@@ -17,6 +17,7 @@ public class GameUI : MonoBehaviour
     public AudioClip OutroCutsceneMusic01;
 
     public VideoClip IntroCutsceneMovie;
+    public VideoClip OutroCutsceneMovie;
 
     public GameObject IntroTitle;
     public GameObject MainMenuPanel;
@@ -32,7 +33,7 @@ public class GameUI : MonoBehaviour
 
     private GlobalAudio _globalAudio;
     private GameState _gameState;
-    private TextMeshProUGUI _introTitleText;
+    private Image _introTitleText;
     private TextMeshProUGUI _cutsceneText;
     private Material _deathScreenMaterial;
     private Material _cutsceneMaterial;
@@ -85,7 +86,7 @@ public class GameUI : MonoBehaviour
 
         if (!IntroTitle.TryGetComponent(out _introTitleText))
         {
-            Debug.LogError($"{nameof(TextMeshProUGUI)} not found on {nameof(GameUI)} introTitle child");
+            Debug.LogError($"{nameof(Image)} not found on {nameof(GameUI)} introTitle child");
         }
 
         var gameOverPanel = GameOverPanel.transform.Find("PlayerImage");
@@ -217,18 +218,27 @@ public class GameUI : MonoBehaviour
     public IEnumerator PlayIntroCutscene()
     {
         _cutsceneCancelled = false;
-        _cutsceneCoroutine = StartCoroutine(PlayIntroCutsceneMovie());
-        // _cutsceneCoroutine = StartCoroutine(PlayIntroCutsceneAnim());
+        _cutsceneCoroutine = StartCoroutine(PlayCutsceneMovie(IntroCutsceneMovie));
 
         yield return _cutsceneCoroutine;
 
         _cutsceneCoroutine = null;
     }
 
-    IEnumerator PlayIntroCutsceneMovie()
+    public IEnumerator PlayOutroCutscene()
+    {
+        _cutsceneCancelled = false;
+        _cutsceneCoroutine = StartCoroutine(PlayCutsceneMovie(OutroCutsceneMovie));
+
+        yield return _cutsceneCoroutine;
+
+        _cutsceneCoroutine = null;
+    }
+
+    IEnumerator PlayCutsceneMovie(VideoClip videoClip)
     {
         CutsceneMovie.SetActive(true);
-        _videoPlayer.clip = IntroCutsceneMovie;
+        _videoPlayer.clip = videoClip;
         _videoPlayer.Play();
 
         const float waitMax = 4f;
@@ -260,16 +270,6 @@ public class GameUI : MonoBehaviour
 
         _videoPlayer.Stop();
         CutsceneMovie.SetActive(false);
-    }
-
-    public IEnumerator PlayOutroCutscene()
-    {
-        _cutsceneCancelled = false;
-        _cutsceneCoroutine = StartCoroutine(PlayOutroCutsceneAnim());
-
-        yield return _cutsceneCoroutine;
-
-        _cutsceneCoroutine = null;
     }
 
     IEnumerator PlayOutroCutsceneAnim()

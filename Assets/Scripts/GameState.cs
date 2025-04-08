@@ -334,15 +334,33 @@ public class GameState : MonoBehaviour
         }
     }
 
+    IEnumerator StartOutroCutsceneState()
+    {
+        SetGameState(GameStateType.Cutscene);
+
+        yield return StartCoroutine(_gameUI.PlayOutroCutscene());
+
+        InitGameIntroTitle();
+    }
+
     public void LoadLevelIndex(int index, bool isRetry)
     {
-        if (index < 0 || GameLevels.Count <= index)
+        if (index < 0)
         {
             Debug.LogError("Invalid level index!");
             return;
         }
 
         ClearCurrentLevel();
+
+        if (GameLevels.Count <= index)
+        {
+            _globalAudio.StopMusic(2f);
+            _globalAudio.StopAmbience();
+            ClearBackgroundImage();
+            StartCoroutine(StartOutroCutsceneState());
+            return;
+        }
 
         _currentLevel = Instantiate(GameLevels[index], Vector3.zero, Quaternion.identity);
 
@@ -445,11 +463,6 @@ public class GameState : MonoBehaviour
     public void LoadNextLevel()
     {
         _currentLevelIndex = _currentLevelIndex + 1;
-
-        if (GameLevels.Count <= _currentLevelIndex)
-        {
-            _currentLevelIndex = GameLevels.Count - 1;
-        }
 
         _gameUI.ActivatePauseMenu(false);
 
