@@ -372,6 +372,7 @@ public class AeroBehaviour : EnemyBase
     {
         _isDead = true;
         _enemyDamageZone.gameObject.SetActive(false);
+        _enemyCollider.enabled = false;
 
         _animator.Play("AeroDeath", 0, 0f);
 
@@ -503,7 +504,7 @@ public class AeroBehaviour : EnemyBase
 
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Attack);
 
-        projectileScript.speed = IsShadowVariant ? 8f : 5f;
+        projectileScript.speed = IsShadowVariant ? 5.5f : 4.5f;
         projectileScript.SetProjectileColor(!IsShadowVariant ? _projectileColor1 : _projectileColor2);
         projectileScript.Launch(direction);
 

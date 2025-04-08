@@ -15,6 +15,8 @@ public abstract class EnemyBase : MonoBehaviour
 
     protected Rigidbody2D _rigidBody;
 
+    protected CapsuleCollider2D _enemyCollider;
+
     public string Id;
 
     public bool IsShadowVariant = false;
@@ -29,16 +31,28 @@ public abstract class EnemyBase : MonoBehaviour
 
     protected virtual void Awake()
     {
+        var collisionZone = transform.Find("EnemyCollisionZone");
+
+        if (collisionZone == null)
+        {
+            Debug.LogError($"EnemyCollisionZone not found on {nameof(EnemyBase)}");
+        }
+
+        if (!collisionZone.TryGetComponent(out _enemyCollider))
+        {
+            Debug.LogError($"CapsuleCollider2D not found on {nameof(EnemyBase)}");
+        }
+
         _seesTargetLayerMask = LayerMask.GetMask("Ground", "Character");
 
         if (!TryGetComponent(out _rigidBody))
         {
-            Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(AeroBehaviour)}");
+            Debug.LogError($"{nameof(Rigidbody2D)} not found on {nameof(EnemyBase)}");
         }
 
         if (!TryGetComponent(out _spriteRenderer))
         {
-            Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(ShadowEnemyEffects)}");
+            Debug.LogError($"{nameof(SpriteRenderer)} not found on {nameof(EnemyBase)}");
         }
 
         if (string.IsNullOrEmpty(Id))
@@ -56,6 +70,8 @@ public abstract class EnemyBase : MonoBehaviour
 
     public virtual void SignalDieEvent(float? destroyTimer)
     {
+        _enemyCollider.enabled = false;
+
         OnEnemyDied?.Invoke(this); // Notify listeners that an enemy died
 
         if (destroyTimer != null)

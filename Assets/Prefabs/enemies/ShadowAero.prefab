@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1887247781124116668, guid: 3569d3c3904eaf643823af319dc57108, type: 3}
       propertyPath: EnemyHealth
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1887247781124116668, guid: 3569d3c3904eaf643823af319dc57108, type: 3}
       propertyPath: chaseRadius
@@ -42,7 +42,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1887247781124116668, guid: 3569d3c3904eaf643823af319dc57108, type: 3}
       propertyPath: shootingCooldown
-      value: 2.5
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 3548766360781035238, guid: 3569d3c3904eaf643823af319dc57108, type: 3}
       propertyPath: m_LocalPosition.x
@@ -127,4 +127,4 @@ MonoBehaviour:
   OutlineThickness: 0.8
   InlineColor: {r: 0.05, g: 0.05, b: 0.05, a: 1}
   OutlineColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
-  ShadowShaderMaterial: {fileID: 2100000, guid: be62342babaa6d04192dc20eea87e439, type: 2}
+  EffectOffset: {x: 0, y: 0.5}
