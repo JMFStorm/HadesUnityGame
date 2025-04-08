@@ -197,7 +197,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7105067992299979213}
   - component: {fileID: 3278187852224982325}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: EnemyCollisionZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -347,7 +347,7 @@ MonoBehaviour:
   AggroSpeed: 1.8
   AttackRange: 1.75
   DamageStunTime: 0.4
-  MaxHealth: 4
+  MaxHealth: 3
   AttackCooldown: 1
 --- !u!212 &2275585569708316583
 SpriteRenderer:

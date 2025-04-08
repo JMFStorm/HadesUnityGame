@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: be62342babaa6d04192dc20eea87e439, type: 2}
     - target: {fileID: 4661598611344584094, guid: 19259c61bf921bf43942bc8ee63c0548, type: 3}
       propertyPath: MaxHealth
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4661598611344584094, guid: 19259c61bf921bf43942bc8ee63c0548, type: 3}
       propertyPath: AggroSpeed
@@ -101,3 +101,4 @@ MonoBehaviour:
   OutlineThickness: 0.65
   InlineColor: {r: 0.050980393, g: 0.050980393, b: 0.050980393, a: 1}
   OutlineColor: {r: 0.29803923, g: 0.29803923, b: 0.29803923, a: 1}
+  EffectOffset: {x: 0, y: 0.5}

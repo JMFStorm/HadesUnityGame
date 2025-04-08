@@ -355,6 +355,7 @@ public class GameState : MonoBehaviour
 
         if (GameLevels.Count <= index)
         {
+            _mainCamera.SetFogFXLevel(false, new(0, 0, 0));
             _globalAudio.StopMusic(2f);
             _globalAudio.StopAmbience();
             ClearBackgroundImage();

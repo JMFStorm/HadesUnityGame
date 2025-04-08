@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public enum AeroSounds
 {
@@ -37,7 +35,6 @@ public class AeroBehaviour : EnemyBase
     private Transform _attackTarget; // Reference to the player's transform
     private Transform _enemyDamageZone;
     private Transform _projectileStart;
-    private CapsuleCollider2D _physicsCollider;
     private AudioSource _audioSource;
     private MainCamera _mainCamera;
     private PlayerCharacter _player;
@@ -93,11 +90,6 @@ public class AeroBehaviour : EnemyBase
         if (!TryGetComponent(out _animator))
         {
             Debug.LogError($"{nameof(Animator)} not found on {nameof(AeroBehaviour)}");
-        }
-
-        if (!TryGetComponent(out _physicsCollider))
-        {
-            Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(AeroBehaviour)}");
         }
 
         if (!TryGetComponent(out _audioSource))
@@ -280,11 +272,11 @@ public class AeroBehaviour : EnemyBase
                 Vector3 rayDirectionX = new Vector3(_targetDir.x, 0, 0).normalized;
                 Vector3 rayDirectionY = new Vector3(0, _targetDir.y, 0).normalized;
 
-                var rayStartX = _physicsCollider.transform.position + (Vector3)_physicsCollider.offset;
-                var rayStartY = _physicsCollider.transform.position + (Vector3)_physicsCollider.offset;
+                var rayStartX = _enemyCollider.transform.position + (Vector3)_enemyCollider.offset;
+                var rayStartY = _enemyCollider.transform.position + (Vector3)_enemyCollider.offset;
 
-                bool hitX = Physics2D.Raycast(rayStartX, rayDirectionX, _physicsCollider.size.x + 0.25f, _groundLayerMask);
-                bool hitY = Physics2D.Raycast(rayStartY, rayDirectionY, _physicsCollider.size.y + 0.25f, _groundLayerMask);
+                bool hitX = Physics2D.Raycast(rayStartX, rayDirectionX, _enemyCollider.size.x + 0.25f, _groundLayerMask);
+                bool hitY = Physics2D.Raycast(rayStartY, rayDirectionY, _enemyCollider.size.y + 0.25f, _groundLayerMask);
 
                 if (hitX && !hitY)
                 {

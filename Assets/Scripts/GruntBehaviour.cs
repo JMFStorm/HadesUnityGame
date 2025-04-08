@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(CapsuleCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class GruntBehaviour : EnemyBase
 {
@@ -19,7 +18,6 @@ public class GruntBehaviour : EnemyBase
     private Transform _attackDamageZone;
     private Transform _attackDamageZoneRight;
     private Transform _enemyDamageZone;
-    private CapsuleCollider2D _enemyBoxCollider;
     private PlayerCharacter _playerCharacter;
     private MainCamera _mainCamera;
     private EnemySounds _soundEmitter;
@@ -63,11 +61,6 @@ public class GruntBehaviour : EnemyBase
         if (!TryGetComponent(out _animator))
         {
             Debug.LogError($"{nameof(Animator)} not found on {nameof(GroundEnemyBehaviour)}");
-        }
-
-        if (!TryGetComponent(out _enemyBoxCollider))
-        {
-            Debug.LogError($"{nameof(BoxCollider2D)} not found on {nameof(GroundEnemyBehaviour)}");
         }
 
         if (!TryGetComponent(out _soundEmitter))
@@ -519,11 +512,11 @@ public class GruntBehaviour : EnemyBase
         const float groundRayLength = 0.25f;
         RaycastHit2D groundHit = Physics2D.Raycast(_groundCheck.position, Vector2.down, groundRayLength, _groundFloorLayer);
 
-        float wallRayLength = (_enemyBoxCollider.size.x / 2) + 0.5f;
-        RaycastHit2D wallHit = Physics2D.Raycast(_enemyBoxCollider.bounds.center, Vector2.right * direction, wallRayLength, _wallLayer);
+        float wallRayLength = (_enemyCollider.size.x / 2) + 0.5f;
+        RaycastHit2D wallHit = Physics2D.Raycast(_enemyCollider.bounds.center, Vector2.right * direction, wallRayLength, _wallLayer);
 
         Debug.DrawRay(_groundCheck.position, Vector2.down * groundRayLength, Color.green);
-        Debug.DrawRay(_enemyBoxCollider.bounds.center, direction * wallRayLength * Vector2.right, wallHit.collider ? Color.magenta : Color.cyan);
+        Debug.DrawRay(_enemyCollider.bounds.center, direction * wallRayLength * Vector2.right, wallHit.collider ? Color.magenta : Color.cyan);
 
         if (wallHit.collider)
         {
@@ -575,7 +568,7 @@ public class GruntBehaviour : EnemyBase
         Vector2 detectionBoxSize = new(detectionDistance, 1.5f);
 
         var detectionOffset = (detectionDistance * 0.22f) * Vector2.right;
-        Vector2 boxPosition = (Vector2)_enemyBoxCollider.bounds.center + (_facingLeft ? -detectionOffset : detectionOffset);
+        Vector2 boxPosition = (Vector2)_enemyCollider.bounds.center + (_facingLeft ? -detectionOffset : detectionOffset);
 
         Collider2D hit = Physics2D.OverlapBox(boxPosition, detectionBoxSize, 0f, _playerLayer);
 

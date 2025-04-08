@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4709810052342772832, guid: 1c18e695883718b458b44a6050e583ae, type: 3}
       propertyPath: MaxHealth
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4709810052342772832, guid: 1c18e695883718b458b44a6050e583ae, type: 3}
       propertyPath: AggroSpeed
