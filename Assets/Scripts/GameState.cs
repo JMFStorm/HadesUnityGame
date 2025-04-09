@@ -19,7 +19,8 @@ public class GameState : MonoBehaviour
     public List<Level> GameLevels = new();
 
     public PlayerCharacter Player;
-    public MainCamera MainCameraPrefab;
+    public MainCamera MainCamera;
+
     public Light2D GlobalLight;
     public bool SkipIntro = false;
     public int DebugStartLevelIndex = 0;
@@ -28,7 +29,6 @@ public class GameState : MonoBehaviour
     private GameStateType _gameState;
 
     private Level _currentLevel;
-    private MainCamera _mainCamera;
     private Vector3 _prevCameraPosition;
     private GlobalAudio _globalAudio;
     private GameUI _gameUI;
@@ -78,19 +78,21 @@ public class GameState : MonoBehaviour
         _backgroundRenderer.sortingLayerName = "Background";
         _levelBGMaterial = _backgroundRenderer.material;
 
-        LoadPersistentStorage();
-
         Cursor.SetCursor(CursorIcon, Vector2.zero, CursorMode.Auto);
     }
 
     private void Start()
     {
-        Player.gameObject.SetActive(false);
-        Player.ResetPlayerInnerState(false);
+        LoadPersistentStorage();
 
-        _mainCamera = Instantiate(MainCameraPrefab, new(0, 0, -1f), Quaternion.identity);
-        _mainCamera.SetDustFXStrength(0);
-        _mainCamera.SetFogFXLevel(false, new(0, 0, 0));
+        float savedVolume = PlayerPrefs.GetFloat("MasterVolume", 0.8f);
+        AudioListener.volume = savedVolume;
+
+        Player.gameObject.SetActive(false);
+
+        MainCamera.transform.position = new(0, 0, -1f);
+        MainCamera.SetDustFXStrength(0);
+        MainCamera.SetFogFXLevel(false, new(0, 0, 0));
 
         if (Debug.isDebugBuild && SkipIntro)
         {
@@ -115,7 +117,7 @@ public class GameState : MonoBehaviour
                 SeamlessBackgroundParallaxScroll();
             }
 
-            _prevCameraPosition = _mainCamera.transform.position;
+            _prevCameraPosition = MainCamera.transform.position;
         }
 
         var gameState = GetGameState();
@@ -154,17 +156,17 @@ public class GameState : MonoBehaviour
     {
         if (Player != null)
         {
-            _mainCamera.SetFollowTargetXOffset(Player.FacingDirX * 0.75f);
+            MainCamera.SetFollowTargetXOffset(Player.FacingDirX * 0.75f);
 
             if (Player.IsCrouching)
             {
-                _mainCamera.SetFollowTargetYOffset(-1.0f);
-                _mainCamera.SetCameraSpeedMultiplier(0.33f);
+                MainCamera.SetFollowTargetYOffset(-1.0f);
+                MainCamera.SetCameraSpeedMultiplier(0.33f);
             }
             else
             {
-                _mainCamera.SetFollowTargetYOffset(0f);
-                _mainCamera.SetCameraSpeedMultiplier(1f);
+                MainCamera.SetFollowTargetYOffset(0f);
+                MainCamera.SetCameraSpeedMultiplier(1f);
             }
         }
     }
@@ -214,7 +216,7 @@ public class GameState : MonoBehaviour
 
         LoadPersistentStorage();
 
-        _mainCamera.SetFogFXLevel(false, new Color(0, 0, 0, 0));
+        MainCamera.SetFogFXLevel(false, new Color(0, 0, 0, 0));
     }
 
     public void ClickReturnToMainMenuFromPauseMenu()
@@ -240,7 +242,7 @@ public class GameState : MonoBehaviour
 
         LoadPersistentStorage();
 
-        _mainCamera.SetFogFXLevel(false, new Color(0, 0, 0, 0));
+        MainCamera.SetFogFXLevel(false, new Color(0, 0, 0, 0));
     }
 
     public void ClickContinueGameMenuOption()
@@ -315,7 +317,7 @@ public class GameState : MonoBehaviour
     void InstantiateGlobalGamePrefabs()
     {
         _gameUI.HidePlayerStats(false);
-        _mainCamera.SetFollowTarget(Player.transform);
+        MainCamera.SetFollowTarget(Player.transform);
     }
 
     public void QuitGame()
@@ -357,7 +359,8 @@ public class GameState : MonoBehaviour
         if (GameLevels.Count <= index)
         {
             Player.gameObject.SetActive(false);
-            _mainCamera.SetFogFXLevel(false, new(0, 0, 0));
+            MainCamera.SetFogFXLevel(false, new(0, 0, 0));
+            MainCamera.SetDustFXStrength(0f);
             _globalAudio.StopMusic(2f);
             _globalAudio.StopAmbience();
             ClearBackgroundImage();
@@ -394,12 +397,12 @@ public class GameState : MonoBehaviour
 
         Debug.Log($"GlobalLight.intensity set = {GlobalLight.intensity}");
 
-        _mainCamera.SetCameraBoundaries(bl, tr);
-        _mainCamera.SetDustFXStrength(GlobalLight.intensity * 0.6f);
-        _mainCamera.SetFogFXLevel(_currentLevel.HeavyFog, _currentLevel.FogColorMultiplier);
+        MainCamera.SetCameraBoundaries(bl, tr);
+        MainCamera.SetDustFXStrength(GlobalLight.intensity * 0.6f);
+        MainCamera.SetFogFXLevel(_currentLevel.HeavyFog, _currentLevel.FogColorMultiplier);
 
         var vignetteValue = GetVignetteIntensity(_currentLevel.LightLevel);
-        _mainCamera.SetVignetteIntensity(vignetteValue);
+        MainCamera.SetVignetteIntensity(vignetteValue);
 
         _gameUI.HidePlayerStats(false);
         _gameUI.FadeIn(2.0f);
@@ -417,8 +420,8 @@ public class GameState : MonoBehaviour
         {
             var newPlayerStart = levelEnter;
             Player.transform.position = new Vector3(newPlayerStart.x, newPlayerStart.y, 0);
-            _mainCamera.transform.position = new Vector3(newPlayerStart.x, newPlayerStart.y, _cameraZOffset);
-            Camera.main.transform.position = _mainCamera.transform.position;
+            MainCamera.transform.position = new Vector3(newPlayerStart.x, newPlayerStart.y, _cameraZOffset);
+            Camera.main.transform.position = MainCamera.transform.position;
         }
         else
         {
@@ -431,7 +434,7 @@ public class GameState : MonoBehaviour
         Player.ResetPlayerInnerState(isRetry);
         SetPlayerColor(_playerColor);
 
-        _prevCameraPosition = _mainCamera.transform.position;
+        _prevCameraPosition = MainCamera.transform.position;
 
         Time.timeScale = 1f;
 
@@ -523,7 +526,7 @@ public class GameState : MonoBehaviour
         _backgroundRenderer.sprite = background;
         _backgroundRenderer.transform.localScale = new Vector3(1, 1, 1);
 
-        var cameraView = _mainCamera.GetCameraViewSize();
+        var cameraView = MainCamera.GetCameraViewSize();
 
         float spriteHeight = _backgroundRenderer.sprite.bounds.size.y;
         float spriteWidth = _backgroundRenderer.sprite.bounds.size.x;
@@ -549,7 +552,7 @@ public class GameState : MonoBehaviour
         }
 
         _backgroundRenderer.transform.localScale = newScale * 1.1f;
-        _backgroundRenderer.transform.SetParent(_mainCamera.transform);
+        _backgroundRenderer.transform.SetParent(MainCamera.transform);
         _backgroundRenderer.transform.localPosition = new Vector3(0,0,1);
 
         float bgSideSize = Mathf.Min(spriteHeight, spriteWidth);
@@ -566,14 +569,14 @@ public class GameState : MonoBehaviour
     private void BGImageParallaxScroll()
     {
         float parallaxFactor = Level.ParallaxEffectFactor;
-        Vector2 deltaMovement = _mainCamera.transform.position - _prevCameraPosition;
+        Vector2 deltaMovement = MainCamera.transform.position - _prevCameraPosition;
 
         _backgroundRenderer.transform.position += (Vector3)deltaMovement * parallaxFactor;
     }
 
     void SeamlessBackgroundParallaxScroll()
     {
-        Vector2 deltaMovement = _mainCamera.transform.position - _prevCameraPosition;
+        Vector2 deltaMovement = MainCamera.transform.position - _prevCameraPosition;
 
         _bgOffset += (deltaMovement / 28f) * _bgUVMultiplier;
 

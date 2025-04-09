@@ -504,7 +504,11 @@ public class PlayerCharacter : MonoBehaviour
     public void SetPlayerColor(Color color)
     {
         _playerColor = color;
-        _material.SetColor("_NewColor", _playerColor);
+
+        if (_material != null)
+        {
+            _material.SetColor("_NewColor", _playerColor);
+        }
     }
 
     public void TryRecieveDamage(Vector2 damageDir)
@@ -659,9 +663,16 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         _currentDashes = MaxDashes;
-        _gameUI.SetStamina(_currentDashes);
 
-        _spriteRenderer.color = Color.white;
+        if (_gameUI != null)
+        {
+            _gameUI.SetStamina(_currentDashes);
+        }
+
+        if (_spriteRenderer != null)
+        {
+            _spriteRenderer.color = Color.white;
+        }
 
         SetNormalVisuals();
 
