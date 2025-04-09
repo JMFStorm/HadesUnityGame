@@ -29,7 +29,7 @@ public class Projectile : MonoBehaviour
 
     private void Awake()
     {
-        _player = FindFirstObjectByType<PlayerCharacter>();
+        _player = FindAnyObjectByType<PlayerCharacter>(FindObjectsInactive.Include);
 
         _gameState = FindFirstObjectByType<GameState>();
 

@@ -18,7 +18,7 @@ public class GameState : MonoBehaviour
 {
     public List<Level> GameLevels = new();
 
-    public PlayerCharacter PlayerPrefab;
+    public PlayerCharacter Player;
     public MainCamera MainCameraPrefab;
     public Light2D GlobalLight;
     public bool SkipIntro = false;
@@ -28,7 +28,6 @@ public class GameState : MonoBehaviour
     private GameStateType _gameState;
 
     private Level _currentLevel;
-    private PlayerCharacter _player;
     private MainCamera _mainCamera;
     private Vector3 _prevCameraPosition;
     private GlobalAudio _globalAudio;
@@ -86,6 +85,9 @@ public class GameState : MonoBehaviour
 
     private void Start()
     {
+        Player.gameObject.SetActive(false);
+        Player.ResetPlayerInnerState(false);
+
         _mainCamera = Instantiate(MainCameraPrefab, new(0, 0, -1f), Quaternion.identity);
         _mainCamera.SetDustFXStrength(0);
         _mainCamera.SetFogFXLevel(false, new(0, 0, 0));
@@ -133,11 +135,11 @@ public class GameState : MonoBehaviour
             {
                 _gameUI.SkipIntroSequence();
             }
-            else if (gameState == GameStateType.MainGame && !_player.IsDead())
+            else if (gameState == GameStateType.MainGame && !Player.IsDead())
             {
                 _gameUI.ActivatePauseMenu(true);
             }
-            else if (gameState == GameStateType.PauseMenu && !_player.IsDead())
+            else if (gameState == GameStateType.PauseMenu && !Player.IsDead())
             {
                 _gameUI.ActivatePauseMenu(false);
             }
@@ -150,11 +152,11 @@ public class GameState : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_player != null)
+        if (Player != null)
         {
-            _mainCamera.SetFollowTargetXOffset(_player.FacingDirX * 0.75f);
+            _mainCamera.SetFollowTargetXOffset(Player.FacingDirX * 0.75f);
 
-            if (_player.IsCrouching)
+            if (Player.IsCrouching)
             {
                 _mainCamera.SetFollowTargetYOffset(-1.0f);
                 _mainCamera.SetCameraSpeedMultiplier(0.33f);
@@ -192,6 +194,9 @@ public class GameState : MonoBehaviour
 
     public void ClickReturnToMainMenuFromDeathScreen()
     {
+        Player.gameObject.SetActive(false);
+        Player.ResetPlayerInnerState(false);
+
         _gameUI.ActivatePauseMenu(false);
         _gameUI.GameOverScreen(false);
         _gameUI.HideMainMenu(false);
@@ -203,10 +208,7 @@ public class GameState : MonoBehaviour
 
         ClearBackgroundImage();
 
-        if (_player != null)
-        {
-            Destroy(_player.gameObject);
-        }
+        Player.gameObject.SetActive(false);
 
         SetGameState(GameStateType.MainMenu);
 
@@ -217,6 +219,9 @@ public class GameState : MonoBehaviour
 
     public void ClickReturnToMainMenuFromPauseMenu()
     {
+        Player.gameObject.SetActive(false);
+        Player.ResetPlayerInnerState(false);
+
         _gameUI.ActivatePauseMenu(false);
         _gameUI.HideMainMenu(false);
 
@@ -229,10 +234,7 @@ public class GameState : MonoBehaviour
 
         ClearBackgroundImage();
 
-        if (_player != null)
-        {
-            Destroy(_player.gameObject);
-        }
+        Player.gameObject.SetActive(false);
 
         SetGameState(GameStateType.MainMenu);
 
@@ -313,8 +315,7 @@ public class GameState : MonoBehaviour
     void InstantiateGlobalGamePrefabs()
     {
         _gameUI.HidePlayerStats(false);
-        _player = Instantiate(PlayerPrefab);
-        _mainCamera.SetFollowTarget(_player.transform);
+        _mainCamera.SetFollowTarget(Player.transform);
     }
 
     public void QuitGame()
@@ -355,6 +356,7 @@ public class GameState : MonoBehaviour
 
         if (GameLevels.Count <= index)
         {
+            Player.gameObject.SetActive(false);
             _mainCamera.SetFogFXLevel(false, new(0, 0, 0));
             _globalAudio.StopMusic(2f);
             _globalAudio.StopAmbience();
@@ -414,7 +416,7 @@ public class GameState : MonoBehaviour
         if (levelEnter != null)
         {
             var newPlayerStart = levelEnter;
-            _player.transform.position = new Vector3(newPlayerStart.x, newPlayerStart.y, 0);
+            Player.transform.position = new Vector3(newPlayerStart.x, newPlayerStart.y, 0);
             _mainCamera.transform.position = new Vector3(newPlayerStart.x, newPlayerStart.y, _cameraZOffset);
             Camera.main.transform.position = _mainCamera.transform.position;
         }
@@ -425,7 +427,8 @@ public class GameState : MonoBehaviour
 
         _currentLevel.MakeLevelArenaEvents();
 
-        _player.ResetPlayerInnerState(isRetry);
+        Player.gameObject.SetActive(true);
+        Player.ResetPlayerInnerState(isRetry);
         SetPlayerColor(_playerColor);
 
         _prevCameraPosition = _mainCamera.transform.position;
@@ -441,7 +444,7 @@ public class GameState : MonoBehaviour
 
     public void RestartLevel()
     {
-        _player.StopAllCoroutines();
+        Player.StopAllCoroutines();
         _gameUI.GameOverScreen(false);
         _gameUI.ActivatePauseMenu(false);
         LoadLevelIndex(_currentLevelIndex, true);
@@ -620,9 +623,9 @@ public class GameState : MonoBehaviour
 
     void SetPlayerColor(Color color)
     {
-        if (_player != null)
+        if (Player != null)
         {
-            _player.SetPlayerColor(color);
+            Player.SetPlayerColor(color);
         }
 
         if (_gameUI != null)

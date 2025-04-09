@@ -112,7 +112,7 @@ public class AeroBehaviour : EnemyBase
 
     private void Start()
     {
-        _player = FindFirstObjectByType<PlayerCharacter>();
+        _player = FindAnyObjectByType<PlayerCharacter>(FindObjectsInactive.Include);
         _attackTarget = _player.transform;
         _mainCamera = FindFirstObjectByType<MainCamera>();
 

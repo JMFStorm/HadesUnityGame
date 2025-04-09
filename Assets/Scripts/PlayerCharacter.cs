@@ -820,7 +820,7 @@ public class PlayerCharacter : MonoBehaviour
 
             if (HasShadowPowers)
             {
-                PlaySoundSource(PowerAttackSound, 0.25f, attackPitch);
+                PlaySoundSource(PowerAttackSound, 0.55f, attackPitch);
             }
 
             if (_isDashing)

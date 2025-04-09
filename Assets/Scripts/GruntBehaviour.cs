@@ -107,7 +107,7 @@ public class GruntBehaviour : EnemyBase
 
         _material = _spriteRenderer.material;
 
-        _playerCharacter = FindFirstObjectByType<PlayerCharacter>();
+        _playerCharacter = FindAnyObjectByType<PlayerCharacter>(FindObjectsInactive.Include);
 
         if (_playerCharacter == null)
         {

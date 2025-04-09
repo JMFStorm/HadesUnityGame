@@ -16,7 +16,7 @@ public class ShadowPowerup : MonoBehaviour
     private void Awake()
     {
         _globalAudio = FindFirstObjectByType<GlobalAudio>();
-        _playerCharacter = FindFirstObjectByType<PlayerCharacter>();
+        _playerCharacter = FindAnyObjectByType<PlayerCharacter>(FindObjectsInactive.Include);
         _startPos = transform.position;
     }
 

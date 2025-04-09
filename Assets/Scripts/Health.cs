@@ -19,7 +19,7 @@ public class Health : MonoBehaviour
     private void Awake()
     {
         _globalAudio = FindFirstObjectByType<GlobalAudio>();
-        _playerCharacter = FindFirstObjectByType<PlayerCharacter>();
+        _playerCharacter = FindAnyObjectByType<PlayerCharacter>(FindObjectsInactive.Include);
         _startPos = transform.position;
         _initialScale = transform.localScale; // Store the initial scale
     }
