@@ -416,11 +416,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: DebugStartLevelIndex
-      value: 8
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: GameLevels.Array.size
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: 'GameLevels.Array.data[8]'
@@ -434,6 +434,10 @@ PrefabInstance:
       propertyPath: 'GameLevels.Array.data[10]'
       value: 
       objectReference: {fileID: 8053856640913025511, guid: a5550505f39319e4c9cdea0813bf1a91, type: 3}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GameLevels.Array.data[11]'
+      value: 
+      objectReference: {fileID: 8792221327410094197, guid: f4e6e220c0c13d64caecfb992acced13, type: 3}
     - target: {fileID: 4226641958043929415, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_IsActive
       value: 1
