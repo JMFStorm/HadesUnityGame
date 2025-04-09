@@ -1,34 +1,10 @@
 fileFormatVersion: 2
-guid: af269927628a99749b8d549c93481b97
+guid: d2b327778c35bd940bb8220a34ee9826
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -989391399278294603
-    second: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_0
-  - first:
-      213: 7555480085420401012
-    second: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_1
-  - first:
-      213: -4117525287391624477
-    second: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_2
-  - first:
-      213: -8778025476420180923
-    second: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_3
-  - first:
-      213: -2311536513698858397
-    second: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_4
-  - first:
-      213: -8657676543491479233
-    second: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_5
-  - first:
-      213: -562786142173037077
-    second: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_6
-  - first:
-      213: 7600626249145352177
-    second: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_7
-  - first:
-      213: -6824111130899958484
-    second: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_8
+      213: -7633654500264156236
+    second: Ground_Blocks_Cave_Inside_Corners_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,7 +24,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -75,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 260
+  spritePixelsToUnits: 128
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -96,10 +72,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 16384
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -124,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_0
+      name: Ground_Blocks_Cave_Inside_Corners_0
       rect:
         serializedVersion: 2
-        x: 14
-        y: 0
-        width: 615
-        height: 413
+        x: 0
+        y: 128
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -139,184 +115,162 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5b9c03ea3c9f442f0800000000000000
-      internalID: -989391399278294603
+      spriteID: 4b361b54dafcf0690800000000000000
+      internalID: -7633654500264156236
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_1
+      name: Ground_Blocks_Cave_Inside_Corners_1
       rect:
         serializedVersion: 2
-        x: 685
-        y: 0
-        width: 616
-        height: 408
+        x: 128
+        y: 128
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 47165076b157ad860800000000000000
-      internalID: 7555480085420401012
+      spriteID: 9bd69f65cd5337a4f8c28bc695d24747
+      internalID: 1510485435
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_2
+      name: Ground_Blocks_Cave_Inside_Corners_2
       rect:
         serializedVersion: 2
-        x: 1359
-        y: 0
-        width: 615
-        height: 405
+        x: 256
+        y: 128
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 3e28553119c9bd6c0800000000000000
-      internalID: -4117525287391624477
+      spriteID: 967424231f12de04cacf431fe68e2398
+      internalID: -920165002
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_3
+      name: Ground_Blocks_Cave_Inside_Corners_3
       rect:
         serializedVersion: 2
-        x: 2037
-        y: 0
-        width: 612
-        height: 411
+        x: 384
+        y: 128
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 54465a056503e2680800000000000000
-      internalID: -8778025476420180923
+      spriteID: 512f8afcd6caa434b8365a989c0fd39a
+      internalID: -125662766
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_4
+      name: Ground_Blocks_Cave_Inside_Corners_4
       rect:
         serializedVersion: 2
-        x: 2711
+        x: 0
         y: 0
-        width: 610
-        height: 405
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 36a72afa9c5cbefd0800000000000000
-      internalID: -2311536513698858397
+      spriteID: 126fcc0e6ac34994fbdb265ee64b213c
+      internalID: 56514334
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_5
+      name: Ground_Blocks_Cave_Inside_Corners_5
       rect:
         serializedVersion: 2
-        x: 3384
+        x: 128
         y: 0
-        width: 610
-        height: 406
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f3965f4dd01c9d780800000000000000
-      internalID: -8657676543491479233
+      spriteID: dde6639c9a1c7f24cbe680fc54ca024b
+      internalID: 1139131961
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_6
+      name: Ground_Blocks_Cave_Inside_Corners_6
       rect:
         serializedVersion: 2
-        x: 4062
+        x: 256
         y: 0
-        width: 611
-        height: 409
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: bed73474cf49038f0800000000000000
-      internalID: -562786142173037077
+      spriteID: 27ff100139e954544a6893939902cfb0
+      internalID: 1744730676
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_7
+      name: Ground_Blocks_Cave_Inside_Corners_7
       rect:
         serializedVersion: 2
-        x: 4735
+        x: 384
         y: 0
-        width: 612
-        height: 408
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 1ff71d2cd49da7960800000000000000
-      internalID: 7600626249145352177
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_8
-      rect:
-        serializedVersion: 2
-        x: 5407
-        y: 0
-        width: 615
-        height: 407
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c253be60513eb41a0800000000000000
-      internalID: -6824111130899958484
+      spriteID: e073b729b87c658479a6fe60b8b38e94
+      internalID: -139389123
       vertices: []
       indices: 
       edges: []
@@ -325,7 +279,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: ca803614cc5554c4fa18ca08bcf57f7f
     internalID: 0
     vertices: []
     indices: 
@@ -335,15 +289,14 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_0: -989391399278294603
-      Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_1: 7555480085420401012
-      Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_2: -4117525287391624477
-      Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_3: -8778025476420180923
-      Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_4: -2311536513698858397
-      Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_5: -8657676543491479233
-      Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_6: -562786142173037077
-      Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_7: 7600626249145352177
-      Mook_Idle_Anim_New_Spear_SpritesheetSHADOW_8: -6824111130899958484
+      Ground_Blocks_Cave_Inside_Corners_0: -7633654500264156236
+      Ground_Blocks_Cave_Inside_Corners_1: 1510485435
+      Ground_Blocks_Cave_Inside_Corners_2: -920165002
+      Ground_Blocks_Cave_Inside_Corners_3: -125662766
+      Ground_Blocks_Cave_Inside_Corners_4: 56514334
+      Ground_Blocks_Cave_Inside_Corners_5: 1139131961
+      Ground_Blocks_Cave_Inside_Corners_6: 1744730676
+      Ground_Blocks_Cave_Inside_Corners_7: -139389123
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
