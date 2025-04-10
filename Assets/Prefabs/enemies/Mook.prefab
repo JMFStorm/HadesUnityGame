@@ -288,7 +288,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7105067992299979213}
@@ -345,7 +345,7 @@ MonoBehaviour:
   IsShadowVariant: 0
   MovementSpeed: 1.15
   AggroSpeed: 1.8
-  AttackRange: 1.75
+  AttackRange: 1.9
   DamageStunTime: 0.4
   MaxHealth: 3
   AttackCooldown: 1
