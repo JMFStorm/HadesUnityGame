@@ -198,6 +198,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &1924306036 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 537409942227494004, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+  m_PrefabInstance: {fileID: 8349402883727872494}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8349402883727872494
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -253,6 +258,18 @@ PrefabInstance:
     - target: {fileID: 1330304991307145069, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936409971906362201, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1924306036}
+    - target: {fileID: 1936409971906362201, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936409971906362201, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1570593917
       objectReference: {fileID: 0}
     - target: {fileID: 2623148828716758355, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_AnchorMax.y
