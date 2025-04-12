@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1529361337700842332, guid: 1c18e695883718b458b44a6050e583ae, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1190792985125377699, guid: 3946c3c0016fa4f48b7cc7348438f55d, type: 3}
     - target: {fileID: 2324152776781644000, guid: 1c18e695883718b458b44a6050e583ae, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -98,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShadowFXPrefab: {fileID: 7136556780763504629, guid: 9e2b51b7bbe674b49a01d20f49319081, type: 3}
-  OutlineThickness: 1.4
+  OutlineThickness: 0.25
   InlineColor: {r: 0.05, g: 0.05, b: 0.05, a: 1}
-  OutlineColor: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+  OutlineColor: {r: 0.35, g: 0.35, b: 0.35, a: 1}
   EffectOffset: {x: 0, y: 1}
