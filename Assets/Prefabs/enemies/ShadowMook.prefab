@@ -25,6 +25,10 @@ PrefabInstance:
       value: 1.15
       objectReference: {fileID: 0}
     - target: {fileID: 4661598611344584094, guid: 19259c61bf921bf43942bc8ee63c0548, type: 3}
+      propertyPath: AttackCooldown
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4661598611344584094, guid: 19259c61bf921bf43942bc8ee63c0548, type: 3}
       propertyPath: IsShadowVariant
       value: 1
       objectReference: {fileID: 0}

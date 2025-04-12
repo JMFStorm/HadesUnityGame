@@ -1018,9 +1018,16 @@ public class PlayerCharacter : MonoBehaviour
         PlaySoundSource(usedClip, volume, pitch);
     }
 
+    private Coroutine _godModeCoroutine = null;
+
     public void StartGodmode(float time)
     {
-        StartCoroutine(GodModeTimer(time));
+        if (_godModeCoroutine != null)
+        {
+            StopCoroutine(_godModeCoroutine);
+        }
+
+        _godModeCoroutine = StartCoroutine(GodModeTimer(time));
     }
 
     IEnumerator GodModeTimer(float time)

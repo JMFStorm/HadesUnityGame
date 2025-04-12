@@ -452,7 +452,7 @@ public class GroundEnemyBehaviour : EnemyBase
         _state = EnemyState.Passive;
         _attackDamageZone.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(0.40f);
+        yield return new WaitForSeconds(IsShadowVariant ? 0.1f : 0.30f);
 
         EndAttack();
     }
