@@ -279,6 +279,70 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: SkipIntro
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: DebugStartLevelIndex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: GameLevels.Array.size
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GameLevels.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3014003171651010040, guid: 4669513fb0853df44a6156bce1edfcec, type: 3}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GameLevels.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2919157445837453557, guid: 07b0d4597f171e543a07550808570115, type: 3}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GameLevels.Array.data[2]'
+      value: 
+      objectReference: {fileID: 3593530785935587242, guid: d32d056181aa5504f952cbb4ca77f848, type: 3}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GameLevels.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8878483367458667596, guid: e4a2bbc5c775af64c844f6218e877d3f, type: 3}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GameLevels.Array.data[4]'
+      value: 
+      objectReference: {fileID: 7473328643916225475, guid: 57433e14a005f214fab78e05803097a9, type: 3}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GameLevels.Array.data[5]'
+      value: 
+      objectReference: {fileID: 3992802549468706935, guid: 81e9c71caa3ecc5498fb6adee7d2cba9, type: 3}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GameLevels.Array.data[6]'
+      value: 
+      objectReference: {fileID: 8014878255920475867, guid: 45f0b13d24a1afc40849ba3406fbe375, type: 3}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GameLevels.Array.data[7]'
+      value: 
+      objectReference: {fileID: 2102175989483750440, guid: 831f6a00def801f45bf5abaccf1572b2, type: 3}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GameLevels.Array.data[8]'
+      value: 
+      objectReference: {fileID: 859047342518196229, guid: 977800b252d517347a1ea619815af3c0, type: 3}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GameLevels.Array.data[9]'
+      value: 
+      objectReference: {fileID: 6167458305556978765, guid: 49f51bccbf6c05a49bae58d369100793, type: 3}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GameLevels.Array.data[10]'
+      value: 
+      objectReference: {fileID: 8848778836347830438, guid: e6df01f135456c5459c4f9a4234bd695, type: 3}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GameLevels.Array.data[11]'
+      value: 
+      objectReference: {fileID: 8053856640913025511, guid: a5550505f39319e4c9cdea0813bf1a91, type: 3}
+    - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'GameLevels.Array.data[12]'
+      value: 
+      objectReference: {fileID: 8792221327410094197, guid: f4e6e220c0c13d64caecfb992acced13, type: 3}
     - target: {fileID: 6819082012998324210, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.2

@@ -18,6 +18,7 @@ public class GruntBehaviour : EnemyBase
     private Transform _attackDamageZone;
     private Transform _attackDamageZoneRight;
     private Transform _enemyDamageZone;
+    private Transform _enemyCollisionZoneHitbox2;
     private PlayerCharacter _playerCharacter;
     private MainCamera _mainCamera;
     private EnemySounds _soundEmitter;
@@ -60,12 +61,19 @@ public class GruntBehaviour : EnemyBase
 
         if (!TryGetComponent(out _animator))
         {
-            Debug.LogError($"{nameof(Animator)} not found on {nameof(GroundEnemyBehaviour)}");
+            Debug.LogError($"{nameof(Animator)} not found on {nameof(GruntBehaviour)}");
         }
 
         if (!TryGetComponent(out _soundEmitter))
         {
-            Debug.LogError($"{nameof(EnemySounds)} not found on {nameof(GroundEnemyBehaviour)}");
+            Debug.LogError($"{nameof(EnemySounds)} not found on {nameof(GruntBehaviour)}");
+        }
+
+        _enemyCollisionZoneHitbox2 = transform.Find("EnemyCollisionZoneHitbox2");
+
+        if (_enemyCollisionZoneHitbox2 == null)
+        {
+            Debug.LogError($"EnemyCollisionZoneHitbox2 not found on {nameof(GruntBehaviour)}");
         }
 
         _groundFloorLayer = LayerMask.GetMask("Ground", "Platform");
@@ -76,33 +84,33 @@ public class GruntBehaviour : EnemyBase
 
         if (_groundCheck == null)
         {
-            Debug.LogError($"GroundCheck not found on {nameof(GroundEnemyBehaviour)}");
+            Debug.LogError($"GroundCheck not found on {nameof(GruntBehaviour)}");
         }
 
         _attackDamageZone = transform.Find("AttackDamageZone");
 
         if (_attackDamageZone == null)
         {
-            Debug.LogError($"_damageZoneTransform not found on {nameof(GroundEnemyBehaviour)}");
+            Debug.LogError($"_damageZoneTransform not found on {nameof(GruntBehaviour)}");
         }
 
         _attackDamageZoneRight = transform.Find("AttackDamageZoneRight");
 
         if (_attackDamageZoneRight == null)
         {
-            Debug.LogError($"_damageZoneRigth not found on {nameof(GroundEnemyBehaviour)}");
+            Debug.LogError($"_damageZoneRigth not found on {nameof(GruntBehaviour)}");
         }
 
         _enemyDamageZone = transform.Find("EnemyDamageZone");
 
         if (_enemyDamageZone == null)
         {
-            Debug.LogError($"EnemyDamageZone not found on {nameof(AeroBehaviour)}");
+            Debug.LogError($"EnemyDamageZone not found on {nameof(GruntBehaviour)}");
         }
 
         if (!TryGetComponent(out _spriteRenderer))
         {
-            Debug.LogError($"{nameof(SpriteRenderer)} not found on child of {nameof(GroundEnemyBehaviour)}");
+            Debug.LogError($"{nameof(SpriteRenderer)} not found on child of {nameof(GruntBehaviour)}");
         }
 
         _material = _spriteRenderer.material;
@@ -111,14 +119,14 @@ public class GruntBehaviour : EnemyBase
 
         if (_playerCharacter == null)
         {
-            Debug.LogError($"{nameof(PlayerCharacter)} not found on {nameof(GroundEnemyBehaviour)}");
+            Debug.LogError($"{nameof(PlayerCharacter)} not found on {nameof(GruntBehaviour)}");
         }
 
         _mainCamera = FindFirstObjectByType<MainCamera>();
 
         if (_mainCamera == null)
         {
-            Debug.LogError($"{nameof(MainCamera)} not found on {nameof(PlayerCharacter)}");
+            Debug.LogError($"{nameof(MainCamera)} not found on {nameof(GruntBehaviour)}");
         }
     }
 
@@ -145,6 +153,7 @@ public class GruntBehaviour : EnemyBase
 
         if (_isDead)
         {
+            _animator.Play("GruntDead1");
             EndAttack();
             return;
         }
@@ -374,17 +383,24 @@ public class GruntBehaviour : EnemyBase
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.AttackMiss);
     }
 
+    private float _lastChargeVoice = 0f;
+
     IEnumerator Attack()
     {
         _attacking = true;
-        _state = EnemyState.Passive;
+        _state = EnemyState.Attacking;
 
-        _animator.Play("GruntCharge1", 0, 0f);
+        _animator.Play("GruntAttack1", 0, 0f);
 
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.AttackCharge);
-        _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
 
-        yield return new WaitForSeconds(5f / 8f);
+        if (3.5f < Mathf.Abs(_lastChargeVoice - Time.time))
+        {
+            _lastChargeVoice = Time.time;
+            _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
+        }
+
+        yield return new WaitForSeconds(9f / 10f);
 
         if (_isDead)
         {
@@ -392,29 +408,20 @@ public class GruntBehaviour : EnemyBase
             yield break;
         }
 
-        _state = EnemyState.Attacking;
         _lastAttackTime = Time.time;
-
-        yield return new WaitForSeconds(0.5f);
-
-        if (_isDead)
-        {
-            EndAttack();
-            yield break;
-        }
 
         if (_facingLeft)
         {
+            _enemyCollisionZoneHitbox2.localScale = new Vector3(1f, 1f, 1f);
             _attackDamageZone.gameObject.SetActive(true);
         }
         else
         {
+            _enemyCollisionZoneHitbox2.localScale = new Vector3(-1f, 1f, 1f);
             _attackDamageZoneRight.gameObject.SetActive(true);
         }
 
-        _animator.Play("GruntAttack1", 0, 0f);
-
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(4f / 10f);
 
         if (_isDead)
         {
@@ -425,7 +432,7 @@ public class GruntBehaviour : EnemyBase
         _attackDamageZone.gameObject.SetActive(false);
         _attackDamageZoneRight.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(7f / 10f);
 
         EndAttack();
     }
@@ -484,8 +491,11 @@ public class GruntBehaviour : EnemyBase
 
     void ActivateDeathAndDestroy(Vector2 damageDir)
     {
+        _isDead = true;
         _spriteRenderer.enabled = false;
         _enemyCollider.enabled = false;
+        // _enemyCollisionZoneHitbox2.gameObject.SetActive(false);
+        // _enemyCollisionZone.gameObject.SetActive(false);
         _enemyDamageZone.gameObject.SetActive(false);
         _attackDamageZone.gameObject.SetActive(false);
         _attackDamageZoneRight.gameObject.SetActive(false);
