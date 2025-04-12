@@ -402,7 +402,7 @@ public class GameState : MonoBehaviour
         MainCamera.SetFogFXLevel(_currentLevel.HeavyFog, _currentLevel.FogColorMultiplier);
 
         var vignetteValue = GetVignetteIntensity(_currentLevel.LightLevel);
-        MainCamera.SetVignetteIntensity(vignetteValue);
+        MainCamera.SetVignetteIntensity(/*vignetteValue*/ 0f);
 
         _gameUI.HidePlayerStats(false);
         _gameUI.FadeIn(2.0f);
