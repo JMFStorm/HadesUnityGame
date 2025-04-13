@@ -788,9 +788,9 @@ public class PlayerCharacter : MonoBehaviour
             }
         }
 
-        float crouchAxis = Input.GetAxisRaw("Crouch");
+        float crouchAxis = Input.GetAxisRaw("Vertical");
 
-        if (_isAtDoorwayExit && !IsCrouching && _hasGroundedFeet && (Input.GetButtonDown("Up") || 0.01f < crouchAxis))
+        if (_isAtDoorwayExit && !IsCrouching && _hasGroundedFeet && (crouchAxis < -0.01f))
         {
             _gameState.LoadNextLevel();
         }

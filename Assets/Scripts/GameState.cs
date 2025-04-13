@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
 
 public enum GameStateType
@@ -106,6 +107,37 @@ public class GameState : MonoBehaviour
 
     private void Update()
     {
+        var gameState = GetGameState();
+
+        DetectInputMethod();
+
+        if (_usingController)
+        {
+            Cursor.visible = false;
+
+            if (EventSystem.current.currentSelectedGameObject == null)
+            {
+                var selected = _gameUI.GetCurrentFirstSelectedObject();
+
+                Debug.Log("selected: " + selected.name);
+
+                EventSystem.current.SetSelectedGameObject(selected);
+            }
+        }
+        else
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+
+            var cursorVisible = true;
+
+            if (gameState == GameStateType.IntroScreen || gameState == GameStateType.MainGame || gameState == GameStateType.Cutscene)
+            {
+                cursorVisible = false;
+            }
+
+            Cursor.visible = cursorVisible;
+        }
+
         if (_gameState == GameStateType.MainGame)
         {
             if (_currentLevelBg)
@@ -119,17 +151,6 @@ public class GameState : MonoBehaviour
 
             _prevCameraPosition = MainCamera.transform.position;
         }
-
-        var gameState = GetGameState();
-
-        var cursorVisible = true;
-
-        if (gameState == GameStateType.IntroScreen || gameState == GameStateType.MainGame || gameState == GameStateType.Cutscene)
-        {
-            cursorVisible = false;
-        }
-
-        Cursor.visible = cursorVisible;
 
         if (Input.GetButtonDown("Escape"))
         {
@@ -688,6 +709,27 @@ public class GameState : MonoBehaviour
 
         _playerColor = GetSavedPlayerColor();
         SetPlayerColor(_playerColor);
+    }
+
+    private Vector3 _lastMousePosition;
+    private bool _usingController;
+
+    void DetectInputMethod()
+    {
+        const float mouseMoveThreshold = 0.1f;
+        Vector3 mouseDelta = Input.mousePosition - _lastMousePosition;
+        _lastMousePosition = Input.mousePosition;
+
+        if (mouseDelta.magnitude > mouseMoveThreshold || Input.GetMouseButtonDown(0))
+        {
+            _usingController = false;
+        }
+
+        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0 ||
+            Input.GetButtonDown("Submit") || Input.GetButtonDown("Cancel"))
+        {
+            _usingController = true;
+        }
     }
 }
 

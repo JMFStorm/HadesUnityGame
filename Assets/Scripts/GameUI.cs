@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
@@ -28,6 +29,8 @@ public class GameUI : MonoBehaviour
     public GameObject CutsceneText;
     public GameObject CutsceneMovie;
     public GameObject StartMenu;
+
+    private GameObject _currentFirstSelected;
 
     public GameObject ContinueMenuButton;
 
@@ -136,6 +139,8 @@ public class GameUI : MonoBehaviour
         MainMenuPanel.SetActive(false);
         PlayerColorPanel.SetActive(false);
         StartMenu.SetActive(false);
+
+        _currentFirstSelected = MainMenuFirstSelected;
     }
 
     void Start()
@@ -145,6 +150,11 @@ public class GameUI : MonoBehaviour
         FadeImage.gameObject.SetActive(false);
 
         HideMainMenu(true);
+    }
+
+    public GameObject GetCurrentFirstSelectedObject()
+    {
+        return _currentFirstSelected;
     }
 
     IEnumerator PlayIntroCutsceneAnim()
@@ -381,12 +391,17 @@ public class GameUI : MonoBehaviour
         _cutsceneMaterial?.SetColor("_NewColor", color);
     }
 
+    public GameObject GameOverFirstSelected;
+
     public void GameOverScreen(bool active)
     {
         if (active)
         {
             Time.timeScale = 0;
             GameOverPanel.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(GameOverFirstSelected);
+            _currentFirstSelected = GameOverFirstSelected;
         }
         else
         {
@@ -395,10 +410,21 @@ public class GameUI : MonoBehaviour
         }
     }
 
+    public GameObject ColorPanelFirstSelected;
+
     public void HidePlayerColorPanel(bool hide)
     {
         PlayerColorPanel.SetActive(!hide);
+
+        if (!hide)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(ColorPanelFirstSelected);
+            _currentFirstSelected = ColorPanelFirstSelected;
+        }
     }
+
+    public GameObject PauseMenuFirstSelected;
 
     public void ActivatePauseMenu(bool setActive)
     {
@@ -406,11 +432,27 @@ public class GameUI : MonoBehaviour
         Time.timeScale = setActive ? 0f : 1f;
 
         _gameState.SetGameState(setActive ? GameStateType.PauseMenu : GameStateType.MainGame);
+
+        if (setActive)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(PauseMenuFirstSelected);
+            _currentFirstSelected = PauseMenuFirstSelected;
+        }
     }
+
+    public GameObject MainMenuFirstSelected;
 
     public void HideMainMenu(bool setHide)
     {
         MainMenuPanel.SetActive(!setHide);
+
+        if (!setHide)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(MainMenuFirstSelected);
+            _currentFirstSelected = MainMenuFirstSelected;
+        }
     }
 
     public void SkipIntroSequence()
