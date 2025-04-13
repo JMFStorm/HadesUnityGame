@@ -42,7 +42,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
-    - _IsShadowVariant: 1
+    - _IsShadowVariant: 0
     - _OutlineThickness: 0.25
     - _ShadowOutlineThreshold: 0.01
     - _ZWrite: 0
