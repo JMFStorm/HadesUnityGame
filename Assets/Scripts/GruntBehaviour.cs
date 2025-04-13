@@ -632,8 +632,6 @@ public class GruntBehaviour : EnemyBase
 
                 if (collisions == CollisionTypes.GroundEdge || collisions == CollisionTypes.WallHit)
                 {
-                    Debug.Log("Collision " + collisions);
-
                     StartCoroutine(ResetAndTurnAround(1.5f, collisions == CollisionTypes.WallHit));
                     TryStopNormalMovement();
                     yield break;

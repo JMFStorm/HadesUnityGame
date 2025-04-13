@@ -119,8 +119,6 @@ public class GameState : MonoBehaviour
             {
                 var selected = _gameUI.GetCurrentFirstSelectedObject();
 
-                Debug.Log("selected: " + selected.name);
-
                 EventSystem.current.SetSelectedGameObject(selected);
             }
         }
