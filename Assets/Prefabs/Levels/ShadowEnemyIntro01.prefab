@@ -90,9 +90,9 @@ MonoBehaviour:
   LightLevel: 3
   LevelSoundscape: 2
   LevelMusic: 0
-  BackgroundBrightness: 0.4
+  BackgroundBrightness: 0.3
   HeavyFog: 1
-  FogColorMultiplier: {r: 0.73202205, g: 0.79521185, b: 0.8867924, a: 1}
+  FogColorMultiplier: {r: 0.73333335, g: 0.77307427, b: 0.8862745, a: 1}
 --- !u!1 &4116274282521651066
 GameObject:
   m_ObjectHideFlags: 0
