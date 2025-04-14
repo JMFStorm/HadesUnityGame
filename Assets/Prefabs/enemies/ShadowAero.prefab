@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1887247781124116668, guid: 3569d3c3904eaf643823af319dc57108, type: 3}
       propertyPath: EnemyHealth
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1887247781124116668, guid: 3569d3c3904eaf643823af319dc57108, type: 3}
       propertyPath: chaseRadius
