@@ -115,7 +115,7 @@ public class GameState : MonoBehaviour
         {
             Cursor.visible = false;
 
-            if (EventSystem.current.currentSelectedGameObject == null)
+            if (EventSystem.current.currentSelectedGameObject == null && _controllerSwitch)
             {
                 var selected = _gameUI.GetCurrentFirstSelectedObject();
 
@@ -135,6 +135,8 @@ public class GameState : MonoBehaviour
 
             Cursor.visible = cursorVisible;
         }
+
+        _controllerSwitch = false; // NOTE: reset every frame
 
         if (_gameState == GameStateType.MainGame)
         {
@@ -711,6 +713,7 @@ public class GameState : MonoBehaviour
 
     private Vector3 _lastMousePosition;
     private bool _usingController;
+    private bool _controllerSwitch = false;
 
     void DetectInputMethod()
     {
@@ -726,6 +729,11 @@ public class GameState : MonoBehaviour
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0 ||
             Input.GetButtonDown("Submit") || Input.GetButtonDown("Cancel"))
         {
+            if (_usingController == false)
+            {
+                _controllerSwitch = true;
+            }
+
             _usingController = true;
         }
     }
