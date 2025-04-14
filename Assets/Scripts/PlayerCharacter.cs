@@ -790,7 +790,7 @@ public class PlayerCharacter : MonoBehaviour
 
         float crouchAxis = Input.GetAxisRaw("Vertical");
 
-        if (_isAtDoorwayExit && !IsCrouching && _hasGroundedFeet && (crouchAxis < -0.01f))
+        if (_isAtDoorwayExit && !IsCrouching && _hasGroundedFeet && (Input.GetButton("Up") || crouchAxis < -0.01f))
         {
             _gameState.LoadNextLevel();
         }
