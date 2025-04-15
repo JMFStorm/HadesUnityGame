@@ -311,7 +311,7 @@ public class AeroBehaviour : EnemyBase
 
         if (!IsShadowVariant)
         {
-            _attackInterrupted = true;
+            // _attackInterrupted = true;
         }
 
         ResetShotLoadTime(66.6f);
@@ -453,7 +453,7 @@ public class AeroBehaviour : EnemyBase
     private IEnumerator AttackMove()
     {
         _animator.SetBool("_IsAttacking", true);
-        _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
+        _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge, true);
 
         _attackInterrupted = false;
 
