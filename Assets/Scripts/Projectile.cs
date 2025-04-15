@@ -81,7 +81,7 @@ public class Projectile : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") && other.gameObject.CompareTag("PlayerSword"))
         {
-            StartImplode(Color.black, 1.25f);
+            // StartImplode(Color.black, 1.25f);
         }
     }
 

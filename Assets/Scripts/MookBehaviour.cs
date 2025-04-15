@@ -308,7 +308,7 @@ public class GroundEnemyBehaviour : EnemyBase
 
     void TryStartAttackCoroutine()
     {
-        if (_attackCoroutine == null)
+        if (_attackCoroutine == null && !_isAttacking)
         {
             _attackCoroutine = StartCoroutine(Attack());
         }
@@ -417,7 +417,7 @@ public class GroundEnemyBehaviour : EnemyBase
 
         yield return new WaitForSeconds(0.15f);
 
-        if (_isDead || _isInDamageMode)
+        if (_isDead || (false && _isInDamageMode))
         {
             EndAttack();
             yield break;
@@ -432,7 +432,7 @@ public class GroundEnemyBehaviour : EnemyBase
 
         yield return new WaitForSeconds(0.25f);
 
-        if (_isDead || _isInDamageMode)
+        if (_isDead || (false && _isInDamageMode))
         {
             EndAttack();
             yield break;
@@ -443,16 +443,17 @@ public class GroundEnemyBehaviour : EnemyBase
 
         yield return new WaitForSeconds(0.15f);
 
-        if (_isDead || _isInDamageMode)
+        if (_isDead || (false && _isInDamageMode))
         {
             EndAttack();
             yield break;
         }
 
         _state = EnemyState.Passive;
+        _animator.Play("MookIdle", 0, 0f);
         _attackDamageZone.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(IsShadowVariant ? 0.1f : 0.30f);
+        yield return new WaitForSeconds(IsShadowVariant ? 0.3f : 0.6f);
 
         EndAttack();
     }
@@ -473,10 +474,6 @@ public class GroundEnemyBehaviour : EnemyBase
         {
             return;
         }
-
-        EndAttack();
-        StopAttackCoroutine();
-        ApplyDamageKnockback(damageDir);
 
         _currentHealth -= _playerCharacter.HasShadowPowers ? 2 : 1;
 
@@ -503,13 +500,9 @@ public class GroundEnemyBehaviour : EnemyBase
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Damage, true);
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
 
-        _state = EnemyState.Passive;
 
         yield return new WaitForSeconds(duration);
 
-        _state = EnemyState.NormalMoving;
-
-        _isAggroed = false;
         _isInDamageMode = false;
     }
 
