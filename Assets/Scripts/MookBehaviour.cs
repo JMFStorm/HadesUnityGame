@@ -415,13 +415,7 @@ public class GroundEnemyBehaviour : EnemyBase
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.AttackCharge);
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
 
-        yield return new WaitForSeconds(0.15f);
-
-        if (_isDead || (false && _isInDamageMode))
-        {
-            EndAttack();
-            yield break;
-        }
+        yield return new WaitForSeconds(IsShadowVariant ? 0.25f : 0.25f);
 
         _state = EnemyState.Attacking;
 
@@ -432,28 +426,16 @@ public class GroundEnemyBehaviour : EnemyBase
 
         yield return new WaitForSeconds(0.25f);
 
-        if (_isDead || (false && _isInDamageMode))
-        {
-            EndAttack();
-            yield break;
-        }
-
         _lastAttackTime = Time.time;
         _attackDamageZone.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(0.15f);
 
-        if (_isDead || (false && _isInDamageMode))
-        {
-            EndAttack();
-            yield break;
-        }
-
         _state = EnemyState.Passive;
         _animator.Play("MookIdle", 0, 0f);
         _attackDamageZone.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(IsShadowVariant ? 0.3f : 0.6f);
+        yield return new WaitForSeconds(IsShadowVariant ? 0.6f : 0.6f);
 
         EndAttack();
     }

@@ -453,7 +453,14 @@ public class PlayerCharacter : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
+        /*
         if (other.gameObject.CompareTag("PlayerSword") || _hasAttackDamageInvulnerability)
+        {
+            return; // NOTE: Ignore damage recieve when attacking
+        }
+        */
+
+        if (other.CompareTag("Spikes") && _hasAttackDamageInvulnerability)
         {
             return; // NOTE: Ignore damage recieve when attacking
         }
