@@ -421,6 +421,8 @@ public class GameState : MonoBehaviour
             return;
         }
 
+        Player.transform.SetParent(null);
+
         ClearCurrentLevel();
 
         if (GameLevels.Count <= index)
