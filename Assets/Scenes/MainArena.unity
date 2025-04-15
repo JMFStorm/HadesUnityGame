@@ -455,6 +455,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2950786932691017550, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 3994660645933409499, guid: e9f0b9961e037e741a5acd1bbe916a96, type: 3}
     - target: {fileID: 3079870310956295949, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_Colors.m_SelectedColor.a
       value: 0.69803923
@@ -469,11 +473,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: DebugStartLevelIndex
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: GameLevels.Array.size
-      value: 14
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: 'GameLevels.Array.data[0]'
@@ -514,23 +518,23 @@ PrefabInstance:
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: 'GameLevels.Array.data[9]'
       value: 
-      objectReference: {fileID: 8848778836347830438, guid: e6df01f135456c5459c4f9a4234bd695, type: 3}
+      objectReference: {fileID: 7670237596026434749, guid: ac2bd95d98fd59f4da6875ae42549e38, type: 3}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: 'GameLevels.Array.data[10]'
       value: 
-      objectReference: {fileID: 7670237596026434749, guid: ac2bd95d98fd59f4da6875ae42549e38, type: 3}
+      objectReference: {fileID: 8053856640913025511, guid: a5550505f39319e4c9cdea0813bf1a91, type: 3}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: 'GameLevels.Array.data[11]'
       value: 
-      objectReference: {fileID: 8053856640913025511, guid: a5550505f39319e4c9cdea0813bf1a91, type: 3}
+      objectReference: {fileID: 8792221327410094197, guid: f4e6e220c0c13d64caecfb992acced13, type: 3}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: 'GameLevels.Array.data[12]'
       value: 
-      objectReference: {fileID: 8792221327410094197, guid: f4e6e220c0c13d64caecfb992acced13, type: 3}
+      objectReference: {fileID: 3633514949243438688, guid: f7c3ec9305456694091e60ab1260d395, type: 3}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: 'GameLevels.Array.data[13]'
       value: 
-      objectReference: {fileID: 3633514949243438688, guid: f7c3ec9305456694091e60ab1260d395, type: 3}
+      objectReference: {fileID: 8848778836347830438, guid: e6df01f135456c5459c4f9a4234bd695, type: 3}
     - target: {fileID: 3653482839923588972, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_Navigation.m_Mode
       value: 2
@@ -730,6 +734,22 @@ PrefabInstance:
     - target: {fileID: 7717850447450634806, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_Colors.m_SelectedColor.a
       value: 0.69803923
+      objectReference: {fileID: 0}
+    - target: {fileID: 7719308437881597811, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7719308437881597811, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 7719308437881597811, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -355
+      objectReference: {fileID: 0}
+    - target: {fileID: 7719308437881597811, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 145.68228
       objectReference: {fileID: 0}
     - target: {fileID: 8168741411683789873, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_AnchorMax.y

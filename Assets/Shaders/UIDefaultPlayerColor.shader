@@ -113,6 +113,13 @@ Shader "Custom/UIDefaultPlayerColor"
 
                 // Fänne: replace color function
                 {
+                    // Red eyes to white
+                    if (0.05 < color.r && color.g < 0.01 && color.b < 0.01)
+                    {
+                        color = half4(color.r, color.r, color.r, color.a);
+                        return color;
+                    }
+
                     half brightness = color.b;
 
                     // Check if Blue is the dominant color (red and green is 0)
