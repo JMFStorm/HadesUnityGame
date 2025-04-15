@@ -26,6 +26,7 @@ public class GameState : MonoBehaviour
     public bool SkipIntro = false;
     public int DebugStartLevelIndex = 0;
     public Texture2D CursorIcon;
+    public Level MainMenuLevel;
 
     private GameStateType _gameState;
 
@@ -192,6 +193,41 @@ public class GameState : MonoBehaviour
         }
     }
 
+    private Level _mainMenuLevel;
+
+    public void InitMainMenuLevel()
+    {
+        _mainMenuLevel = Instantiate(MainMenuLevel);
+
+        var boundaries = _mainMenuLevel.transform.Find("BGBoundaries");
+
+        MainCamera.IsStatic = true;
+        MainCamera.transform.position = new(boundaries.localPosition.x, boundaries.localPosition.y, _cameraZOffset);
+        MainCamera.GetCamera().orthographicSize = 6.0f;
+
+        MainCamera.SetFogFXLevel(false, new(0.8f, 0.8f, 0.8f));
+        MainCamera.SetDustFXStrength(0.5f);
+        ApplySeamlessBackground(_mainMenuLevel.SeamlessBackgrounds.First());
+        MainCamera.SetVignetteIntensity(0.5f);
+    }
+
+    public void DeacivateMainMenuLevel()
+    {
+        if (_mainMenuLevel != null)
+        {
+            Destroy(_mainMenuLevel.gameObject);
+            _mainMenuLevel = null;
+        }
+
+        MainCamera.IsStatic = false;
+        MainCamera.GetCamera().orthographicSize = 4.5f;
+
+        MainCamera.SetFogFXLevel(false, new(0, 0, 0));
+        MainCamera.SetDustFXStrength(0f);
+        ClearBackgroundImage();
+        MainCamera.SetVignetteIntensity(0f);
+    }
+
     public void SetGameState(GameStateType type)
     {
         _gameState = type;
@@ -238,6 +274,8 @@ public class GameState : MonoBehaviour
         LoadPersistentStorage();
 
         MainCamera.SetFogFXLevel(false, new Color(0, 0, 0, 0));
+
+        InitMainMenuLevel();
     }
 
     public void ClickReturnToMainMenuFromPauseMenu()
@@ -264,10 +302,12 @@ public class GameState : MonoBehaviour
         LoadPersistentStorage();
 
         MainCamera.SetFogFXLevel(false, new Color(0, 0, 0, 0));
+        InitMainMenuLevel();
     }
 
     public void ClickContinueGameMenuOption()
     {
+        DeacivateMainMenuLevel();
         _gameUI.HideMainMenu(true);
 
         InstantiateGlobalGamePrefabs();
@@ -296,12 +336,14 @@ public class GameState : MonoBehaviour
 
     public void ClickStartNewGameFromColorPicker()
     {
+        DeacivateMainMenuLevel();
         SavePlayerColorStorage(_playerColor);
         StartCoroutine(StartNewGame(false));
     }
 
     IEnumerator StartNewGame(bool skipCutscene)
     {
+        DeacivateMainMenuLevel();
         _gameUI.HideMainMenu(true);
         _gameUI.HidePlayerColorPanel(true);
 
@@ -356,6 +398,8 @@ public class GameState : MonoBehaviour
             Destroy(_currentLevel.gameObject);
             _currentLevel = null;
         }
+
+        DeacivateMainMenuLevel();
     }
 
     IEnumerator StartOutroCutsceneState()
@@ -369,6 +413,8 @@ public class GameState : MonoBehaviour
 
     public void LoadLevelIndex(int index, bool isRetry)
     {
+        DeacivateMainMenuLevel();
+
         if (index < 0)
         {
             Debug.LogError("Invalid level index!");

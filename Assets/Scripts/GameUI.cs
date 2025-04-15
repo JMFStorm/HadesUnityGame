@@ -465,6 +465,7 @@ public class GameUI : MonoBehaviour
             IntroTitle.SetActive(false);
             MainMenuPanel.SetActive(true);
             HideFadeEffectRect(true);
+            _gameState.InitMainMenuLevel();
         }
         else
         {
@@ -539,6 +540,7 @@ public class GameUI : MonoBehaviour
         HideFadeEffectRect(true);
 
         _gameState.SetGameState(GameStateType.MainMenu);
+        _gameState.InitMainMenuLevel();
     }
 
     bool IsAnyKeyboardKeyDown()

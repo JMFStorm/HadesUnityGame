@@ -11,6 +11,7 @@ public class MainCamera : MonoBehaviour
     public float VerticalFollowDeadzpone = 0.5f;
 
     public float CameraFollowSpeed = 2.0f;
+    public bool IsStatic = false;
 
     private Vector2 _botLeftBoundary = new(float.MinValue, float.MinValue);
     private Vector2 _topRightBoundary = new(float.MaxValue, float.MaxValue);
@@ -64,7 +65,7 @@ public class MainCamera : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (FollowTarget != null)
+        if (FollowTarget != null && !IsStatic)
         {
             FollowTheTarget();
         }
