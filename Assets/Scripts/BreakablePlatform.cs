@@ -18,6 +18,8 @@ public class BreakablePlatform : MonoBehaviour
 
     private Vector3 _collisionPosition;
 
+    private bool _isDestroying = false;
+
     private void Awake()
     {
         if (!TryGetComponent(out _animator))
@@ -58,7 +60,7 @@ public class BreakablePlatform : MonoBehaviour
         {
             Vector2 collisionNormal = collision.contacts[0].normal;
 
-            if (collisionNormal.y < 0f && Mathf.Abs(collisionNormal.x) < Mathf.Abs(collisionNormal.y))
+            if (!_isDestroying && collisionNormal.y < 0f && Mathf.Abs(collisionNormal.x) < Mathf.Abs(collisionNormal.y))
             {
                 _audioSource.clip = InitBreakAudios[Random.Range(0, InitBreakAudios.Length)];
                 _audioSource.pitch = Random.Range(0.8f, 1.15f);
@@ -75,6 +77,8 @@ public class BreakablePlatform : MonoBehaviour
 
     IEnumerator DestroyPlatform()
     {
+        _isDestroying = true;
+
         yield return new WaitForSeconds(Random.Range(DestroyTimeMin, DestroyTimeMax));
 
         _boxCollider.enabled = false;
@@ -100,6 +104,7 @@ public class BreakablePlatform : MonoBehaviour
     {
         _spriteLeft.enabled = true;
         _boxCollider.enabled = true;
+        _isDestroying = false;
 
         _animator.Play("BreakablePlatform_Idle");
     }

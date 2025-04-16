@@ -35,7 +35,6 @@ public class GruntBehaviour : EnemyBase
     private bool _facingLeft = false;
     private bool _isAggroed = false;
     private bool _isInDamageMode = false;
-    private bool _attacking = false;
 
     private float _previousAlert = float.MinValue;
     private float _lastAttackTime = float.MinValue;
@@ -311,8 +310,6 @@ public class GruntBehaviour : EnemyBase
         {
             var yDist = _aggroTarget.position.y - transform.position.y;
 
-            Debug.Log("yDist " + yDist);
-
             if (-1.5f < yDist && yDist < 2.55f)
             {
                 DeactivateMaxAggroTimer();
@@ -389,7 +386,6 @@ public class GruntBehaviour : EnemyBase
 
     IEnumerator Attack()
     {
-        _attacking = true;
         _state = EnemyState.Attacking;
 
         _animator.Play("GruntAttack1", 0, 0f);
@@ -402,7 +398,7 @@ public class GruntBehaviour : EnemyBase
             _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.AttackCharge);
         }
 
-        yield return new WaitForSeconds(9f / 10f);
+        yield return new WaitForSeconds(8f / 10f);
 
         if (_isDead)
         {
@@ -423,7 +419,7 @@ public class GruntBehaviour : EnemyBase
             _attackDamageZoneRight.gameObject.SetActive(true);
         }
 
-        yield return new WaitForSeconds(4f / 10f);
+        yield return new WaitForSeconds(5f / 10f);
 
         if (_isDead)
         {
@@ -441,7 +437,6 @@ public class GruntBehaviour : EnemyBase
 
     void EndAttack()
     {
-        _attacking = false;
         _attackDamageZone.gameObject.SetActive(false);
         _attackDamageZoneRight.gameObject.SetActive(false);
         _state = EnemyState.NormalMoving;
