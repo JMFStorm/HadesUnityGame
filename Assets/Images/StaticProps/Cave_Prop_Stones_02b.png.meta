@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 3ba1604eccd919f47b474a8e50243d38
+guid: 7caff77bb4fa6774dab1317cc148f94c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2891458234012336115
-    second: Cave_Prop_Stones01_0
+      213: -9046021859697806325
+    second: Cave_Prop_Stones_02b_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 192
+  alignment: 9
+  spritePivot: {x: 0.5, y: 0.15384616}
+  spritePixelsToUnits: 196
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Cave_Prop_Stones01_0
+      name: Cave_Prop_Stones_02b_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 86
-        height: 40
-      alignment: 9
-      pivot: {x: 0.5, y: 0.325}
+        width: 147
+        height: 117
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3fffe29b1f5802820800000000000000
-      internalID: 2891458234012336115
+      spriteID: b043b46eb03167280800000000000000
+      internalID: -9046021859697806325
       vertices: []
       indices: 
       edges: []
@@ -125,8 +125,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 516b50b7821d4864894aa0c64552667b
-    internalID: 0
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Cave_Prop_Stones01_0: 2891458234012336115
+      Cave_Prop_Stones_02b_0: -9046021859697806325
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

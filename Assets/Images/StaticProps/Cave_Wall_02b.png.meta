@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1f93d8ca94f60cd4bb2249a987083561
+guid: 2f780eff94c979f4089548c8f606f919
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1812781367428976537
-    second: breakable_platform_02_0
+      213: 786346380566092611
+    second: Cave_Wall_02b_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 128
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: breakable_platform_02_0
+      name: Cave_Wall_02b_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
-        height: 16
+        width: 1182
+        height: 766
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 760f2fa63f4b7d6e0800000000000000
-      internalID: -1812781367428976537
+      spriteID: 34b5e0cedd9a9ea00800000000000000
+      internalID: 786346380566092611
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      breakable_platform_02_0: -1812781367428976537
+      Cave_Wall_02b_0: 786346380566092611
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

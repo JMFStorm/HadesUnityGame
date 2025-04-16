@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: aebe24fea61b78c43ab959532a366d0b
+guid: 41fdb437000dfb147ba4794347b30379
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5347287632491405442
-    second: Cave_Wall01_0
+      213: 5730426377849786816
+    second: Cave_Prop_Stones_03b_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,9 +49,9 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 128
+  alignment: 9
+  spritePivot: {x: 0.5, y: 0.08}
+  spritePixelsToUnits: 196
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Cave_Wall01_0
+      name: Cave_Prop_Stones_03b_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 568
-        height: 370
+        x: 27
+        y: 2
+        width: 222
+        height: 227
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e7f9289ba3e9ac5b0800000000000000
-      internalID: -5347287632491405442
+      spriteID: 0c1d347fd60968f40800000000000000
+      internalID: 5730426377849786816
       vertices: []
       indices: 
       edges: []
@@ -126,7 +126,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Cave_Wall01_0: -5347287632491405442
+      Cave_Prop_Stones_03b_0: 5730426377849786816
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
