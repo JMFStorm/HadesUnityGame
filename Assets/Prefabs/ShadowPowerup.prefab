@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PickupSound: {fileID: 8300000, guid: 4b402e0317ef5254992f85112bffbddc, type: 3}
-  hoverHeight: 0.5
+  hoverHeight: 0.15
   hoverSpeed: 2
   PowerupTime: 7.5
 --- !u!1 &5540026532872235860
