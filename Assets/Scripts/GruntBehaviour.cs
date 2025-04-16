@@ -309,9 +309,11 @@ public class GruntBehaviour : EnemyBase
 
         if (distanceFromTarget <= AttackRange)
         {
-            var yDist = Mathf.Abs(transform.position.y - _aggroTarget.position.y);
+            var yDist = _aggroTarget.position.y - transform.position.y;
 
-            if (yDist < 1.75f)
+            Debug.Log("yDist " + yDist);
+
+            if (-1.5f < yDist && yDist < 2.55f)
             {
                 DeactivateMaxAggroTimer();
                 TryStartAttackCoroutine();
@@ -454,11 +456,6 @@ public class GruntBehaviour : EnemyBase
             return;
         }
 
-        if (!_attacking)
-        {
-            ApplyDamageKnockback(damageDir);
-        }
-
         _currentHealth -= _playerCharacter.HasShadowPowers ? 2 : 1;
 
         if (_currentHealth <= 0)
@@ -546,10 +543,12 @@ public class GruntBehaviour : EnemyBase
         return _facingLeft ? -1f : 1f;
     }
 
-    bool SeesPlayer(Vector2 direction)
+    bool SeesPlayer()
     {
         var origin = (Vector2)transform.position + new Vector2(0f, 0.5f);
         var length = DetectionDistance * 1.5f;
+        var direction = ((Vector2)_playerCharacter.transform.position + new Vector2(0f, 0.5f)) - origin;
+
         RaycastHit2D hit = Physics2D.Raycast(origin, direction, length, _seesTargetLayerMask);
 
         Debug.DrawRay(origin, length * direction, Color.blue);
@@ -575,15 +574,14 @@ public class GruntBehaviour : EnemyBase
         }
 
         const float detectionDistance = 8.0f;
-        Vector2 detectionBoxSize = new(detectionDistance, 1.5f);
+        Vector2 detectionBoxSize = new(detectionDistance, 2.5f);
 
         var detectionOffset = (detectionDistance * 0.22f) * Vector2.right;
         Vector2 boxPosition = (Vector2)_enemyCollider.bounds.center + (_facingLeft ? -detectionOffset : detectionOffset);
 
         Collider2D hit = Physics2D.OverlapBox(boxPosition, detectionBoxSize, 0f, _playerLayer);
 
-        if (hit != null && hit.CompareTag("Player")
-            && (SeesPlayer(new Vector2(1f, 0f)) || SeesPlayer(new Vector2(-1f, 0f))))
+        if (hit != null && hit.CompareTag("Player") && SeesPlayer())
         {
             _aggroTarget = hit.gameObject.transform;
             StartCoroutine(ActivateAggro());
@@ -728,8 +726,5 @@ public class GruntBehaviour : EnemyBase
 
         var newCheckerX = _groundCheck.localPosition.x * -1;
         _groundCheck.localPosition = new(newCheckerX, _groundCheck.localPosition.y, _groundCheck.localPosition.z);
-
-        // var newDamageZoneX = _attackDamageZone.localPosition.x * -1;
-        // _attackDamageZone.localPosition = new(newDamageZoneX, _attackDamageZone.localPosition.y, _attackDamageZone.localPosition.z);
     }
 }

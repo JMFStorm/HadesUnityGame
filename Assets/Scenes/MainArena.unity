@@ -497,7 +497,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: SkipIntro
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: MainMenuLevel
@@ -505,11 +505,11 @@ PrefabInstance:
       objectReference: {fileID: 6650046107009678274, guid: e10434495652ab14cb5aadc2b29498ac, type: 3}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: DebugStartLevelIndex
-      value: 2
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: GameLevels.Array.size
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: 'GameLevels.Array.data[0]'
@@ -566,7 +566,7 @@ PrefabInstance:
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: 'GameLevels.Array.data[13]'
       value: 
-      objectReference: {fileID: 8848778836347830438, guid: e6df01f135456c5459c4f9a4234bd695, type: 3}
+      objectReference: {fileID: 3014003171651010040, guid: 4669513fb0853df44a6156bce1edfcec, type: 3}
     - target: {fileID: 3653482839923588972, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_Navigation.m_Mode
       value: 2
