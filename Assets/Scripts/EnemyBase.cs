@@ -25,12 +25,20 @@ public abstract class EnemyBase : MonoBehaviour
     protected bool _isDead = false;
 
     protected SpriteRenderer _spriteRenderer;
+    protected SpriteRenderer _outlineSpriteRenderer;
     protected Material _material;
 
     protected LayerMask _seesTargetLayerMask;
 
     protected virtual void Awake()
     {
+        var enemyOutlines = transform.Find("EnemyOutlines");
+
+        if (enemyOutlines != null)
+        {
+            enemyOutlines.TryGetComponent(out _outlineSpriteRenderer);
+        }
+
         var collisionZone = transform.Find("EnemyCollisionZone");
 
         if (collisionZone == null)
@@ -103,6 +111,11 @@ public abstract class EnemyBase : MonoBehaviour
         }
 
         _material.SetFloat("_IsShadowVariant", IsShadowVariant ? 1f : 0f);
+
+        if (_outlineSpriteRenderer != null)
+        {
+            _outlineSpriteRenderer.material.SetFloat("_BlurSize", shadowEffect.OutlineBlurSize);
+        }
     }
 
     public void SetTeleportMaterial()
