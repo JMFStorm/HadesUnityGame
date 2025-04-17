@@ -35,6 +35,7 @@ public class GruntBehaviour : EnemyBase
     private bool _facingLeft = false;
     private bool _isAggroed = false;
     private bool _isInDamageMode = false;
+    private bool _isAttacking = false;
 
     private float _previousAlert = float.MinValue;
     private float _lastAttackTime = float.MinValue;
@@ -386,6 +387,7 @@ public class GruntBehaviour : EnemyBase
 
     IEnumerator Attack()
     {
+        _isAttacking = true;
         _state = EnemyState.Attacking;
 
         _animator.Play("GruntAttack1", 0, 0f);
@@ -442,6 +444,7 @@ public class GruntBehaviour : EnemyBase
         _state = EnemyState.NormalMoving;
         _isAggroed = false;
         _attackCoroutine = null;
+        _isAttacking = false;
     }
 
     void TryRecieveDamage(Vector2 damageDir)
@@ -460,7 +463,7 @@ public class GruntBehaviour : EnemyBase
         }
         else
         {
-            if (!_facingLeft && 0f < damageDir.x || _facingLeft && damageDir.x < 0f)
+            if (!_isAttacking && (!_facingLeft && 0f < damageDir.x || _facingLeft && damageDir.x < 0f))
             {
                 TurnAround();
             }
@@ -483,6 +486,7 @@ public class GruntBehaviour : EnemyBase
 
     void ActivateDeathAndDestroy(Vector2 damageDir)
     {
+        _isAttacking = false;
         _isDead = true;
         _spriteRenderer.enabled = false;
         _enemyCollider.enabled = false;
