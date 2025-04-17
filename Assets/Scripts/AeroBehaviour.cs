@@ -375,6 +375,11 @@ public class AeroBehaviour : EnemyBase
 
     public void OnDeathAnimationEnd()
     {
+        if (IsShadowVariant)
+        {
+            _outlineSpriteRenderer.enabled = false;
+        }
+
         _spriteRenderer.enabled = false;
         SignalDieEvent(3f);
     }

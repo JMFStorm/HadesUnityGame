@@ -490,6 +490,11 @@ public class GroundEnemyBehaviour : EnemyBase
 
     void ActivateDeathAndDestroy(Vector2 damageDir)
     {
+        if (IsShadowVariant)
+        {
+            _outlineSpriteRenderer.enabled = false;
+        }
+
         _enemyDamageZone.gameObject.SetActive(false);
         _attackDamageZone.gameObject.SetActive(false);
 

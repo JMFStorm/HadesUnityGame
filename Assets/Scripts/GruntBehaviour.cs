@@ -486,12 +486,15 @@ public class GruntBehaviour : EnemyBase
 
     void ActivateDeathAndDestroy(Vector2 damageDir)
     {
+        if (IsShadowVariant)
+        {
+            _outlineSpriteRenderer.enabled = false;
+        }
+
         _isAttacking = false;
         _isDead = true;
         _spriteRenderer.enabled = false;
         _enemyCollider.enabled = false;
-        // _enemyCollisionZoneHitbox2.gameObject.SetActive(false);
-        // _enemyCollisionZone.gameObject.SetActive(false);
         _enemyDamageZone.gameObject.SetActive(false);
         _attackDamageZone.gameObject.SetActive(false);
         _attackDamageZoneRight.gameObject.SetActive(false);

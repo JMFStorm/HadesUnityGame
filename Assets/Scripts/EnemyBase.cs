@@ -30,6 +30,8 @@ public abstract class EnemyBase : MonoBehaviour
 
     protected LayerMask _seesTargetLayerMask;
 
+    private ShadowEnemyEffects _shadowEffects;
+
     protected virtual void Awake()
     {
         var enemyOutlines = transform.Find("EnemyOutlines");
@@ -68,7 +70,7 @@ public abstract class EnemyBase : MonoBehaviour
             Id = Guid.NewGuid().ToString();
         }
 
-        if (TryGetComponent<ShadowEnemyEffects>(out var _))
+        if (TryGetComponent(out _shadowEffects))
         {
             IsShadowVariant = true;
         }
@@ -79,6 +81,11 @@ public abstract class EnemyBase : MonoBehaviour
     public virtual void SignalDieEvent(float? destroyTimer)
     {
         _enemyCollider.enabled = false;
+
+        if (IsShadowVariant)
+        {
+            _shadowEffects.EnableShadowEffects(false);
+        }
 
         OnEnemyDied?.Invoke(this); // Notify listeners that an enemy died
 
@@ -115,11 +122,17 @@ public abstract class EnemyBase : MonoBehaviour
         if (_outlineSpriteRenderer != null)
         {
             _outlineSpriteRenderer.material.SetFloat("_BlurSize", shadowEffect.OutlineBlurSize);
+            _outlineSpriteRenderer.enabled = true;
         }
     }
 
     public void SetTeleportMaterial()
     {
+        if (_outlineSpriteRenderer != null)
+        {
+            _outlineSpriteRenderer.enabled = false;
+        }
+
         _spriteRenderer.material = TeleporterShaderMaterial;
         _material = _spriteRenderer.material;
 
