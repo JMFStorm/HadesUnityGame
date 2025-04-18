@@ -14,6 +14,8 @@ Shader "Custom/Forcefield"
         Tags { "RenderType"="Overlay" "Queue"="Overlay" }
         Blend SrcAlpha OneMinusSrcAlpha // Semi-transparent blending
         Cull Off // Render both sides
+        ZWrite Off
+        ZTest LEqual
 
         Pass
         {
