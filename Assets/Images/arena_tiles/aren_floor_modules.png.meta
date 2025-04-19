@@ -53,7 +53,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 128
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -528,7 +528,6 @@ TextureImporter:
       outline: []
       physicsShape:
       - - {x: 64, y: 64}
-        - {x: 24.75015, y: 64}
         - {x: -64, y: 64}
         - {x: -64, y: -63.34471}
         - {x: 64, y: -63.34471}
@@ -555,7 +554,6 @@ TextureImporter:
       outline: []
       physicsShape:
       - - {x: 64, y: 64}
-        - {x: 39.00009, y: 64}
         - {x: -64, y: 64}
         - {x: -64, y: -63.34471}
         - {x: 64, y: -63.34471}
@@ -750,9 +748,7 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape:
-      - - {x: 64, y: 60.72355}
-        - {x: 60.000088, y: 62.47099}
-        - {x: 19.750092, y: 64}
+      - - {x: 64, y: 64}
         - {x: -64, y: 64}
         - {x: -64, y: -63.34471}
         - {x: 64, y: -63.34471}
@@ -779,7 +775,6 @@ TextureImporter:
       outline: []
       physicsShape:
       - - {x: 64, y: 64}
-        - {x: 39.250244, y: 64}
         - {x: -63.999752, y: 62.47099}
         - {x: -63.999752, y: -63.34471}
         - {x: 64, y: -63.34471}
