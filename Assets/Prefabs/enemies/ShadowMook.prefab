@@ -117,6 +117,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: be62342babaa6d04192dc20eea87e439, type: 2}
+    - target: {fileID: 4656056500561815877, guid: 19259c61bf921bf43942bc8ee63c0548, type: 3}
+      propertyPath: IsShadowEnemy
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656056500561815877, guid: 19259c61bf921bf43942bc8ee63c0548, type: 3}
+      propertyPath: VoicePitchAlternation
+      value: -0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 4661598611344584094, guid: 19259c61bf921bf43942bc8ee63c0548, type: 3}
       propertyPath: MaxHealth
       value: 5

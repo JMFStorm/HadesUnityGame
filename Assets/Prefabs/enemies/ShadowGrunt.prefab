@@ -109,6 +109,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -319049766929285414, guid: 1c18e695883718b458b44a6050e583ae, type: 3}
+      propertyPath: IsShadowEnemy
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -319049766929285414, guid: 1c18e695883718b458b44a6050e583ae, type: 3}
+      propertyPath: VoicePitchAlternation
+      value: -0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 1529361337700842332, guid: 1c18e695883718b458b44a6050e583ae, type: 3}
       propertyPath: m_Sprite
       value: 
