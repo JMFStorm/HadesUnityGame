@@ -247,40 +247,46 @@ public class GameUI : MonoBehaviour
 
     IEnumerator PlayCutsceneMovie(VideoClip videoClip)
     {
-        CutsceneMovie.SetActive(true);
-        _videoPlayer.clip = videoClip;
-        _videoPlayer.Play();
+#if UNITY_WEBGL
+        Debug.Log("Skipping cutscene: Video playback not supported in WebGL.");
+        yield break;
+#else
+    CutsceneMovie.SetActive(true);
+    _videoPlayer.clip = videoClip;
+    _videoPlayer.Play();
 
-        const float waitMax = 4f;
-        float elapsed = 0f;
+    const float waitMax = 4f;
+    float elapsed = 0f;
 
-        while (!_videoPlayer.isPlaying && elapsed < waitMax)
+    while (!_videoPlayer.isPlaying && elapsed < waitMax)
+    {
+        elapsed += Time.deltaTime;
+        yield return null;
+    }
+
+    if (waitMax < elapsed)
+    {
+        Debug.LogError("Video player max wait time reached. Video skipped.");
+        yield break;
+    }
+
+    while (_videoPlayer.isPlaying)
+    {
+        if (_cutsceneCancelled)
         {
-            elapsed += Time.deltaTime;
-            yield return null; 
-        }
-
-        if (waitMax < elapsed)
-        {
-            Debug.LogError($"Video player max wait time reached. Video skipped.");
+            CutsceneMovie.SetActive(false);
+            _videoPlayer.Stop();
             yield break;
         }
 
-        while (_videoPlayer.isPlaying)
-        {
-            if (_cutsceneCancelled)
-            {
-                CutsceneMovie.SetActive(false);
-                _videoPlayer.Stop();
-                yield break;
-            }
-
-            yield return null;
-        }
-
-        _videoPlayer.Stop();
-        CutsceneMovie.SetActive(false);
+        yield return null;
     }
+
+    _videoPlayer.Stop();
+    CutsceneMovie.SetActive(false);
+#endif
+    }
+
 
     IEnumerator PlayOutroCutsceneAnim()
     {
