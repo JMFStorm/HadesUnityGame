@@ -1,10 +1,22 @@
 fileFormatVersion: 2
-guid: 1515c126d630a274bbfb429f43a830fa
+guid: 497c4a5755be0eb4e8452e878574b3f4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6497328570775176534
-    second: Outro_cutscene_3_0
+      213: 7352902161746852887
+    second: health+dash+valuutta_0
+  - first:
+      213: -3553762047681379395
+    second: health+dash+valuutta_1
+  - first:
+      213: 3730287977931372868
+    second: health+dash+valuutta_2
+  - first:
+      213: 8236216269302069111
+    second: health+dash+valuutta_3
+  - first:
+      213: -580039971016281359
+    second: health+dash+valuutta_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,27 +108,84 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Outro_cutscene_3_0
+      name: ui_status_elements_01_heart_full
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1920
-        height: 1080
+        x: 76
+        y: 949
+        width: 78
+        height: 56
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6550d0a29e52b2a50800000000000000
-      internalID: 6497328570775176534
+      spriteID: 71c7f1b0f81ca0660800000000000000
+      internalID: 7352902161746852887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ui_status_elements_heart_empty
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 949
+        width: 78
+        height: 56
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 449728ae625a4c330800000000000000
+      internalID: 3730287977931372868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ui_status_elements_01_dashbar
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 893
+        width: 117
+        height: 33
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 777fa014f0bec4270800000000000000
+      internalID: 8236216269302069111
       vertices: []
       indices: 
       edges: []
@@ -125,7 +194,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: d79fbc8a981468a449984cd6e1cd8e9e
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +204,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Outro_cutscene_3_0: 6497328570775176534
+      health+dash+valuutta_1: -3553762047681379395
+      health+dash+valuutta_4: -580039971016281359
+      ui_status_elements_01_dashbar: 8236216269302069111
+      ui_status_elements_01_heart_full: 7352902161746852887
+      ui_status_elements_heart_empty: 3730287977931372868
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

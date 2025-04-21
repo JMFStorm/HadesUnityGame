@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d1bdd050d62dd764689243686890eab1
+guid: 1515c126d630a274bbfb429f43a830fa
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8795247750759303492
-    second: cutscene_outro_scetch_01_0
+      213: 6497328570775176534
+    second: Outro_cutscene_3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,49 +96,40 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: cutscene_outro_scetch_01_0
+      name: Outro_cutscene_3_0
       rect:
         serializedVersion: 2
-        x: 34
-        y: 211
-        width: 1917
-        height: 1077
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 449cf87ea3ffe0a70800000000000000
-      internalID: 8795247750759303492
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cutscene_outro_scetch_01_1
-      rect:
-        serializedVersion: 2
-        x: 2049
-        y: 211
-        width: 1915
-        height: 1077
+        x: 0
+        y: 0
+        width: 1920
+        height: 1080
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 7ac1298108de3be4b9c305b70bf8eb2c
-      internalID: 1075983204
+      spriteID: 6550d0a29e52b2a50800000000000000
+      internalID: 6497328570775176534
       vertices: []
       indices: 
       edges: []
@@ -147,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 1e199c92af04dc941a76af04fb2aeaa9
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -157,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      cutscene_outro_scetch_01_1: 1075983204
+      Outro_cutscene_3_0: 6497328570775176534
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

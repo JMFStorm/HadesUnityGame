@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 2b080f6238286214da2dd7cafca80ed7
+guid: fd701bcf042d39f469e00f7a15c5ef23
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2954266018174566284
-    second: game_exe_icon_01_0
+      213: 7924861081926047620
+    second: UI_button_right_lighter_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: game_exe_icon_01_0
+      name: UI_button_right_lighter_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 0
-        width: 177
-        height: 195
+        x: 3
+        y: 17
+        width: 509
+        height: 122
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c8f7d498a49aff820800000000000000
-      internalID: 2954266018174566284
+      spriteID: 48715829a23cafd60800000000000000
+      internalID: 7924861081926047620
       vertices: []
       indices: 
       edges: []
@@ -125,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      game_exe_icon_01_0: 2954266018174566284
+      UI_button_right_lighter_0: 7924861081926047620
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

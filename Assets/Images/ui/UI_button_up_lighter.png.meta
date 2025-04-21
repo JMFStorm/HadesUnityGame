@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a4d642fc61b015549b46e88d3aad13c9
+guid: dba61da82f99c7a45ad117d3967a9d3e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5629694390097140051
-    second: cutscene_intro_scetch_01_0
+      213: 3686912283859145509
+    second: UI_button_up_lighter_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -96,71 +96,40 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: cutscene_intro_scetch_01_0
+      name: UI_button_up_lighter_0
       rect:
         serializedVersion: 2
-        x: 78
-        y: 212
-        width: 1914
-        height: 1075
+        x: 2
+        y: 18
+        width: 507
+        height: 184
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 359dfbb6831b02e40800000000000000
-      internalID: 5629694390097140051
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cutscene_intro_scetch_01_1
-      rect:
-        serializedVersion: 2
-        x: 2042
-        y: 212
-        width: 1913
-        height: 1074
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: be13fceeb61f04c4b94dcc216ea3b4b7
-      internalID: -528790651
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cutscene_intro_scetch_01_2
-      rect:
-        serializedVersion: 2
-        x: 4008
-        y: 214
-        width: 1913
-        height: 1072
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0a9bf5afff7897e44b34faa9adbe428b
-      internalID: -527578015
+      spriteID: 523d275203b8a2330800000000000000
+      internalID: 3686912283859145509
       vertices: []
       indices: 
       edges: []
@@ -169,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5b0c8aad1be3bec4ea27d828d10f7f28
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -179,8 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      cutscene_intro_scetch_01_1: -528790651
-      cutscene_intro_scetch_01_2: -527578015
+      UI_button_up_lighter_0: 3686912283859145509
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 5364c8fdb4b52db4a92108a7dcba34c8
+guid: 79a37eca288eafd469bcae872e235339
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6801262063688866695
-    second: Outro_cutscene_2_0
+      213: -7644639688887709346
+    second: Outro_cutscene_1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,11 +96,24 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Outro_cutscene_2_0
+      name: Outro_cutscene_1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 78bd382ffcfe26e50800000000000000
-      internalID: 6801262063688866695
+      spriteID: e51defbb4b8c8e590800000000000000
+      internalID: -7644639688887709346
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Outro_cutscene_2_0: 6801262063688866695
+      Outro_cutscene_1_0: -7644639688887709346
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

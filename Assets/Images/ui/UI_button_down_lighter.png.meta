@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 184db2fd117c9094ab38ae17ae9f9d9c
+guid: 8d3f4ded14ba0ad469556df0dd5775db
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8224109120828876107
-    second: hades_titlescreen_01_0
+      213: 1896857344668914704
+    second: UI_button_down_lighter_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: hades_titlescreen_01_0
+      name: UI_button_down_lighter_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1920
-        height: 1080
+        x: 2
+        y: 5
+        width: 507
+        height: 184
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b452e051ca7e12270800000000000000
-      internalID: 8224109120828876107
+      spriteID: 014d49a74bdf25a10800000000000000
+      internalID: 1896857344668914704
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      hades_titlescreen_01_0: 8224109120828876107
+      UI_button_down_lighter_0: 1896857344668914704
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
