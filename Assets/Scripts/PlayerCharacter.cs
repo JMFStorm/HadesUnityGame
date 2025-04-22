@@ -453,22 +453,19 @@ public class PlayerCharacter : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        /*
-        if (other.gameObject.CompareTag("PlayerSword") || _hasAttackDamageInvulnerability)
-        {
-            return; // NOTE: Ignore damage recieve when attacking
-        }
-        */
-
-        if (other.CompareTag("Spikes") && _hasAttackDamageInvulnerability)
-        {
-            return; // NOTE: Ignore damage recieve when attacking
-        }
-
         if (other.gameObject.layer == LayerMask.NameToLayer("DamageZone") || other.gameObject.layer == LayerMask.NameToLayer("EnvDamageZone"))
         {
             Vector2 collisionDirection = (transform.position - other.transform.position).normalized;
             TryRecieveDamage(collisionDirection);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Doorway"))
+        {
+            _isAtDoorwayExit = false;
+            HideText();
         }
     }
 
@@ -603,15 +600,6 @@ public class PlayerCharacter : MonoBehaviour
     {
         var knockbackDirForce = new Vector2(knockbackDir.normalized.x, 6.5f);
         _rigidBody.linearVelocity = knockbackDirForce;
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Doorway"))
-        {
-            _isAtDoorwayExit = false;
-            HideText();
-        }
     }
 
     private IEnumerator ActivateDamageTakenTime(float duration)

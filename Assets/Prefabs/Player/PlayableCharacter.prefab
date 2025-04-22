@@ -242,7 +242,7 @@ Rigidbody2D:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &2218871938792346492
@@ -378,6 +378,7 @@ MonoBehaviour:
   OutlineThickness: 1
   InlineColor: {r: 0.047169805, g: 0.046947304, b: 0.046947304, a: 1}
   OutlineColor: {r: 0.35, g: 0.35, b: 0.35, a: 1}
+  OutlineBlurSize: 1.5
   EffectOffset: {x: 0, y: 0.5}
 --- !u!1 &4041143229832574921
 GameObject:
