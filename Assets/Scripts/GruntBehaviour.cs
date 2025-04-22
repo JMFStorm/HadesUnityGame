@@ -179,13 +179,11 @@ public class GruntBehaviour : EnemyBase
         }
         else if (_state == EnemyState.NormalMoving)
         {
-            // _animator.Play("GruntMove");
-            _animator.Play("GruntIdle1");
+            _animator.Play("GruntWalk1");
         }
         else if (_state == EnemyState.AttackMoving)
         {
-            // _animator.Play("GruntMove");
-            _animator.Play("GruntIdle1");
+            _animator.Play("GruntWalkFast1");
         }
 
         if (_state == EnemyState.Passive || _state == EnemyState.NormalMoving)
@@ -728,5 +726,10 @@ public class GruntBehaviour : EnemyBase
 
         var newCheckerX = _groundCheck.localPosition.x * -1;
         _groundCheck.localPosition = new(newCheckerX, _groundCheck.localPosition.y, _groundCheck.localPosition.z);
+    }
+
+    void PlayWalkStep()
+    {
+        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.Walk);
     }
 }

@@ -406,6 +406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24a8f97a72d8dc740a9f6107288cba3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VoicePitchAlternation: 0
   AlertVoiceClips:
   - {fileID: 8300000, guid: d916d1958f23935499bc9bb8008eb112, type: 3}
   DamageTakenVoiceClips:
@@ -505,7 +506,7 @@ MonoBehaviour:
   StartFacingLeft: 0
   Id: 
   IsShadowVariant: 0
-  MovementSpeed: 1.5
+  MovementSpeed: 1.25
   AggroSpeed: 2
   AttackRange: 3
   DamageStunTime: 0.35
