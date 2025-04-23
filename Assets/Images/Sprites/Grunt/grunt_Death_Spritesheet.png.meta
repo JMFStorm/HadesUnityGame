@@ -1,0 +1,491 @@
+fileFormatVersion: 2
+guid: d338e8c2c8b60a94aae5e281b4383c01
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3879210027046168487
+    second: grunt_Death_Spritesheet_0
+  - first:
+      213: 7113062234069972535
+    second: grunt_Death_Spritesheet_1
+  - first:
+      213: -3831343247570507356
+    second: grunt_Death_Spritesheet_2
+  - first:
+      213: -5502777515545722488
+    second: grunt_Death_Spritesheet_3
+  - first:
+      213: 3648260548747426771
+    second: grunt_Death_Spritesheet_4
+  - first:
+      213: 7820947514251817564
+    second: grunt_Death_Spritesheet_5
+  - first:
+      213: 21249588803275747
+    second: grunt_Death_Spritesheet_6
+  - first:
+      213: 6676294049090090857
+    second: grunt_Death_Spritesheet_7
+  - first:
+      213: 5597898062814987705
+    second: grunt_Death_Spritesheet_8
+  - first:
+      213: -9117889518822315842
+    second: grunt_Death_Spritesheet_9
+  - first:
+      213: -6500119492715262703
+    second: grunt_Death_Spritesheet_10
+  - first:
+      213: -7951153206614892447
+    second: grunt_Death_Spritesheet_11
+  - first:
+      213: -8223259264462082776
+    second: grunt_Death_Spritesheet_12
+  - first:
+      213: -2659049799362902675
+    second: grunt_Death_Spritesheet_13
+  - first:
+      213: -7262206770549510776
+    second: grunt_Death_Spritesheet_14
+  - first:
+      213: -4036938246254098162
+    second: grunt_Death_Spritesheet_15
+  - first:
+      213: -7346619997321633248
+    second: grunt_Death_Spritesheet_16
+  - first:
+      213: -2712621610554010236
+    second: grunt_Death_Spritesheet_17
+  - first:
+      213: -3544598137918567794
+    second: grunt_Death_Spritesheet_18
+  - first:
+      213: 589238965016636400
+    second: grunt_Death_Spritesheet_19
+  - first:
+      213: 8328565428972682919
+    second: grunt_Death_Spritesheet_20
+  - first:
+      213: 950620466183486053
+    second: grunt_Death_Spritesheet_21
+  - first:
+      213: 628722383073571793
+    second: grunt_Death_Spritesheet_22
+  - first:
+      213: -5381631512196321000
+    second: grunt_Death_Spritesheet_23
+  - first:
+      213: 2657192270042916047
+    second: grunt_Death_Spritesheet_24
+  - first:
+      213: -2937832577014180125
+    second: grunt_Death_Spritesheet_25
+  - first:
+      213: -5129567857528335669
+    second: grunt_Death_Spritesheet_26
+  - first:
+      213: -8538688248334275806
+    second: grunt_Death_Spritesheet_27
+  - first:
+      213: -3036954034976298355
+    second: grunt_Death_Spritesheet_28
+  - first:
+      213: -4243986418775891462
+    second: grunt_Death_Spritesheet_29
+  - first:
+      213: 6117487915689198060
+    second: grunt_Death_Spritesheet_30
+  - first:
+      213: -493025600670371237
+    second: grunt_Death_Spritesheet_31
+  - first:
+      213: -4000700944533975767
+    second: grunt_Death_Spritesheet_32
+  - first:
+      213: -6425836127552983978
+    second: grunt_Death_Spritesheet_33
+  - first:
+      213: -2480093681158943011
+    second: grunt_Death_Spritesheet_34
+  - first:
+      213: 274288443481239535
+    second: grunt_Death_Spritesheet_35
+  - first:
+      213: -1353474377115412946
+    second: grunt_Death_Spritesheet_36
+  - first:
+      213: -7834451384215635114
+    second: grunt_Death_Spritesheet_37
+  - first:
+      213: -2278338427517867914
+    second: grunt_Death_Spritesheet_38
+  - first:
+      213: 2487406733374791553
+    second: grunt_Death_Spritesheet_39
+  - first:
+      213: -2502860156828041774
+    second: grunt_Death_Spritesheet_40
+  - first:
+      213: -118626733294227878
+    second: grunt_Death_Spritesheet_41
+  - first:
+      213: -904205183143663026
+    second: grunt_Death_Spritesheet_42
+  - first:
+      213: 2713281272321164178
+    second: grunt_Death_Spritesheet_43
+  - first:
+      213: 182721983220929374
+    second: grunt_Death_Spritesheet_44
+  - first:
+      213: 8707036243516613533
+    second: grunt_Death_Spritesheet_45
+  - first:
+      213: -1486922075977032412
+    second: grunt_Death_Spritesheet_46
+  - first:
+      213: -4471820417405393687
+    second: grunt_Death_Spritesheet_47
+  - first:
+      213: -8018559941392249341
+    second: grunt_Death_Spritesheet_48
+  - first:
+      213: -758800479947652082
+    second: grunt_Death_Spritesheet_49
+  - first:
+      213: -3271170333935358972
+    second: grunt_Death_Spritesheet_50
+  - first:
+      213: -8108067833841487736
+    second: grunt_Death_Spritesheet_51
+  - first:
+      213: -6656871568094553350
+    second: grunt_Death_Spritesheet_52
+  - first:
+      213: 105503806386369152
+    second: grunt_Death_Spritesheet_53
+  - first:
+      213: 1041308214198652725
+    second: grunt_Death_Spritesheet_54
+  - first:
+      213: 4139199542716369234
+    second: grunt_Death_Spritesheet_55
+  - first:
+      213: -9219014958864094388
+    second: grunt_Death_Spritesheet_56
+  - first:
+      213: 5451997739508869312
+    second: grunt_Death_Spritesheet_57
+  - first:
+      213: 4615500140094719294
+    second: grunt_Death_Spritesheet_58
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 196
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: grunt_Death_Spritesheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 900
+        height: 860
+      alignment: 9
+      pivot: {x: 0.52, y: 0.014}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a7683777f8b5d530800000000000000
+      internalID: 3879210027046168487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: grunt_Death_Spritesheet_1
+      rect:
+        serializedVersion: 2
+        x: 900
+        y: 0
+        width: 900
+        height: 860
+      alignment: 9
+      pivot: {x: 0.52, y: 0.018}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 736bcfe4a6ca6b260800000000000000
+      internalID: 7113062234069972535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: grunt_Death_Spritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 0
+        width: 900
+        height: 860
+      alignment: 9
+      pivot: {x: 0.52, y: 0.022}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a9e7fb9d9554dac0800000000000000
+      internalID: -3831343247570507356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: grunt_Death_Spritesheet_3
+      rect:
+        serializedVersion: 2
+        x: 2700
+        y: 0
+        width: 900
+        height: 860
+      alignment: 9
+      pivot: {x: 0.52, y: 0.025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88104eb210532a3b0800000000000000
+      internalID: -5502777515545722488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: grunt_Death_Spritesheet_4
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 0
+        width: 900
+        height: 860
+      alignment: 9
+      pivot: {x: 0.52, y: 0.025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3db7928c3a931a230800000000000000
+      internalID: 3648260548747426771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: grunt_Death_Spritesheet_5
+      rect:
+        serializedVersion: 2
+        x: 4500
+        y: 0
+        width: 900
+        height: 860
+      alignment: 9
+      pivot: {x: 0.52, y: 0.025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5234f9b356998c60800000000000000
+      internalID: 7820947514251817564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: grunt_Death_Spritesheet_6
+      rect:
+        serializedVersion: 2
+        x: 5400
+        y: 0
+        width: 900
+        height: 860
+      alignment: 9
+      pivot: {x: 0.52, y: 0.025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3eb0e30736e7b4000800000000000000
+      internalID: 21249588803275747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: grunt_Death_Spritesheet_7
+      rect:
+        serializedVersion: 2
+        x: 6300
+        y: 0
+        width: 900
+        height: 860
+      alignment: 9
+      pivot: {x: 0.52, y: 0.025}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 967b11ca016f6ac50800000000000000
+      internalID: 6676294049090090857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 15799285de641f0488376acff1a7c353
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      grunt_Death_Spritesheet_0: 3879210027046168487
+      grunt_Death_Spritesheet_1: 7113062234069972535
+      grunt_Death_Spritesheet_2: -3831343247570507356
+      grunt_Death_Spritesheet_3: -5502777515545722488
+      grunt_Death_Spritesheet_4: 3648260548747426771
+      grunt_Death_Spritesheet_5: 7820947514251817564
+      grunt_Death_Spritesheet_6: 21249588803275747
+      grunt_Death_Spritesheet_7: 6676294049090090857
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

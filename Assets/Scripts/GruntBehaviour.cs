@@ -490,8 +490,8 @@ public class GruntBehaviour : EnemyBase
         }
 
         _isAttacking = false;
-        _isDead = true;
-        _spriteRenderer.enabled = false;
+        // _isDead = true;
+        // _spriteRenderer.enabled = false;
         _enemyCollider.enabled = false;
         _enemyDamageZone.gameObject.SetActive(false);
         _attackDamageZone.gameObject.SetActive(false);
@@ -501,9 +501,9 @@ public class GruntBehaviour : EnemyBase
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
 
         _state = EnemyState.Dead;
-        // _animator.Play("GruntDeath", 0, 0f);
+        _animator.Play("GruntDeath1", 0, 0f);
 
-        SetDead();
+        // SetDead();
     }
 
     private void ApplyDamageKnockback(Vector2 knockbackDir)
