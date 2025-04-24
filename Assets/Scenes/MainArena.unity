@@ -1264,6 +1264,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: IntroCutsceneMovie
+      value: 
+      objectReference: {fileID: 32900000, guid: 50a0d38e3890c1d4da0f8f724e094abf, type: 3}
+    - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: GameOverFirstSelected
       value: 
       objectReference: {fileID: 593053549}

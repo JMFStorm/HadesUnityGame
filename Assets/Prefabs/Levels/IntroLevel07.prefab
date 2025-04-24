@@ -53,7 +53,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AnnouncerIntro: {fileID: 0}
-  BackgroundImages: []
+  BackgroundImages:
+  - {fileID: -1536286345, guid: ba37631dff592134183de7ff00c01a86, type: 3}
   SeamlessBackgrounds:
   - {fileID: 21300000, guid: d164d8566ec6ae246893d36250a2a213, type: 3}
   LightLevel: 2

@@ -318,13 +318,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AnnouncerIntro: {fileID: 0}
   BackgroundImages:
-  - {fileID: -205897988977808270, guid: cd9126c1e52f1014e9285df3625f03c3, type: 3}
+  - {fileID: 5382571652087001101, guid: ba37631dff592134183de7ff00c01a86, type: 3}
   SeamlessBackgrounds:
   - {fileID: 21300000, guid: 00a5047afa2dd924aa2d1b1e82e8fdb6, type: 3}
   LightLevel: 4
   LevelSoundscape: 1
   LevelMusic: 5
-  BackgroundBrightness: 0.4
+  BackgroundBrightness: 0.45
   HeavyFog: 0
   FogColorMultiplier: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &117334570776595231
