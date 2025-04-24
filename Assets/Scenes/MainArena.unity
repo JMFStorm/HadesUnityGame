@@ -664,7 +664,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1585339839}
         m_TargetAssemblyTypeName: GameState, ScriptsAssembly
-        m_MethodName: ClickStartNewGame
+        m_MethodName: ClickHowToPlayOnMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -988,7 +988,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 510, y: 136}
+  m_AnchoredPosition: {x: 560, y: 161}
   m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1383569186
@@ -1841,7 +1841,7 @@ PrefabInstance:
       objectReference: {fileID: 6650046107009678274, guid: e10434495652ab14cb5aadc2b29498ac, type: 3}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: DebugStartLevelIndex
-      value: 0
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: GameLevels.Array.size
@@ -2886,6 +2886,10 @@ PrefabInstance:
     - target: {fileID: 8751776575036631128, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 8791858032868641516, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8806186371809602894, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_SizeDelta.x

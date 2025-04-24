@@ -245,7 +245,8 @@ public class GameUI : MonoBehaviour
     public IEnumerator PlayOutroCutscene()
     {
         _cutsceneCancelled = false;
-        _cutsceneCoroutine = StartCoroutine(PlayCutsceneMovie(OutroCutsceneMovie));
+        _cutsceneCoroutine = StartCoroutine(PlayOutroCutsceneAnim());
+        // _cutsceneCoroutine = StartCoroutine(PlayCutsceneMovie(OutroCutsceneMovie));
 
         yield return _cutsceneCoroutine;
 
@@ -298,9 +299,10 @@ public class GameUI : MonoBehaviour
     IEnumerator PlayOutroCutsceneAnim()
     {
         CutsceneCanvas.SetActive(true);
+        HidePlayerStats(true);
 
-        _animator.Play("OutroCutscene01");
-        _globalAudio.PlayGlobalMusicClip(OutroCutsceneMusic01, false, 1.0f);
+        _animator.Play("OutroCutscene01", 0, 0f);
+        // _globalAudio.PlayGlobalMusicClip(OutroCutsceneMusic01, false, 1.0f);
         _globalAudio.PlaySoundEffect(OutroCutsceneAudio01, 0.8f, true);
 
         while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
