@@ -226,7 +226,7 @@ MonoBehaviour:
   OutlineThickness: 0
   InlineColor: {r: 0.05, g: 0.05, b: 0.05, a: 1}
   OutlineColor: {r: 0.29803923, g: 0.29803923, b: 0.29803923, a: 0}
-  OutlineBlurSize: 2
+  OutlineBlurSize: 2.25
   EffectOffset: {x: 0, y: 0.5}
 --- !u!4 &6751889066237722458 stripped
 Transform:

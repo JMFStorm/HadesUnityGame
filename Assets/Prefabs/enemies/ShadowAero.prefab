@@ -244,7 +244,7 @@ MonoBehaviour:
   OutlineThickness: 0
   InlineColor: {r: 0.05, g: 0.05, b: 0.05, a: 1}
   OutlineColor: {r: 0.3, g: 0.3, b: 0.3, a: 0}
-  OutlineBlurSize: 2
+  OutlineBlurSize: 2.25
   EffectOffset: {x: 0, y: 0.5}
 --- !u!212 &6105048541330645208 stripped
 SpriteRenderer:
