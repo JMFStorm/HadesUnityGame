@@ -29,6 +29,7 @@ public class GameUI : MonoBehaviour
     public GameObject CutsceneText;
     public GameObject CutsceneMovie;
     public GameObject StartMenu;
+    public GameObject HowToPlayScreen;
 
     private GameObject _currentFirstSelected;
 
@@ -139,6 +140,7 @@ public class GameUI : MonoBehaviour
         MainMenuPanel.SetActive(false);
         PlayerColorPanel.SetActive(false);
         StartMenu.SetActive(false);
+        HowToPlayScreen.SetActive(false);
 
         _currentFirstSelected = MainMenuFirstSelected;
     }
@@ -223,6 +225,11 @@ public class GameUI : MonoBehaviour
     public void DisplayTitleMenu(bool visible)
     {
         StartMenu.SetActive(visible);
+    }
+
+    public void ShowHowToPlayScreen(bool visible)
+    {
+        HowToPlayScreen.SetActive(visible);
     }
 
     public IEnumerator PlayIntroCutscene()

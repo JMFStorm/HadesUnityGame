@@ -251,6 +251,18 @@ public class GameState : MonoBehaviour
         _globalAudio.PlayGlobalMusic(GlobalMusic.TensionBooster1, false, 0.7f);
     }
 
+    public void ClickHowToPlayOnMainMenu()
+    {
+        _gameUI.HideMainMenu(true);
+        _gameUI.ShowHowToPlayScreen(true);
+    }
+
+    public void ClickGetBackOnHowToPlay()
+    {
+        _gameUI.HideMainMenu(false);
+        _gameUI.ShowHowToPlayScreen(false);
+    }
+
     public void ClickReturnToMainMenuFromDeathScreen()
     {
         Player.gameObject.SetActive(false);
