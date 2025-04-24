@@ -305,6 +305,8 @@ public class GameUI : MonoBehaviour
         // _globalAudio.PlayGlobalMusicClip(OutroCutsceneMusic01, false, 1.0f);
         _globalAudio.PlaySoundEffect(OutroCutsceneAudio01, 0.8f, true);
 
+        yield return new WaitForSeconds(0.25f);
+
         while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
         {
             if (_cutsceneCancelled)
