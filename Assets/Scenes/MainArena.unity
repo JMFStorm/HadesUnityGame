@@ -1143,6 +1143,34 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 40
       objectReference: {fileID: 0}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: AnnouncerGameOverVoices.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'AnnouncerGameOverVoices.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 7c8d0f58811d20c479191a057ee7569a, type: 3}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'AnnouncerGameOverVoices.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 1d8078f09c41c17408ffab45f95e30c5, type: 3}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'AnnouncerGameOverVoices.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: b41aa6e65a4c2a44cae63710eef4444f, type: 3}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'AnnouncerGameOverVoices.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 5dc46fde56e5d2240aae277e3d4ce99e, type: 3}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'AnnouncerGameOverVoices.Array.data[4]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 1cc3d73eb074bee4b99ec693e12ec2ec, type: 3}
+    - target: {fileID: 4380281564239420056, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: 'AnnouncerGameOverVoices.Array.data[5]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 75c95b2777302f6458df6ee987901651, type: 3}
     - target: {fileID: 4514084054799137229, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: m_IsActive
       value: 0

@@ -68502,7 +68502,7 @@ PrefabInstance:
     - target: {fileID: 2310721792614188197, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
       propertyPath: HadesVoiceline
       value: 
-      objectReference: {fileID: 8300000, guid: a5ef174e5f68abb41a214989273ecb09, type: 3}
+      objectReference: {fileID: 8300000, guid: 92597306e38135f4c843d21fa0ab8940, type: 3}
     - target: {fileID: 2692567826591978175, guid: 428724c7e9c4adc47be4535f5f0ce917, type: 3}
       propertyPath: m_Name
       value: HadesAnnounceTrigger
