@@ -290,7 +290,7 @@ MonoBehaviour:
   HitSprite: {fileID: -2649168705230691579, guid: 481a2bcda97e0e04e883ce9b2100fb96, type: 3}
   MoveSprite: {fileID: 6585005144127111842, guid: 481a2bcda97e0e04e883ce9b2100fb96, type: 3}
   DeadSprite: {fileID: -5007399392941087032, guid: 481a2bcda97e0e04e883ce9b2100fb96, type: 3}
-  MoveSpeed: 4.25
+  MoveSpeed: 4.35
   JumpForce: 17.5
   DashSpeed: 16.5
   DashingTime: 0.175
