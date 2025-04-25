@@ -17,6 +17,8 @@ public class GameUI : MonoBehaviour
     public AudioClip OutroCutsceneAudio01;
     public AudioClip OutroCutsceneMusic01;
 
+    public AudioClip HadesOutroMonologue1;
+
     public VideoClip IntroCutsceneMovie;
     public VideoClip OutroCutsceneMovie;
 
@@ -298,9 +300,27 @@ public class GameUI : MonoBehaviour
 
     IEnumerator PlayOutroCutsceneAnim()
     {
-        CutsceneCanvas.SetActive(true);
+        _animator.StopPlayback();
         HidePlayerStats(true);
 
+        _globalAudio.PlayAnnouncerVoiceClip(HadesOutroMonologue1);
+
+        float elapsedSpeechTime = 0f;
+
+        while (elapsedSpeechTime < 12f)
+        {
+            if (_cutsceneCancelled)
+            {
+                _globalAudio.StopAnnouncerVoiceClip();
+                yield break;
+            }
+
+            elapsedSpeechTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        CutsceneCanvas.SetActive(true);
         _animator.Play("OutroCutscene01", 0, 0f);
         // _globalAudio.PlayGlobalMusicClip(OutroCutsceneMusic01, false, 1.0f);
         _globalAudio.PlaySoundEffect(OutroCutsceneAudio01, 0.8f, true);

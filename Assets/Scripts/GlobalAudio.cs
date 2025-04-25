@@ -160,6 +160,14 @@ public class GlobalAudio : MonoBehaviour
         }
     }
 
+    public void StopAnnouncerVoiceClip()
+    {
+        if (_hadesAnnouncerAudioSource.isPlaying)
+        {
+            _hadesAnnouncerAudioSource.Stop();
+        }
+    }
+
     public void PlayAmbience(LevelSoundscapeType type)
     {
         AudioClip clip = LevelAmbienceAudios[(int)type];
