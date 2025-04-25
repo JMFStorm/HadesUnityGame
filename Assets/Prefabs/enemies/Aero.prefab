@@ -398,6 +398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24a8f97a72d8dc740a9f6107288cba3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VoicePitchAlternation: 0
   AlertVoiceClips:
   - {fileID: 8300000, guid: 622c604411412f841a42b01267c264ca, type: 3}
   DamageTakenVoiceClips:
@@ -425,6 +426,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 45989b500b3fc124cb9f9bcbbcba60bd, type: 3}
   AttackMissSoundClips: []
   AttackChargeSoundClips: []
+  GoreDeathSoundClips:
+  - {fileID: 8300000, guid: 644ffcbc48fa9e042a69e0253510e945, type: 3}
 --- !u!1 &7541917772692835313
 GameObject:
   m_ObjectHideFlags: 0

@@ -444,6 +444,8 @@ MonoBehaviour:
   FlySoundClips: []
   AttackMissSoundClips: []
   AttackChargeSoundClips: []
+  GoreDeathSoundClips:
+  - {fileID: 8300000, guid: 529f41a5c59ba334e9009826f4b970ef, type: 3}
 --- !u!70 &3249828945748305991
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

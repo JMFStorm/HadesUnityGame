@@ -370,6 +370,7 @@ public class AeroBehaviour : EnemyBase
 
         StopWingsFlap();
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
+        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.GoreDeath);
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
     }
 

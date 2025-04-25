@@ -502,6 +502,7 @@ public class GroundEnemyBehaviour : EnemyBase
 
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
+        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.GoreDeath);
 
         _state = EnemyState.Dead;
         _animator.Play("MookDeath", 0, 0f);

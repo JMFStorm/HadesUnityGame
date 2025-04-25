@@ -433,6 +433,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f2d003f661dfedd47aa19ea8b1a95ca4, type: 3}
   AttackChargeSoundClips:
   - {fileID: 8300000, guid: af94e3a7f3881fa489563f761585efc2, type: 3}
+  GoreDeathSoundClips:
+  - {fileID: 8300000, guid: 80db2d06367716542865e836454ebfe4, type: 3}
 --- !u!212 &1529361337700842332
 SpriteRenderer:
   m_ObjectHideFlags: 0

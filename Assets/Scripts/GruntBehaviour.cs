@@ -499,6 +499,7 @@ public class GruntBehaviour : EnemyBase
 
         _soundEmitter.TryPlayVoiceSource(EnemyVoiceGroups.Death, true);
         _soundEmitter.TryPlaySoundSource(EnemySoundGroups.DamageTaken);
+        _soundEmitter.TryPlaySoundSource(EnemySoundGroups.GoreDeath);
 
         _state = EnemyState.Dead;
         _animator.Play("GruntDeath1", 0, 0f);

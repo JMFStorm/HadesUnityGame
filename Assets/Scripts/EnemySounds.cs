@@ -8,7 +8,8 @@ public enum EnemySoundGroups
     AttackCharge,
     Walk,
     Fly,
-    Drag
+    Drag,
+    GoreDeath,
 }
 
 public enum EnemyVoiceGroups
@@ -27,7 +28,7 @@ public class EnemySounds : MonoBehaviour
 
     private static float _lastVoiceTime = 0;
 
-    private AudioSource[] _enemySoundSources = new AudioSource[2];
+    private AudioSource[] _enemySoundSources = new AudioSource[3];
     private AudioSource _enemyVoiceSource;
 
     private int _lastSoundSourceIndex = 0;
@@ -46,6 +47,7 @@ public class EnemySounds : MonoBehaviour
     public AudioClip[] FlySoundClips;
     public AudioClip[] AttackMissSoundClips;
     public AudioClip[] AttackChargeSoundClips;
+    public AudioClip[] GoreDeathSoundClips;
 
     private MainCamera _mainCamera;
 
@@ -53,9 +55,11 @@ public class EnemySounds : MonoBehaviour
     {
         var soundSource1 = gameObject.AddComponent<AudioSource>();
         var soundSource2 = gameObject.AddComponent<AudioSource>();
+        var soundSource3 = gameObject.AddComponent<AudioSource>();
 
         _enemySoundSources[0] = soundSource1;
         _enemySoundSources[1] = soundSource2;
+        _enemySoundSources[2] = soundSource3;
 
         _enemyVoiceSource = gameObject.AddComponent<AudioSource>();
 
@@ -71,26 +75,32 @@ public class EnemySounds : MonoBehaviour
     {
         _enemySoundSources[0].playOnAwake = false;
         _enemySoundSources[1].playOnAwake = false;
+        _enemySoundSources[2].playOnAwake = false;
         _enemyVoiceSource.playOnAwake = false;
 
         _enemySoundSources[0].spatialBlend = 1.0f;
         _enemySoundSources[1].spatialBlend = 1.0f;
+        _enemySoundSources[2].spatialBlend = 1.0f;
         _enemyVoiceSource.spatialBlend = 1.0f;
 
         _enemySoundSources[0].minDistance = 1.0f;
         _enemySoundSources[1].minDistance = 1.0f;
+        _enemySoundSources[2].minDistance = 1.0f;
         _enemyVoiceSource.minDistance = 1.0f;
 
         _enemySoundSources[0].maxDistance = 10.0f;
         _enemySoundSources[1].maxDistance = 10.0f;
+        _enemySoundSources[2].maxDistance = 10.0f;
         _enemyVoiceSource.maxDistance = 10.0f;
 
         _enemySoundSources[0].rolloffMode = AudioRolloffMode.Linear;
         _enemySoundSources[1].rolloffMode = AudioRolloffMode.Linear;
+        _enemySoundSources[2].rolloffMode = AudioRolloffMode.Linear;
         _enemyVoiceSource.rolloffMode = AudioRolloffMode.Linear;
 
         _enemySoundSources[0].dopplerLevel = 0.0f;
         _enemySoundSources[1].dopplerLevel = 0.0f;
+        _enemySoundSources[2].dopplerLevel = 0.0f;
         _enemyVoiceSource.dopplerLevel = 0.0f;
     }
 
@@ -105,6 +115,7 @@ public class EnemySounds : MonoBehaviour
             EnemySoundGroups.AttackMiss => AttackMissSoundClips,
             EnemySoundGroups.Fly => FlySoundClips,
             EnemySoundGroups.Drag => DragSoundClips,
+            EnemySoundGroups.GoreDeath => GoreDeathSoundClips,
             _ => new AudioClip[] { },
         };
 
