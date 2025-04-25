@@ -17,15 +17,12 @@ public class SettingsSliders : MonoBehaviour
 
     void Start()
     {
-        float savedVolume = PlayerPrefs.GetFloat("MasterVolume", 0.8f);
-        VolumeSlider.value = savedVolume;
-        SetVolume(savedVolume);
+        GetSetValues();
+    }
 
-        PostProcessVolume.profile.TryGet(out _colorAdjustments);
-
-        float savedGamma = PlayerPrefs.GetFloat("Gamma", 0.5f);
-        GammaSlider.value = savedGamma;
-        SetGamma(savedGamma);
+    private void OnEnable()
+    {
+        GetSetValues();
     }
 
     public void SetVolume(float value)
@@ -53,5 +50,18 @@ public class SettingsSliders : MonoBehaviour
 
             GammaText.text = "Gamma adjustment: " + newValue.ToString("F3");
         }
+    }
+
+    void GetSetValues()
+    {
+        float savedVolume = PlayerPrefs.GetFloat("MasterVolume", 0.8f);
+        VolumeSlider.value = savedVolume;
+        SetVolume(savedVolume);
+
+        PostProcessVolume.profile.TryGet(out _colorAdjustments);
+
+        float savedGamma = PlayerPrefs.GetFloat("Gamma", 0.5f);
+        GammaSlider.value = savedGamma;
+        SetGamma(savedGamma);
     }
 }
