@@ -110,7 +110,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private Coroutine _playerAttackCoroutine;
 
-    private Vector2 _groundCheckSize = new(0.5f, 0.25f);
+    private Vector2 _groundCheckSize = new(0.225f, 0.25f);
     private Vector2 _originalSize;
     private Vector2 _originalOffset;
 
