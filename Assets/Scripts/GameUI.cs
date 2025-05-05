@@ -173,6 +173,8 @@ public class GameUI : MonoBehaviour
 
         _globalAudio.PlaySoundEffect(IntroCutsceneAudio01, 0.6f, true);
 
+        yield return new WaitForSeconds(0.15f);
+
         while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
         {
             if (_cutsceneCancelled)
@@ -194,7 +196,7 @@ public class GameUI : MonoBehaviour
 
         _globalAudio.PlaySoundEffect(IntroCutsceneAudio02, 0.8f, true);
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.15f);
 
         while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
         {
@@ -211,7 +213,7 @@ public class GameUI : MonoBehaviour
 
         _globalAudio.PlaySoundEffect(IntroCutsceneAudio03, 0.8f, true);
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.15f);
 
         while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
         {
