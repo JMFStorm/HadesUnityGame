@@ -397,9 +397,12 @@ public class GameState : MonoBehaviour
 
     public void QuitGame()
     {
+#if UNITY_WEBGL
+        return;
+#else
         Debug.Log("Game Quit");
-
         Application.Quit();
+#endif
     }
 
     void ClearCurrentLevel()

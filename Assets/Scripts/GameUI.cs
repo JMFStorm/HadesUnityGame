@@ -32,6 +32,7 @@ public class GameUI : MonoBehaviour
     public GameObject CutsceneMovie;
     public GameObject StartMenu;
     public GameObject HowToPlayScreen;
+    public Material CutsceneMaterial;
 
     private GameObject _currentFirstSelected;
 
@@ -165,6 +166,8 @@ public class GameUI : MonoBehaviour
     {
         CutsceneCanvas.SetActive(true);
 
+        CutsceneCanvas.GetComponent<Image>().material = null;
+
         _animator.enabled = true;
         _animator.Play("IntroCutscene01", 0, 0f);
 
@@ -237,10 +240,17 @@ public class GameUI : MonoBehaviour
     public IEnumerator PlayIntroCutscene()
     {
         _cutsceneCancelled = false;
+
+#if UNITY_WEBGL
+        _cutsceneMaterial = null;
+        _cutsceneCoroutine = StartCoroutine(PlayIntroCutsceneAnim());
+#else
         _cutsceneCoroutine = StartCoroutine(PlayCutsceneMovie(IntroCutsceneMovie));
+#endif
 
         yield return _cutsceneCoroutine;
 
+        CutsceneCanvas.GetComponent<Image>().material = CutsceneMaterial;
         _cutsceneCoroutine = null;
     }
 

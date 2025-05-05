@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &485954996
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1833,7 +1833,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: SkipIntro
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3304941712872320287, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: MainMenuLevel
@@ -2211,6 +2211,10 @@ PrefabInstance:
       propertyPath: HowToPlayScreen
       value: 
       objectReference: {fileID: 485954995}
+    - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
+      propertyPath: CutsceneMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 35ba2524fa2b3ef48b96e0f247b0468f, type: 2}
     - target: {fileID: 5318144698316509048, guid: e6f8fdfee94f71e4d822d6f31f5f7909, type: 3}
       propertyPath: IntroCutsceneMovie
       value: 
